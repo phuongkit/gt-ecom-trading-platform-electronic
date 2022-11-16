@@ -12,7 +12,7 @@ function ProductHistory({ styleTitle }) {
     const [products, setProducts] = useState([]);
     const handleClick = () => {
         section.current.remove();
-        productHistory.clearProductHistory();
+        // productHistory.clearProductHistory();
     };
 
     useEffect(() => {

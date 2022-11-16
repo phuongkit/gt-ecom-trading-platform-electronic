@@ -6,15 +6,7 @@ function News() {
         {
             thumb: 'https://cdn.tgdd.vn/2022/05/banner/samsung-390-210-390x210.png',
             title: 'Đừng bỏ qua loạt iPhone giảm giá mạnh đáng sắm nhất chương trình sale tại TGDĐ, bây giờ không mua thì khi nào mới mua?',
-        },
-        {
-            thumb: 'https://cdn.tgdd.vn/2022/05/banner/samsung-390-210-390x210.png',
-            title: 'Đừng bỏ qua loạt iPhone giảm giá mạnh đáng sắm nhất chương trình sale tại TGDĐ, bây giờ không mua thì khi nào mới mua?',
-        },
-        {
-            thumb: 'https://cdn.tgdd.vn/2022/05/banner/samsung-390-210-390x210.png',
-            title: 'Đừng bỏ qua loạt iPhone giảm giá mạnh đáng sắm nhất chương trình sale tại TGDĐ, bây giờ không mua thì khi nào mới mua?',
-        },
+        }
     ];
     return (
         <div className="flex gap-4 h-[350px] items-center">
