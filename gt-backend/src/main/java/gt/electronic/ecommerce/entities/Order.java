@@ -74,11 +74,13 @@ public class Order {
   @JoinColumn(name = "shipping_method_id", nullable = false)
   private ShippingMethod shippingMethod;
 
-  @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-  @JoinTable(name = "tbl_order_discounts",
-      joinColumns = @JoinColumn(name = "order_id"),
-      inverseJoinColumns = @JoinColumn(name = "discount_id"))
-  private Set<Discount> discounts = new HashSet<>();
+  @Column(name = "transport_fee", nullable = false)
+  @NotNull(message = "An transportFee is required!")
+  private BigDecimal transportFee;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "discount_id")
+  private Discount discount;
 
   @Column(name = "pay_at")
   @Temporal(TemporalType.TIMESTAMP)
@@ -87,36 +89,9 @@ public class Order {
   @Column(name = "note", length = 500)
   private String note;
 
-  @Column(name = "payment_order_code")
-  private String paymentOrderCode;
-
-  @Column(name = "ship_order_code")
-  private String shipOrderCode;
-
-  @Column(name = "log", length = 500)
-  private String log;
-
-  @Column(name = "expected_delivery_time")
-  @Temporal(TemporalType.TIMESTAMP)
-  private Date expectedDeliveryTime;
-
-  @Column(name = "total_price_product", nullable = false)
-  @NotNull(message = "An totalPriceProduct is required!")
-  @DecimalMin(value = "0", message = "An totalPriceProduct must be greater than or equal to 0.")
-  private BigDecimal totalPriceProduct;
-
-  @Column(name = "total_price_discount", nullable = false)
-  @NotNull(message = "An totalPriceDiscount is required!")
-  @DecimalMin(value = "0", message = "An totalPriceDiscount must be greater than or equal to 0.")
-  private BigDecimal totalPriceDiscount;
-
-  @Column(name = "transport_fee", nullable = false)
-  @NotNull(message = "An transportFee is required!")
-  private BigDecimal transportFee;
-
   @Column(name = "total_price", nullable = false)
-  @NotNull(message = "An totalPrice is required!")
-  @DecimalMin(value = "0", message = "An totalPrice must be greater than or equal to 0.")
+  @NotNull(message = "An total price is required!")
+  @DecimalMin(value = "0", message = "Total Price must be greater than or equal to 0.")
   private BigDecimal totalPrice;
 
   @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
@@ -134,9 +109,4 @@ public class Order {
   @Column(name = "updated_at")
   @UpdateTimestamp
   private Date updatedAt;
-
-  @PreRemove
-  private void preRemove() {
-    this.discounts = new HashSet<>();
-  }
 }

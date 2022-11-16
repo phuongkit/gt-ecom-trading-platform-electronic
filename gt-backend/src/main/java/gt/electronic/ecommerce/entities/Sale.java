@@ -52,14 +52,6 @@ public class Sale {
       inverseJoinColumns = @JoinColumn(name = "product_id"))
   private Set<Product> products = new HashSet<>();
 
-  public void addProduct(Product product) {
-    products.add(product);
-  }
-
-  public void removeProduct(Product product) {
-    products.remove(product);
-  }
-
   @ManyToOne
   @JoinColumn(name = "creator")
   private User creator;
@@ -82,11 +74,6 @@ public class Sale {
   @Column(name = "updated_at")
   @UpdateTimestamp
   private Date updatedAt;
-
-  @PreRemove
-  private void preRemove() {
-    products.forEach(product -> product.removeSale(this));
-  }
 
   public Sale(String name, String description, Double percent, Set<Product> products, User creator, Date startDate, Date endDate) {
     this.name = name;

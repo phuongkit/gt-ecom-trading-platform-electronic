@@ -72,8 +72,4 @@ public class Image {
   public static Image createImageBackgroundShop(String name) {
     return name == null || Objects.equals(name, "") ? null : new Image(EImageType.IMAGE_SHOP_BACKGROUND + "/" + name, EImageType.IMAGE_SHOP_BACKGROUND);
   }
-
-  public static Image createImageDiscount(String name) {
-    return name == null || Objects.equals(name, "") ? null : new Image(EImageType.IMAGE_DISCOUNT + "/" + name, EImageType.IMAGE_DISCOUNT);
-  }
 }
