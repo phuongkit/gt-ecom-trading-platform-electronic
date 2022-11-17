@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -19,17 +18,10 @@ import java.util.Date;
 @NoArgsConstructor
 public class DiscountResponseDTO {
   private Long id;
-  private String name;
+  private String title;
   private String description;
-  private Integer quantity;
   private Double percent;
   private String code;
-  private BigDecimal cappedAt;
-  private BigDecimal price;
-  private BigDecimal minSpend;
-  private Integer shopId;
   private Date startDate;
   private Date endDate;
-  private int type;
-  private String thumbnail;
 }

@@ -20,7 +20,6 @@ public class ProductGalleryDTO {
   private Long id;
   private String img;
   private String title;
-  private BigDecimal originPrice;
   private BigDecimal price;
   private Integer availableQuantity;
   private Integer soldQuantity;
@@ -35,5 +34,4 @@ public class ProductGalleryDTO {
   private String brandSlug;
   private String category;
   private String categorySlug;
-  private int status;
 }

@@ -2,15 +2,14 @@ package gt.electronic.ecommerce.config;
 
 import gt.electronic.ecommerce.dto.response.ResponseObject;
 import gt.electronic.ecommerce.filter.JwtTokenFilter;
-import gt.electronic.ecommerce.handlers.CustomOAuth2UserService;
-import gt.electronic.ecommerce.handlers.HttpCookieOAuth2AuthorizationRequestRepository;
-import gt.electronic.ecommerce.handlers.OAuth2AuthenticationFailureHandler;
-import gt.electronic.ecommerce.handlers.OAuth2AuthenticationSuccessHandler;
+import gt.electronic.ecommerce.repositories.UserRepository;
+import gt.electronic.ecommerce.services.UserService;
 import gt.electronic.ecommerce.utils.MapHelper;
 import net.minidev.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -20,13 +19,20 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -42,14 +48,14 @@ public class SecurityConfiguration {
   @Autowired
   private JwtTokenFilter jwtTokenFilter;
 
-  @Autowired
-  private CustomOAuth2UserService customOAuth2UserService;
+//  @Autowired
+//  @Qualifier("delegatedAuthenticationEntryPoint")
+//  AuthenticationEntryPoint authEntryPoint;
 
-  @Autowired
-  private OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
-
-  @Autowired
-  private OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
+//  @Bean
+//  public UserDetailsService userDetailsService() {
+//    return userService;
+//  }
 
   @Bean
   public PasswordEncoder passwordEncoder() {
@@ -145,24 +151,10 @@ public class SecurityConfiguration {
     http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
     http.authorizeRequests()
-        .antMatchers("/auth/login", "/oauth2/**", "/docs/**", "/swagger-ui/index.html#/")
+        .antMatchers("/auth/login", "/docs/**", "/swagger-ui/index.html#/")
         .permitAll()
         .anyRequest()
-        .permitAll()
-        .and()
-        .oauth2Login()
-        .authorizationEndpoint()
-        .baseUri("/oauth2/authorize")
-        .authorizationRequestRepository(cookieAuthorizationRequestRepository())
-        .and()
-        .redirectionEndpoint()
-        .baseUri("/oauth2/callback/*")
-        .and()
-        .userInfoEndpoint()
-        .userService(customOAuth2UserService)
-        .and()
-        .successHandler(oAuth2AuthenticationSuccessHandler)
-        .failureHandler(oAuth2AuthenticationFailureHandler);
+        .permitAll();
 
     // Exception handling configuration
     http.exceptionHandling()
@@ -171,7 +163,7 @@ public class SecurityConfiguration {
               response.setContentType(MediaType.APPLICATION_JSON_VALUE);
               response.setStatus(HttpServletResponse.SC_OK);
 
-              Map<String, Object> map;
+              Map<String, Object> map = new HashMap<String, Object>();
               ResponseObject<?> responseObject =
                   new ResponseObject<>(HttpStatus.UNAUTHORIZED, ex.getMessage());
               map = MapHelper.convertObject(responseObject);
@@ -185,7 +177,7 @@ public class SecurityConfiguration {
               this.LOGGER.info(ex.toString());
               response.setContentType(MediaType.APPLICATION_JSON_VALUE);
               response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-              Map<String, Object> map;
+              Map<String, Object> map = new HashMap<String, Object>();
               ResponseObject<?> responseObject =
                   new ResponseObject<>(HttpStatus.UNAUTHORIZED, ex.getMessage());
               map = MapHelper.convertObject(responseObject);
@@ -198,58 +190,6 @@ public class SecurityConfiguration {
 
     return http.build();
   }
-
-  @Bean
-  public HttpCookieOAuth2AuthorizationRequestRepository cookieAuthorizationRequestRepository() {
-    return new HttpCookieOAuth2AuthorizationRequestRepository();
-  }
-
-//  private static List<String> clients = Arrays.asList("google", "facebook");
-//
-//  @Bean
-//  public ClientRegistrationRepository clientRegistrationRepository() {
-//    List<ClientRegistration> registrations = clients.stream()
-//        .map(c -> getRegistration(c))
-//        .filter(registration -> registration != null)
-//        .collect(Collectors.toList());
-//
-//    return new InMemoryClientRegistrationRepository(registrations);
-//  }
-//
-//  private static String CLIENT_PROPERTY_KEY
-//      = "spring.security.oauth2.client.registration.";
-//
-//  @Autowired
-//  private Environment env;
-//
-//  private ClientRegistration getRegistration(String client) {
-//    String clientId = env.getProperty(
-//        CLIENT_PROPERTY_KEY + client + ".client-id");
-//
-//    if (clientId == null) {
-//      return null;
-//    }
-//
-//    String clientSecret = env.getProperty(
-//        CLIENT_PROPERTY_KEY + client + ".client-secret");
-//
-//    if (client.equals("google")) {
-//      return CommonOAuth2Provider.GOOGLE.getBuilder(client)
-//          .clientId(clientId).clientSecret(clientSecret).build();
-//    }
-//    if (client.equals("facebook")) {
-//      return CommonOAuth2Provider.FACEBOOK.getBuilder(client)
-//          .clientId(clientId).clientSecret(clientSecret).build();
-//    }
-//    return null;
-//  }
-//
-//  @Bean
-//  public OAuth2AuthorizedClientService authorizedClientService() {
-//
-//    return new InMemoryOAuth2AuthorizedClientService(
-//        clientRegistrationRepository());
-//  }
 
 //  @Bean
 //  public WebMvcConfigurer corsConfigurer() {

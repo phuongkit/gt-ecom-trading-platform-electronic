@@ -24,7 +24,6 @@ public class ProductResponseDTO {
   private Long id;
   private String img;
   private String title;
-  private BigDecimal originPrice;
   private BigDecimal price;
   private Integer availableQuantity;
   private Integer soldQuantity;
@@ -42,8 +41,8 @@ public class ProductResponseDTO {
   private String categorySlug;
   private String location;
   private String[] gallery;
+//  private DescriptionResponseDTO[] parameter;
   private Map<String, String> parameter;
   private String info;
   private RatingDetail[] vote;
-  private int status;
 }
