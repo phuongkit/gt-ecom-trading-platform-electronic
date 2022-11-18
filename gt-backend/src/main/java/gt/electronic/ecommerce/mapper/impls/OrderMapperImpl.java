@@ -1,9 +1,7 @@
 package gt.electronic.ecommerce.mapper.impls;
 
-import gt.electronic.ecommerce.dto.response.DiscountResponseDTO;
 import gt.electronic.ecommerce.dto.response.OrderDetailResponseDTO;
 import gt.electronic.ecommerce.dto.response.OrderResponseDTO;
-import gt.electronic.ecommerce.entities.Discount;
 import gt.electronic.ecommerce.entities.Order;
 import gt.electronic.ecommerce.entities.OrderItem;
 import gt.electronic.ecommerce.mapper.*;
@@ -71,22 +69,16 @@ public class OrderMapperImpl implements OrderMapper {
     responseDTO.setTransportFee(entity.getTransportFee());
     responseDTO.setEmail(entity.getEmail());
     responseDTO.setPhone(entity.getPhone());
-    if (entity.getDiscounts() != null && entity.getDiscounts().size() > 0) {
-      DiscountResponseDTO[] discountDTOs= new DiscountResponseDTO[entity.getDiscounts().size()];
-      int i =0;
-      for (Discount discount:entity.getDiscounts()) {
-        discountDTOs[i] = new DiscountResponseDTO();
-        discountDTOs[i] = this.discountMapper.discountToDiscountResponseDTO(discount);
-        i++;
-      }
-      responseDTO.setDiscounts(discountDTOs);
+    if (entity.getDiscount() != null) {
+      responseDTO.setDiscount(
+          this.discountMapper.discountToDiscountResponseDTO(entity.getDiscount()));
     }
     if (entity.getLocation() != null) {
       responseDTO.setAddress(
           this.addressMapper.lineAndLocationToAddressResponseDTO(
               entity.getLine(), entity.getLocation()));
     }
-    responseDTO.setStatus(entity.getStatus().ordinal());
+    responseDTO.setStatus(entity.getStatus());
     responseDTO.setPayAt(entity.getPayAt());
     responseDTO.setNote(entity.getNote());
     if (isFull.length > 0 && isFull[0]) {

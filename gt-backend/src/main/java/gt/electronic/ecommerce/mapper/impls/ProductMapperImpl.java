@@ -77,7 +77,6 @@ public class ProductMapperImpl implements ProductMapper {
     }
     //    responseDTO.setUrl();
     responseDTO.setSlug(entity.getSlug());
-    responseDTO.setOriginPrice(entity.getPrice());
     //    responseDTO.getPromotion()
     Sale sale = this.saleService.getMostOptimalSaleByProduct(entity.getId());
     if (sale != null) {
@@ -86,7 +85,7 @@ public class ProductMapperImpl implements ProductMapper {
       responseDTO.setDiscount(sale.getPercent());
       responseDTO.setTag(sale.getName());
     } else {
-      responseDTO.setPrice(entity.getPrice());
+      responseDTO.setPrice(entity.getListPrice());
     }
     ProductRating productRating = this.feedbackService.getProductRatingByProduct(entity.getId());
     if (productRating != null) {
@@ -134,7 +133,6 @@ public class ProductMapperImpl implements ProductMapper {
       responseDTO.setParameter(parameter);
     }
     responseDTO.setInfo(entity.getDescription());
-    responseDTO.setStatus(entity.getStatus().ordinal());
     return responseDTO;
   }
 
@@ -155,7 +153,6 @@ public class ProductMapperImpl implements ProductMapper {
     responseDTO.setSoldQuantity(this.productService.getSoldQuantityById(entity.getId()));
     //    responseDTO.setUrl();
     responseDTO.setSlug(entity.getSlug());
-    responseDTO.setOriginPrice(entity.getPrice());
     //    responseDTO.getPromotion()
     //    responseDTO.setLocation();
     Sale sale = this.saleService.getMostOptimalSaleByProduct(entity.getId());
@@ -164,7 +161,7 @@ public class ProductMapperImpl implements ProductMapper {
       responseDTO.setDiscount(sale.getPercent());
       responseDTO.setTag(sale.getName());
     } else {
-      responseDTO.setPrice(entity.getPrice());
+      responseDTO.setPrice(entity.getListPrice());
     }
     ProductRating productRating = this.feedbackService.getProductRatingByProduct(entity.getId());
     if (productRating != null) {
@@ -182,7 +179,6 @@ public class ProductMapperImpl implements ProductMapper {
       responseDTO.setCategory(entity.getCategory().getName());
       responseDTO.setCategorySlug(entity.getCategory().getSlug());
     }
-    responseDTO.setStatus(entity.getStatus().ordinal());
     return responseDTO;
   }
 }
