@@ -7,11 +7,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 /**
  * @author minh phuong
@@ -22,7 +19,7 @@ import java.util.List;
 @Transactional
 public interface OrderRepository extends JpaRepository<Order, Long> {
   Page<Order> findAllByUser(User user, Pageable pageable);
+
   @Query(value = "select distinct o from Order o inner join OrderItem ot on o = ot.order where ot.product.shop = :shop")
   Page<Order> findAllByShop(Shop shop, Pageable pageable);
-  List<Order> findAllByPaymentOrderCode(String paymentOrderCode);
 }

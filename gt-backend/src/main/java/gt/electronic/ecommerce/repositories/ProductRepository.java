@@ -43,8 +43,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
               + "and (p.category = :category or p.category.parentCategory = :category))) "
               + "and (:shop is null or (p.shop is not null and p.shop = :shop)) "
               + "and (:location is null or p.location is null or p.location = :location) "
-              + "and p.price > :minPrice "
-              + "and p.price < :maxPrice")
+              + "and p.listPrice > :minPrice "
+              + "and p.listPrice < :maxPrice")
   Page<Product> filterProduct(
       @Param("keyword") String keyword,
       @Param("category") Category category,
