@@ -5,7 +5,7 @@ import BigBannerCategory from './BigBannerCategory';
 import ListProductCategory from './ListProductCategory';
 import QuickLinkCategory from './QuickLinkCategory';
 import FilterCategory from './FilterCategory';
-import { getOneCategoryBySlugApi } from '~/redux/category/categoriesApi';
+import { getOneCategoryBySlugApi } from '../../../redux/category/categoriesApi';
 const Category = () => {
     const {categorySlug} = useParams();
     const dispatch = useDispatch();

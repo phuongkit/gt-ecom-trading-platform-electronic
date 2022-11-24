@@ -56,7 +56,7 @@ const ListProductCategory = (props) => {
     const dispatch = useDispatch();
     useEffect(() => {
         if (data.id) {
-            getAllProductApi(dispatch, data.id);
+            getAllProductApi(dispatch, {categoryId:data.id});
         }
     }, [data.id]);
 
