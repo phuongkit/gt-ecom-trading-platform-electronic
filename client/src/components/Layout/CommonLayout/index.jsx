@@ -6,20 +6,19 @@ import { Outlet } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import {getUserByAccess,logUserByAccess} from '~/redux/user/userApi'
 import { Link } from 'react-router-dom';
+import {userService} from '../../../services/user.service'
 import './header.css';
 function CommonLayout({ children }) {
    
     const dispatch = useDispatch()
     const [getUserAccess, setUserAccess] = useState(undefined);
     const getAccess = JSON.parse(localStorage.getItem('access'))
-    const getUser= JSON.parse(localStorage.getItem('customerInfo'))
     useEffect(()=>{   
         if(getAccess){
             getUserByAccess(dispatch)  
         }   
-    },[])
-    const user = useSelector((state) => state.user?.user) || getUser;
-    console.log(user)
+    },[localStorage.getItem('access')])
+    const user = useSelector((state) => state.user?.user);
     const hanleLogout = () => {    
         logUserByAccess(dispatch)
     };
@@ -35,29 +34,12 @@ function CommonLayout({ children }) {
                 <nav className=" header__navbar hide-on-mobile-tablet">
                     <ul className="header__navbar-list">
                         <li className="header__navbar-item--openqr header__navbar-item header__navbar-item--separate-week">
-                            Phúc Xi Cúc
+                            <Link to="/History" className="w-32  text-center " onClick={()=>setSingIn(!singIn)}>
+                                            Tra cứu đơn hàng
+                                </Link>
                         </li>
 
                         <li className="header__navbar-item ">
-                            <span className="header__navbar-item--disabled">Kết nối</span>
-                            <div className="header__navbar-item-link-icons">
-                                <a href="" className="header__navbar-icon-link">
-                                    <i className="header__navbar-icon fab fa-facebook"></i>
-                                </a>
-                                <a href="" className="header__navbar-icon-link">
-                                    <i className="header__navbar-icon fab fa-instagram"></i>
-                                </a>
-                            </div>
-                        </li>
-                    </ul>
-
-                    <ul className="header__navbar-list ml-6">
-                        {/* <li className="header__navbar-item">
-                        <a href="" className="header__navbar-item-link">
-                            <i className="header__navbar-icon far fa-question-circle"></i>
-                            Hỗ trợ
-                        </a>
-                    </li> */}
                         {user && (
                             <li className="header__navbar-item header__navbar-user">
                                 <img
@@ -69,10 +51,10 @@ function CommonLayout({ children }) {
 
                                 <ul className="header__navbar-user-menu">
                                     <li className="header__navbar-user-item text-gray-600">
-                                        <a href="">Tài khoản của tôi</a>
+                                        <Link to="history">Tài khoản của tôi</Link>
                                     </li>
                                     <li className="header__navbar-user-item text-gray-600">
-                                        <a href="./bill.html">Đơn mua</a>
+                                        <Link to="history">Đơn mua</Link>
                                     </li>
                                     {user.role != 1 && (
                                           <li className="header__navbar-user-item text-gray-600">
@@ -91,6 +73,17 @@ function CommonLayout({ children }) {
                                 </ul>
                             </li>
                         )}
+                        </li>
+                    </ul>
+
+                    <ul className="header__navbar-list ml-6">
+                        {/* <li className="header__navbar-item">
+                        <a href="" className="header__navbar-item-link">
+                            <i className="header__navbar-icon far fa-question-circle"></i>
+                            Hỗ trợ
+                        </a>
+                    </li> */}
+                     
 
                         <li className="header__navbar-item header__navbar-item--openNotify">
                             <a href="" className="header__navbar-item-link">
@@ -154,6 +147,9 @@ function CommonLayout({ children }) {
                                     </a>
                                 </footer>
                             </div>
+                        </li>
+                        <li className="header__navbar-item ">
+                    
                         </li>
                     </ul>
                 </nav>

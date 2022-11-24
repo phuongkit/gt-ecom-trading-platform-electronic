@@ -3,7 +3,7 @@ import { CommonLayout, DefaultLayout } from '../components/Layout';
 import NotFound from '../pages/User/NotFound';
 import { publishRoutes } from './PublishRoutes';
 import { publishRoutesSeller } from './seller/PublishRoutesSeller';
-
+import { productDetailRoute } from './ProductDetailRoutes';
 
 export default function Routes() {
     const routes = [
@@ -12,7 +12,7 @@ export default function Routes() {
             element: <CommonLayout />,
             children: [
                 ...publishRoutes,
-             
+                productDetailRoute,
                 { path: '*', element: <NotFound title="Not found" /> },
             ],
         },

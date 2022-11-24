@@ -4,7 +4,7 @@ import { StarFill } from 'react-bootstrap-icons';
 import styles from './card.module.scss';
 import { useState } from 'react';
 import numberWithCommas from '../../utils/numberWithCommas';
-
+import { productHistory } from '~/helpers/localStorage';
 import { useDispatch } from 'react-redux';
 
 function ProductCard(props) {
@@ -16,11 +16,12 @@ function ProductCard(props) {
     const [checked, setChecked] = useState(0);
 
     const handleProductClick = () => {
+        productHistory.saveItems(props);
         console.log(" props.slug", props.slug)
         // getProductDetailApi(dispatch, props.slug);
     };
     return (
-        <Link to={`/${props.categorySlug}/${props.slug}`} onClick={handleProductClick} state={props}>
+        <Link className='inline-block' to={`/${props.categorySlug}/${props.slug}`} onClick={handleProductClick} state={props}>
             <div className={styles.card}>
                 <div className={styles.wrap}>
                     <div className={clsx(styles.discount, props.promotion == '' && 'invisible')}>
@@ -83,7 +84,7 @@ function ProductCard(props) {
                     )}
                     <p>
                         <span className="text-yellow-400 font-bold">
-                            {props.star.toFixed(1)}&ensp;
+                            {props.star?.toFixed(1)}&ensp;
                             <i>
                                 <StarFill />
                             </i>

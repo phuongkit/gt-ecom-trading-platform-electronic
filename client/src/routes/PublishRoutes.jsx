@@ -5,6 +5,7 @@ const Home = lazy(() => import('../pages/User/Home'));
 const SingIn = lazy(() => import('../components/SingInForm'));
 const SingUp = lazy(() => import('../components/SignUpForm'));  
 const Category = lazy(() => import('../pages/User/Category'));
+const Cart = lazy(() => import('../pages/User/Cart'));
 export const publishRoutes = [
     {
         index: true,
@@ -38,4 +39,13 @@ export const publishRoutes = [
             </Suspense>
         ),
     }
+    ,
+    {
+        path: 'cart',
+        element: (
+            <Suspense fallback={<Loading />}>
+                <Cart title="Giỏ hàng - Phúc Xi Cúc" />
+            </Suspense>
+        ),
+    },
 ];
