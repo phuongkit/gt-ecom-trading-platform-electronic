@@ -6,7 +6,6 @@ import styles from './header.module.scss';
 import './header.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
-import SingInForm from '../SingInForm';
 function Header() {
     const user = useSelector(state=>state.user?.user)
     const getAccess = JSON.parse(localStorage.getItem('access'))

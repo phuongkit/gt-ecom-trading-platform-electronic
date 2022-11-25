@@ -39,7 +39,7 @@ const data = [
 ];
 const FilterCategory = (props) => {
     return (
-        <div style={{ maxWidth: '1200px', margin: 'auto' }}>
+        <div style={{ maxWidth: '1200px', margin: '6% auto 0 auto' }}>
             <Filter handle={props.handle} data={data} />
         </div>
     );

@@ -19,13 +19,7 @@ function Filter({ handle, data }) {
     return (
         <div className={styles.contain} ref={contain}>
             <div className={styles.filter}>
-                {/* Nút đầu */}
-                <FilterItemTotal data={data} handle={handle} scroll={scroll} />
 
-                {/* Các nút sau */}
-                {data.map((src) => (
-                    <FilterItem data={src} key={src.id} handle={handle} scroll={scroll} />
-                ))}
             </div>
         </div>
     );

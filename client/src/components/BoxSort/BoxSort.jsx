@@ -48,25 +48,9 @@ const BoxSort = (props) => {
                     ))}
                 </div>
             </div>
-            <p className={styles.click} onClick={() => props.setSelected(!props.selected)}>
+            <p className={styles.click}>
                 <span>Xếp theo: {props.dataSelected[props.chose].type}</span>
-                {props.selected && (
-                    <div className={styles.select}>
-                        {props.dataSelected.map((item, index) => (
-                            <p>
-                                <a
-                                    className={props.chose === index && styles.check}
-                                    onClick={() => {
-                                        props.onclick(index);
-                                    }}
-                                >
-                                    <i></i>
-                                    {item.type}
-                                </a>
-                            </p>
-                        ))}
-                    </div>
-                )}
+            
             </p>
         </div>
     );

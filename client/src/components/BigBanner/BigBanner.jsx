@@ -2,10 +2,11 @@ import './bigbanner.scss';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import Slider from 'react-slick';
-
+import { Link } from 'react-router-dom';
+import './slick.scss'
 const images = [
-    'https://png.pngtree.com/thumb_back/fh260/back_our/20200701/ourmid/pngtree-atmospheric-high-end-skin-care-product-advertising-background-image_344527.jpg',
-    'https://png.pngtree.com/thumb_back/fh260/back_our/20200701/ourmid/pngtree-atmospheric-high-end-skin-care-product-advertising-background-image_344527.jpg',
+    'https://cdn.vietnammoi.vn/2019/8/23/freeservice-bangchidan-15665444838181728642931.png',
+    'https://cdn.vietnammoi.vn/2019/8/23/freeservice-bangchidan-15665444838181728642931.png',
     'https://png.pngtree.com/thumb_back/fh260/back_our/20200701/ourmid/pngtree-atmospheric-high-end-skin-care-product-advertising-background-image_344527.jpg',
     'https://png.pngtree.com/thumb_back/fh260/back_our/20200701/ourmid/pngtree-atmospheric-high-end-skin-care-product-advertising-background-image_344527.jpg',
     'https://png.pngtree.com/thumb_back/fh260/back_our/20200701/ourmid/pngtree-atmospheric-high-end-skin-care-product-advertising-background-image_344527.jpg',
@@ -15,13 +16,13 @@ const BigBanner = () => {
         <div className="container__bigbanner">
             <div className="containner__body">
                 <div className="containner__first-item">
-                    <Slider dots={true} slidesToShow={1} slidesToScroll={1} autoplay={true} autoplaySpeed={2000}>
+                    <Slider dots={true} slidesToShow={1} slidesToScroll={1} autoplay={true} autoplaySpeed={2000} className="w-[800px] h-[290px]">
                         {images.map((src, index) => (
-                            <div key={index} className="owl-item" style={{ width: 800 }}>
+                            <div key={index} className="owl-item" style={{ width: '800px', height:'100px'}}>
                                 <div className="item">
-                                    <a href="">
-                                        <img src={src} alt="" />
-                                    </a>
+                                    <Link to="#">
+                                        <img src={src} alt="" className='h-full w-full'/>
+                                    </Link>
                                 </div>
                             </div>
                         ))}
@@ -29,13 +30,13 @@ const BigBanner = () => {
                 </div>
                 <div className="containner__second-item">
                     <div>
-                        <a href="">
-                            <img src="https://png.pngtree.com/thumb_back/fh260/back_our/20200701/ourmid/pngtree-atmospheric-high-end-skin-care-product-advertising-background-image_344527.jpg" alt="" />
+                        <a href="" className = "h-[200px] w-[200px]">
+                            <img className='w-full h-full' src="https://png.pngtree.com/thumb_back/fh260/back_our/20200701/ourmid/pngtree-atmospheric-high-end-skin-care-product-advertising-background-image_344527.jpg" alt="" />
                         </a>
                     </div>
                     <div>
-                        <a href="">
-                            <img src="https://png.pngtree.com/thumb_back/fh260/back_our/20200701/ourmid/pngtree-atmospheric-high-end-skin-care-product-advertising-background-image_344527.jpg" alt="" />
+                        <a href="" className = "h-[200px] w-[200px]">
+                            <img className='w-full h-full' src="https://png.pngtree.com/thumb_back/fh260/back_our/20200701/ourmid/pngtree-atmospheric-high-end-skin-care-product-advertising-background-image_344527.jpg" alt="" />
                         </a>
                     </div>
                 </div>

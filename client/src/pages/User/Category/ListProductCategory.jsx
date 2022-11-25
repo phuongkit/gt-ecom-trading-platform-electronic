@@ -8,10 +8,6 @@ import {  getAllProductApi } from '../../../redux/product/productsApi';
 import handleData from '../../../components/Filter/handleData';
 const dataFake = [
     {
-        title: 'Giao nhanh',
-        link: '//cdn.tgdd.vn/mwgcart/mwgcore/ContentMwg/images/icon-thunder.png',
-    },
-    {
         title: 'Giảm giá',
         link: '',
         type: 'giamgia',
@@ -29,15 +25,19 @@ const dataFake = [
 ];
 const dataSelected = [
     {
+        id: 4,
         type: 'Nổi bật',
     },
     {
+        id:3,
         type: '% Giảm giá cao',
     },
     {
+        id:2,
         type: 'Giá cao đến thấp',
     },
     {
+        id:1,
         type: 'Giá thấp đến cao',
     },
 
@@ -92,7 +92,7 @@ const ListProductCategory = (props) => {
         
     }, [props.chose, checked]);
     const handleClick = (index) => {
-        setChose(index);
+        // setChose(index);
     };
     if (chose === 3) {
         dataFilter = dataFilter.sort((a, b) => a.price - b.price);
@@ -119,7 +119,9 @@ const ListProductCategory = (props) => {
                 title={props.chose}
                 checked={checked}
                 setChecked={setChecked}
-                category={'Máy tính bảng'}>
+                category={'Máy tính bảng'}
+                
+                >
             </BoxSort>
             <div className="category__content">
                 <div className="listcontent">

@@ -24,7 +24,7 @@ const Category = () => {
         <div style={{ backgroundColor: '#fff' }}>
             <BigBannerCategory></BigBannerCategory>
             <FilterCategory handle={handle}></FilterCategory>
-            <QuickLinkCategory handleSetChose={handleSetChose}></QuickLinkCategory>
+            {/* <QuickLinkCategory handleSetChose={handleSetChose}></QuickLinkCategory> */}
             <ListProductCategory chose={chose} isOpen={isOpen}></ListProductCategory>
         </div>
     );

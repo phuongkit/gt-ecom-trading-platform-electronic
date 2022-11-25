@@ -1,13 +1,12 @@
 import Header from '../../Header';
-import SingInForm from '../../SingInForm';
 import Footer from '../../Footer';
 import { useState, useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import {getUserByAccess,logUserByAccess} from '~/redux/user/userApi'
 import { Link } from 'react-router-dom';
-import {userService} from '../../../services/user.service'
-import './header.css';
+
+import './header.scss';
 function CommonLayout({ children }) {
    
     const dispatch = useDispatch()
@@ -39,7 +38,7 @@ function CommonLayout({ children }) {
                                 </Link>
                         </li>
 
-                        <ul className="header__navbar-item ">
+                        <li className="header__navbar-item ">
                         {user && (
                             <li className="header__navbar-item header__navbar-user">
                                 <img
@@ -73,7 +72,7 @@ function CommonLayout({ children }) {
                                 </ul>
                             </li>
                         )}
-                        </ul>
+                        </li>
                     </ul>
 
                     <ul className="header__navbar-list ml-6">
