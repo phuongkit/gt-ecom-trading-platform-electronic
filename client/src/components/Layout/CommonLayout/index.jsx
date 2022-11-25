@@ -38,7 +38,7 @@ function CommonLayout({ children }) {
                                 </Link>
                         </li>
 
-                        <ul className="header__navbar-item ">
+                        <li className="header__navbar-item ">
                         {user && (
                             <li className="header__navbar-item header__navbar-user">
                                 <img
@@ -72,7 +72,7 @@ function CommonLayout({ children }) {
                                 </ul>
                             </li>
                         )}
-                        </ul>
+                        </li>
                     </ul>
 
                     <ul className="header__navbar-list ml-6">
