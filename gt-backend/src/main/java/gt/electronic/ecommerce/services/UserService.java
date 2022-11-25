@@ -1,11 +1,13 @@
 package gt.electronic.ecommerce.services;
 
-import gt.electronic.ecommerce.dto.request.AuthRegisterDTO;
+import gt.electronic.ecommerce.dto.request.AuthRequest;
 import gt.electronic.ecommerce.dto.request.UserCreationDTO;
+import gt.electronic.ecommerce.dto.response.ResponseObject;
 import gt.electronic.ecommerce.dto.response.UserResponseDTO;
 import gt.electronic.ecommerce.entities.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,7 +24,7 @@ public interface UserService extends UserDetailsService {
 
   User getUserByLoginKey(String loginKey);
 
-  UserResponseDTO registerUser(AuthRegisterDTO auth, boolean isSeller);
+  UserResponseDTO registerUser(AuthRequest auth, boolean isSeller);
 
   UserResponseDTO createUser(UserCreationDTO creationDTO, MultipartFile imageFile);
 
