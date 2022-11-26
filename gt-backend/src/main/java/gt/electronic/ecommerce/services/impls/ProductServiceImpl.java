@@ -340,7 +340,8 @@ public class ProductServiceImpl implements ProductService {
     product.setName(creationDTO.getName());
     product.setSlug(Utils.toSlug(product.getName()) + "." + UUID.randomUUID().toString().replace("-", ""));
     product.setDescription(creationDTO.getDescription());
-    product.setPrice(creationDTO.getPrice());
+    product.setStandCost(creationDTO.getStandCost());
+    product.setListPrice(creationDTO.getListPrice());
     product.setQuantity(creationDTO.getQuantity());
     product.setShop(shopFound);
     product.setStatus(creationDTO.getStatus());
@@ -463,7 +464,8 @@ public class ProductServiceImpl implements ProductService {
     entityFound.setName(creationDTO.getName());
     entityFound.setSlug(Utils.toSlug(entityFound.getName()) + "." + UUID.randomUUID().toString().replace("-", ""));
     entityFound.setDescription(creationDTO.getDescription());
-    entityFound.setPrice(creationDTO.getPrice());
+    entityFound.setStandCost(creationDTO.getStandCost());
+    entityFound.setListPrice(creationDTO.getListPrice());
     entityFound.setQuantity(creationDTO.getQuantity());
     entityFound.setShop(shopFound);
     entityFound.setStatus(creationDTO.getStatus());
