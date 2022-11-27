@@ -1,0 +1,396 @@
+import { useEffect, useRef, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { ChevronLeft, ChevronDown, TicketPerforated } from 'react-bootstrap-icons';
+import ProductItem from './ProductItem';
+import Input from './Input';
+import { numberWithCommas } from '~/utils';
+import { LocationForm } from '~/components/LocationForm';
+import { clearCart } from '../../../redux/shopping-cart/cartItemsSlide';
+import moment from 'moment';
+import './Cart.scss';
+import { useCart } from '../../../hooks';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+    DEFAULT_VARIABLE,
+    EDiscountType,
+    EGender,
+    EPayment,
+    EShippingMethod,
+    REGEXP,
+    toAddressSlug,
+} from '../../../utils';
+import { createOrder } from '../../../redux/order/orderSlice';
+import { discountService } from '../../../services';
+import { AccordionActions, Portal } from '@material-ui/core';
+import {
+    addCheckoutDiscount,
+    clearCheckoutDiscount,
+    updateAllCheckoutDiscount,
+} from '../../../redux/discount/discountsSlice';
+
+function CartInfo() {
+    const $ = document.querySelector.bind(document);
+    const portalRef = useRef(null);
+    const { cartItems, totalPrice, totalQuantity } = useCart();
+    const [addressOption, setAddresOption] = useState();
+    const [currentDiscount, setCurrentDiscount] = useState(null);
+    const [totalPriceDiscount, setTotalPriceDiscount] = useState(0);
+    const discounts = useSelector((state) => state.discounts.checkoutDiscounts.data);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const getUser = JSON.parse(localStorage.getItem('customerInfo'));
+    const [orderDetail, setOrderDetail] = useState({
+        gender: EGender.UNKNOWN.index,
+        fullName: '',
+        email: '',
+        phone: '',
+        address: {
+            homeAdd: '',
+            ward: '',
+            district: '',
+            city: '',
+        },
+        payment: EPayment.CASH.index,
+        shippingMethod: EShippingMethod.GHN_EXPRESS.index,
+        discountCode: '',
+        paid: false,
+        note: '',
+        orderItems: [],
+    });
+    let orderItem = {
+        name: '',
+        productId: 0,
+        quantity: 0,
+        percent: 0,
+        saleName: '',
+        note: '',
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (getUser) {
+            const fullName = document.getElementById('fullname').value;
+            const phone = document.getElementById('phone').value;
+            let homeAdd = document.getElementById('homeAddress').value;
+            const sex = document.getElementsByName('sex');
+            const discountCode = document.getElementById('ticketid').value;
+            const note = document.getElementById('anotheroption').value;
+            let sexValue;
+            for (let i = 0, length = sex.length; i < length; i++) {
+                if (sex[i].checked) {
+                    sexValue = sex[i].value;
+                }
+            }
+            let orderItemDetails = cartItems.map((value) => {
+                let item = orderItem;
+                item.productId = value;
+                item.quantity = value.quantity;
+                item.saleName = value.tag;
+                item.note = value?.note ? value.note : '';
+                return item;
+            });
+            let data = {
+                ...orderDetail,
+                gender: sexValue === null || sexValue === undefined ? EGender.UNKNOWN : Number.parseInt(sexValue),
+                fullName: fullName,
+                phone: phone,
+                address: {
+                    homeAdd: homeAdd,
+                    ward: addressOption.ward,
+                    district: addressOption.district,
+                    city: addressOption.city,
+                },
+                discountIds: discounts.map(item => item.id) || [],
+                totalPriceDiscount: totalPriceDiscount,
+                note: note,
+                orderItems: orderItemDetails,
+                totalPriceProduct: totalPrice,
+            };
+            dispatch(createOrder(data));
+            dispatch(clearCart());
+            navigate('/order');
+        } else {
+            navigate('/SingIn');
+        }
+    };
+    useEffect(() => {
+        const setCustomerInfo = () => {
+            let customerInfo = localStorage.getItem('customerInfo');
+            if (customerInfo) {
+                customerInfo = JSON.parse(customerInfo);
+
+                // console.log(customerInfo);
+                let fullName = (document.getElementById('fullname').value =
+                    customerInfo?.fullName === null ||
+                    customerInfo?.fullName === undefined ||
+                    customerInfo?.fullName.trim() === ''
+                        ? 'Ẩn Danh'
+                        : customerInfo?.fullName);
+                let phone = (document.getElementById('phone').value = customerInfo.phone);
+                let email = (document.getElementById('email').value = customerInfo.email);
+                document.getElementById('homeAddress').value = customerInfo?.address?.homeAdd || '';
+                let address = customerInfo?.address || {
+                    homeAdd: '',
+                    ward: '',
+                    district: '',
+                    city: '',
+                };
+                setOrderDetail((prev) => ({
+                    ...prev,
+                    fullName: fullName,
+                    phone: phone,
+                    email: email,
+                    address: address,
+                }));
+            }
+        };
+        setCustomerInfo();
+    }, []);
+    useEffect(() => {
+        if (discounts && discounts.length > 0) {
+            let shopIdListFromCartItem = cartItems.reduce(
+                (arr, item) => (arr.includes(item?.shop?.id) ? arr : [...arr, item?.shop?.id]),
+                [],
+            );
+            if (shopIdListFromCartItem.length > 0) {
+                let newCheckoutDiscounts = discounts.filter((item) => shopIdListFromCartItem.includes(item.shopId));
+                dispatch(updateAllCheckoutDiscount(newCheckoutDiscounts));
+            } else {
+                dispatch(clearCheckoutDiscount());
+            }
+        }
+    }, [cartItems]);
+    useEffect(() => {
+        let cartItemsGroupByShop = cartItems.reduce((acc, item) => {
+            let shopCart = acc.find((shopCart) => shopCart?.shopId === item?.shop?.id) || null;
+            if (shopCart === null) {
+                return [...acc, { shopId: item?.shop?.id, cartItems: [item] }];
+            } else {
+                return [...acc, { ...shopCart, cartItems: [...shopCart.cartItems, item] }];
+            }
+        }, []);
+        let totalPriceDiscount = 0;
+        for (let discount of discounts) {
+            if (
+                discount.type !== EDiscountType.DISCOUNT_SHOP_PRICE.index &&
+                discount.type !== EDiscountType.DISCOUNT_SHOP_PERCENT.index
+            ) {
+                continue;
+            }
+            let items = cartItemsGroupByShop.find((shopCart) => (shopCart.shopId = discount.shopId))?.cartItems || [];
+            let totalPrice = 0;
+            for (let item of items) {
+                totalPrice += item.price;
+            }
+            if (discount.type === EDiscountType.DISCOUNT_SHOP_PRICE.index) {
+                if (discount.minSpend === null || totalPrice >= discount.minSpend) {
+                    totalPriceDiscount += discount.price || 0;
+                }
+            } else {
+                if (discount.minSpend === null || totalPrice >= discount.minSpend) {
+                    totalPriceDiscount +=
+                        discount.cappedAt === null
+                            ? totalPrice * discount.percent
+                            : totalPrice * discount.percent <= discount.cappedAt
+                            ? totalPrice * discount.percent
+                            : discount.cappedAt;
+                }
+            }
+        }
+        setTotalPriceDiscount(totalPriceDiscount);
+    }, [cartItems, discounts]);
+    const handleCheckDiscountCode = async (e) => {
+        let code = $('#ticketid').value;
+        if (
+            code.length >= DEFAULT_VARIABLE.MIN_DISCONT_CODE_LENGTH &&
+            code.length <= DEFAULT_VARIABLE.MAX_DISCONT_CODE_LENGTH
+        ) {
+            let res = await discountService.checkDiscountCode(code);
+            let discount = res?.data;
+            if (discount !== null) {
+                e.preventDefault();
+                $('#ticketid')?.setCustomValidity('');
+                if (cartItems.some((item) => item.shop?.id === discount.shopId)) {
+                    if (!discounts.includes(discount)) {
+                        setCurrentDiscount(discount);
+                        $('#ticketid')?.setCustomValidity('');
+                    } else {
+                        $('#ticketid')?.setCustomValidity('Đã có mã giảm giá này trong danh sách');
+                    }
+                } else {
+                    $('#ticketid')?.setCustomValidity(
+                        'Mã giảm giá không áp dụng cho các shop của các sản phẩm hiện tại',
+                    );
+                }
+                return;
+            }
+        }
+        $('#ticketid')?.setCustomValidity('Mã giảm giá không hợp lệ');
+    };
+    const handleAddDiscountCode = async (e) => {
+        if (currentDiscount !== null) {
+            if (cartItems.some((item) => item.shop?.id === currentDiscount.shopId)) {
+                dispatch(addCheckoutDiscount(currentDiscount));
+                $('#ticketid').value = '';
+                let message = `Thêm mã giảm giá với code ${currentDiscount.code} ${
+                    currentDiscount.type === EDiscountType.DISCOUNT_SHOP_PRICE.index
+                        ? `giảm ${numberWithCommas(currentDiscount.price)}đ`
+                        : `giảm ${currentDiscount.percent * 100}%${currentDiscount.cappedAt !== null ? `, tối đa ${numberWithCommas(currentDiscount.cappedAt)}đ` : ''}`
+                } với đơn tối thiểu ${numberWithCommas(currentDiscount.minSpend) || 0}đ thành công!`;
+                alert(message);
+            }
+            setCurrentDiscount(null);
+        }
+    };
+    return (
+        <div className="m-auto">
+            <div className="ml-8 py-4">
+                <Link to="/" className="text-blue-500">
+                    <i>
+                        <ChevronLeft />
+                    </i>
+                    Mua thêm sản phẩm khác
+                </Link>
+            </div>
+            <form className="bg-white rounded-xl px-14 py-8 shadow-sm grid grid-cols-2 gap-12" onSubmit={handleSubmit}>
+                <div className="col-span-1 flex-col items-center">
+                    <div className="p-4">
+                        <h2 className="text-orange-500 mb-2 text-center font-semibold text-3xl">Đơn hàng của bạn</h2>
+                        {cartItems.map((product, index) => (
+                            <ProductItem key={index} {...product} />
+                        ))}
+                        <div className="flex justify-between py-4">
+                            <span>Tạm tính ({totalQuantity} sản phẩm):</span>
+                            <span> {numberWithCommas(totalPrice)}₫</span>
+                        </div>
+                    </div>
+                </div>
+                <div className="col-span-1 border-[2px] border-solid border-blue-200 rounded-2xl p-8">
+                    <div className="my-8 py-4">
+                        <h4 className="text-center my-8">THÔNG TIN KHÁCH HÀNG</h4>
+                        <div className="my-4">
+                            <input id="male" type="radio" name="sex" value={EGender.MALE.index} defaultChecked />
+                            &nbsp;
+                            <label htmlFor="male">Anh</label>
+                            &emsp;
+                            <input id="female" type="radio" name="sex" value={EGender.FEMALE.index} />
+                            &nbsp;
+                            <label htmlFor="female">Chị</label>
+                        </div>
+                        <div className="flex gap-4 my-8">
+                            <Input
+                                placeholder="Họ và Tên"
+                                id="fullname"
+                                required={true}
+                                onChange={(e) => setOrderDetail((prev) => ({ ...prev, fullName: e.target.value }))}
+                            />
+                            <Input
+                                placeholder="Số điện thoại"
+                                id="phone"
+                                type="tel"
+                                required={true}
+                                pattern="(84|0[3|5|7|8|9])+([0-9]{8})\b"
+                                onChange={(e) => setOrderDetail((prev) => ({ ...prev, phone: e.target.value }))}
+                            />
+                        </div>
+                        <div className="flex gap-4">
+                            <Input
+                                placeholder="Địa chỉ email (dùng để nhận thông báo đơn hàng ( không bắt buộc)"
+                                id="email"
+                                type="email"
+                                required={true}
+                                pattern={REGEXP.EMAIL}
+                                onChange={(e) => setOrderDetail((prev) => ({ ...prev, email: e.target.value }))}
+                            />
+                        </div>
+                    </div>
+                    <div className="my-8">
+                        <div>
+                            <div className=" rounded-xl">
+                                <p>Chọn địa chỉ để biết thời gian nhận hàng và phí vận chuyển (nếu có)</p>
+
+                                <Input
+                                    placeholder="Số nhà, tên đường"
+                                    id="homeAddress"
+                                    required={true}
+                                    onChange={(e) =>
+                                        setOrderDetail((prev) => ({
+                                            ...prev,
+                                            address: { ...prev.address, homeAdd: e.target.value },
+                                        }))
+                                    }
+                                />
+                                <LocationForm onChange={setAddresOption} address={toAddressSlug(orderDetail.address)} />
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <Input
+                            placeholder="Ghi chú cho người giao hàng (không bắt buộc)"
+                            id="anotheroption"
+                            onChange={(e) => setOrderDetail((prev) => ({ ...prev, note: e.target.value }))}
+                        />
+                    </div>
+
+                    <div>
+                        <div className="py-8 border-b ">
+                            <button type="button" className="p-4 border rounded-lg">
+                                <i>
+                                    <TicketPerforated />
+                                </i>
+                                &nbsp;
+                                <span>Sử dụng mã giảm giá</span>&nbsp;
+                                <i>
+                                    <ChevronDown />
+                                </i>
+                            </button>
+                            <div ref={portalRef}></div>
+                        </div>
+
+                        <div className="flex justify-between my-4">
+                            <strong>Giảm giá:</strong>
+                            <strong className="text-black-600">{numberWithCommas(totalPriceDiscount)} ₫</strong>
+                        </div>
+                        <div className="flex justify-between my-4">
+                            <strong>Tạm tính tổng tiền:</strong>
+                            <strong className="text-red-600">
+                                {numberWithCommas(totalPrice + totalPriceDiscount)} ₫
+                            </strong>
+                        </div>
+                        <button
+                            type="submit"
+                            className="h-20 my-8 border-green-400 border border-solid rounded-lg w-full text-green-400 font-bold"
+                        >
+                            ĐẶT HÀNG
+                        </button>
+                        <small className="block text-center">
+                            Bạn có thể chọn hình thức thanh toán sau khi đặt hàng
+                        </small>
+                    </div>
+                </div>
+            </form>
+            <Portal container={portalRef.current}>
+                <form className="flex gap-8 border p-4 rounded-xl" onSubmit={(e) => handleAddDiscountCode(e)}>
+                    <Input
+                        placeholder="Nhập mã giảm giá/ Phiếu mua hàng"
+                        id="ticketid"
+                        onBlur={handleCheckDiscountCode}
+                        onChange={(e) => {
+                            e.target.setCustomValidity(''),
+                                setOrderDetail((prev) => ({ ...prev, discountCode: e.target.value }));
+                        }}
+                    />
+                    <button
+                        type="submit"
+                        className="py-4 px-10 border bg-blue-500 rounded-lg text-white"
+                        // onClick={handleCheckDiscountCode}
+                    >
+                        Áp dụng
+                    </button>
+                </form>
+            </Portal>
+        </div>
+    );
+}
+
+export default CartInfo;
