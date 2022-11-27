@@ -11,6 +11,7 @@ import gt.electronic.ecommerce.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -63,8 +64,7 @@ public class ShopController {
     sort = sortDir.equals("asc") ? sort.ascending() : sort.descending();
     Pageable pageable = PageRequest.of(page > 0 ? page - 1 : 0, size, sort);
     return new ResponseObject<>(
-        HttpStatus.OK, "", this.shopServive.getAllShops(keyword, pageable)
-        .toList());
+        HttpStatus.OK, "", this.shopServive.getAllShops(keyword));
   }
 
   @GetMapping("/{id}")

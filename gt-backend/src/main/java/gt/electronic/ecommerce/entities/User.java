@@ -1,5 +1,7 @@
 package gt.electronic.ecommerce.entities;
 
+import gt.electronic.ecommerce.models.clazzs.UserPrincipal;
+import gt.electronic.ecommerce.models.enums.AuthProvider;
 import gt.electronic.ecommerce.models.enums.EGender;
 import gt.electronic.ecommerce.utils.Utils;
 import lombok.*;
@@ -10,7 +12,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
+import javax.annotation.meta.Exclusive;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -28,9 +32,11 @@ import java.util.*;
 @AllArgsConstructor
 @Entity
 @Table(name = "tbl_user")
-public class User implements UserDetails {
+public class User implements OAuth2User, UserDetails {
   private static final Logger LOGGER = LoggerFactory.getLogger(User.class);
-  /** */
+  /**
+   *
+   */
   private static final long serialVersionUID = 1L;
 
   @Id
@@ -47,12 +53,12 @@ public class User implements UserDetails {
   @NotNull(message = "An password is required!")
   private String password;
 
-  @Column(name = "first_name", length = 45)
-  //  @NotNull(message = "An firstname is required!")
+  @Column(name = "first_name", length = 45, nullable = false)
+  @NotNull(message = "An firstname is required!")
   private String firstName;
 
-  @Column(name = "last_name", length = 45)
-  //  @NotNull(message = "An lastname is required!")
+  @Column(name = "last_name", length = 45, nullable = false)
+  @NotNull(message = "An lastname is required!")
   private String lastName;
 
   @Column(name = "email", length = 320, unique = true)
@@ -63,7 +69,7 @@ public class User implements UserDetails {
 
   @Column(name = "is_email_verified", nullable = false)
   @NotNull(message = "An isEmailVerified is required!")
-  private boolean isEmailVerified;
+  private boolean isEmailVerified = false;
 
   @Column(name = "phone", length = 13, unique = true)
   @Size(message = "Invalid phone size.", max = 13, min = 9)
@@ -73,7 +79,7 @@ public class User implements UserDetails {
 
   @Column(name = "is_phone_verified", nullable = false)
   @NotNull(message = "An isPhoneVerified is required!")
-  private boolean isPhoneVerified;
+  private boolean isPhoneVerified = false;
 
   @Column(name = "identity_card", length = 12, unique = true)
   @Size(message = "Invalid identityCard size.", max = 12, min = 9)
@@ -99,7 +105,7 @@ public class User implements UserDetails {
     this.addresses.remove(address);
   }
 
-  @OneToOne(mappedBy = "user",cascade = CascadeType.ALL)
+  @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
   private Shop shop;
 
   @Column(name = "enabled", nullable = false)
@@ -129,6 +135,30 @@ public class User implements UserDetails {
   @Temporal(TemporalType.TIMESTAMP)
   private Date lastLogin;
 
+  @NotNull
+  @Enumerated(EnumType.STRING)
+  private AuthProvider provider;
+
+  private String providerId;
+
+  @Transient
+  private Map<String, Object> attributes;
+
+  @ManyToMany(fetch = FetchType.EAGER)
+  @JoinTable(
+      name = "tbl_user_discounts",
+      joinColumns = @JoinColumn(name = "user_id"),
+      inverseJoinColumns = @JoinColumn(name = "discount_id"))
+  private Set<Discount> discounts = new HashSet<>();
+
+  public void addDiscount(Discount newDiscount) {
+    this.discounts.add(newDiscount);
+  }
+
+  public void removeDiscount(Discount discount) {
+    this.discounts.remove(discount);
+  }
+
 //  @Override
 //  public Collection<? extends GrantedAuthority> getAuthorities() {
 //    List<SimpleGrantedAuthority> authories = new ArrayList<>();
@@ -141,9 +171,9 @@ public class User implements UserDetails {
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    List<SimpleGrantedAuthority> authories = new ArrayList<>();
-    authories.add(new SimpleGrantedAuthority(role.getName() + ""));
-    return authories;
+    List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+    authorities.add(new SimpleGrantedAuthority(role.getName() + ""));
+    return authorities;
   }
 
   @Override
@@ -169,5 +199,28 @@ public class User implements UserDetails {
   @PreRemove
   private void preRemove() {
     commentReliedList.forEach(child -> child.setRelyForUser(null));
+    this.discounts = new HashSet<>();
+  }
+
+  public static UserPrincipal create(User user) {
+    List<GrantedAuthority> authorities = Collections.
+        singletonList(new SimpleGrantedAuthority(user.role.getName() + ""));
+
+    return new UserPrincipal(
+        user.getId(),
+        user.getEmail(),
+        user.getPassword(),
+        authorities
+    );
+  }
+
+  public static UserPrincipal create(User user, Map<String, Object> attributes) {
+    UserPrincipal userPrincipal = UserPrincipal.create(user);
+    userPrincipal.setAttributes(attributes);
+    return userPrincipal;
+  }
+
+  @Override public String getName() {
+    return String.valueOf(id);
   }
 }
