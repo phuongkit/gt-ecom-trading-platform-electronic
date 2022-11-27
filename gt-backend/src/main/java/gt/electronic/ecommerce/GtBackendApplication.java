@@ -1,6 +1,7 @@
 package gt.electronic.ecommerce;
 
-import gt.electronic.ecommerce.utils.ClassTest;
+import gt.electronic.ecommerce.config.AppProperties;
+import gt.electronic.ecommerce.utils.GHN;
 import gt.electronic.ecommerce.utils.InitData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,17 +10,20 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
+import java.io.IOException;
 import java.util.Objects;
 
 @SpringBootApplication
+@EnableConfigurationProperties(AppProperties.class)
 // @Import(EmbeddedTomcatConfiguration.class)
 public class GtBackendApplication implements CommandLineRunner {
   private final Logger LOGGER = LoggerFactory.getLogger(GtBackendApplication.class);
 
-  private ClassTest classTest;
-  @Autowired public void ClassTest(ClassTest classTest) {
-    this.classTest = classTest;
+  private GHN GHN;
+  @Autowired public void ClassTest(GHN GHN) {
+    this.GHN = GHN;
   }
   private InitData initData;
   @Autowired public void InitData(InitData initData) {
@@ -33,13 +37,11 @@ public class GtBackendApplication implements CommandLineRunner {
   }
 
   @Override
-  public void run(String... args)  {
+  public void run(String... args) throws IOException {
     if (Objects.equals(hibernate_ddl, "create") || Objects.equals(hibernate_ddl, "create-drop")) {
       initData();
     }
-//    classTest.testApiGHN();
 //    initData();
-//    this.LOGGER .info(saleService.getMostOptimalSaleByProduct(10l).getName());
   }
 
   public void initData() {

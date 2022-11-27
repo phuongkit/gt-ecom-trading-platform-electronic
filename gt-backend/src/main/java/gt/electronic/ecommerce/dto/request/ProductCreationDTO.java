@@ -20,9 +20,7 @@ import java.util.Map;
 @AllArgsConstructor
 public class ProductCreationDTO {
   private String name;
-  private String description;
-  private BigDecimal standCost;
-  private BigDecimal listPrice;
+  private BigDecimal price;
   private Integer quantity;
   private Integer shopId;
   private EProductStatus status;
@@ -31,4 +29,5 @@ public class ProductCreationDTO {
 //  private DescriptionCreationDTO[] descriptions;
   private Map<String, String> descriptions;
   private String location;
+  private String description;
 }
