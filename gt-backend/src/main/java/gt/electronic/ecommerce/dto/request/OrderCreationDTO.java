@@ -48,13 +48,13 @@ public class OrderCreationDTO {
 //  @NotBlank(message = "Address not blank!")
   @NotNull(message = "Address not null!")
   private AddressCreationDTO address;
-
   private EPayment payment;
   private EShippingMethod shippingMethod;
+  private Date expectedDeliveryTime;
   private BigDecimal transportFee;
-  private String discountCode;
-  private boolean paid;
+  private Long[] discountIds;
   private String note;
+  private EOrderStatus status;
 
 //  @NotBlank(message = "OrderItems not blank!")
   @NotNull(message = "OrderItems not null!")
@@ -69,7 +69,7 @@ public class OrderCreationDTO {
     this.address = new AddressCreationDTO(user.getAddresses());
     this.payment = EPayment.CASH;
     this.shippingMethod = EShippingMethod.GHN_EXPRESS;
-    this.paid = true;
     this.orderItems = orderItems;
+    this.status=EOrderStatus.ORDER_PENDING;
   }
 }

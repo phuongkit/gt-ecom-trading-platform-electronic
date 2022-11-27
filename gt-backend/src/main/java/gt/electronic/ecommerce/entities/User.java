@@ -1,12 +1,10 @@
 package gt.electronic.ecommerce.entities;
 
+import gt.electronic.ecommerce.models.clazzs.UserPrincipal;
 import gt.electronic.ecommerce.models.enums.AuthProvider;
 import gt.electronic.ecommerce.models.enums.EGender;
 import gt.electronic.ecommerce.utils.Utils;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.slf4j.Logger;
@@ -16,6 +14,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
+import javax.annotation.meta.Exclusive;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -50,8 +49,8 @@ public class User implements OAuth2User, UserDetails {
 
 //  private boolean isChangedUsername;
 
-  @Column(name = "password", length = 64)
-//  @NotNull(message = "An password is required!")
+  @Column(name = "password", length = 64, nullable = false)
+  @NotNull(message = "An password is required!")
   private String password;
 
   @Column(name = "first_name", length = 45, nullable = false)
@@ -93,7 +92,7 @@ public class User implements OAuth2User, UserDetails {
   @Enumerated(EnumType.STRING)
   @Column(name = "gender", length = 50, nullable = false)
   @NotNull(message = "An gender is required!")
-  private EGender gender = EGender.UNKNOWN;
+  private EGender gender;
 
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   private Set<Address> addresses = new HashSet<>();
@@ -117,7 +116,7 @@ public class User implements OAuth2User, UserDetails {
   @JoinColumn(name = "avatar")
   private Image avatar;
 
-  @ManyToOne(fetch = FetchType.EAGER)
+  @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "role_id")
   private Role role;
 
@@ -138,7 +137,7 @@ public class User implements OAuth2User, UserDetails {
 
   @NotNull
   @Enumerated(EnumType.STRING)
-  private AuthProvider provider = AuthProvider.local;
+  private AuthProvider provider;
 
   private String providerId;
 
@@ -203,27 +202,20 @@ public class User implements OAuth2User, UserDetails {
     this.discounts = new HashSet<>();
   }
 
-  public User(Integer id, String username, String email, String password, Role role) {
-    this.id = id;
-    this.username = username;
-    this.email = email;
-    this.password = password;
-    this.role = role;
-  }
+  public static UserPrincipal create(User user) {
+    List<GrantedAuthority> authorities = Collections.
+        singletonList(new SimpleGrantedAuthority(user.role.getName() + ""));
 
-  public static User create(User user) {
-
-    return new User(
+    return new UserPrincipal(
         user.getId(),
-        user.getUsername(),
         user.getEmail(),
         user.getPassword(),
-        user.getRole()
+        authorities
     );
   }
 
-  public static User create(User user, Map<String, Object> attributes) {
-    User userPrincipal = User.create(user);
+  public static UserPrincipal create(User user, Map<String, Object> attributes) {
+    UserPrincipal userPrincipal = UserPrincipal.create(user);
     userPrincipal.setAttributes(attributes);
     return userPrincipal;
   }

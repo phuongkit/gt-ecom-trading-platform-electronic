@@ -1,7 +1,9 @@
 package gt.electronic.ecommerce.mapper.impls;
 
+import gt.electronic.ecommerce.dto.response.DiscountResponseDTO;
 import gt.electronic.ecommerce.dto.response.OrderDetailResponseDTO;
 import gt.electronic.ecommerce.dto.response.OrderResponseDTO;
+import gt.electronic.ecommerce.entities.Discount;
 import gt.electronic.ecommerce.entities.Order;
 import gt.electronic.ecommerce.entities.OrderItem;
 import gt.electronic.ecommerce.mapper.*;
@@ -69,9 +71,15 @@ public class OrderMapperImpl implements OrderMapper {
     responseDTO.setTransportFee(entity.getTransportFee());
     responseDTO.setEmail(entity.getEmail());
     responseDTO.setPhone(entity.getPhone());
-    if (entity.getDiscount() != null) {
-      responseDTO.setDiscount(
-          this.discountMapper.discountToDiscountResponseDTO(entity.getDiscount()));
+    if (entity.getDiscounts() != null && entity.getDiscounts().size() > 0) {
+      DiscountResponseDTO[] discountDTOs= new DiscountResponseDTO[entity.getDiscounts().size()];
+      int i =0;
+      for (Discount discount:entity.getDiscounts()) {
+        discountDTOs[i] = new DiscountResponseDTO();
+        discountDTOs[i] = this.discountMapper.discountToDiscountResponseDTO(discount);
+        i++;
+      }
+      responseDTO.setDiscounts(discountDTOs);
     }
     if (entity.getLocation() != null) {
       responseDTO.setAddress(
