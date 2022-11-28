@@ -6,11 +6,10 @@ import { useDispatch } from 'react-redux';
 import { removeItem, updateItem } from '~/redux/shopping-cart/cartItemsSlide';
 import { useSelector } from 'react-redux';
 import { CounterQuantity } from '~/components/Selector';
-import { getAllDiscountByShopId } from '../../../redux/discount/discountsApi';
+import { getAllDiscountByShopId,getAllDiscountByUser } from '../../../redux/discount/discountsApi';
 import { useEffect } from 'react';
 function ProductItem(props) {
     const cartItems = useSelector((state) => state.cartItems.value);
-    const dispath = useDispatch();
     const dispatch = useDispatch();
     const removeCartItem = () => {
         cartItems.forEach((item) => {
@@ -26,12 +25,7 @@ function ProductItem(props) {
             }
         });
     };
-    console.log("props",props)
-    useEffect(()=>{
-        getAllDiscountByShopId(dispath,props.shop.id)
-    },[])
-    const discountofShop = useSelector(state=>state.discounts.allDiscounts?.data)
-    console.log("discount",discountofShop)
+
     return (
         <div className="flex justify-between my-8 border-b pb-4 relative">
            
@@ -50,10 +44,8 @@ function ProductItem(props) {
                     </div>
                 </div>
                 <div className="flex justify-between items-center">
-                    <ul className="text-xl text-black-400">Vouncher:
-                        <li>vouncher1</li>
-                     
-                    </ul>
+                    
+                
                     
                     <CounterQuantity onChange={(value) => updateCartItem(value)} value={props.quantity} />
                     <div className="text-lg text-gray-600">

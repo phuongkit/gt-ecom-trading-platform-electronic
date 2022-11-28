@@ -12,6 +12,10 @@ const Order = lazy(() => import('../pages/User/Order'));
 const PurchaseHistory = lazy(() => import('../pages/User/History/PurchaseHistory'));
 const History = lazy(() => import('../pages/User/History'));
 const Profile = lazy(() => import('../pages/User/History/Profile'));
+
+//serler
+const HomeSeller = lazy(() => import('../pages/Seller/Home/HomeSeller'));  
+import SingInSeller from '../components/SingInSellerForm';
 export const publishRoutes = [
     {
         index: true,
@@ -103,6 +107,23 @@ export const publishRoutes = [
         element: (
             <Suspense fallback={<Loading />}>
                 <Profile title="Lịch sử mua hàng | Phúc Xi Cúc" />
+            </Suspense>
+        ),
+    },
+    ,
+    {
+        path: 'SignInSeller',
+        element: (
+            <Suspense fallback={<Loading />}>
+                <SingInSeller />
+            </Suspense>
+        ),
+    },
+    {
+        path: 'Seller',
+        element: (
+            <Suspense fallback={<Loading />}>
+                <HomeSeller />
             </Suspense>
         ),
     },

@@ -27,13 +27,11 @@ import {
     clearCheckoutDiscount,
     updateAllCheckoutDiscount,
 } from '../../../redux/discount/discountsSlice';
-
+import { getAllDiscountByShopId, getAllDiscountByUser } from '../../../redux/discount/discountsApi';
 function CartInfo() {
     const $ = document.querySelector.bind(document);
     const portalRef = useRef(null);
     const { cartItems, totalPrice, totalQuantity } = useCart();
-    let listShop =  Array.from(cartItems).sort((a,b)=>(a.shop.id - b.shop.id))
-    console.log("listShop",listShop)
     const [addressOption, setAddresOption] = useState();
     const [currentDiscount, setCurrentDiscount] = useState(null);
     const [totalPriceDiscount, setTotalPriceDiscount] = useState(0);
@@ -67,7 +65,6 @@ function CartInfo() {
         saleName: '',
         note: '',
     };
-
     const handleSubmit = (e) => {
         e.preventDefault();
         if (getUser) {
@@ -122,10 +119,11 @@ function CartInfo() {
                 customerInfo = JSON.parse(customerInfo);
 
                 // console.log(customerInfo);
+                // console.log(customerInfo);
                 let fullName = (document.getElementById('fullname').value =
                     customerInfo?.fullName === null ||
-                    customerInfo?.fullName === undefined ||
-                    customerInfo?.fullName.trim() === ''
+                        customerInfo?.fullName === undefined ||
+                        customerInfo?.fullName.trim() === ''
                         ? 'Ẩn Danh'
                         : customerInfo?.fullName);
                 let phone = (document.getElementById('phone').value = customerInfo.phone);
@@ -147,6 +145,7 @@ function CartInfo() {
             }
         };
         setCustomerInfo();
+        getAllDiscountByUser(dispatch)
     }, []);
     useEffect(() => {
         if (discounts && discounts.length > 0) {
@@ -162,40 +161,8 @@ function CartInfo() {
             }
         }
     }, [cartItems]);
-    useEffect(() => {
-        let cartItemsGroupByShop = getCartItemsGroupByShop();
-        let totalPriceDiscount = 0;
-        for (let discount of discounts) {
-            if (
-                discount.type !== EDiscountType.DISCOUNT_SHOP_PRICE.index &&
-                discount.type !== EDiscountType.DISCOUNT_SHOP_PERCENT.index
-            ) {
-                continue;
-            }
-            let items = cartItemsGroupByShop.find((shopCart) => (shopCart?.id = discount.shopId))?.cartItems || [];
-            let totalPrice = 0;
-            for (let item of items) {
-                totalPrice += item.price;
-            }
-            if (discount.type === EDiscountType.DISCOUNT_SHOP_PRICE.index) {
-                if (discount.minSpend === null || totalPrice >= discount.minSpend) {
-                    totalPriceDiscount += discount.price || 0;
-                }
-            } else {
-                if (discount.minSpend === null || totalPrice >= discount.minSpend) {
-                    totalPriceDiscount +=
-                        discount.cappedAt === null
-                            ? totalPrice * discount.percent
-                            : totalPrice * discount.percent <= discount.cappedAt
-                            ? totalPrice * discount.percent
-                            : discount.cappedAt;
-                }
-            }
-        }
-        setTotalPriceDiscount(totalPriceDiscount);
-    }, [cartItems, discounts]);
-    const handleCheckDiscountCode = async (e) => {
-        let code = $('#ticketid').value;
+    const handleCheckDiscountCode = async (e, codeClick = '') => {
+        let code = codeClick || $('#ticketid').value
         if (
             code.length >= DEFAULT_VARIABLE.MIN_DISCONT_CODE_LENGTH &&
             code.length <= DEFAULT_VARIABLE.MAX_DISCONT_CODE_LENGTH
@@ -203,10 +170,13 @@ function CartInfo() {
             let res = await discountService.checkDiscountCode(code);
             let discount = res?.data;
             if (discount !== null) {
-                e.preventDefault();
+                if (!codeClick) {
+                    e.preventDefault();
+                }
                 $('#ticketid')?.setCustomValidity('');
                 if (cartItems.some((item) => item.shop?.id === discount.shopId)) {
                     if (!discounts.includes(discount)) {
+                        console.log('discount', discount);
                         setCurrentDiscount(discount);
                         $('#ticketid')?.setCustomValidity('');
                     } else {
@@ -219,19 +189,20 @@ function CartInfo() {
                 }
                 return;
             }
+            $('#ticketid')?.setCustomValidity('Mã giảm giá không hợp lệ');
         }
-        $('#ticketid')?.setCustomValidity('Mã giảm giá không hợp lệ');
     };
-    const handleAddDiscountCode = async (e) => {
-        if (currentDiscount !== null) {
-            if (cartItems.some((item) => item.shop?.id === currentDiscount.shopId)) {
-                dispatch(addCheckoutDiscount(currentDiscount));
+    const handleAddDiscountCode = async (e, vouncher = null) => {
+        let discount = vouncher || currentDiscount;
+        console.log('discount: ', discount, currentDiscount);
+        if (discount !== null) {
+            if (cartItems.some((item) => item.shop?.id === discount.shopId)) {
+                dispatch(addCheckoutDiscount(discount));
                 $('#ticketid').value = '';
-                let message = `Thêm mã giảm giá với code ${currentDiscount.code} ${
-                    currentDiscount.type === EDiscountType.DISCOUNT_SHOP_PRICE.index
-                        ? `giảm ${numberWithCommas(currentDiscount.price)}đ`
-                        : `giảm ${currentDiscount.percent * 100}%${currentDiscount.cappedAt !== null ? `, tối đa ${numberWithCommas(currentDiscount.cappedAt)}đ` : ''}`
-                } với đơn tối thiểu ${numberWithCommas(currentDiscount.minSpend) || 0}đ thành công!`;
+                let message = `Thêm mã giảm giá với code ${discount.code} ${discount.type === EDiscountType.DISCOUNT_SHOP_PRICE.index
+                    ? `giảm ${numberWithCommas(discount.price)}đ`
+                    : `giảm ${discount.percent * 100}%${discount.cappedAt !== null ? `, tối đa ${numberWithCommas(discount.cappedAt)}đ` : ''}`
+                    } với đơn tối thiểu ${numberWithCommas(discount.minSpend) || 0}đ thành công!`;
                 alert(message);
             }
             setCurrentDiscount(null);
@@ -249,6 +220,42 @@ function CartInfo() {
             }
         }, []);
     }
+    const handleClickVouncher = (vouncher, e = '') => {
+        handleAddDiscountCode(e, vouncher)
+    }
+    const discountsUser = useSelector((state) => state.discounts.allDiscountsUser.data);
+    useEffect(() => {
+        let cartItemsGroupByShop = getCartItemsGroupByShop();
+        let totalPriceDiscount = 0;
+        for (let discount of discounts) {
+            if (
+                discount.type !== EDiscountType.DISCOUNT_SHOP_PRICE.index &&
+                discount.type !== EDiscountType.DISCOUNT_SHOP_PERCENT.index
+            ) {
+                continue;
+            }
+            let items = cartItemsGroupByShop.find((shopCart) => (shopCart?.id === discount.shopId))?.cartItems || [];
+            let totalPrice = 0;
+            for (let item of items) {
+                totalPrice += item.price;
+            }
+            if (discount.type === EDiscountType.DISCOUNT_SHOP_PRICE.index) {
+                if (discount.minSpend === null || totalPrice >= discount.minSpend) {
+                    totalPriceDiscount += discount.price || 0;
+                }
+            } else {
+                if (discount.minSpend === null || totalPrice >= discount.minSpend) {
+                    totalPriceDiscount +=
+                        discount.cappedAt === null
+                            ? totalPrice * discount.percent
+                            : totalPrice * discount.percent <= discount.cappedAt
+                                ? totalPrice * discount.percent
+                                : discount.cappedAt;
+                }
+            }
+        }
+        setTotalPriceDiscount(totalPriceDiscount);
+    }, [cartItems, discounts]);
     return (
         <div className="m-auto">
             <div className="ml-8 py-4">
@@ -259,21 +266,33 @@ function CartInfo() {
                     Mua thêm sản phẩm khác
                 </Link>
             </div>
-            <form className="bg-white rounded-xl px-14 py-8 shadow-sm grid grid-cols-2 gap-12" onSubmit={handleSubmit}>
-                <div className="col-span-1 flex-col items-center">
-                    <div className="p-4">
-                        <h2 className="text-orange-500 mb-2 text-center font-semibold text-3xl">Đơn hàng của bạn</h2>
+            <form className="bg-white rounded-xl px-14 py-8 shadow-sm grid grid-cols-2 grid-rows-2 gap-12" onSubmit={handleSubmit}>
+                <div className="col-span-1 row-span-2 flex-col items-center h-full">
+                    <div className="p-4 h-full mt-auto mb-auto">
+                        <h2 className="text-lue-500 mb-2 text-center font-semibold text-3xl">Đơn hàng của bạn</h2>
                         {/* {cartItems.map((product, index) => (
                             <ProductItem key={index} {...product} />
                         ))} */}
                         {
                             getCartItemsGroupByShop()?.map(item => {
                                 return <>
-                                <div className='h-[23px] w-[23px]'>
-                                    <img className='w-full h-full rounded-full' src={item?.avatar}></img>
-                                    <span></span>
-                                </div>
-                                {item.cartItems.map((cartItem, index) => <ProductItem key={index} {...cartItem} />)}
+                                    <div className='flex'>
+                                        <div className='h-[23px] w-[23px]'>
+                                            <img className='w-full h-full rounded-full' src={item?.avatar}></img>
+
+                                        </div>
+                                        <span className='ml-3 text-red-400'>{item?.name}</span>
+                                        <ul className="text-xl text-black-400 flex items-center">
+                                            {discountsUser.map(vouncher => {
+                                                if (vouncher.shopId == item.id) {
+                                                    return (<li onClick={() => handleClickVouncher(vouncher)} className='cursor-pointer hover:opacity-40 text-green-500 ml-3 border-green-500 border border-solid rounded-2xl pl-2 pr-2'>{vouncher.percent ? `- ${vouncher.percent} %` : `-${vouncher.price} đ`}</li>)
+                                                }
+                                            })}
+                                        </ul>
+
+                                    </div>
+
+                                    {item.cartItems.map((cartItem, index) => <ProductItem key={index} {...cartItem} />)}
                                 </>
                             })
                         }
@@ -283,7 +302,7 @@ function CartInfo() {
                         </div>
                     </div>
                 </div>
-                <div className="col-span-1 border-[2px] border-solid border-blue-200 rounded-2xl p-8">
+                <div className="col-span-1 row-span-2 border-[1px] border-solid border-blue-200 rounded-2xl p-8">
                     <div className="my-8 py-4">
                         <h4 className="text-center my-8">THÔNG TIN KHÁCH HÀNG</h4>
                         <div className="my-4">
@@ -401,7 +420,7 @@ function CartInfo() {
                     <button
                         type="submit"
                         className="py-4 px-10 border bg-blue-500 rounded-lg text-white"
-                        // onClick={handleCheckDiscountCode}
+                    // onClick={handleCheckDiscountCode}
                     >
                         Áp dụng
                     </button>

@@ -9,6 +9,9 @@ export const discountService = {
     getDiscountById(id) {
         return axiosClient.get(`${branch_api}/${id}`);
     },
+    getDiscountByUser() {
+        return axiosClient.get(`${branch_api}/user`);
+    },
     getDiscountByShopId(id) {
         return axiosClient.get(`${branch_api}/search?shopId=${id}`);
     },
