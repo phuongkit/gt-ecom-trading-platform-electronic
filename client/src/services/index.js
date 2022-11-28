@@ -5,5 +5,5 @@ export { productService } from './product.service';
 export { categoryService } from './category.service';
 export { ratingService } from './rate.service';
 export { orderService } from './order.service';
-
+export { discountService } from './discount.service';
 export { historyService } from './history.service';
