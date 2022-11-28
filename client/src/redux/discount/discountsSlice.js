@@ -8,11 +8,17 @@ export const discounts = createSlice({
         },
         checkoutDiscounts: {
             data: [],
+        },
+        allDiscountsUser:{
+            data: [],
         }
     },
     reducers: {
         getAllDiscounts: (state, action) => {
-            state.allDiscounts.data = action.payload || [];
+            state.allDiscounts.data = action.payload;
+        },
+        getDiscountsUser: (state, action) => {
+            state.allDiscountsUser.data = action.payload;
         },
         updateAllCheckoutDiscount: (state, action) => {
             state.checkoutDiscounts.data = action.payload || [];
@@ -38,6 +44,7 @@ export const discounts = createSlice({
                         ...action.payload,
                     },
                 ];
+                state.allDiscountsUser.data = [...state.allDiscountsUser.data, action.payload];
             }
         },
         deleteCheckoutDiscount: (state, action) => {
@@ -56,6 +63,7 @@ export const {
     updateAllCheckoutDiscount,
     addCheckoutDiscount,
     clearCheckoutDiscount,
+    getDiscountsUser
 } = discounts.actions;
 
 export default discounts.reducer;

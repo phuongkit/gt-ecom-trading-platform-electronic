@@ -11,17 +11,20 @@
     padding: 0px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-around;
 
     .search {
       display: flex;
+      min-width: 300px;
       align-items: center;
-      border: 0.5px solid lightgray;
-      padding: 3px;
+      border-radius: 5px;
+      border: 0.5px solid rgb(54, 52, 52);
+      padding: 4px;
 
       input {
         border: none;
         outline: none;
+        width: 100%;
         background: transparent;
 
         &::placeholder {
@@ -33,7 +36,7 @@
     .items {
       display: flex;
       align-items: center;
-
+      min-width: 654px;
       .item {
         display: flex;
         align-items: center;
