@@ -5,7 +5,7 @@ import {
 
 
 export const getAllDiscountByShopId= async (dispatch, shopId) => {
-    let res = await discountService.getDiscountByShop(category);
+    let res = await discountService.getDiscountByShopId(shopId);
     dispatch(getAllDiscounts(res.data));
 };
 

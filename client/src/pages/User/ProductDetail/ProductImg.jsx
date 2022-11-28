@@ -10,7 +10,7 @@ function ProductImg({item,mess}) {
     const [stateQuantity,setStateQuantity]= useState(parseInt(item.availableQuantity) - 1)
     const [mount,setMount] = useState(1)
 
-    const { price, discount, tag, title, slug, img, colors, brand, category } = initProductDetail;
+    const { id, price, discount, tag, title, slug, img, colors, brand, category } = initProductDetail;
 
     const pays = [{ bank: 'vnpay' }, { bank: 'tpbank' }, { bank: 'eximbank' }];
 
@@ -24,7 +24,7 @@ function ProductImg({item,mess}) {
     };
 
     const color = colors ? colors[0] : '';
-    let productForCart = { price, discount, tag, title, slug, img, quantity: 1, color, brand, category };
+    let productForCart = { ...initProductDetail, quantity: 1 };
     const handleClickPay = () => {
         addToCart(productForCart);
     };

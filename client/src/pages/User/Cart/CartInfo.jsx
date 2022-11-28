@@ -32,6 +32,8 @@ function CartInfo() {
     const $ = document.querySelector.bind(document);
     const portalRef = useRef(null);
     const { cartItems, totalPrice, totalQuantity } = useCart();
+    let listShop =  Array.from(cartItems).sort((a,b)=>(a.shop.id - b.shop.id))
+    console.log("listShop",listShop)
     const [addressOption, setAddresOption] = useState();
     const [currentDiscount, setCurrentDiscount] = useState(null);
     const [totalPriceDiscount, setTotalPriceDiscount] = useState(0);
@@ -161,14 +163,7 @@ function CartInfo() {
         }
     }, [cartItems]);
     useEffect(() => {
-        let cartItemsGroupByShop = cartItems.reduce((acc, item) => {
-            let shopCart = acc.find((shopCart) => shopCart?.shopId === item?.shop?.id) || null;
-            if (shopCart === null) {
-                return [...acc, { shopId: item?.shop?.id, cartItems: [item] }];
-            } else {
-                return [...acc, { ...shopCart, cartItems: [...shopCart.cartItems, item] }];
-            }
-        }, []);
+        let cartItemsGroupByShop = getCartItemsGroupByShop();
         let totalPriceDiscount = 0;
         for (let discount of discounts) {
             if (
@@ -177,7 +172,7 @@ function CartInfo() {
             ) {
                 continue;
             }
-            let items = cartItemsGroupByShop.find((shopCart) => (shopCart.shopId = discount.shopId))?.cartItems || [];
+            let items = cartItemsGroupByShop.find((shopCart) => (shopCart?.id = discount.shopId))?.cartItems || [];
             let totalPrice = 0;
             for (let item of items) {
                 totalPrice += item.price;
@@ -242,6 +237,18 @@ function CartInfo() {
             setCurrentDiscount(null);
         }
     };
+    const getCartItemsGroupByShop = () => {
+
+        return cartItems.reduce((acc, item) => {
+            let shopCart = acc.find((shopCart) => shopCart?.id === item?.shop?.id) || null;
+            if (shopCart === null) {
+                return [...acc, { ...item?.shop, cartItems: [item] }];
+            } else {
+                acc = acc.filter(shop => shop?.id !== shopCart?.id);
+                return [...acc, { ...shopCart, cartItems: [...shopCart.cartItems, item] }];
+            }
+        }, []);
+    }
     return (
         <div className="m-auto">
             <div className="ml-8 py-4">
@@ -256,9 +263,20 @@ function CartInfo() {
                 <div className="col-span-1 flex-col items-center">
                     <div className="p-4">
                         <h2 className="text-orange-500 mb-2 text-center font-semibold text-3xl">Đơn hàng của bạn</h2>
-                        {cartItems.map((product, index) => (
+                        {/* {cartItems.map((product, index) => (
                             <ProductItem key={index} {...product} />
-                        ))}
+                        ))} */}
+                        {
+                            getCartItemsGroupByShop()?.map(item => {
+                                return <>
+                                <div className='h-[23px] w-[23px]'>
+                                    <img className='w-full h-full rounded-full' src={item?.avatar}></img>
+                                    <span></span>
+                                </div>
+                                {item.cartItems.map((cartItem, index) => <ProductItem key={index} {...cartItem} />)}
+                                </>
+                            })
+                        }
                         <div className="flex justify-between py-4">
                             <span>Tạm tính ({totalQuantity} sản phẩm):</span>
                             <span> {numberWithCommas(totalPrice)}₫</span>
