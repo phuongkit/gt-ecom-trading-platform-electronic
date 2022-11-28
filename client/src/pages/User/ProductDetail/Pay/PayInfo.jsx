@@ -26,7 +26,7 @@ function AlertMess({ type, mess }) {
 }
 function PayInfo(props) {
     const initProductDetail = useSelector((state) => state.products.productDetail.data);
-    const { price, discount, tag, title, slug, img, colors, brand, category } = initProductDetail;
+    const { price, discount, tag, title, slug, img, colors, brand, category,originPrice,shop } = initProductDetail;
 
     const pays = [{ bank: 'vnpay' }, { bank: 'tpbank' }, { bank: 'eximbank' }];
     const [modalShow, setModalShow] = useState(false);
@@ -48,7 +48,7 @@ function PayInfo(props) {
     };
 
     const color = colors ? colors[0] : '';
-    let productForCart = { price, discount, tag, title, slug, img, quantity: 1, color, brand, category };
+    let productForCart = { price, discount, tag, title, slug, img, quantity: 1, color, brand, category,originPrice,shop };
     const handleClickPay = () => {
         addToCart(productForCart);
     };

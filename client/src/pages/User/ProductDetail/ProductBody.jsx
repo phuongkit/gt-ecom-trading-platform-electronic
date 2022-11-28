@@ -2,15 +2,11 @@ import ProductRating from './../../../components/Rating/index';
 import { useState, useEffect, useRef } from 'react';
 import { productService } from '~/services';
 import { useSelector } from 'react-redux';
-import ProductCard from '~/components/ProductCard';
-import NextArrow from '~/components/Slick/NextArrow';
-import PrevArrow from '~/components/Slick/PrevArrow';
-import Slider from 'react-slick';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 function ProductBody() {
     const initProductDetail = useSelector((state) => state.products.productDetail.data);
-    const { price, discount, tag, title, slug, img, colors, brand, category, parameter, info } = initProductDetail;
+    const { id, price, discount, tag, title, slug, img, colors, brand, category, parameter, info } = initProductDetail;
 
     const pays = [{ bank: 'vnpay' }, { bank: 'tpbank' }, { bank: 'eximbank' }];
     const [modalShow, setModalShow] = useState(false);
@@ -32,9 +28,8 @@ function ProductBody() {
     };
 
     const color = colors ? colors[0] : '';
-    let productForCart = { price, discount, tag, title, slug, img, quantity: 1, color, brand, category };
     const handleClickPay = () => {
-        addToCart(productForCart);
+        addToCart({...initProductDetail, quantity: 1});
     };
 
     const [products, setProducts] = useState([]);
