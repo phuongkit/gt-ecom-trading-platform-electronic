@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -26,22 +27,23 @@ public class JwtTokenUtil {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(JwtTokenUtil.class);
 
-  @Value("${app.jwt.jwtExpirationInMs}")
+  @Value("${app.auth.tokenExpirationMsec}")
   private long EXPIRE_DURATION;
 
-  @Value("${app.jwt.refreshExpirationDateInMs}")
+  @Value("${app.auth.tokenRefreshExpirationDateMsec}")
   private long REFRESH_EXPIRATION;
 
-  @Value("${app.jwt.secret}")
+  @Value("${app.auth.tokenSecret}")
   private String SECRET_KEY;
 
   @Autowired
   private UserService userService;
 
-  public String generateAccessToken(User userPrincipal) {
+  public String generateAccessToken(Authentication authentication) {
+    User user = (User) authentication.getPrincipal();
     return Jwts.builder()
-        .setSubject(String.format("%s,%s", userPrincipal.getId(),
-            userPrincipal.getPhone() != null ? userPrincipal.getPhone() : userPrincipal.getEmail()))
+        .setSubject(String.format("%s,%s", user.getId(),
+            user.getPhone() != null ? user.getPhone() : user.getEmail()))
         .setIssuedAt(new Date())
         .setExpiration(new Date(System.currentTimeMillis() + EXPIRE_DURATION))
         .signWith(SignatureAlgorithm.HS512, SECRET_KEY)
