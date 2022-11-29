@@ -18,7 +18,7 @@ import java.util.List;
  * @created 11/09/2022 - 10:01 AM
  */
 public interface ShopService {
-  Page<ShopResponseDTO> getAllShops(String keyword, Pageable pageable);
+  List<ShopResponseDTO> getAllShops(String keyword);
 
   ShopResponseDTO getShopById(Integer id);
   

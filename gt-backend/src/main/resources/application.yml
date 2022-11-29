@@ -41,15 +41,15 @@ spring:
       client:
         registration:
           google:
-            clientId: 5014057553-8gm9um6vnli3cle5rgigcdjpdrid14m9.apps.googleusercontent.com
-            clientSecret: tWZKVLxaD_ARWsriiiUFYoIk
+            clientId: 867619584300-kk1cg980vlctrv1l6vj0b58vopqc3sl0.apps.googleusercontent.com
+            clientSecret: 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
             redirectUri: "{baseUrl}/oauth2/callback/{registrationId}"
             scope:
               - email
               - profile
           facebook:
-            clientId: 121189305185277
-            clientSecret: 42ffe5aa7379e8326387e0fe16f34132
+            clientId: 952881962336925
+            clientSecret: c52cf96a10a67d18b5fa9e12834544e9
             redirectUri: "{baseUrl}/oauth2/callback/{registrationId}"
             scope:
               - email
@@ -79,24 +79,38 @@ app:
     # redirectUri mentioned by the client in the /oauth2/authorize request.
     # We're not using cookies because they won't work well in mobile clients.
     authorizedRedirectUris:
-      - http://localhost:3000/oauth2/redirect
-      - myandroidapp://oauth2/redirect
-      - myiosapp://oauth2/redirect
+      - http://localhost:5000
   shop:
     default:
       percent: 0.05
 
 server:
   port: 8080
+  ssl:
+    # The alias mapped to the certificate
+    key-alias: gt-ecom
+    # The path to the keystore containing the certificate
+    key-store: classpath:keystore/gt-ecom.p12
+    # The format used for the keystore. It could be set to JKS in case it is a JKS file
+    key-store-type: PKCS12
+    # The password used to generate the certificate
+    key-store-password: demo123321
+    enabled: false
+
+trust:
+  store: classpath:keystore/gt-ecom.p12
+    #trust store location
+    #trust store password
+  password: demo123321
 
 ghn:
   shopId: 885
   token: 1a54568c-4713-11ed-8a70-52fa25d1292f
   address:
     district:
-      thuduc: 3695
+      thu-duc: 3695
     ward:
-      truongtho: 90746
+      truong-tho: 90746
   product:
     weight: 5000
     length: 30

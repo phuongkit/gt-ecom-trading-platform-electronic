@@ -1,6 +1,6 @@
 package gt.electronic.ecommerce.services.impls;
 
-import gt.electronic.ecommerce.dto.request.AuthRequest;
+import gt.electronic.ecommerce.dto.request.AuthRegisterDTO;
 import gt.electronic.ecommerce.dto.request.UserCreationDTO;
 import gt.electronic.ecommerce.dto.response.UserResponseDTO;
 import gt.electronic.ecommerce.entities.*;
@@ -29,9 +29,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * @author minh phuong
@@ -107,6 +105,15 @@ public class UserServiceImpl implements UserService {
     }
   }
 
+  @Transactional
+  public UserDetails loadUserById(Integer id) {
+    User user = this.userRepo.findById(id).orElseThrow(
+        () -> new ResourceNotFoundException("User", "id", id)
+    );
+
+    return User.create(user);
+  }
+
   @Override public Page<UserResponseDTO> getAllUsers(String keyword, Pageable pageable) {
     this.LOGGER.info(
         String.format(Utils.LOG_GET_ALL_OBJECT_BY_FIELD, branchName, "Keyword", keyword));
@@ -116,6 +123,8 @@ public class UserServiceImpl implements UserService {
     }
     return users.map(user -> this.userMapper.userToUserResponseDTO(user));
   }
+
+
 
   @Override public UserResponseDTO getUserById(Integer id) {
     this.LOGGER.info(String.format(Utils.LOG_GET_OBJECT, branchName, "ID", id));
@@ -155,7 +164,7 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override public User getUserByLoginKey(String loginKey) {
-    User userFound = null;
+    User userFound;
     if (Utils.isPattern(loginKey) == EPattern.PHONE) {
       userFound = this.userRepo
           .findByPhone(loginKey)
@@ -174,7 +183,7 @@ public class UserServiceImpl implements UserService {
     return userFound;
   }
 
-  @Override public UserResponseDTO registerUser(AuthRequest auth, boolean isSeller) {
+  @Override public UserResponseDTO registerUser(AuthRegisterDTO auth, boolean isSeller) {
     this.LOGGER.info(String.format(Utils.LOG_REGISTER_OBJECT, branchName, "Phone", auth.getPhone()));
     if (auth.getEmail() == null && auth.getPhone() == null) {
       throw new InvalidFieldException(String.format(Utils.BOTH_FIELDS_NOT_BLANK, "Phone", "Email"));
@@ -203,6 +212,9 @@ public class UserServiceImpl implements UserService {
       }
     }
     User user = new User();
+    user.setLastName(auth.getLastName());
+    user.setFirstName(auth.getFirstName());
+    user.setGender(auth.getGender() != null ? auth.getGender() : EGender.UNKNOWN);
     user.setPhone(auth.getPhone());
     user.setEmail(auth.getEmail());
     if (auth.getPassword() != null) {

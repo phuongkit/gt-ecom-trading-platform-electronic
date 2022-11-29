@@ -45,15 +45,10 @@ public class Product {
   @Column(name = "description", length = 15000)
   private String description;
 
-  @Column(name = "stand_cost", nullable = false)
-  @NotNull(message = "An standCost is required!")
-  @DecimalMin(value = "0", message = "Stand Cost must be greater than or equal to 0.")
-  private BigDecimal standCost;
-
-  @Column(name = "list_price", nullable = false)
-  @NotNull(message = "An listPrice is required!")
-  @DecimalMin(value = "0", message = "List Price must be greater than or equal to 0.")
-  private BigDecimal listPrice;
+  @Column(name = "price", nullable = false)
+  @NotNull(message = "An price is required!")
+  @DecimalMin(value = "0", message = "Price must be greater than or equal to 0.")
+  private BigDecimal price;
 
   @Column(name = "quantity", nullable = false)
   @NotNull(message = "An quantity is required!")
@@ -77,7 +72,7 @@ public class Product {
   @JoinColumn(name = "brand_id", nullable = false)
   private Brand brand;
 
-  @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+  @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   private Set<ProductDescription> descriptions = new HashSet<>();
 
   public void addDescription(ProductDescription description) {
@@ -88,18 +83,36 @@ public class Product {
     descriptions.remove(description);
   }
 
-  @ManyToMany(mappedBy = "products")
+  @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+  @JoinTable(
+      name = "tbl_sale_products",
+      joinColumns = @JoinColumn(name = "product_id"),
+      inverseJoinColumns = @JoinColumn(name = "sale_id"))
   private Set<Sale> saleGallery = new HashSet<>();
+
+  public void addSale(Sale sale) {
+    saleGallery.add(sale);
+  }
+
+  public void removeSale(Sale sale) {
+    saleGallery.remove(sale);
+  }
 
   @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "thumbnail")
   private Image thumbnail;
 
-  @ManyToMany(fetch = FetchType.EAGER)
+  @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
   @JoinTable(name = "tbl_product_images",
       joinColumns = @JoinColumn(name = "product_id"),
       inverseJoinColumns = @JoinColumn(name = "image_id"))
   private Set<Image> imageGallery = new HashSet<>();
+
+  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "product")
+  private Set<Comment> comments = new HashSet<>();
+
+  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "product")
+  private Set<Feedback> feedbacks = new HashSet<>();
 
   @ManyToOne
   @JoinColumn(name = "location_id")
@@ -121,11 +134,15 @@ public class Product {
   @UpdateTimestamp
   private Date updatedAt;
 
-  public Product(String name, BigDecimal listPrice, Integer quantity, Category category, Brand brand, Shop shop, Location location, Image thumbnail, String description) {
+  @PreRemove
+  private void preRemove() {
+    saleGallery.forEach(sale -> sale.removeProduct(this));
+  }
+
+  public Product(String name, BigDecimal price, Integer quantity, Category category, Brand brand, Shop shop, Location location, Image thumbnail, String description) {
     this.name = name;
     this.slug = Utils.toSlug(name) + "." + UUID.randomUUID().toString().replace("-", "");
-    this.standCost = listPrice.multiply(new BigDecimal("0.9"));
-    this.listPrice = listPrice;
+    this.price = price;
     this.quantity = quantity;
     this.status = EProductStatus.PRODUCT_TRADING;
     this.category = category;

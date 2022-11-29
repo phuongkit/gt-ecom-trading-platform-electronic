@@ -24,6 +24,7 @@ public interface DiscountService {
   DiscountResponseDTO createDiscount(String loginKey, DiscountCreationDTO creationDTO, MultipartFile  imageFile);
   DiscountResponseDTO updateDiscount(String loginKey, Long id, DiscountUpdateDTO updateDTO, MultipartFile  imageFile);
   DiscountResponseDTO deleteDiscountById(String loginKey, Long id);
+  List<DiscountResponseDTO> getAllDiscountByUser(String loginKey, Pageable pageable);
   List<DiscountResponseDTO> addAllDiscountToUser(String loginKey, List<String> discountCodes);
   List<DiscountResponseDTO> removeAllDiscountFromUser(String loginKey, List<String> discountCodes);
 }

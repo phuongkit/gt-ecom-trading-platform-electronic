@@ -2,6 +2,7 @@ package gt.electronic.ecommerce.repositories;
 
 import gt.electronic.ecommerce.entities.Discount;
 import gt.electronic.ecommerce.entities.Shop;
+import gt.electronic.ecommerce.entities.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -26,6 +27,10 @@ public interface DiscountRepository extends JpaRepository<Discount, Long> {
 
   Page<Discount> findAllByShop(Shop shop, Pageable pageable);
 
+  @Query("select d from Discount d join d.users user " +
+      "where user = :user")
+  List<Discount> findAllByUser(@Param("user") User user, Pageable pageable);
+
   @Query("SELECT d "
       + "FROM Discount d "
       + "WHERE "
@@ -37,9 +42,9 @@ public interface DiscountRepository extends JpaRepository<Discount, Long> {
   @Query("SELECT d "
       + "FROM Discount d "
       + "WHERE "
-      + "(LOWER(d.name) LIKE LOWER(concat('%', :title,'%')) OR :title IS NULL) AND "
+      + "(:title IS NULL or (LOWER(d.name) LIKE LOWER(concat('%', :title,'%')))) AND "
       + "(:percent IS NULL OR d.percent = :percent) AND "
-      + "(:code IS NULL OR d.code LIKE %:code%) AND "
+      + "(:code IS NULL OR (LOWER(d.code) LIKE LOWER(concat('%', :code, '%')))) AND "
       + "(:startDate IS NULL OR :startDate = d.startDate) AND "
       + "(:endDate IS NULL OR d.endDate = :endDate) AND "
       + "(:fromPercent IS NULL OR d.percent >= :fromPercent) AND "
@@ -48,10 +53,15 @@ public interface DiscountRepository extends JpaRepository<Discount, Long> {
       + "(:toDate IS NULL OR d.endDate <= :toDate ) AND "
       + "(:shop IS NULL OR d.shop = :shop)")
   Page<Discount> search(
-      @Param("title") String title, @Param("percent") Double percent,
-      @Param("code") String code, @Param("startDate") Date startDate,
-      @Param("endDate") Date endDate, @Param("fromPercent") Double fromPercent,
-      @Param("toPercent") Double toPercent, @Param("fromDate") Date fromDate,
-      @Param("toDate") Date toDate, @Param("shop") Shop shop, Pageable pageable
+      @Param("title") String title,
+      @Param("percent") Double percent,
+      @Param("code") String code,
+      @Param("startDate") Date startDate,
+      @Param("endDate") Date endDate,
+      @Param("fromPercent") Double fromPercent,
+      @Param("toPercent") Double toPercent,
+      @Param("fromDate") Date fromDate,
+      @Param("toDate") Date toDate,
+      @Param("shop") Shop shop, Pageable pageable
   );
 }
