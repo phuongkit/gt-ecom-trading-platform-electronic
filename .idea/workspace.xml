@@ -5,12 +5,42 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9417b476-25c6-476a-b27c-d401f19e2337" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/ecommerce.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FrontendReact/Client/src/components/SingInForm/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/FrontendReact/Client/src/components/SingInForm/index.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FrontendReact/Client/src/services/auth.service.js" beforeDir="false" afterPath="$PROJECT_DIR$/FrontendReact/Client/src/services/auth.service.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gt-backend/src/main/java/gt/electronic/ecommerce/GtBackendApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/gt-backend/src/main/java/gt/electronic/ecommerce/GtBackendApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gt-backend/src/main/java/gt/electronic/ecommerce/controller/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/gt-backend/src/main/java/gt/electronic/ecommerce/controller/AuthController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontendReact/Client/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontendReact/Client/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/FrontendReact/Client/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontendReact/Client/src/api/axios.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/FrontendReact/Client/src/api/axios.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontendReact/Client/src/pages/User/Contact/index.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontendReact/Client/src/pages/User/Gameapp/AppButton.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontendReact/Client/src/pages/User/Gameapp/AppSection.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontendReact/Client/src/pages/User/Gameapp/Card.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontendReact/Client/src/pages/User/Gameapp/Communi.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontendReact/Client/src/pages/User/Gameapp/Content.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontendReact/Client/src/pages/User/Gameapp/GameAppSection.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontendReact/Client/src/pages/User/Gameapp/GameSection.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontendReact/Client/src/pages/User/Gameapp/Gameapp.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontendReact/Client/src/pages/User/Gameapp/GameappContent.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontendReact/Client/src/pages/User/Gameapp/Head.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontendReact/Client/src/pages/User/Gameapp/IosListContent.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontendReact/Client/src/pages/User/Gameapp/NewsCard.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontendReact/Client/src/pages/User/Gameapp/NewsSection.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontendReact/Client/src/pages/User/Gameapp/SmallCard.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontendReact/Client/src/pages/User/Gameapp/TabHeader.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontendReact/Client/src/pages/User/Gameapp/TabIcon.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontendReact/Client/src/pages/User/Gameapp/WeekNewsSection.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontendReact/Client/src/pages/User/Gameapp/card.module.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontendReact/Client/src/pages/User/Gameapp/gameapp.module.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontendReact/Client/src/pages/User/Gameapp/index.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontendReact/Client/src/pages/User/Sim/Body.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontendReact/Client/src/pages/User/Sim/Card.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontendReact/Client/src/pages/User/Sim/CardGame.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontendReact/Client/src/pages/User/Sim/Frame.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontendReact/Client/src/pages/User/Sim/Info.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontendReact/Client/src/pages/User/Sim/Sim.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontendReact/Client/src/pages/User/Sim/Title.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontendReact/Client/src/pages/User/Sim/card.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontendReact/Client/src/pages/User/Sim/frame.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontendReact/Client/src/pages/User/Sim/index.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontendReact/Client/src/pages/User/Sim/title.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontendReact/Client/src/routes/PublishRoutes.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/FrontendReact/Client/src/routes/PublishRoutes.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,23 +84,14 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">
-    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
-    <property name="DatabaseDriversLRU" value="mysql" />
-    <property name="RequestMappingsPanelOrder0" value="0" />
-    <property name="RequestMappingsPanelOrder1" value="1" />
-    <property name="RequestMappingsPanelWidth0" value="75" />
-    <property name="RequestMappingsPanelWidth1" value="75" />
-    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
-    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/gt-backend" />
-    <property name="node.js.detected.package.eslint" value="true" />
-    <property name="node.js.detected.package.tslint" value="true" />
-    <property name="node.js.selected.package.eslint" value="(autodetect)" />
-    <property name="node.js.selected.package.tslint" value="(autodetect)" />
-  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "E:/Downloads/Khoaluantn/E-commerce-Trading-Platform-Electronic/gt-backend"
+  }
+}]]></component>
   <component name="RunManager" selected="Spring Boot.GtBackendApplication">
     <configuration name="All in ecommerce (1)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="ecommerce" />
@@ -121,6 +142,7 @@
       <workItem from="1664619471595" duration="142000" />
       <workItem from="1664619703975" duration="32000" />
       <workItem from="1664620248650" duration="28000" />
+      <workItem from="1668840749160" duration="48000" />
     </task>
     <servers />
   </component>
