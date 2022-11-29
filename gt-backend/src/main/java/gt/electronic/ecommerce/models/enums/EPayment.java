@@ -7,5 +7,6 @@ package gt.electronic.ecommerce.models.enums;
  */
 public enum EPayment {
   CASH,
-  MOMO
+  MOMO,
+  VNPAY
 }

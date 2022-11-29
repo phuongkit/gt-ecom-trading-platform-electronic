@@ -40,4 +40,8 @@ public interface UserRepository extends SearchRepository<User, Integer> {
 
   Optional<User> findByPhone(String phone);
   Optional<User> findByEmail(String email);
+
+  Boolean existsByEmail(String email);
+  Boolean existsByPhone(String phone);
+  Boolean existsByUsername(String username);
 }
