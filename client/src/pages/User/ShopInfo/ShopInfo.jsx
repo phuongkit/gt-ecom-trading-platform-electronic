@@ -1,8 +1,24 @@
 import ProductCard from '../../../components/ProductCard';
+import Paging from '../../../components/Paging';
 import './shopinfo.scss'
 
 import{SearchHeartFill} from 'react-bootstrap-icons'
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import { getAllProductApi } from '../../../redux/product/productsApi';
+import { useEffect, useState } from 'react';
 function ShopInfo() {
+  const dispatch = useDispatch();
+  let {id: shopId} = useParams();
+  const [numberPage, setNumberPage] = useState(1);
+  useEffect(() => {
+    if (shopId) {
+        getAllProductApi(dispatch, {shopId: shopId, page: numberPage, limit: 6});
+    }
+}, []);
+  const {content: productList = [], ...page} = useSelector(state=>state.products.pageProductShop.data);
+  console.log(shopId, productList, page);
+  
     return ( 
 <div className="container mt-8">
   <div className="row grid grid-cols-12">
@@ -119,20 +135,27 @@ function ShopInfo() {
       </div>
       
       <div className="row flex flex-wrap gap-4">
-     
-        <ProductCard></ProductCard>
+     {productList.map(item=>(
+        <ProductCard {...item}></ProductCard>
+     ))}
+       
       </div> 
       <div className="row">
         <div className="col-span-12">
 
           <ul className="pagination pull-right flex gap-4 absolute bottom-0 right-12">
             <li className="disabled"><a href="#">«</a></li>
-            <li className="active"><a href="#">1 <span className="sr-only">(current)</span></a></li>
+            {/* <li className="active"><a href="#">1 <span className="sr-only">(current)</span></a></li>
             <li><a href="#">2</a></li>
             <li><a href="#">3</a></li>
             <li><a href="#">4</a></li>
             <li><a href="#">5</a></li>
-            <li><a href="#">»</a></li>
+            <li><a href="#">»</a></li> */}
+             <Paging
+                        currentPage={page.number}
+                        totalPages={page.totalPages}
+                        onClick={(e) => setNumberPage(Number.parseInt(e.target.innerText))}
+                    />
           </ul>
           
         </div>

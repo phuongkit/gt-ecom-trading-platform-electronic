@@ -65,7 +65,7 @@ function ShopInfo({props}) {
                             </div>
                         </div>
                         <div className="image">
-                            <a href="#"><img src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="Product 1"></img></a>
+                            <a href="#"><img src="https://png.pngtree.com/png-vector/20190227/ourlar…/pngtree-vector-voucher-icon-png-image_708692.jpg" alt="Product 1"></img></a>
                         </div>
                         <div className="caption">
                             <div className="name">
