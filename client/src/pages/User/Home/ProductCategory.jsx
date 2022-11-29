@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import Section from './Section';
 import styles from './productcategory.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
-
+import { getAllCategoriesApi } from '../../../redux/category/categoriesApi';
 
 function ProductCategory() {
     const dispatch = useDispatch();
@@ -11,7 +11,7 @@ function ProductCategory() {
     const categories = useSelector((state) => state.categories?.allCategory?.data)||[];
 
     useEffect(() => {
-        // getAllCategoriesApi(dispatch);
+        getAllCategoriesApi(dispatch);
     }, []);
 
     // console.log(categories);
