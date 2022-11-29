@@ -1,18 +1,12 @@
 package gt.electronic.ecommerce.utils;
 
-import gt.electronic.ecommerce.dto.response.ResponseObject;
 import gt.electronic.ecommerce.entities.User;
 import gt.electronic.ecommerce.exceptions.AccessTokenNotValidException;
-import gt.electronic.ecommerce.exceptions.ResourceNotValidException;
-import gt.electronic.ecommerce.services.UserService;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,14 +24,11 @@ public class JwtTokenUtil {
   @Value("${app.auth.tokenExpirationMsec}")
   private long EXPIRE_DURATION;
 
-  @Value("${app.auth.tokenRefreshExpirationDateMsec}")
-  private long REFRESH_EXPIRATION;
+//  @Value("${app.auth.tokenRefreshExpirationDateMsec}")
+//  private long REFRESH_EXPIRATION;
 
   @Value("${app.auth.tokenSecret}")
   private String SECRET_KEY;
-
-  @Autowired
-  private UserService userService;
 
   public String generateAccessToken(Authentication authentication) {
     User user = (User) authentication.getPrincipal();
@@ -92,7 +83,7 @@ public class JwtTokenUtil {
       if (header == null) return null;
       token = header.split(" ")[1].trim();
     } catch (ArrayIndexOutOfBoundsException ex) {
-      LOGGER.error("Bearer is null", ex.getMessage());
+      LOGGER.error("Bearer is null" + ex.getMessage());
     }
     return token;
   }
@@ -108,19 +99,19 @@ public class JwtTokenUtil {
     return this.getSubject(getAccessToken(request)).split(",")[1];
   }
 
-  public String setExpiredJwtToken(String token) {
-    return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody().setExpiration(new Date())
-        .getSubject();
-  }
+//  public String setExpiredJwtToken(String token) {
+//    return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody().setExpiration(new Date())
+//        .getSubject();
+//  }
 
-  public String refreshToken(String token) {
-    final Date createdDate = new Date();
-    final Date expirationDate = new Date(createdDate.getTime() + REFRESH_EXPIRATION);
-
-    final Claims claims = parseClaims(token);
-    claims.setIssuedAt(createdDate);
-    claims.setExpiration(new Date());
-
-    return Jwts.builder().setClaims(claims).signWith(SignatureAlgorithm.HS512, SECRET_KEY).compact();
-  }
+//  public String refreshToken(String token) {
+//    final Date createdDate = new Date();
+//    final Date expirationDate = new Date(createdDate.getTime() + REFRESH_EXPIRATION);
+//
+//    final Claims claims = parseClaims(token);
+//    claims.setIssuedAt(createdDate);
+//    claims.setExpiration(new Date());
+//
+//    return Jwts.builder().setClaims(claims).signWith(SignatureAlgorithm.HS512, SECRET_KEY).compact();
+//  }
 }

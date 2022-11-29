@@ -103,6 +103,9 @@ public class Shop {
   @UpdateTimestamp
   private Date updatedAt;
 
+  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "shop")
+  private Set<Discount> discounts = new HashSet<>();
+
   public Shop(String name, User user, FullAddress fullAddress, String avatar, String background) {
     this.name = name;
     this.slug = Utils.toSlug(name);

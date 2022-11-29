@@ -1,11 +1,13 @@
 package gt.electronic.ecommerce.entities;
 
 import gt.electronic.ecommerce.models.enums.EDiscountType;
-import gt.electronic.ecommerce.models.enums.ERole;
 import gt.electronic.ecommerce.utils.CodeConfig;
 import gt.electronic.ecommerce.utils.GenerateUtil;
 import gt.electronic.ecommerce.utils.Utils;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -16,6 +18,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author minh phuong
@@ -24,7 +28,6 @@ import java.util.Date;
  */
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -91,6 +94,9 @@ public class Discount {
 
   @OneToOne(cascade = CascadeType.ALL)
   private Image thumbnail;
+
+  @ManyToMany(mappedBy = "discounts")
+  private Set<User> users = new HashSet<>();
 
   @Column(name = "created_at")
   @CreationTimestamp
