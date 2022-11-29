@@ -1,6 +1,6 @@
 import "./new.scss";
-import Sidebar from "../../../Components/admin/sidebar/Sidebar";
-import Navbar from "../../../Components/admin/navbar/Navbar";
+import Sidebar from "../../../components/seller/sidebar/Sidebar";
+import Navbar from "../../../components/seller/navbar/Navbar";
 import DriveFolderUploadOutlinedIcon from "@mui/icons-material/DriveFolderUploadOutlined";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";

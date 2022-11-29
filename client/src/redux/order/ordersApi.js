@@ -1,4 +1,4 @@
-import { getPageOrder, postOrder, createOrder, deleteOrder } from './orderSlice';
+import { getPageOrder, postOrder, createOrder, deleteOrder,getOrderDetail } from './orderSlice';
 import { orderService } from '~/services/order.service';
 import { MESSAGE } from '../../utils/variableDefault';
 
@@ -6,6 +6,12 @@ export const getAllOrdersByShopApi = async (dispatch, shopId) => {
     let res = await orderService.getAllOrdersByShopId(shopId);
     console.log(res);
     dispatch(getPageOrder(res.data));
+};
+
+export const getOrdersById = async (dispatch, idOder) => {
+    let res = await orderService.getOderById(idOder);
+    console.log(res);
+    dispatch(getOrderDetail(res.data));
 };
 
 export const postOrdersApi = async (dispatch, data, navigate) => {

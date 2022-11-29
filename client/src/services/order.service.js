@@ -6,6 +6,10 @@ export const orderService = {
     postOrder(data) {
         return axiosClient.post(`${branch_api}`, data);
     },
+    getOderById(id){
+        console.log(id);
+        return axiosClient.get(`${branch_api}/${id}`);
+    },
     updateOrder(data, id) {
         return axiosClient.put(`${branch_api}/${id}`, data);
     },

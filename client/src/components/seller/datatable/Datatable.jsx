@@ -1,11 +1,10 @@
 import "./datatable.scss";
 import { DataGrid } from "@mui/x-data-grid";
-import { userColumns } from "../../../datatablesource";
+import { userColumns } from "../datablesource/datablesource";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { deleteUser, getAllUsers } from "../../../redux/apiRequest";
 const Datatable = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -19,7 +18,7 @@ const Datatable = () => {
       navigate('/')
     }
     if(user?.accessToken){
-      getAllUsers(user?.accessToken,dispatch)
+      // getAllUsers(user?.accessToken,dispatch)
     }
    
 
@@ -31,7 +30,7 @@ const Datatable = () => {
   
   const handleDelete = (id) => {
     setData(data.filter((item) => item._id !== id));
-    deleteUser(user?.accessToken, dispatch, id)
+    // deleteUser(user?.accessToken, dispatch, id)
   };
 
   const actionColumn = [
