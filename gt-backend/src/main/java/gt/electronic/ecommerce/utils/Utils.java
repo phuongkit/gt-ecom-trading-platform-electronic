@@ -3,12 +3,10 @@ package gt.electronic.ecommerce.utils;
 import gt.electronic.ecommerce.entities.*;
 import gt.electronic.ecommerce.exceptions.ResourceNotValidException;
 import gt.electronic.ecommerce.models.enums.EPattern;
-import gt.electronic.ecommerce.services.SaleService;
 import lombok.Getter;
 import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.math.BigDecimal;
@@ -43,12 +41,15 @@ public class Utils {
   public static final String OBJECT_NOT_FOUND_BY_FIELD = "Not found %s by %s = %s";
 
   public static final String OBJECT_NOT_FOUND_BY_TWO_FIELD = "Not found %s by %s = %s and %s = %s";
+  public static final String NOT_FOUND_OBJECT_VALID = "Not found %s by %s = %s is valid";
   public static final String OBJECT_NOT_CHILD = "%s with %s = %s is not a child of %s with %s = %s";
 
   public static final String FIELD_NOT_BLANK = "Field %s not blank";
   public static final String FIELD_NOT_VALID = "Field %s not valid";
   public static final String BOTH_FIELDS_NOT_BLANK = "Both field %s or %s not blank";
   public static final String DISCOUNT_INVALID = "Invalid discount code";
+  public static final String INVALID_FILED = "Invalid %s with % = %s";
+  public static final String INVALID_TWO_FIELD = "Invalid %s with %s = %s  and %s = %s";
   public static final String DISCOUNT_CODE_EXPIRED = "Expired discount code";
   public static final String DISCOUNT_NOT_STARTED = "the discount hasn't started yet";
   public static final String DISCOUNT_USED_UP = "The discount code has been used up";
@@ -64,6 +65,11 @@ public class Utils {
   public static final String UPDATE_MAIN_OBJECT_SUCCESSFULLY = "Update new main %s successfully!";
   public static final String UPDATE_RELY_OBJECT_SUCCESSFULLY = "Update new rely %s successfully!";
   public static final String DELETE_OBJECT_SUCCESSFULLY = "Delete %s successfully!";
+  public static final String ADD_ALL_OBJECT_TO_OBJECT_SUCCESSFULLY = "Add all %s to %s successfully!";
+  public static final String REMOVE_ALL_OBJECT_FROM_OBJECT_SUCCESSFULLY = "Remove all %s from %s successfully!";
+
+  // INFO
+  public static final String PAYMENT_ORDER = "%s thanh toan don hang %s voi tong tien %s voi %s";
 
   //  Log
   public static final String LOG_GET_ALL_OBJECT = "Fetching all %ss";
@@ -76,7 +82,10 @@ public class Utils {
   public static final String LOG_REGISTER_OBJECT = "Registering new %S with %s = %s to database";
   public static final String LOG_CREATE_OBJECT_BY_TWO_FIELD = "Creating new %s with %s = %s and %s = %s to the database";
   public static final String LOG_UPDATE_OBJECT = "Updating %s with %s = %s to the database";
+  public static final String LOG_UPDATE_OBJECT_BY_TWO_FIELD = "Updating %s with %s = %s and %s = %s to the database";
   public static final String LOG_DELETE_OBJECT = "Deleting %s with %s = %s from the database";
+  public static final String LOG_ADD_ALL_OBJECT_TO_OBJECT = "Add all %s : %s to %s with %s = %s";
+  public static final String LOG_REMOVE_ALL_OBJECT_FROM_OBJECT = "Remove all %s : %s from %s with %s = %s";
   public static final String ADD_LOG_FOR_USER = " for User with %s = %s";
 
   //  Length
@@ -112,7 +121,6 @@ public class Utils {
   public static final String PRE_API_PRODUCT = "/api/v1/products";
   //
   public static final String IMAGE_DEFAULT_PATH = "IMAGE_OTHER/l9faer7pevfo5kgs7zztubvgt9ikxy4u.jpg";
-
   @Value("${server.port}")
   private static Integer port;
 
@@ -203,6 +211,20 @@ public class Utils {
     return locationString;
   }
 
+  public static String getLocationStringFromLocationAndLine(Location location, String line) {
+    String locationString = "";
+    if (location.getProvince() != null) {
+      locationString = location.getProvince();
+      if (location.getDistrict() != null) {
+        locationString = location.getDistrict() + ", " + locationString;
+        if (location.getCommune() != null) {
+          locationString = location.getCommune() + ", " + locationString;
+        }
+      }
+    }
+    return line + ", " + locationString;
+  }
+
   public static String getUrlFromPathImage(String path) {
     if (path.startsWith("http")) {
       return path;
@@ -228,11 +250,19 @@ public class Utils {
   }
 
   public static boolean checkValidDiscount(Discount discount) {
-    if (discount.getQuantity() == 0) {
+    if (discount.getQuantity() < 1) {
       throw new ResourceNotValidException(String.format(Utils.DISCOUNT_USED_UP));
     }
 
     return checkValidDate(discount.getStartDate(), discount.getEndDate());
+  }
+
+  public static boolean isAvailableDiscount(Discount discount) {
+    if (discount.getQuantity() < 1) {
+      return false;
+    }
+
+    return discount.getEndDate() == null || discount.getEndDate().before(new Date());
   }
 
   public static boolean checkValidDate(Date startDate, Date endDate) {
@@ -255,7 +285,7 @@ public class Utils {
     if (quantity.length > 0) {
       count = quantity[0];
     }
-    price = product.getListPrice().multiply(BigDecimal.valueOf((1 - percent) * count)).setScale(0, RoundingMode.HALF_UP);
+    price = product.getPrice().multiply(BigDecimal.valueOf((1 - percent) * count)).setScale(0, RoundingMode.HALF_UP);
 
     return price;
   }
@@ -282,6 +312,23 @@ public class Utils {
       return EPattern.PASSWORD;
     } else {
       return EPattern.NONE;
+    }
+  }
+
+//  public static boolean isValidDate(Date startDate, Date endDate) {
+//    Date currentDate = new Date();
+//    return currentDate.after(startDate) && currentDate.before(endDate);
+//  }
+
+  public static String[] getFirstNameAndLastNameFromFullName(String fullName) {
+    fullName = fullName.replaceAll("\\s", " ").trim();
+    int firstSpace = fullName.indexOf(" ");
+    if (firstSpace == -1) {
+      return new String[]{fullName, ""};
+    } else {
+      String lastName = fullName.substring(0, firstSpace);
+      String firstName = fullName.substring(firstSpace+1);
+      return new String[]{firstName, lastName};
     }
   }
 }

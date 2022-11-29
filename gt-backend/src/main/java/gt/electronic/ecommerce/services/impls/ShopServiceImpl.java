@@ -26,14 +26,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * @author minh phuong
@@ -92,19 +92,19 @@ public class ShopServiceImpl implements ShopService {
     this.userService = userService;
   }
 
-  @Value("${shop.default.percent}")
+  @Value("${app.shop.default.percent}")
   private Double shopDefaultPercent;
 
-  @Override public Page<ShopResponseDTO> getAllShops(String keyword, Pageable pageable) {
+  @Override public List<ShopResponseDTO> getAllShops(String keyword) {
     this.LOGGER.info(
         String.format(Utils.LOG_GET_ALL_OBJECT_BY_FIELD, branchName, "Keyword", keyword));
-    Page<Shop> shopPage =
-        this.shopRepo.findAll(keyword, pageable);
-    if (shopPage.getContent().size() < 1) {
+    List<Shop> shopList =
+        this.shopRepo.findAll(keyword);
+    if (shopList.size() < 1) {
       throw new ResourceNotFound(
           String.format(Utils.OBJECT_NOT_FOUND, branchName));
     }
-    return shopPage.map(shop -> this.shopMapper.shopToShopResponseDTO(shop));
+    return shopList.stream().map(shop -> this.shopMapper.shopToShopResponseDTO(shop)).collect(Collectors.toList());
   }
 
   @Override public ShopResponseDTO getShopById(Integer id) {

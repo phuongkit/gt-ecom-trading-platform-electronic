@@ -1,7 +1,6 @@
 package gt.electronic.ecommerce;
 
 import gt.electronic.ecommerce.config.AppProperties;
-import gt.electronic.ecommerce.utils.GHN;
 import gt.electronic.ecommerce.utils.InitData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +11,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
-import java.io.IOException;
 import java.util.Objects;
 
 @SpringBootApplication
@@ -20,15 +18,12 @@ import java.util.Objects;
 // @Import(EmbeddedTomcatConfiguration.class)
 public class GtBackendApplication implements CommandLineRunner {
   private final Logger LOGGER = LoggerFactory.getLogger(GtBackendApplication.class);
-
-  private GHN GHN;
-  @Autowired public void ClassTest(GHN GHN) {
-    this.GHN = GHN;
-  }
   private InitData initData;
+
   @Autowired public void InitData(InitData initData) {
     this.initData = initData;
   }
+
   @Value("${spring.jpa.hibernate.ddl-auto}")
   private String hibernate_ddl;
 
@@ -37,7 +32,7 @@ public class GtBackendApplication implements CommandLineRunner {
   }
 
   @Override
-  public void run(String... args) throws IOException {
+  public void run(String... args) {
     if (Objects.equals(hibernate_ddl, "create") || Objects.equals(hibernate_ddl, "create-drop")) {
       initData();
     }

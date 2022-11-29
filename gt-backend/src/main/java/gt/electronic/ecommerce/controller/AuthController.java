@@ -21,7 +21,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -58,7 +57,7 @@ public class AuthController {
   }
 
   @PostMapping("/login")
-  public ResponseObject<?> login(@RequestBody @Valid AuthLoginDTO request, HttpServletRequest servletRequest) {
+  public ResponseObject<?> login(@RequestBody @Valid AuthLoginDTO request) {
     if (request.isOtp()) {
       try {
         userService.loadUserByUsername(request.getPhone());
@@ -118,7 +117,7 @@ public class AuthController {
     return new ResponseObject<>(HttpStatus.UNAUTHORIZED, "Access token is non valid", null);
   }
 
-  private static String authorizationRequestBaseUri
+  private static final String authorizationRequestBaseUri
       = "oauth2/authorization";
   Map<String, String> oauth2AuthenticationUrls
       = new HashMap<>();
