@@ -84,7 +84,6 @@ public class Utils {
   public static final int LENGTH_USERNAME_GENERATE = 20;
   public static final int LENGTH_PASSWORD_GENERATE = 16;
   public static final int DEFAULT_GENERATE_LENGTH = 8;
-  //  public static final String DEFAULT_PASSWORD = "Abc@1234567890";
   public static final String DEFAULT_PASSWORD = "12345";
 
   // Objects Per Page
