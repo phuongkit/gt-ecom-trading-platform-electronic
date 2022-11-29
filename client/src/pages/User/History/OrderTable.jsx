@@ -5,6 +5,7 @@ import './table.scss';
 import OrderDetail from './OrderDetail';
 import clsx from 'clsx';
 import { historyService } from '~/services';
+import { Link } from 'react-router-dom';
 const OrderTable = (props) => {
     const style = (text) => {
         switch (text) {
@@ -69,7 +70,8 @@ const OrderTable = (props) => {
                             <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800 overflow-hidden">
                                 <Table.Cell className="text-blue-400">#{order.id}</Table.Cell>
                                 <Table.Cell className="text-blue-400 hover:text-blue-700 select-none">
-                                    <button
+                                    <Link
+                                        to={`/order/detail/${order.id}`}
                                         onClick={() =>
                                             setOrderDetail((current) => {
                                                 return current.index === index
@@ -79,7 +81,7 @@ const OrderTable = (props) => {
                                         }
                                     >
                                         Xem chi tiết
-                                    </button>
+                                    </Link>
                                 </Table.Cell>
                                 <Table.Cell>{order.totalQuantity}</Table.Cell>
                                 <Table.Cell className="text-red-400">{numberWithCommas(order.totalPrice)}₫</Table.Cell>
