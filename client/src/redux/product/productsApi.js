@@ -3,6 +3,7 @@ import {  productService } from '~/services';
 import {
     getAllProducts,
     getPageProduct,
+    getPageProductShop,
     getOneProduct,
     handleFilter,
     // getLocationProduct,
@@ -25,7 +26,11 @@ export const getAllProductByCategory = async (dispatch, category) => {
 
 export const getAllProductApi = async (dispatch, params) => {
     let res = await productService.getProducts(params);
-    dispatch(getPageProduct(res.data));
+    if (params.hasOwnProperty('shopId')) {
+        dispatch(getPageProductShop(res.data));
+    } else {
+        dispatch(getPageProduct(res.data));
+    }
 };
 
 export const getProductDetailApi = async (dispatch, slug) => {
