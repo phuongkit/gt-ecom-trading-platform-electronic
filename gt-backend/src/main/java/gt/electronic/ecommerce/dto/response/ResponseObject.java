@@ -30,7 +30,7 @@ public class ResponseObject<T> {
     this.data = data;
   }
 
-  public ResponseObject(HttpStatus status, String message) {
+  public ResponseObject(Object status, String message) {
     this.status = status;
     this.message = message;
     this.data = null;

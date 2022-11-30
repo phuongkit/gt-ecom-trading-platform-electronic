@@ -254,22 +254,22 @@ public class Utils {
       throw new ResourceNotValidException(String.format(Utils.DISCOUNT_USED_UP));
     }
 
-    return checkValidDate(discount.getStartDate(), discount.getEndDate());
+    return checkValidDate(discount.getStartDate(), discount.getEndDate(), false);
   }
 
   public static boolean isAvailableDiscount(Discount discount) {
     if (discount.getQuantity() < 1) {
-      return false;
+      throw new ResourceNotValidException(String.format(Utils.DISCOUNT_USED_UP));
     }
 
-    return discount.getEndDate() == null || discount.getEndDate().before(new Date());
+    return checkValidDate(discount.getStartDate(), discount.getEndDate(), true);
   }
 
-  public static boolean checkValidDate(Date startDate, Date endDate) {
+  public static boolean checkValidDate(Date startDate, Date endDate, boolean isAvailable) {
     Date currentDate = new Date();
-    if (startDate != null && startDate.after(currentDate)) {
+    if (!isAvailable && startDate != null && startDate.before(currentDate)) {
       throw new ResourceNotValidException(String.format(Utils.DISCOUNT_NOT_STARTED));
-    } else if (endDate != null && endDate.before(currentDate)) {
+    } else if (endDate != null && endDate.after(currentDate)) {
       throw new ResourceNotValidException(String.format(Utils.DISCOUNT_CODE_EXPIRED));
     }
     return true;

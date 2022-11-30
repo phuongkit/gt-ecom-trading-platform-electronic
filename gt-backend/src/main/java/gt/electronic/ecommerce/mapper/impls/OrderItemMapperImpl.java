@@ -91,7 +91,7 @@ public class OrderItemMapperImpl implements OrderItemMapper {
           saleFound = this.saleRepo.findByName(orderItemDTO.getSaleName()).orElse(null);
           if (saleFound != null) {
             try {
-              if (!Utils.checkValidDate(saleFound.getStartDate(), saleFound.getEndDate())) {
+              if (!Utils.checkValidDate(saleFound.getStartDate(), saleFound.getEndDate(), false)) {
                 saleFound = null;
               }
             } catch (ResourceNotValidException e) {
