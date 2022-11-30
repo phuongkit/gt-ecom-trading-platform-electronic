@@ -11,17 +11,39 @@ export const discounts = createSlice({
         },
         allDiscountsUser:{
             data: [],
+        },
+        allDiscountsUserForShop:{
+            data: [],
         }
     },
     reducers: {
         getAllDiscounts: (state, action) => {
             state.allDiscounts.data = action.payload;
         },
-        getDiscountsUser: (state, action) => {
+        getAllDiscountsUser: (state, action) => {
             state.allDiscountsUser.data = action.payload;
+        },
+        getAllDiscountsUserForShop: (state, action) => {
+            state.allDiscountsUserForShop.data = action.payload;
+        },
+        savetDiscountsUser: (state, action) => {
+            state.allDiscountsUserForShop.data = [...state.allDiscountsUserForShop.data, ...action.payload]
         },
         updateAllCheckoutDiscount: (state, action) => {
             state.checkoutDiscounts.data = action.payload || [];
+        },
+        reduceDiscountsShop: (state, action) => {
+            const id = action.payload;
+            const getItemReduce =  state.allDiscounts.data.map(
+                (item) => 
+                {
+                    if(item.id === id){
+                        item.quantity = item.quantity - 1
+                    }
+                    return item        
+                }
+            );
+            state.allDiscounts.data =[...getItemReduce]
         },
         addCheckoutDiscount: (state, action) => {
             const newItem = action.payload;
@@ -44,7 +66,7 @@ export const discounts = createSlice({
                         ...action.payload,
                     },
                 ];
-                state.allDiscountsUser.data = [...state.allDiscountsUser.data, action.payload];
+                state.allDiscounts.data = [...state.allDiscounts.data, action.payload];
             }
         },
         deleteCheckoutDiscount: (state, action) => {
@@ -63,7 +85,10 @@ export const {
     updateAllCheckoutDiscount,
     addCheckoutDiscount,
     clearCheckoutDiscount,
-    getDiscountsUser
+    savetDiscountsUser,
+    getAllDiscountsUser,
+    getAllDiscountsUserForShop,
+    reduceDiscountsShop
 } = discounts.actions;
 
 export default discounts.reducer;

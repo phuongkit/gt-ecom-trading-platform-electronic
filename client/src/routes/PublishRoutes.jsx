@@ -13,6 +13,7 @@ const PurchaseHistory = lazy(() => import('../pages/User/History/PurchaseHistory
 const History = lazy(() => import('../pages/User/History'));
 const Profile = lazy(() => import('../pages/User/History/Profile'));
 const OrderDetail = lazy(() => import('../pages/User/OrderDetail'));
+const SearchPage = lazy(() => import('../pages/User/Search'));
 //serler
 const HomeSeller = lazy(() => import('../pages/Seller/Home/HomeSeller'));  
 import SingInSeller from '~/components/SingInSellerForm';
@@ -32,6 +33,28 @@ export const publishRoutes = [
                 <Category title="Máy tính bảng, tablet giá rẻ, trả góp 0%" />
             </Suspense>
         )
+    },
+    
+    {
+        path: '/search',
+        // path: 'tim-kiem',
+        element: (
+            <Suspense fallback={<Loading />}>
+                <SearchPage title="Tìm kiếm | Phúc Xi Cúc" />
+            </Suspense>
+        ),
+        children: [
+            {
+                path: '?keyword=:keyword',
+                index: true,
+                // path: 'tim-kiem',
+                element: (
+                    <Suspense fallback={<Loading />}>
+                        <SearchPage title="Tìm kiếm | Phúc Xi Cúc" />
+                    </Suspense>
+                ),
+            },
+        ],
     },
     {
         path: 'SignIn',
