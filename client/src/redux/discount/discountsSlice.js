@@ -17,18 +17,8 @@ export const discounts = createSlice({
         getAllDiscounts: (state, action) => {
             state.allDiscounts.data = action.payload;
         },
-        getAllDiscountsUser: (state, action) => {
+        getDiscountsUser: (state, action) => {
             state.allDiscountsUser.data = action.payload;
-        },
-        savetDiscountsUser: (state, action) => {
-            const newItem = action.payload
-            const duplicatie = state.allDiscountsUser.data.filter(item=> item.id===newItem.id)
-            if(duplicatie.length>0){
-                state.allDiscountsUser.data= state.allDiscountsUser.data.filter(item=>item.id!==newItem.id)
-                state.allDiscountsUser.data=[...state.allDiscountsUser.data,newItem]
-            }else{
-                state.allDiscountsUser.data=[...state.allDiscountsUser.data,{...action.payload}]
-            }
         },
         updateAllCheckoutDiscount: (state, action) => {
             state.checkoutDiscounts.data = action.payload || [];
@@ -54,7 +44,7 @@ export const discounts = createSlice({
                         ...action.payload,
                     },
                 ];
-                state.allDiscounts.data = [...state.allDiscounts.data, action.payload];
+                state.allDiscountsUser.data = [...state.allDiscountsUser.data, action.payload];
             }
         },
         deleteCheckoutDiscount: (state, action) => {
@@ -73,8 +63,7 @@ export const {
     updateAllCheckoutDiscount,
     addCheckoutDiscount,
     clearCheckoutDiscount,
-    savetDiscountsUser,
-    getAllDiscountsUser
+    getDiscountsUser
 } = discounts.actions;
 
 export default discounts.reducer;

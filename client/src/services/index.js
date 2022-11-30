@@ -7,3 +7,4 @@ export { ratingService } from './rate.service';
 export { orderService } from './order.service';
 export { discountService } from './discount.service';
 export { historyService } from './history.service';
+export { shopService } from './shop.service';

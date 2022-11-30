@@ -623,3 +623,75 @@
   color: #ccc;
   font-weight: 600;
 }
+
+.seller-info-list {
+  flex: 1;
+  display: flex;
+  flex-flow: column wrap;
+  padding-left: 3rem;
+  padding-top: 1rem;
+  background-color: #fff;
+  align-items: flex-start;
+}
+
+.seller-info-item {
+  display: flex;
+  align-items: center;
+  padding: 1rem 0;
+  flex: 1;
+}
+
+.seller-info-list .seller-info-item {
+  display: inline-block;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  flex: none;
+}
+
+.seller-info-item div {
+  display: inline-block;
+}
+
+.seller-info-item---clickable {
+  display: inline-block;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    flex: none;
+}
+
+.seller-info-item-icon-wrapper {
+  display: flex;
+  align-items: center;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  margin-left: 1rem;
+  margin-right: 1rem;
+  font-size: .9375rem;
+}
+
+.seller-info-item-text {
+  text-transform: capitalize;
+    display: flex;
+    align-items: center;
+}
+
+.seller-info-item-text-value {
+  color: #ee4d2d;;
+}
+
+
+.seller-info-list .seller-info-item svg {
+    stroke: #000;
+}
+
+svg:not(:root) {
+  overflow: hidden;
+}
+
+.shopee-svg-icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  fill: currentColor;
+  position: relative;
+}

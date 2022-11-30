@@ -21,9 +21,6 @@ export const discountService = {
     postDiscount(data) {
         return axiosClient.post(`${branch_api}`,data);
     },
-    saveDiscount(code) {
-        return axiosClient.put(`${branch_api}/user/add-all`,code);
-    },
     putDiscount(id, data) {
         return axiosClient.put(`${branch_api}/${id}`,data);
     },

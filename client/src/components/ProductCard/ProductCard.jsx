@@ -21,8 +21,8 @@ function ProductCard(props) {
         // getProductDetailApi(dispatch, props.slug);
     };
     return (
-        <Link className='inline-block' to={`/${props.categorySlug}/${props.slug}`} onClick={handleProductClick} state={props}>
-            <div className={styles.card}>
+        <Link className='inline-block w-[270px] h-[410px]' to={`/${props.categorySlug}/${props.slug}`} onClick={handleProductClick} state={props}>
+            <div className={styles.card + ' w-[270px] h-[410px]'}>
                 <div className={styles.wrap}>
                     <div className={clsx(styles.discount, props.promotion == '' && 'invisible')}>
                         <p>{props.promotion}</p>
@@ -42,8 +42,8 @@ function ProductCard(props) {
                             ></img>
                         )}
                     </div>
-                    {props.tag && <p className={styles.tag}>{props.tag}</p>}
-                    <p className={styles.title}>{props.title}</p>
+                    {props.tag && <p className={styles.tag}>{props.tag}</p>  || <p className={'h-[21px]'}></p>}
+                    <p className={styles.title + ' h-[63px]'}>{props.title}</p>
                     {props.category === 'dienthoai' || props.category === 'tablet' ? (
                         <div className={styles.cardCompare}>
                             <p>{/*props.parameter[0].SCREEN && <span>{props.parameter[0].SCREEN}</span>*/}</p>

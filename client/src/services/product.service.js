@@ -3,8 +3,9 @@ import { axiosClient } from '~/api';
 const branch_api = "/products";
 
 export const productService = {
-    getProducts({categoryId = null , brandId = null, shopId = null, page = null, limit = null, location = null}) {
+    getProducts({keyword = null, categoryId = null , brandId = null, shopId = null, page = null, limit = null, location = null}) {
         const params= {
+            'keyword': keyword,
             'categoryId': categoryId,
             'brandId': brandId,
             'shopId': shopId,

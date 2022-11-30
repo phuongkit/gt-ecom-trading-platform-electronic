@@ -7,6 +7,7 @@ import categoryReducer from './category/categoriesSlice';
 import searchSlice from './search/searchSlice';
 import rateReducer from './rate/ratesSlice';
 import productReducer from './product/productsSlice';
+import shopReducer from './shop/shopSlice';
 import cartItemsReducer from './shopping-cart/cartItemsSlide';
 import orderSlice from './order/orderSlice';
 import historyOrdersSlice from './history/historyOrdersSlice';
@@ -21,6 +22,7 @@ export const store = configureStore({
         cartItems: cartItemsReducer,
         products: productReducer,
         rates: rateReducer,
+        shops: shopReducer,
         orders: orderSlice,
         historyOrders: historyOrdersSlice,
         discounts: discountReducer,

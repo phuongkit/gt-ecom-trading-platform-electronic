@@ -1,7 +1,7 @@
 import { convertLength } from '@mui/material/styles/cssUtils';
 import { discountService } from '../../services';
 
-import {getAllDiscounts,addCheckoutDiscount,clearCheckoutDiscount,discounts,savetDiscountsUser,getAllDiscountsUser
+import {getAllDiscounts,addCheckoutDiscount,clearCheckoutDiscount,discounts,getDiscountsUser
 } from './discountsSlice';
 
 
@@ -12,7 +12,7 @@ export const getAllDiscountByShopId= async (dispatch, shopId) => {
 
 export const getAllDiscountByUser = async (dispatch) => {
     let res = await discountService.getDiscountByUser();
-    dispatch(getAllDiscountsUser(res.data));
+    dispatch(getDiscountsUser(res.data));
 };
 
 
@@ -25,12 +25,6 @@ export const checkDiscountCodeApi = async (dispatch, code) => {
     let res = await discountService.checkDiscountCode(code);
     dispatch(getOneDiscount(res.data));
 }
-export const saveDiscountUser = async (dispatch,code) => {
-    let res = await discountService.saveDiscount(code);
-    console.log("res",res.data)
-    dispatch(savetDiscountsUser(res.data));
-}
-
 
 // export const createDiscount = async (Discount, dispatch, navigate, DiscountList) => {
 //     try {

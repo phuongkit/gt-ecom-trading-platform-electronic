@@ -1,7 +1,12 @@
 import { axiosClient } from '~/api';
 
-export const registerShopService = {
+const branch_api = "/shops"
+
+export const shopService = {
+    getShopBySlug(slug) {
+        return axiosClient.get(`${branch_api}/slug/${slug}`)
+    },
     postShopApi(data) {
-        return axiosClient.post(`/shops`,data);
+        return axiosClient.post(`${branch_api}`,data);
     },
 };

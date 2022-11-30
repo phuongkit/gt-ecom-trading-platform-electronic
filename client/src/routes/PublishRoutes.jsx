@@ -60,7 +60,7 @@ export const publishRoutes = [
     },
     
     {
-        path: '/ShopInfo/:id/vouncher',
+        path: '/ShopInfo/:slug/vouncher',
         element: (
             <Suspense fallback={<Loading />}>
                 <ShopInfoVouncher title="Vouncher Shop | Phúc Xi Cúc" />
@@ -68,7 +68,7 @@ export const publishRoutes = [
         ),
     },
     {
-        path: '/ShopInfo/:id',
+        path: '/ShopInfo/:slug',
         element: (
             <Suspense fallback={<Loading />}>
                 <ShopInfo title="Thông tin Shop | Phúc Xi Cúc" />
