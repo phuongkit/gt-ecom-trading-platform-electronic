@@ -269,7 +269,7 @@ public class Utils {
     Date currentDate = new Date();
     if (!isAvailable && startDate != null && startDate.before(currentDate)) {
       throw new ResourceNotValidException(String.format(Utils.DISCOUNT_NOT_STARTED));
-    } else if (endDate != null && endDate.after(currentDate)) {
+    } else if (endDate != null && endDate.before(currentDate)) {
       throw new ResourceNotValidException(String.format(Utils.DISCOUNT_CODE_EXPIRED));
     }
     return true;
