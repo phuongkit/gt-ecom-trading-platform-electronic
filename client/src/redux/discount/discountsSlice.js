@@ -11,6 +11,9 @@ export const discounts = createSlice({
         },
         allDiscountsUser:{
             data: [],
+        },
+        allDiscountsUserForShop:{
+            data: [],
         }
     },
     reducers: {
@@ -20,18 +23,27 @@ export const discounts = createSlice({
         getAllDiscountsUser: (state, action) => {
             state.allDiscountsUser.data = action.payload;
         },
+        getAllDiscountsUserForShop: (state, action) => {
+            state.allDiscountsUserForShop.data = action.payload;
+        },
         savetDiscountsUser: (state, action) => {
-            const newItem = action.payload
-            const duplicatie = state.allDiscountsUser.data.filter(item=> item.id===newItem.id)
-            if(duplicatie.length>0){
-                state.allDiscountsUser.data= state.allDiscountsUser.data.filter(item=>item.id!==newItem.id)
-                state.allDiscountsUser.data=[...state.allDiscountsUser.data,newItem]
-            }else{
-                state.allDiscountsUser.data=[...state.allDiscountsUser.data,{...action.payload}]
-            }
+            state.allDiscountsUserForShop.data = [...state.allDiscountsUserForShop.data, ...action.payload]
         },
         updateAllCheckoutDiscount: (state, action) => {
             state.checkoutDiscounts.data = action.payload || [];
+        },
+        reduceDiscountsShop: (state, action) => {
+            const id = action.payload;
+            const getItemReduce =  state.allDiscounts.data.map(
+                (item) => 
+                {
+                    if(item.id === id){
+                        item.quantity = item.quantity - 1
+                    }
+                    return item        
+                }
+            );
+            state.allDiscounts.data =[...getItemReduce]
         },
         addCheckoutDiscount: (state, action) => {
             const newItem = action.payload;
@@ -74,7 +86,9 @@ export const {
     addCheckoutDiscount,
     clearCheckoutDiscount,
     savetDiscountsUser,
-    getAllDiscountsUser
+    getAllDiscountsUser,
+    getAllDiscountsUserForShop,
+    reduceDiscountsShop
 } = discounts.actions;
 
 export default discounts.reducer;
