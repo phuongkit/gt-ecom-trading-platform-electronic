@@ -97,3 +97,10 @@ export const toFullAddress = (address) => {
     }
     return addressString;
 };
+
+export const getNameForProductCard = (name) => {
+    if (name.length > 90) {
+        name = name.slice(0, 90) + '...';
+    }
+    return name;
+}

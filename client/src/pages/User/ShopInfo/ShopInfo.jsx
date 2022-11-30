@@ -8,23 +8,46 @@ import { useParams } from 'react-router-dom';
 import { getAllProductApi } from '../../../redux/product/productsApi';
 import { useEffect, useState } from 'react';
 import { getShopBySlugApi } from '../../../redux/shop/shopApi';
+import { ESortOptions } from '../../../utils/variableDefault';
+import { doc } from 'prettier';
 
 function ShopInfo() {
     const { slug } = useParams();
     const dispatch = useDispatch();
-    const [keySearch, setKeySearch] = useState(null);
     useEffect(() => {
         getShopBySlugApi(dispatch, slug);
     }, []);
     const shop = useSelector((state) => state.shops.oneShop.data);
-    const [numberPage, setNumberPage] = useState(1);
+    const [params, setParams] = useState({
+        keySearch: null,
+        numberPage: 1,
+        sortOption: ESortOptions.POPULAR.index,
+        sortPrice: null,
+    });
     useEffect(() => {
         if (shop?.id) {
-            getAllProductApi(dispatch, { keyword: keySearch, shopId: shop?.id, page: numberPage, limit: 6 });
+            if (params.sortPrice) {
+                getAllProductApi(dispatch, {
+                    keyword: params.keySearch,
+                    shopId: shop?.id,
+                    page: params.numberPage,
+                    limit: 6,
+                    sortField: 'price',
+                    sortDir: params.sortPrice,
+                    sortOption: params.sortOption,
+                });
+            } else {
+                getAllProductApi(dispatch, {
+                    keyword: params.keySearch,
+                    shopId: shop?.id,
+                    page: params.numberPage,
+                    limit: 6,
+                    sortOption: params.sortOption,
+                });
+            }
         }
-    }, [shop, numberPage, keySearch]);
+    }, [shop, params]);
     const { content: productList = [], ...page } = useSelector((state) => state.products.pageProductShop.data);
-    console.log(page);
     return (
         <div
             className="container mt-8"
@@ -34,7 +57,7 @@ function ShopInfo() {
                 margin: '50px auto',
             }}
         >
-            <div className="row grid grid-cols-12">
+            <div className="row grid grid-cols-12 p-4 mb-12">
                 <div className="col-span-4">
                     <div className="flex items-center my-4">
                         <div className="flex gap-8">
@@ -48,21 +71,12 @@ function ShopInfo() {
                                 ></img>
                             </div>
                             <div className="flex flex-col gap-3 flex-1">
-                                <div
-                                    href="#"
-                                    className="mb-2 w-full list-group-item text-orange-500 font-semibold"
-                                >
+                                <div href="#" className="mb-2 w-full list-group-item text-orange-500 font-semibold">
                                     Thông tin Shop
                                 </div>
-                                <span className="list-group-item">
-                                    {shop.name}
-                                </span>
-                                <span className="list-group-item">
-                                    {shop.phone}
-                                </span>
-                                <span className="list-group-item">
-                                    {shop.email}
-                                </span>
+                                <span className="list-group-item">{shop.name}</span>
+                                <span className="list-group-item">{shop.phone}</span>
+                                <span className="list-group-item">{shop.email}</span>
                             </div>
                         </div>
                     </div>
@@ -352,34 +366,80 @@ function ShopInfo() {
                 </div>
 
                 <div className="col-span-9">
-                    <ul className="shop__sorting">
-                        <li className="active">
-                            <a href="#">Popular</a>
+                    <ul className="shop__sorting bg-white px-12">
+                        <span>Sắp xếp theo:</span>
+                        <li className={ESortOptions.POPULAR.index === params.sortOption ? 'active' : ''}>
+                            <a
+                                onClick={(e) =>
+                                    setParams((prev) => ({
+                                        ...prev,
+                                        sortOption: ESortOptions.POPULAR.index,
+                                        numberPage: 1,
+                                    }))
+                                }
+                            >
+                                Phổ biến
+                            </a>
+                        </li>
+                        <li className={ESortOptions.LATEST.index === params.sortOption ? 'active' : ''}>
+                            <a
+                                onClick={(e) =>
+                                    setParams((prev) => ({
+                                        ...prev,
+                                        sortOption: ESortOptions.LATEST.index,
+                                        numberPage: 1,
+                                    }))
+                                }
+                            >
+                                Mới nhất
+                            </a>
+                        </li>
+                        <li className={ESortOptions.TOP_SALES.index === params.sortOption ? 'active' : ''}>
+                            <a
+                                onClick={(e) =>
+                                    setParams((prev) => ({
+                                        ...prev,
+                                        sortOption: ESortOptions.TOP_SALES.index,
+                                        numberPage: 1,
+                                    }))
+                                }
+                            >
+                                Bán chạy
+                            </a>
                         </li>
                         <li>
-                            <a href="#">Newest</a>
-                        </li>
-                        <li>
-                            <a href="#">Bestselling</a>
-                        </li>
-                        <li>
-                            <a href="#">Price (low)</a>
-                        </li>
-                        <li>
-                            <a href="#">Price (high)</a>
+                            <select
+                                name="sortPrice"
+                                id="sortPrice"
+                                className="w-[200px]"
+                                placeholder="Giá"
+                                onChange={(e) => setParams((prev) => ({ ...prev, sortPrice: e.target.value }))}
+                            >
+                                <option disabled selected>
+                                    Giá
+                                </option>
+                                <option value="asc">Giá thấp đến cao</option>
+                                <option value="dec">Giá cao đến thấp</option>
+                            </select>
                         </li>
                     </ul>
                     <div>
                         <input
                             type="text"
-                            className="mb-[15px] w-[180px] pl-6 form-control border-none rounded-2xl p-4"
+                            className="mb-[15px] w-[220px] pl-6 form-control border-none rounded-2xl p-4"
                             placeholder="Search products..."
-                            onChange={(e) => setKeySearch(e.target.value)}
+                            id="search"
                         ></input>
-                        <SearchHeartFill className=" ml-4 font-light text-[16px] cursor-pointer text-gray-300"></SearchHeartFill>
+                        <SearchHeartFill
+                            className=" ml-4 font-light text-[16px] cursor-pointer text-gray-300"
+                            onClick={() =>
+                                setParams((prev) => ({ ...prev, keySearch: document.getElementById('search').value }))
+                            }
+                        ></SearchHeartFill>
+                        <span className="ml-12">Tất cả sản phẩm: {page.totalElements || 0} kết quả</span>
                     </div>
 
-                    <div className="row flex flex-wrap gap-4">
+                    <div className="row flex flex-wrap gap-24">
                         {productList.map((item) => (
                             <ProductCard {...item}></ProductCard>
                         ))}
@@ -388,19 +448,15 @@ function ShopInfo() {
                         <Paging
                             currentPage={page.number}
                             totalPages={page.totalPages}
-                            onClick={(e) => setNumberPage(Number.parseInt(e.target.innerText))}
+                            onClick={(e) =>
+                                setParams((prev) => ({ ...prev, numberPage: Number.parseInt(e.target.innerText) }))
+                            }
                         />
                         <div className="col-span-12">
                             <ul className="pagination pull-right flex gap-4 absolute bottom-0 right-12">
                                 <li className="disabled">
                                     <a href="#">«</a>
                                 </li>
-                                {/* <li className="active"><a href="#">1 <span className="sr-only">(current)</span></a></li>
-            <li><a href="#">2</a></li>
-            <li><a href="#">3</a></li>
-            <li><a href="#">4</a></li>
-            <li><a href="#">5</a></li>
-            <li><a href="#">»</a></li> */}
                             </ul>
                         </div>
                     </div>

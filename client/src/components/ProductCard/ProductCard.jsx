@@ -6,6 +6,7 @@ import { useState } from 'react';
 import numberWithCommas from '../../utils/numberWithCommas';
 import { productHistory } from '~/helpers/localStorage';
 import { useDispatch } from 'react-redux';
+import { getNameForProductCard } from '../../utils';
 
 function ProductCard(props) {
     const dispatch = useDispatch();
@@ -43,7 +44,7 @@ function ProductCard(props) {
                         )}
                     </div>
                     {props.tag && <p className={styles.tag}>{props.tag}</p>  || <p className={'h-[21px]'}></p>}
-                    <p className={styles.title + ' h-[63px]'}>{props.title}</p>
+                    <p className={styles.title + ' h-[63px]'}>{getNameForProductCard(props.title)}</p>
                     {props.category === 'dienthoai' || props.category === 'tablet' ? (
                         <div className={styles.cardCompare}>
                             <p>{/*props.parameter[0].SCREEN && <span>{props.parameter[0].SCREEN}</span>*/}</p>
@@ -90,6 +91,7 @@ function ProductCard(props) {
                             </i>
                         </span>
                         <span className="text-gray-400">&ensp;({props.totalVote})</span>
+                        <span className="ml-3">Đã bán {props.soldQuantity}</span>
                     </p>
                 </div>
             </div>

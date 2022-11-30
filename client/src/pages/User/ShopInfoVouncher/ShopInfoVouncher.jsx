@@ -7,8 +7,9 @@ import { useEffect, useState } from 'react';
 import { getAllDiscountByUser } from '../../../redux/discount/discountsApi';
 import { saveDiscountUser, loadDiscountUserForShop,reduceDiscount } from '../../../redux/discount/discountsApi';
 import numberWithCommas from '../../../utils/numberWithCommas';
+import { getShopBySlugApi } from '../../../redux/shop/shopApi';
 function ShopInfo({ props }) {
-    const { id: shopId } = useParams()
+    const { slug} = useParams()
     const dispatch = useDispatch()
     const [checked, setChecked] = useState(1);
     const optionsFillter = [
@@ -22,9 +23,15 @@ function ShopInfo({ props }) {
         }
     ];
     useEffect(() => {
-        getAllDiscountByShopId(dispatch, shopId)
+        getShopBySlugApi(dispatch, slug);
+    }, []);
+    const shop = useSelector((state) => state.shops.oneShop.data);
+    useEffect(() => {
+        if (shop) {
+        getAllDiscountByShopId(dispatch, shop?.id)
         getAllDiscountByUser(dispatch)
-    }, [])
+        }
+    }, [shop])
     const discountsShop = useSelector(state => state.discounts.allDiscounts.data)
     const discountsAllShop = useSelector(state => state.discounts.allDiscountsUser.data)
     const discountsUserForShop = useSelector(state => state.discounts.allDiscountsUserForShop.data);
