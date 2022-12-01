@@ -9,4 +9,7 @@ export const brandService = {
     getAllBrandsByCategoryId(categoryId) {
         return axiosClient.get(`${branch_api}/categoryId/${categoryId}`);
     },
+    getAllBrandsByShopId(shopId) {
+        return axiosClient.get(`${branch_api}/shopId/${shopId}`);
+    },
 };

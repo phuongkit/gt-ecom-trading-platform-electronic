@@ -7,7 +7,6 @@ const SingUp = lazy(() => import('../components/SignUpForm'));
 const Category = lazy(() => import('../pages/User/Category'));
 const Cart = lazy(() => import('../pages/User/Cart'));
 const ShopInfo = lazy(() => import('../pages/User/ShopInfo'));
-const ShopInfoVouncher = lazy(() => import('../pages/User/ShopInfoVouncher'));
 const Order = lazy(() => import('../pages/User/Order'));
 const PurchaseHistory = lazy(() => import('../pages/User/History/PurchaseHistory'));
 const History = lazy(() => import('../pages/User/History'));
@@ -78,15 +77,6 @@ export const publishRoutes = [
         element: (
             <Suspense fallback={<Loading />}>
                 <Cart title="Giỏ hàng - Phúc Xi Cúc" />
-            </Suspense>
-        ),
-    },
-    
-    {
-        path: '/ShopInfo/:slug/vouncher',
-        element: (
-            <Suspense fallback={<Loading />}>
-                <ShopInfoVouncher title="Vouncher Shop | Phúc Xi Cúc" />
             </Suspense>
         ),
     },

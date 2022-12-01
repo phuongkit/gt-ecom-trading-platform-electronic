@@ -5,8 +5,8 @@ const branch_api = '/products';
 export const productService = {
     getProducts({
         keyword = null,
-        categoryId = null,
-        brandId = null,
+        categoryIds = [],
+        brandIds = [],
         shopId = null,
         page = null,
         limit = null,
@@ -19,8 +19,8 @@ export const productService = {
     }) {
         const params = {
             keyword: keyword,
-            categoryId: categoryId,
-            brandId: brandId,
+            // categoryId: categoryId,
+            // brandId: brandId,
             shopId: shopId,
             page: page,
             limit: limit,
@@ -31,10 +31,16 @@ export const productService = {
             minPrice: minPrice,
             maxPrice: maxPrice,
         };
-        const query = Object.keys(params).reduce((acc, key) => {
+        let query = Object.keys(params).reduce((acc, key) => {
             const value = params[key];
             return value ? acc + `${key}=${params[key]}&` : acc;
         }, '');
+        if (brandIds.length > 0) {
+            query += `brandIds=${brandIds.join(',')}&`;
+        }
+        if (categoryIds.length > 0) {
+            query += `categoryIds=${categoryIds.join(',')}&`;
+        }
         console.log('query: ', query);
         return axiosClient.get(`${branch_api}?${query}`);
     },

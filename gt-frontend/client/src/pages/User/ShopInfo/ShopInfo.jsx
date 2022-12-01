@@ -1,15 +1,15 @@
-import ProductCard from '../../../components/ProductCard';
-import Paging from '../../../components/Paging';
 import './shopinfo.scss';
 
-import { SearchHeartFill } from 'react-bootstrap-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { getAllProductApi } from '../../../redux/product/productsApi';
 import { useEffect, useState } from 'react';
 import { getShopBySlugApi } from '../../../redux/shop/shopApi';
-import { ESortOptions } from '../../../utils/variableDefault';
 import { doc } from 'prettier';
+import { getAllCategoriesByShopIdApi } from '../../../redux/category/categoriesApi';
+import { getAllBrandByShopIdApi } from '../../../redux/brand/brandApi';
+
+import ShopAllProduct from './ShopAllProduct';
+import ShopInfoVouncher from './ShopInfoVouncher';
 
 function ShopInfo() {
     const { slug } = useParams();
@@ -18,36 +18,15 @@ function ShopInfo() {
         getShopBySlugApi(dispatch, slug);
     }, []);
     const shop = useSelector((state) => state.shops.oneShop.data);
-    const [params, setParams] = useState({
-        keySearch: null,
-        numberPage: 1,
-        sortOption: ESortOptions.POPULAR.index,
-        sortPrice: null,
-    });
     useEffect(() => {
         if (shop?.id) {
-            if (params.sortPrice) {
-                getAllProductApi(dispatch, {
-                    keyword: params.keySearch,
-                    shopId: shop?.id,
-                    page: params.numberPage,
-                    limit: 6,
-                    sortField: 'price',
-                    sortDir: params.sortPrice,
-                    sortOption: params.sortOption,
-                });
-            } else {
-                getAllProductApi(dispatch, {
-                    keyword: params.keySearch,
-                    shopId: shop?.id,
-                    page: params.numberPage,
-                    limit: 6,
-                    sortOption: params.sortOption,
-                });
-            }
+            getAllCategoriesByShopIdApi(dispatch, shop?.id);
+            getAllBrandByShopIdApi(dispatch, shop?.id);
         }
-    }, [shop, params]);
-    const { content: productList = [], ...page } = useSelector((state) => state.products.pageProductShop.data);
+    }, [shop]);
+    const categoriesByShop = useSelector((state) => state.categories.allCategoryByShop.data);
+    const brandsByShop = useSelector((state) => state.brands.allBrandByShop.data);
+    const [panel, setPanel] = useState(0);
     return (
         <div
             className="container mt-8"
@@ -82,40 +61,40 @@ function ShopInfo() {
                     </div>
                 </div>
                 <div className="col-span-8">
-                    <div class="seller-info-list h-[170px]">
-                        <div class="seller-info-item seller-info-item---clickable">
-                            <div class="seller-info-item-icon-wrapper">
+                    <div className="seller-info-list h-[170px]">
+                        <div className="seller-info-item seller-info-item---clickable">
+                            <div className="seller-info-item-icon-wrapper">
                                 <svg
-                                    enable-background="new 0 0 15 15"
+                                    enableBackground="new 0 0 15 15"
                                     viewBox="0 0 15 15"
                                     x="0"
                                     y="0"
-                                    stroke-width="0"
-                                    class="shopee-svg-icon"
+                                    strokeWidth="0"
+                                    className="shopee-svg-icon"
                                 >
                                     <path d="m13 1.9c-.2-.5-.8-1-1.4-1h-8.4c-.6.1-1.2.5-1.4 1l-1.4 4.3c0 .8.3 1.6.9 2.1v4.8c0 .6.5 1 1.1 1h10.2c.6 0 1.1-.5 1.1-1v-4.6c.6-.4.9-1.2.9-2.3zm-11.4 3.4 1-3c .1-.2.4-.4.6-.4h8.3c.3 0 .5.2.6.4l1 3zm .6 3.5h.4c.7 0 1.4-.3 1.8-.8.4.5.9.8 1.5.8.7 0 1.3-.5 1.5-.8.2.3.8.8 1.5.8.6 0 1.1-.3 1.5-.8.4.5 1.1.8 1.7.8h.4v3.9c0 .1 0 .2-.1.3s-.2.1-.3.1h-9.5c-.1 0-.2 0-.3-.1s-.1-.2-.1-.3zm8.8-1.7h-1v .1s0 .3-.2.6c-.2.1-.5.2-.9.2-.3 0-.6-.1-.8-.3-.2-.3-.2-.6-.2-.6v-.1h-1v .1s0 .3-.2.5c-.2.3-.5.4-.8.4-1 0-1-.8-1-.8h-1c0 .8-.7.8-1.3.8s-1.1-1-1.2-1.7h12.1c0 .2-.1.9-.5 1.4-.2.2-.5.3-.8.3-1.2 0-1.2-.8-1.2-.9z"></path>
                                 </svg>
                             </div>
-                            <div class="seller-info-item-text">
-                                <div class="seller-info-item-text-name">Sản phẩm:&nbsp;</div>
-                                <div class="seller-info-item-text-value">{page.totalElements}</div>
+                            <div className="seller-info-item-text">
+                                <div className="seller-info-item-text-name">Sản phẩm:&nbsp;</div>
+                                <div className="seller-info-item-text-value">0</div>
                             </div>
                         </div>
-                        <div class="seller-info-item">
-                            <div class="seller-info-item-icon-wrapper">
+                        <div className="seller-info-item">
+                            <div className="seller-info-item-icon-wrapper">
                                 <svg
-                                    enable-background="new 0 0 15 15"
+                                    enableBackground="new 0 0 15 15"
                                     viewBox="0 0 15 15"
                                     x="0"
                                     y="0"
-                                    class="shopee-svg-icon"
+                                    className="shopee-svg-icon"
                                 >
                                     <g>
-                                        <circle cx="7" cy="4.5" fill="none" r="3.8" stroke-miterlimit="10"></circle>
+                                        <circle cx="7" cy="4.5" fill="none" r="3.8" strokeMiterlimit="10"></circle>
                                         <line
                                             fill="none"
-                                            stroke-linecap="round"
-                                            stroke-miterlimit="10"
+                                            strokeLinecap="round"
+                                            strokeMiterlimit="10"
                                             x1="12"
                                             x2="12"
                                             y1="11.2"
@@ -123,8 +102,8 @@ function ShopInfo() {
                                         ></line>
                                         <line
                                             fill="none"
-                                            stroke-linecap="round"
-                                            stroke-miterlimit="10"
+                                            strokeLinecap="round"
+                                            strokeMiterlimit="10"
                                             x1="10.5"
                                             x2="13.5"
                                             y1="12.8"
@@ -133,32 +112,32 @@ function ShopInfo() {
                                         <path
                                             d="m1.5 13.8c0-3 2.5-5.5 5.5-5.5 1.5 0 2.9.6 3.9 1.6"
                                             fill="none"
-                                            stroke-linecap="round"
-                                            stroke-miterlimit="10"
+                                            strokeLinecap="round"
+                                            strokeMiterlimit="10"
                                         ></path>
                                     </g>
                                 </svg>
                             </div>
-                            <div class="seller-info-item-text">
-                                <div class="seller-info-item-text-name">Đang Theo:&nbsp;</div>
-                                <div class="seller-info-item-text-value">17</div>
+                            <div className="seller-info-item-text">
+                                <div className="seller-info-item-text-name">Đang Theo:&nbsp;</div>
+                                <div className="seller-info-item-text-value">17</div>
                             </div>
                         </div>
-                        <div class="seller-info-item">
-                            <div class="seller-info-item-icon-wrapper">
+                        <div className="seller-info-item">
+                            <div className="seller-info-item-icon-wrapper">
                                 <svg
-                                    enable-background="new 0 0 15 15"
+                                    enableBackground="new 0 0 15 15"
                                     viewBox="0 0 15 15"
                                     x="0"
                                     y="0"
-                                    class="shopee-svg-icon"
+                                    className="shopee-svg-icon"
                                 >
                                     <g>
                                         <polygon
                                             fill="none"
                                             points="14 10.8 7 10.8 3 13.8 3 10.8 1 10.8 1 1.2 14 1.2"
-                                            stroke-linejoin="round"
-                                            stroke-miterlimit="10"
+                                            strokeLinejoin="round"
+                                            strokeMiterlimit="10"
                                         ></polygon>
                                         <circle cx="4" cy="5.8" r="1" stroke="none"></circle>
                                         <circle cx="7.5" cy="5.8" r="1" stroke="none"></circle>
@@ -166,17 +145,17 @@ function ShopInfo() {
                                     </g>
                                 </svg>
                             </div>
-                            <div class="seller-info-item-text">
-                                <div class="seller-info-item-text-name">Tỉ lệ phản hồi Chat:&nbsp;</div>
-                                <div class="seller-info-item-text-value">
+                            <div className="seller-info-item-text">
+                                <div className="seller-info-item-text-name">Tỉ lệ phản hồi Chat:&nbsp;</div>
+                                <div className="seller-info-item-text-value">
                                     96% (trong vài giờ)
-                                    <div class="section-seller-overview__inline-icon section-seller-overview__inline-icon--help">
+                                    <div className="section-seller-overview__inline-icon section-seller-overview__inline-icon--help">
                                         <svg width="10" height="10">
                                             <g
                                                 fill="currentColor"
-                                                fill-rule="nonzero"
+                                                fillRule="nonzero"
                                                 color="currentColor"
-                                                stroke-width="0"
+                                                strokeWidth="0"
                                             >
                                                 <path d="M5 10A5 5 0 1 1 5 0a5 5 0 0 1 0 10zM5 .675a4.325 4.325 0 1 0 0 8.65 4.325 4.325 0 0 0 0-8.65z"></path>
                                                 <path d="M6.235 5.073c.334-.335.519-.79.514-1.264a1.715 1.715 0 0 0-.14-.684 1.814 1.814 0 0 0-.933-.951A1.623 1.623 0 0 0 5 2.03a1.66 1.66 0 0 0-.676.14 1.772 1.772 0 0 0-.934.948c-.093.219-.14.454-.138.691a.381.381 0 0 0 .106.276c.07.073.168.113.27.11a.37.37 0 0 0 .348-.235c.02-.047.031-.099.03-.15a1.006 1.006 0 0 1 .607-.933.954.954 0 0 1 .772.002 1.032 1.032 0 0 1 .61.93c.003.267-.1.525-.288.716l-.567.537c-.343.35-.514.746-.514 1.187a.37.37 0 0 0 .379.382c.1.002.195-.037.265-.108a.375.375 0 0 0 .106-.274c0-.232.097-.446.29-.642l.568-.534zM5 6.927a.491.491 0 0 0-.363.152.53.53 0 0 0 0 .74.508.508 0 0 0 .726 0 .53.53 0 0 0 0-.74A.491.491 0 0 0 5 6.927z"></path>
@@ -186,282 +165,119 @@ function ShopInfo() {
                                 </div>
                             </div>
                         </div>
-                        <div class="seller-info-item">
-                            <div class="seller-info-item-icon-wrapper">
+                        <div className="seller-info-item">
+                            <div className="seller-info-item-icon-wrapper">
                                 <svg
-                                    enable-background="new 0 0 15 15"
+                                    enableBackground="new 0 0 15 15"
                                     viewBox="0 0 15 15"
                                     x="0"
                                     y="0"
-                                    class="shopee-svg-icon"
+                                    className="shopee-svg-icon"
                                 >
                                     <g>
-                                        <circle cx="5.5" cy="5" fill="none" r="4" stroke-miterlimit="10"></circle>
+                                        <circle cx="5.5" cy="5" fill="none" r="4" strokeMiterlimit="10"></circle>
                                         <path
                                             d="m8.4 7.5c.7 0 1.1.7 1.1 1.6v4.9h-8v-4.9c0-.9.4-1.6 1.1-1.6"
                                             fill="none"
-                                            stroke-linejoin="round"
-                                            stroke-miterlimit="10"
+                                            strokeLinejoin="round"
+                                            strokeMiterlimit="10"
                                         ></path>
                                         <path
                                             d="m12.6 6.9c.7 0 .9.6.9 1.2v5.7h-2"
                                             fill="none"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-miterlimit="10"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeMiterlimit="10"
                                         ></path>
                                         <path
                                             d="m9.5 1.2c1.9 0 3.5 1.6 3.5 3.5 0 1.4-.9 2.7-2.1 3.2"
                                             fill="none"
-                                            stroke-linecap="round"
-                                            stroke-miterlimit="10"
+                                            strokeLinecap="round"
+                                            strokeMiterlimit="10"
                                         ></path>
                                     </g>
                                 </svg>
                             </div>
-                            <div class="seller-info-item-text">
-                                <div class="seller-info-item-text-name">Người theo dõi:&nbsp;</div>
-                                <div class="seller-info-item-text-value">59,9k</div>
+                            <div className="seller-info-item-text">
+                                <div className="seller-info-item-text-name">Người theo dõi:&nbsp;</div>
+                                <div className="seller-info-item-text-value">59,9k</div>
                             </div>
                         </div>
-                        <div class="seller-info-item seller-info-item---clickable">
-                            <div class="seller-info-item-icon-wrapper">
+                        <div className="seller-info-item seller-info-item---clickable">
+                            <div className="seller-info-item-icon-wrapper">
                                 <svg
-                                    enable-background="new 0 0 15 15"
+                                    enableBackground="new 0 0 15 15"
                                     viewBox="0 0 15 15"
                                     x="0"
                                     y="0"
-                                    class="shopee-svg-icon icon-rating"
+                                    className="shopee-svg-icon icon-rating"
                                 >
                                     <polygon
                                         fill="none"
                                         points="7.5 .8 9.7 5.4 14.5 5.9 10.7 9.1 11.8 14.2 7.5 11.6 3.2 14.2 4.3 9.1 .5 5.9 5.3 5.4"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-miterlimit="10"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeMiterlimit="10"
                                     ></polygon>
                                 </svg>
                             </div>
-                            <div class="seller-info-item-text">
-                                <div class="seller-info-item-text-name">đánh giá:&nbsp;</div>
-                                <div class="seller-info-item-text-value">4.8 (19,5k đánh giá)</div>
+                            <div className="seller-info-item-text">
+                                <div className="seller-info-item-text-name">đánh giá:&nbsp;</div>
+                                <div className="seller-info-item-text-value">4.8 (19,5k đánh giá)</div>
                             </div>
                         </div>
-                        <div class="seller-info-item">
-                            <div class="seller-info-item-icon-wrapper">
+                        <div className="seller-info-item">
+                            <div className="seller-info-item-icon-wrapper">
                                 <svg
-                                    enable-background="new 0 0 15 15"
+                                    enableBackground="new 0 0 15 15"
                                     viewBox="0 0 15 15"
                                     x="0"
                                     y="0"
-                                    class="shopee-svg-icon"
+                                    className="shopee-svg-icon"
                                 >
                                     <g>
-                                        <circle cx="6.8" cy="4.2" fill="none" r="3.8" stroke-miterlimit="10"></circle>
+                                        <circle cx="6.8" cy="4.2" fill="none" r="3.8" strokeMiterlimit="10"></circle>
                                         <polyline
                                             fill="none"
                                             points="9.2 12.5 11.2 14.5 14.2 11"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-miterlimit="10"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeMiterlimit="10"
                                         ></polyline>
                                         <path
                                             d="m .8 14c0-3.3 2.7-6 6-6 2.1 0 3.9 1 5 2.6"
                                             fill="none"
-                                            stroke-linecap="round"
-                                            stroke-miterlimit="10"
+                                            strokeLinecap="round"
+                                            strokeMiterlimit="10"
                                         ></path>
                                     </g>
                                 </svg>
                             </div>
-                            <div class="seller-info-item-text">
-                                <div class="seller-info-item-text-name">tham gia:&nbsp;</div>
-                                <div class="seller-info-item-text-value">13 tháng trước</div>
+                            <div className="seller-info-item-text">
+                                <div className="seller-info-item-text-name">tham gia:&nbsp;</div>
+                                <div className="seller-info-item-text-value">13 tháng trước</div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div className="row grid grid-cols-12">
-                <div className="col-span-3">
-                    <form>
-                        <div className="well">
-                            <div className="row">
-                                <div className="col-span-12">
-                                    <div className="input-group">
-                                        <span className="input-group-btn">
-                                            <button className="btn btn-primary" type="submit">
-                                                <i className="fa fa-search"></i>
-                                            </button>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-
-                    <form className="shop__filter mt-4">
-                        <h3 className="headline">
-                            <span>Brand</span>
-                        </h3>
-                        <div className="checkbox">
-                            <input type="checkbox" value="" id="shop-filter-checkbox_1" checked={true}></input>
-                            <label htmlFor="shop-filter-checkbox_1">Adidas</label>
-                        </div>
-                        <div className="checkbox">
-                            <input type="checkbox" value="" id="shop-filter-checkbox_2"></input>
-                            <label htmlFor="shop-filter-checkbox_2">Calvin Klein</label>
-                        </div>
-                        <div className="checkbox">
-                            <input type="checkbox" value="" id="shop-filter-checkbox_3"></input>
-                            <label htmlFor="shop-filter-checkbox_3">Columbia</label>
-                        </div>
-                        <div className="checkbox">
-                            <input type="checkbox" value="" id="shop-filter-checkbox_4"></input>
-                            <label htmlFor="shop-filter-checkbox_4">Tommy Hilfiger</label>
-                        </div>
-                        <div className="checkbox">
-                            <input type="checkbox" value="" id="shop-filter-checkbox_5"></input>
-                            <label htmlFor="shop-filter-checkbox_5">Not specified</label>
-                        </div>
-
-                        <h3 className="headline">
-                            <span>Material</span>
-                        </h3>
-                        <div className="radio">
-                            <input
-                                type="radio"
-                                name="shop-filter__radio"
-                                id="shop-filter-radio_1"
-                                value=""
-                                checked={true}
-                            ></input>
-                            <label htmlFor="shop-filter-radio_1">100% Cotton</label>
-                        </div>
-                        <div className="radio">
-                            <input type="radio" name="shop-filter__radio" id="shop-filter-radio_2" value=""></input>
-                            <label htmlFor="shop-filter-radio_2">Bamboo</label>
-                        </div>
-                        <div className="radio">
-                            <input type="radio" name="shop-filter__radio" id="shop-filter-radio_3" value=""></input>
-                            <label htmlFor="shop-filter-radio_3">Leather</label>
-                        </div>
-                        <div className="radio">
-                            <input type="radio" name="shop-filter__radio" id="shop-filter-radio_4" value=""></input>
-                            <label htmlFor="shop-filter-radio_4">Polyester</label>
-                        </div>
-                        <div className="radio">
-                            <input type="radio" name="shop-filter__radio" id="shop-filter-radio_5" value=""></input>
-                            <label htmlFor="shop-filter-radio_5">Not specified</label>
-                        </div>
-
-                        <h3 className="headline">
-                            <span>Colors</span>
-                        </h3>
-                        <div className="shop-filter__color">
-                            <input type="text" id="shop-filter-color_1" value="" data-input-color="black"></input>
-                            <label htmlFor="shop-filter-color_1"></label>
-                        </div>
-                    </form>
-                </div>
-
-                <div className="col-span-9">
-                    <ul className="shop__sorting bg-white px-12">
-                        <span>Sắp xếp theo:</span>
-                        <li className={ESortOptions.POPULAR.index === params.sortOption ? 'active' : ''}>
-                            <a
-                                onClick={(e) =>
-                                    setParams((prev) => ({
-                                        ...prev,
-                                        sortOption: ESortOptions.POPULAR.index,
-                                        numberPage: 1,
-                                    }))
-                                }
-                            >
-                                Phổ biến
-                            </a>
-                        </li>
-                        <li className={ESortOptions.LATEST.index === params.sortOption ? 'active' : ''}>
-                            <a
-                                onClick={(e) =>
-                                    setParams((prev) => ({
-                                        ...prev,
-                                        sortOption: ESortOptions.LATEST.index,
-                                        numberPage: 1,
-                                    }))
-                                }
-                            >
-                                Mới nhất
-                            </a>
-                        </li>
-                        <li className={ESortOptions.TOP_SALES.index === params.sortOption ? 'active' : ''}>
-                            <a
-                                onClick={(e) =>
-                                    setParams((prev) => ({
-                                        ...prev,
-                                        sortOption: ESortOptions.TOP_SALES.index,
-                                        numberPage: 1,
-                                    }))
-                                }
-                            >
-                                Bán chạy
-                            </a>
-                        </li>
-                        <li>
-                            <select
-                                name="sortPrice"
-                                id="sortPrice"
-                                className="w-[200px]"
-                                placeholder="Giá"
-                                onChange={(e) => setParams((prev) => ({ ...prev, sortPrice: e.target.value }))}
-                            >
-                                <option disabled selected>
-                                    Giá
-                                </option>
-                                <option value="asc">Giá thấp đến cao</option>
-                                <option value="dec">Giá cao đến thấp</option>
-                            </select>
-                        </li>
-                    </ul>
-                    <div>
-                        <input
-                            type="text"
-                            className="mb-[15px] w-[220px] pl-6 form-control border-none rounded-2xl p-4"
-                            placeholder="Search products..."
-                            id="search"
-                        ></input>
-                        <SearchHeartFill
-                            className=" ml-4 font-light text-[16px] cursor-pointer text-gray-300"
-                            onClick={() =>
-                                setParams((prev) => ({ ...prev, keySearch: document.getElementById('search').value }))
-                            }
-                        ></SearchHeartFill>
-                        <span className="ml-12">Tất cả sản phẩm: {page.totalElements || 0} kết quả</span>
-                    </div>
-
-                    <div className="row flex flex-wrap gap-24">
-                        {productList.map((item) => (
-                            <ProductCard {...item}></ProductCard>
-                        ))}
-                    </div>
-                    <div className="row">
-                        <Paging
-                            currentPage={page.number}
-                            totalPages={page.totalPages}
-                            onClick={(e) =>
-                                setParams((prev) => ({ ...prev, numberPage: Number.parseInt(e.target.innerText) }))
-                            }
-                        />
-                        <div className="col-span-12">
-                            <ul className="pagination pull-right flex gap-4 absolute bottom-0 right-12">
-                                <li className="disabled">
-                                    <a href="#">«</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
+            <div className="row">
+                <ul className="h-32 bg-white flex justify-center shop__sorting">
+                    <li className={panel == 0 ? 'active' : ''} onClick={(e) => setPanel(0)}>
+                        <a href="#">Tất cả sản phẩm</a>
+                    </li>
+                    <li className={panel == 1 ? 'active' : ''} onClick={(e) => setPanel(1)}>
+                        <a href="#">Mã voucher</a>
+                    </li>
+                </ul>
             </div>
+            {panel === 0 ? (
+                <ShopAllProduct shop={shop} categoriesByShop={categoriesByShop} brandsByShop={brandsByShop} />
+            ) : panel === 1 ? (
+                <ShopInfoVouncher />
+            ) : (
+                <></>
+            )}
         </div>
     );
 }
