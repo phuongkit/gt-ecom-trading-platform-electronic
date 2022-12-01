@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 /**
  * @author minh phuong
  * @created 20/09/2022 - 10:00 PM
- * @project gt-backend
  */
 @Component
 public class AddressMapperImpl implements AddressMapper {

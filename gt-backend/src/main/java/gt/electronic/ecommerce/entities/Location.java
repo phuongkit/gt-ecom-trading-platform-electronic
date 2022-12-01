@@ -8,11 +8,9 @@ import javax.validation.constraints.NotNull;
 /**
  * @author minh phuong
  * @created 09/09/2022 - 1:39 PM
- * @project gt-backend
  */
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity

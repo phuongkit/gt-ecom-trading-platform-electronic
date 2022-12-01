@@ -12,11 +12,9 @@ import java.util.Set;
 /**
  * @author minh phuong
  * @created 09/09/2022 - 2:04 PM
- * @project gt-backend
  */
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity

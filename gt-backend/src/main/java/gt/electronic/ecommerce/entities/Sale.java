@@ -16,11 +16,9 @@ import java.util.Set;
 /**
  * @author minh phuong
  * @created 16/09/2022 - 8:21 PM
- * @project gt-backend
  */
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity

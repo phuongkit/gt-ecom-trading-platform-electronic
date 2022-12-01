@@ -12,7 +12,6 @@ import java.util.Date;
 /**
  * @author minh phuong
  * @created 19/09/2022 - 9:12 PM
- * @project gt-backend
  */
 @Getter
 @Setter

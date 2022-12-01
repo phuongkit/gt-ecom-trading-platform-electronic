@@ -146,24 +146,28 @@ import java.util.*;
       Pageable pageable
   ) {
     this.LOGGER.info(String.format(Utils.LOG_GET_ALL_OBJECT_BY_FIELD, branchName, "Keyword", keyword));
-    Brand brandFound = null;
-    Category categoryFound = null;
+    List<Brand> brandList = new ArrayList<>();
+    List<Category> categoryList = new ArrayList<>();
     Shop shopFound = null;
     Location locationFound = null;
     if (brandName != null) {
+      Brand brandFound;
       brandFound = this.brandRepo.findByName(brandName)
           .orElseThrow(() -> new ResourceNotFound(String.format(Utils.OBJECT_NOT_FOUND_BY_FIELD,
                                                                 Brand.class.getSimpleName(),
                                                                 "Name",
                                                                 brandName)));
+      brandList.add(brandFound);
     }
 
     if (categoryName != null) {
+      Category categoryFound;
       categoryFound = this.categoryRepo.findByName(categoryName).orElseThrow(() -> new ResourceNotFound(String.format(
           Utils.OBJECT_NOT_FOUND_BY_FIELD,
           Category.class.getSimpleName(),
           "Name",
           brandName)));
+      categoryList.add(categoryFound);
     }
     if (shopName != null) {
       shopFound = this.shopRepo.findByName(shopName)
@@ -175,10 +179,9 @@ import java.util.*;
     if (locationString != null && locationString.length() > 0) {
       locationFound = this.locationService.getLocation(Utils.getLocationFromLocationString(locationString));
     }
-    assert categoryFound != null;
     Page<Product> productPage = this.productRepo.filterProductToPage(keyword,
-                                                                     categoryFound,
-                                                                     brandFound,
+                                                                     categoryList,
+                                                                     brandList,
                                                                      shopFound,
                                                                      locationFound,
                                                                      minPrice,
@@ -207,8 +210,8 @@ import java.util.*;
 
   @Override public Page<ProductGalleryDTO> getAllProductCategoryIdAndBrandId(
       String keyword,
-      Integer brandId,
-      Integer categoryId,
+      List<Integer> brandIds,
+      List<Integer> categoryIds,
       Integer shopId,
       String locationString,
       int sortOption,
@@ -219,29 +222,35 @@ import java.util.*;
     this.LOGGER.info(String.format(Utils.LOG_GET_ALL_OBJECT_BY_THREE_FIELD,
                                    branchName,
                                    Brand.class.getSimpleName() + "ID",
-                                   brandId,
+                                   brandIds.toString(),
                                    Category.class.getSimpleName() + "ID",
-                                   categoryId,
+                                   categoryIds.toString(),
                                    "Option",
                                    ESortOption.values()[sortOption]));
-    Brand brandFound = null;
-    Category categoryFound = null;
+    List<Brand> brandList = new ArrayList<>();
+    List<Category> categoryList = new ArrayList<>();
     Shop shopFound = null;
     Location locationFound = null;
-    if (brandId != null) {
-      brandFound = this.brandRepo.findById(brandId)
-          .orElseThrow(() -> new ResourceNotFound(String.format(Utils.OBJECT_NOT_FOUND_BY_FIELD,
-                                                                Brand.class.getSimpleName(),
-                                                                "ID",
-                                                                brandId)));
+    if (brandIds.size() > 0) {
+      Brand brandFound;
+      for (Integer brandId : brandIds) {
+        brandFound = this.brandRepo.findById(brandId)
+            .orElse(null);
+        if (brandFound != null) {
+          brandList.add(brandFound);
+        }
+      }
     }
 
-    if (categoryId != null) {
-      categoryFound = this.categoryRepo.findById(categoryId)
-          .orElseThrow(() -> new ResourceNotFound(String.format(Utils.OBJECT_NOT_FOUND_BY_FIELD,
-                                                                Category.class.getSimpleName(),
-                                                                "ID",
-                                                                categoryId)));
+    if (categoryIds.size() > 0) {
+      Category categoryFound;
+      for (Integer categoryId: categoryIds) {
+        categoryFound = this.categoryRepo.findById(categoryId)
+            .orElse(null);
+        if (categoryFound != null) {
+          categoryList.add(categoryFound);
+        }
+      }
     }
     if (shopId != null) {
       shopFound = this.shopRepo.findById(shopId)
@@ -253,12 +262,18 @@ import java.util.*;
     if (locationString != null && locationString.length() > 0) {
       locationFound = this.locationService.getLocation(Utils.getLocationFromLocationString(locationString));
     }
-    assert categoryFound != null;
+//    boolean hasBrand = false, hasCategory = false;
+    if (brandList.size() < 1) {
+      brandList = null;
+    }
+    if (categoryList.size() < 1) {
+      categoryList = null;
+    }
     Sort.Order order = pageable.getSort().getOrderFor("price");
     if (sortOption == ESortOption.POPULAR.ordinal() || sortOption == ESortOption.TOP_SALES.ordinal() || order != null) {
       List<Product> productList = this.productRepo.filterProductToList(keyword,
-                                                                       categoryFound,
-                                                                       brandFound,
+                                                                       categoryList,
+                                                                       brandList,
                                                                        shopFound,
                                                                        locationFound,
                                                                        minPrice,
@@ -267,61 +282,29 @@ import java.util.*;
         throw new ResourceNotFound(String.format(Utils.OBJECT_NOT_FOUND, branchName));
       }
       if (sortOption == ESortOption.TOP_SALES.ordinal()) {
-        productList.sort(new Comparator<Product>() {
-          @Override public int compare(Product o1, Product o2) {
-            int delta = getSoldQuantityById(o2.getId()) - getSoldQuantityById(o1.getId());
-            if (delta == 0) {
-              if (order != null) {
-                Sale sale1 = saleService.getMostOptimalSaleByProduct(o1.getId());
-                Sale sale2 = saleService.getMostOptimalSaleByProduct(o2.getId());
-                BigDecimal price1 = Utils.getPriceProduct(o1, sale1);
-                BigDecimal price2 = Utils.getPriceProduct(o2, sale2);
-                if (order.isAscending()) {
-                  return price1.subtract(price2).compareTo(new BigDecimal(0));
-                } else {
-                  return price2.subtract(price1).compareTo(new BigDecimal(0));
-                }
-              }
+        productList.sort((o1, o2) -> {
+          int delta = getSoldQuantityById(o2.getId()) - getSoldQuantityById(o1.getId());
+          if (delta == 0) {
+            if (order != null) {
+              return comparePriceProduct(o1, o2, order);
             }
-            return delta;
           }
+          return delta;
         });
-      } else if(sortOption == ESortOption.POPULAR.ordinal()) {
-        productList.sort(new Comparator<Product>() {
-          @Override public int compare(Product o1, Product o2) {
-            ProductRating rating1 = feedbackService.getProductRatingByProduct(o1.getId());
-            ProductRating rating2 = feedbackService.getProductRatingByProduct(o2.getId());
-            double delta = rating1.getStar() * rating1.getTotalVote() - rating2.getStar() * rating2.getTotalVote();
-            if (delta == 0) {
-              if (order != null) {
-                Sale sale1 = saleService.getMostOptimalSaleByProduct(o1.getId());
-                Sale sale2 = saleService.getMostOptimalSaleByProduct(o2.getId());
-                BigDecimal price1 = Utils.getPriceProduct(o1, sale1);
-                BigDecimal price2 = Utils.getPriceProduct(o2, sale2);
-                if (order.isAscending()) {
-                  return price1.subtract(price2).compareTo(new BigDecimal(0));
-                } else {
-                  return price2.subtract(price1).compareTo(new BigDecimal(0));
-                }
-              }
+      } else if (sortOption == ESortOption.POPULAR.ordinal()) {
+        productList.sort((o1, o2) -> {
+          ProductRating rating1 = feedbackService.getProductRatingByProduct(o1.getId());
+          ProductRating rating2 = feedbackService.getProductRatingByProduct(o2.getId());
+          double delta = rating1.getStar() * rating1.getTotalVote() - rating2.getStar() * rating2.getTotalVote();
+          if (delta == 0) {
+            if (order != null) {
+              return comparePriceProduct(o1, o2, order);
             }
-            return delta > 0 ? -1 : (delta == 0 ? 0 : 1);
           }
+          return delta > 0 ? -1 : (delta == 0 ? 0 : 1);
         });
       } else {
-        productList.sort(new Comparator<Product>() {
-          @Override public int compare(Product o1, Product o2) {
-            Sale sale1 = saleService.getMostOptimalSaleByProduct(o1.getId());
-            Sale sale2 = saleService.getMostOptimalSaleByProduct(o2.getId());
-            BigDecimal price1 = Utils.getPriceProduct(o1, sale1);
-            BigDecimal price2 = Utils.getPriceProduct(o2, sale2);
-            if (order.isAscending()) {
-              return price1.subtract(price2).compareTo(new BigDecimal(0));
-            } else {
-              return price2.subtract(price1).compareTo(new BigDecimal(0));
-            }
-          }
-        });
+        productList.sort((o1, o2) -> comparePriceProduct(o1, o2, order));
       }
       int start = (int) pageable.getOffset();
       int end = Math.min((start + pageable.getPageSize()), productList.size());
@@ -329,8 +312,8 @@ import java.util.*;
       return productPage.map(product -> this.productMapper.productToProductGalleryDTO(product));
     } else {
       Page<Product> productPage = this.productRepo.filterProductToPage(keyword,
-                                                                       categoryFound,
-                                                                       brandFound,
+                                                                       categoryList,
+                                                                       brandList,
                                                                        shopFound,
                                                                        locationFound,
                                                                        minPrice,
@@ -339,6 +322,18 @@ import java.util.*;
         throw new ResourceNotFound(String.format(Utils.OBJECT_NOT_FOUND, branchName));
       }
       return productPage.map(product -> this.productMapper.productToProductGalleryDTO(product));
+    }
+  }
+
+  private int comparePriceProduct(Product o1, Product o2, Sort.Order order) {
+    Sale sale1 = saleService.getMostOptimalSaleByProduct(o1.getId());
+    Sale sale2 = saleService.getMostOptimalSaleByProduct(o2.getId());
+    BigDecimal price1 = Utils.getPriceProduct(o1, sale1);
+    BigDecimal price2 = Utils.getPriceProduct(o2, sale2);
+    if (order.isAscending()) {
+      return price1.subtract(price2).compareTo(new BigDecimal(0));
+    } else {
+      return price2.subtract(price1).compareTo(new BigDecimal(0));
     }
   }
 

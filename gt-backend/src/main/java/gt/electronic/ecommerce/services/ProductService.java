@@ -4,12 +4,12 @@ import gt.electronic.ecommerce.dto.request.ProductCreationDTO;
 import gt.electronic.ecommerce.dto.response.ProductGalleryDTO;
 import gt.electronic.ecommerce.dto.response.ProductResponseDTO;
 import gt.electronic.ecommerce.entities.Product;
-import gt.electronic.ecommerce.models.enums.ESortOption;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -29,7 +29,7 @@ public interface ProductService {
                                                  int sortOption, BigDecimal minPrice, BigDecimal maxPrice,
                                                  Pageable pageable);
 
-  Page<ProductGalleryDTO> getAllProductCategoryIdAndBrandId(String keyword, Integer brandId, Integer categoryId, Integer shopId, String locationString,
+  Page<ProductGalleryDTO> getAllProductCategoryIdAndBrandId(String keyword, List<Integer> brandIds, List<Integer> categoryIds, Integer shopId, String locationString,
                                                             int sortOption, BigDecimal minPrice, BigDecimal maxPrice,
                                                             Pageable pageable);
 

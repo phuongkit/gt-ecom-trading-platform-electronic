@@ -1,21 +1,21 @@
 package gt.electronic.ecommerce.entities.keys;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.persistence.EmbeddedId;
 import java.io.Serializable;
 import java.util.Objects;
 
 /**
  * @author minh phuong
  * @created 11/09/2022 - 8:07 PM
- * @project gt-backend
  */
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Embeddable

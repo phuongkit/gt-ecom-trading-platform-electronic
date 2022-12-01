@@ -2,7 +2,6 @@ package gt.electronic.ecommerce.repositories;
 
 import gt.electronic.ecommerce.entities.*;
 import gt.electronic.ecommerce.models.enums.EProductStatus;
-import gt.electronic.ecommerce.models.enums.ESortOption;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 /**
  * @author minh phuong
@@ -39,17 +37,17 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
               + "or (p.brand is not null and lower(p.brand.name) like lower(concat('%', :keyword,'%'))) "
               + "or (p.category is not null and lower(p.category.name) like lower(concat('%', :keyword,'%'))) "
               + "or (p.shop is not null and lower(p.shop.name) like lower(concat('%', :keyword,'%')))) "
-              + "and (:brand is null or (p.brand is not null and p.brand = :brand)) "
-              + "and (:category is null or (p.category is not null "
-              + "and (p.category = :category or p.category.parentCategory = :category))) "
+              + "and (coalesce(:brands, null) is null or p.brand in (:brands)) "
+              + "and (coalesce(:categories, null) is null or (p.category in (:categories) "
+              + "or p.category.parentCategory in (:categories))) "
               + "and (:shop is null or (p.shop is not null and p.shop = :shop)) "
               + "and (:location is null or p.location is null or p.location = :location) "
               + "and p.price > :minPrice "
               + "and p.price < :maxPrice ")
   List<Product> filterProductToList(
       @Param("keyword") String keyword,
-      @Param("category") Category category,
-      @Param("brand") Brand brand,
+      @Param("categories") List<Category> categories,
+      @Param("brands") List<Brand> brands,
       @Param("shop") Shop shop,
       @Param("location") Location location,
       @Param("minPrice") BigDecimal minPrice,
@@ -66,17 +64,17 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
               + "or (p.brand is not null and lower(p.brand.name) like lower(concat('%', :keyword,'%'))) "
               + "or (p.category is not null and lower(p.category.name) like lower(concat('%', :keyword,'%'))) "
               + "or (p.shop is not null and lower(p.shop.name) like lower(concat('%', :keyword,'%')))) "
-              + "and (:brand is null or (p.brand is not null and p.brand = :brand)) "
-              + "and (:category is null or (p.category is not null "
-              + "and (p.category = :category or p.category.parentCategory = :category))) "
+              + "and (coalesce(:brands, null) is null or p.brand in (:brands)) "
+              + "and (coalesce(:categories, null)is null or (p.category in (:categories) "
+              + "or p.category.parentCategory in (:categories))) "
               + "and (:shop is null or (p.shop is not null and p.shop = :shop)) "
               + "and (:location is null or p.location is null or p.location = :location) "
               + "and p.price > :minPrice "
               + "and p.price < :maxPrice ")
   Page<Product> filterProductToPage(
       @Param("keyword") String keyword,
-      @Param("category") Category category,
-      @Param("brand") Brand brand,
+      @Param("categories") List<Category> categories,
+      @Param("brands") List<Brand> brands,
       @Param("shop") Shop shop,
       @Param("location") Location location,
       @Param("minPrice") BigDecimal minPrice,
@@ -97,8 +95,4 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
       "item.order is not null " +
       "and item.product = :product")
   Integer getSoldQuantityByProduct(Product product);
-
-  default Integer getSoldQuantityByProductCT(Product product) {
-    return this.getSoldQuantityByProduct(product);
-  }
 }

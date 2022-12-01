@@ -63,8 +63,8 @@ public class ProductController {
       @RequestParam(name = "page", required = false, defaultValue = DEFAULT_PAGE) Integer page,
       @RequestParam(name = "limit", required = false, defaultValue = PRODUCT_PER_PAGE) Integer size,
       @RequestParam(name = "keyword", required = false, defaultValue = "") String keyword,
-      @RequestParam(name = "brandId", required = false, defaultValue = "") Integer brandId,
-      @RequestParam(name = "categoryId", required = false, defaultValue = "") Integer categoryId,
+      @RequestParam(name = "brandIds", required = false, defaultValue = "") List<Integer> brandIds,
+      @RequestParam(name = "categoryIds", required = false, defaultValue = "") List<Integer> categoryIds,
       @RequestParam(name = "shopId", required = false, defaultValue = "") Integer shopId,
       @RequestParam(name = "sortField", required = false, defaultValue = "") String sortField,
       @RequestParam(name = "sortDir", required = false, defaultValue = "asc") String sortDir,
@@ -85,8 +85,8 @@ public class ProductController {
     Pageable pageable = PageRequest.of(page > 0 ? page - 1 : 0, size, sort);
     return new ResponseObject<>(
         HttpStatus.OK, "",
-        this.productService.getAllProductCategoryIdAndBrandId(keyword, brandId,
-                                                              categoryId,
+        this.productService.getAllProductCategoryIdAndBrandId(keyword, brandIds,
+                                                              categoryIds,
                                                               shopId,
                                                               locationString,
                                                               sortOption,
@@ -106,7 +106,6 @@ public class ProductController {
       @RequestParam(name = "shop", required = false, defaultValue = "") String shopName,
       @RequestParam(name = "keyword", required = false, defaultValue = "") String keyword,
       @RequestParam(name = "location", required = false, defaultValue = "") String locationString,
-      @RequestParam(name = "sortPrice", required = false, defaultValue = "") String sortPrice,
       @RequestParam(name = "sortOption", required = false, defaultValue = "0") int sortOption,
       @RequestParam(name = "minPrice", required = false, defaultValue = "0") BigDecimal minPrice,
       @RequestParam(name = "maxPrice", required = false, defaultValue = "100000000")
