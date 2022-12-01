@@ -124,8 +124,6 @@ public class UserServiceImpl implements UserService {
     return users.map(user -> this.userMapper.userToUserResponseDTO(user));
   }
 
-
-
   @Override public UserResponseDTO getUserById(Integer id) {
     this.LOGGER.info(String.format(Utils.LOG_GET_OBJECT, branchName, "ID", id));
     return this.userMapper.userToUserResponseDTO(this.userRepo.findById(id).orElseThrow(
@@ -212,8 +210,8 @@ public class UserServiceImpl implements UserService {
       }
     }
     User user = new User();
-    user.setLastName(auth.getLastName());
-    user.setFirstName(auth.getFirstName());
+    user.setLastName(Objects.equals(auth.getLastName().trim(), "") ? Utils.DEFAULT_LAST_NAME : auth.getLastName());
+    user.setFirstName(Objects.equals(auth.getFirstName().trim(), "") ? Utils.DEFAULT_FIRST_NAME : auth.getFirstName());
     user.setGender(auth.getGender() != null ? auth.getGender() : EGender.UNKNOWN);
     user.setPhone(auth.getPhone());
     user.setEmail(auth.getEmail());
@@ -279,8 +277,10 @@ public class UserServiceImpl implements UserService {
     } else {
       newUser.setPassword(encodePassword(creationDTO.getPassword()));
     }
-    newUser.setFirstName(creationDTO.getFirstName());
-    newUser.setLastName(creationDTO.getLastName());
+    newUser.setFirstName(
+        Objects.equals(creationDTO.getFirstName().trim(), "") ? Utils.DEFAULT_FIRST_NAME : creationDTO.getFirstName());
+    newUser.setLastName(
+        Objects.equals(creationDTO.getLastName().trim(), "") ? Utils.DEFAULT_LAST_NAME : creationDTO.getLastName());
     newUser.setEmail(creationDTO.getEmail());
     newUser.setEmailVerified(creationDTO.isEmailVerified());
     newUser.setPhone(creationDTO.getPhone());
