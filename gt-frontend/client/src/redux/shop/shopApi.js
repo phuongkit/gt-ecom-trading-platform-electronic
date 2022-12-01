@@ -1,5 +1,6 @@
 
 import { shopService } from '../../services';
+import { DEFAULT_STORE } from '../../utils';
 import { getOneShop } from './shopSlice';
 
 export const getShopBySlugApi = async (dispatch, slug) => {
@@ -14,7 +15,7 @@ export const getShopBySlugApi = async (dispatch, slug) => {
 export const PostRegisterShop = async (dispatch, data, Navigate) => {
     try {
         let res = await shopService.postShopApi(data);
-        localStorage.setItem('access',JSON.stringify(res.data.accessToken))
+        localStorage.setItem(DEFAULT_STORE.TOKEN,JSON.stringify(res.data.accessToken))
         // if(res.data.role===2){
         //     Navigate('/')
         // }else if(res.data.role===0){

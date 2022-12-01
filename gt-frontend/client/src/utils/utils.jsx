@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { REGEXP } from './variableDefault';
+import { REGEXP } from './constants';
 
 export const checkRegex = (str) => {
     if (REGEXP.PHONE.test(str)) {

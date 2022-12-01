@@ -1,10 +1,11 @@
 import axios from 'axios';
 // import { useNavigate } from 'react-router-dom';
 import { handleLogout } from '../redux/user/userApi';
+import { DEFAULT_STORE } from '../utils/constants';
 
 
-const apiProduction = 'http://localhost:8080/api/v1';
-const apiDev = 'http://localhost:8080/api/v1';
+const apiProduction = process.env.BACKEND_URL+ '/api/v1';
+const apiDev = process.env.BACKEND_URL + '/api/v1';
 
 const baseURL = import.meta.env.MODE === 'production' ? apiProduction : apiDev;
 
@@ -31,7 +32,7 @@ const createError = (httpStatusCode, statusCode, errorMessage, problems, errorCo
 axiosClient.interceptors.request.use(
     function (req) {
         // const token = JSON.parse(localStorage.getItem('token'));
-        const token = 'Bearer ' + JSON.parse(localStorage.getItem('access'));
+        const token = 'Bearer ' + JSON.parse(localStorage.getItem(DEFAULT_STORE.TOKEN));
         // if (token) req.headers['auth-token'] = token;
         if (token) req.headers['Authorization'] = token;
         return req;

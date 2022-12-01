@@ -4,8 +4,9 @@ import SingInForm from '../../../components/SingInForm';
 import { useDispatch } from 'react-redux';
 import { getHistoryOrderbyUserIds } from '~/redux/history/historyOrdersApi';
 import Info from './Info';
+import { DEFAULT_STORE } from '../../../utils';
 const History = () => {
-    let customer = JSON.parse(localStorage.getItem('customerInfo'));
+    let customer = JSON.parse(localStorage.getItem(DEFAULT_STORE.USER_INFO));
 
    
     const dispatch = useDispatch();

@@ -3,20 +3,21 @@ import Footer from '../../Footer';
 import { useState, useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import {getUserByAccess,logUserByAccess} from '~/redux/user/userApi'
+import {getUserByAccess,logUserByAccess} from '../../../redux/user/userApi';
 import { Link } from 'react-router-dom';
 
 import './header.scss';
+import { DEFAULT_STORE, DEFAULT_VARIABLE } from '../../../utils/constants';
 function CommonLayout({ children }) {
    
     const dispatch = useDispatch()
     const [getUserAccess, setUserAccess] = useState(undefined);
-    const getAccess = JSON.parse(localStorage.getItem('access'))
+    const getAccess = JSON.parse(localStorage.getItem(DEFAULT_STORE.TOKEN))
     useEffect(()=>{   
         if(getAccess){
             getUserByAccess(dispatch)  
         }   
-    },[localStorage.getItem('access')])
+    },[localStorage.getItem(DEFAULT_STORE.TOKEN)])
     const user = useSelector((state) => state.user?.user);
     const hanleLogout = () => {    
         logUserByAccess(dispatch)
@@ -42,11 +43,11 @@ function CommonLayout({ children }) {
                         {user && (
                             <li className="header__navbar-item header__navbar-user">
                                 <img
-                                    src="https://haycafe.vn/wp-content/uploads/2022/03/avatar-facebook-doc.jpg"
+                                    src={user.avatar || "https://haycafe.vn/wp-content/uploads/2022/03/avatar-facebook-doc.jpg"}
                                     alt=""
                                     className="header__user-img"
                                 ></img>
-                                <span className="header__user-name">{user?.username}</span>
+                                <span className="header__user-name">{user?.fullName || DEFAULT_VARIABLE.FULL_NAME}</span>
 
                                 <ul className="header__navbar-user-menu">
                                     <li className="header__navbar-user-item text-gray-600">

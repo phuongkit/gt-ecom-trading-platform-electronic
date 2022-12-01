@@ -4,11 +4,12 @@ import CartButton from './CartButton';
 import FilterButton from './FilterButton';
 import styles from './header.module.scss';
 import './header.module.scss';
+import { DEFAULT_STORE } from '../../utils';
 import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 function Header() {
     const user = useSelector(state=>state.user?.user)
-    const getAccess = JSON.parse(localStorage.getItem('access'))
+    const getAccess = JSON.parse(localStorage.getItem(DEFAULT_STORE.TOKEN))
     const [singIn,setSingIn]= useState(false)
     const dispatch = useDispatch();
     return (
