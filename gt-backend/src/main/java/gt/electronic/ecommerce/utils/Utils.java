@@ -106,6 +106,8 @@ public class Utils {
   public static final String USERS_PER_PAGE = "20";
   public static final String COMMENT_PER_PAGE = "10";
   public static final String FEEDBACK_PER_PAGE = "3";
+  public static final String DEFAULT_FIRST_NAME = "Danh";
+  public static final String DEFAULT_LAST_NAME = "Ẩn";
 
   //
   private static final Pattern NONLATIN = Pattern.compile("[^\\w-]");
@@ -240,13 +242,9 @@ public class Utils {
   }
 
   public static String getFullNameFromLastNameAndFirstName(String lastName, String firstName) {
-    String fullName = lastName == null ? "" : lastName;
-    if (Objects.equals(fullName, "")) {
-      fullName = firstName == null ? "" : firstName;
-    } else {
-      fullName = (firstName == null ? "" : " " + firstName);
-    }
-    return fullName;
+    String fullName = lastName != null ? lastName : "";
+    fullName = fullName + " " + (firstName != null ? firstName : "");
+    return fullName.trim();
   }
 
   public static boolean checkValidDiscount(Discount discount) {

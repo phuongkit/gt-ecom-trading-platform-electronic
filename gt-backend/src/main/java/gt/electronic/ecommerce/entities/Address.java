@@ -2,8 +2,10 @@ package gt.electronic.ecommerce.entities;
 
 import gt.electronic.ecommerce.entities.keys.AddressKey;
 import gt.electronic.ecommerce.models.enums.EAddressType;
-import gt.electronic.ecommerce.utils.Utils;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -11,7 +13,6 @@ import javax.validation.constraints.NotNull;
 /**
  * @author minh phuong
  * @created 18/09/2022 - 8:44 AM
- * @project gt-backend
  */
 @Getter
 @Setter

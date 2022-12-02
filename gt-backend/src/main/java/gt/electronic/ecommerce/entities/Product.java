@@ -2,7 +2,10 @@ package gt.electronic.ecommerce.entities;
 
 import gt.electronic.ecommerce.models.enums.EProductStatus;
 import gt.electronic.ecommerce.utils.Utils;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -19,7 +22,6 @@ import java.util.UUID;
 /**
  * @author minh phuong
  * @created 09/09/2022 - 1:38 PM
- * @project gt-backend
  */
 @Getter
 @Setter

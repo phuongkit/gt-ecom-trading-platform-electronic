@@ -2,11 +2,10 @@ package gt.electronic.ecommerce.repositories;
 
 import gt.electronic.ecommerce.entities.Brand;
 import gt.electronic.ecommerce.entities.Category;
-import gt.electronic.ecommerce.entities.Product;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import gt.electronic.ecommerce.entities.Shop;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,7 +32,8 @@ public interface BrandRepository extends JpaRepository<Brand, Integer> {
               "(:keyword is not null and lower(b.name) like lower(concat('%', :keyword,'%'))) " +
               "and (:category = c)")
   List<Brand> findAllByCategory(Category category, String keyword);
-
+  @Query(value = "select distinct(p.brand) from Product p where p.shop = :shop")
+  List<Brand> getALlBrandsByShop(@Param("shop") Shop shop);
   Optional<Brand> findByName(String name);
   Optional<Brand> findBySlug(String slug);
 }

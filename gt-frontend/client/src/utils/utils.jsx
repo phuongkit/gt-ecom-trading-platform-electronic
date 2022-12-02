@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { REGEXP } from './variableDefault';
+import { REGEXP } from './constants';
 
 export const checkRegex = (str) => {
     if (REGEXP.PHONE.test(str)) {
@@ -97,3 +97,10 @@ export const toFullAddress = (address) => {
     }
     return addressString;
 };
+
+export const getNameForProductCard = (name) => {
+    if (name.length > 90) {
+        name = name.slice(0, 90) + '...';
+    }
+    return name;
+}

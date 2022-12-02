@@ -60,7 +60,7 @@ function ProductBody() {
                             <h1 className="product__details-title">Thông tin Shop</h1>
                         </div>
                     <div className='product__details-list'>
-                            <Link to={`/ShopInfo/${3}`} className='w-[100px] h-[100px]'><img src={initProductDetail?.shop?.avatar} alt="" className="home-product-item__img rounded-full w-full h-full"></img></Link>
+                            <Link to={`/ShopInfo/${initProductDetail?.shop?.slug}`} className='w-[100px] h-[100px]'><img src={initProductDetail?.shop?.avatar} alt="" className="home-product-item__img rounded-full w-full h-full"></img></Link>
                                     <h5 className="home-product-item__name">{initProductDetail?.shop?.name}</h5>
                                     <div className="home-product-item__price">
                                         <div className="flex flex-col gap-8 home-product-item__price-new">

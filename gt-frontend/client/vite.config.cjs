@@ -7,6 +7,9 @@ require('dotenv').config()
 
 export default defineConfig({
   plugins: [react(), legacy()],
+  define: {
+    'process.env': process.env
+  },
   server: {
     port: process.env.PORT || 3000,
   },

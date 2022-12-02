@@ -1,11 +1,21 @@
 
-import { registerShopService } from '../../services/shop.service';
+import { shopService } from '../../services';
+import { DEFAULT_STORE } from '../../utils';
+import { getOneShop } from './shopSlice';
 
+export const getShopBySlugApi = async (dispatch, slug) => {
+    try {
+        const res = await shopService.getShopBySlug(slug)
+        dispatch(getOneShop(res.data));
+    } catch (err) {
+        console.erorr(err);
+    }
+}
 
 export const PostRegisterShop = async (dispatch, data, Navigate) => {
     try {
-        let res = await registerShopService.postShopApi(data);
-        localStorage.setItem('access',JSON.stringify(res.data.accessToken))
+        let res = await shopService.postShopApi(data);
+        localStorage.setItem(DEFAULT_STORE.TOKEN,JSON.stringify(res.data.accessToken))
         // if(res.data.role===2){
         //     Navigate('/')
         // }else if(res.data.role===0){

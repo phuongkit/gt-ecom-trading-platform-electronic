@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 /**
  * @author minh phuong
@@ -38,22 +37,50 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
               + "or (p.brand is not null and lower(p.brand.name) like lower(concat('%', :keyword,'%'))) "
               + "or (p.category is not null and lower(p.category.name) like lower(concat('%', :keyword,'%'))) "
               + "or (p.shop is not null and lower(p.shop.name) like lower(concat('%', :keyword,'%')))) "
-              + "and (:brand is null or (p.brand is not null and p.brand = :brand)) "
-              + "and (:category is null or (p.category is not null "
-              + "and (p.category = :category or p.category.parentCategory = :category))) "
+              + "and (coalesce(:brands, null) is null or p.brand in (:brands)) "
+              + "and (coalesce(:categories, null) is null or (p.category in (:categories) "
+              + "or p.category.parentCategory in (:categories))) "
               + "and (:shop is null or (p.shop is not null and p.shop = :shop)) "
               + "and (:location is null or p.location is null or p.location = :location) "
               + "and p.price > :minPrice "
-              + "and p.price < :maxPrice")
-  Page<Product> filterProduct(
+              + "and p.price < :maxPrice ")
+  List<Product> filterProductToList(
       @Param("keyword") String keyword,
-      @Param("category") Category category,
-      @Param("brand") Brand brand,
+      @Param("categories") List<Category> categories,
+      @Param("brands") List<Brand> brands,
+      @Param("shop") Shop shop,
+      @Param("location") Location location,
+      @Param("minPrice") BigDecimal minPrice,
+      @Param("maxPrice") BigDecimal maxPrice
+  );
+
+  @Query(
+      value =
+          "select p from Product p "
+              + "where "
+              + "(:keyword is null "
+              + "or length(:keyword) < 1 "
+              + "or (lower(p.name) like lower(concat('%', :keyword,'%'))) "
+              + "or (p.brand is not null and lower(p.brand.name) like lower(concat('%', :keyword,'%'))) "
+              + "or (p.category is not null and lower(p.category.name) like lower(concat('%', :keyword,'%'))) "
+              + "or (p.shop is not null and lower(p.shop.name) like lower(concat('%', :keyword,'%')))) "
+              + "and (coalesce(:brands, null) is null or p.brand in (:brands)) "
+              + "and (coalesce(:categories, null)is null or (p.category in (:categories) "
+              + "or p.category.parentCategory in (:categories))) "
+              + "and (:shop is null or (p.shop is not null and p.shop = :shop)) "
+              + "and (:location is null or p.location is null or p.location = :location) "
+              + "and p.price > :minPrice "
+              + "and p.price < :maxPrice ")
+  Page<Product> filterProductToPage(
+      @Param("keyword") String keyword,
+      @Param("categories") List<Category> categories,
+      @Param("brands") List<Brand> brands,
       @Param("shop") Shop shop,
       @Param("location") Location location,
       @Param("minPrice") BigDecimal minPrice,
       @Param("maxPrice") BigDecimal maxPrice,
-      Pageable pageable);
+      Pageable pageable
+  );
 
   Page<Product> findAllByStatus(EProductStatus status, Pageable pageable);
 

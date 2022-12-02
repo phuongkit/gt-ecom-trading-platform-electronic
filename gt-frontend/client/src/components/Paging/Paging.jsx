@@ -52,7 +52,7 @@ function Paging(props) {
         return pageIndexs;
     };
     return (
-        <>
+        <> <div className="flex justify-center" style={{paddingTop: '20px', margin: '0 auto'}}>
         {pageIndexs && pageIndexs.map((item, index) => {
             if (item === currentPage + 1) {
                 return (
@@ -68,6 +68,7 @@ function Paging(props) {
                 )
             }
         })}
+        </div>
         </>
     )
 }

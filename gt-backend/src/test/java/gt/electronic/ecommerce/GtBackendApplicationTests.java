@@ -1,37 +1,19 @@
 package gt.electronic.ecommerce;
 
-import gt.electronic.ecommerce.controller.BrandController;
-import gt.electronic.ecommerce.dto.response.BrandResponseDTO;
-import gt.electronic.ecommerce.exceptions.error.ApiError;
-import gt.electronic.ecommerce.services.SaleService;
-import org.apache.catalina.connector.Response;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpStatus;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 class GtBackendApplicationTests {
 
   private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
-  @Autowired
-  private SaleService saleService;
 
   @Test
   void contextLoads() {
 
   }
-
-  @Test
-  public void demo() {
-    this.LOGGER.info(saleService.getMostOptimalSaleByProduct(10l).toString());
-  }
-
 //  @Test
 //  public void whenMethodArgumentMismatch_thenBadRequest() {
 //    Response response = givenAuth().get(URL_PREFIX + "/api/foos/ccc");

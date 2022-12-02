@@ -3,7 +3,6 @@ package gt.electronic.ecommerce.mapper.impls;
 import gt.electronic.ecommerce.dto.response.UserResponseDTO;
 import gt.electronic.ecommerce.dto.response.UserSimpleResponseDTO;
 import gt.electronic.ecommerce.entities.Address;
-import gt.electronic.ecommerce.entities.Role;
 import gt.electronic.ecommerce.entities.User;
 import gt.electronic.ecommerce.mapper.AddressMapper;
 import gt.electronic.ecommerce.mapper.UserMapper;
@@ -13,12 +12,9 @@ import gt.electronic.ecommerce.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Objects;
-
 /**
  * @author minh phuong
  * @created 10/09/2022 - 3:38 PM
- * @project gt-backend
  */
 @Component
 public class UserMapperImpl implements UserMapper {

@@ -1,7 +1,9 @@
 package gt.electronic.ecommerce.entities.keys;
 
-import lombok.*;
-import org.checkerframework.checker.units.qual.A;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -11,11 +13,9 @@ import java.util.Objects;
 /**
  * @author minh phuong
  * @created 18/09/2022 - 8:48 AM
- * @project gt-backend
  */
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Embeddable

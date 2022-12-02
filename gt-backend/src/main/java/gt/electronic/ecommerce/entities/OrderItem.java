@@ -14,11 +14,9 @@ import java.util.Date;
 /**
  * @author minh phuong
  * @created 19/09/2022 - 9:27 PM
- * @project gt-backend
  */
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
