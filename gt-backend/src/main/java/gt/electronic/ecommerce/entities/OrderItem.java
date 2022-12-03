@@ -20,7 +20,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="tbl_order_item")
+@Table(name = "tbl_order_item")
 public class OrderItem {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,8 +31,11 @@ public class OrderItem {
   private User user;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "order_id")
-  private Order order;
+  @JoinColumns({
+      @JoinColumn(name = "order_id", referencedColumnName = "order_id"),
+      @JoinColumn(name = "shop_id", referencedColumnName = "shop_id")
+  })
+  private OrderShop orderShop;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "product_id", nullable = false)
@@ -59,7 +62,7 @@ public class OrderItem {
   @Enumerated(EnumType.STRING)
   @Column(name = "status", length = 50, nullable = false)
   @NotNull(message = "An status is required!")
-  private EOrdertemStatus status;
+  private EOrdertemStatus status = EOrdertemStatus.PAID;
 
   @Column(name = "created_at")
   @CreationTimestamp

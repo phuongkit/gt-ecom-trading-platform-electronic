@@ -22,7 +22,7 @@ import java.util.List;
 @Transactional
 public interface OrderRepository extends JpaRepository<Order, Long> {
   Page<Order> findAllByUser(User user, Pageable pageable);
-  @Query(value = "select distinct o from Order o inner join OrderItem ot on o = ot.order where ot.product.shop = :shop")
+  @Query(value = "select distinct o from Order o inner join OrderShop os on o = os.order where os.shop = :shop")
   Page<Order> findAllByShop(Shop shop, Pageable pageable);
   List<Order> findAllByPaymentOrderCode(String paymentOrderCode);
 }

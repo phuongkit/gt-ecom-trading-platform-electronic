@@ -2,7 +2,9 @@ package gt.electronic.ecommerce.services.impls;
 
 import gt.electronic.ecommerce.entities.Shop;
 import gt.electronic.ecommerce.exceptions.ResourceAlreadyExistsException;
+import gt.electronic.ecommerce.models.clazzs.GroupOrderByDate;
 import gt.electronic.ecommerce.models.clazzs.ShopOverview;
+import gt.electronic.ecommerce.models.enums.ETimeDistance;
 import gt.electronic.ecommerce.models.interfaces.IInfoRating;
 import gt.electronic.ecommerce.repositories.FeedbackRepository;
 import gt.electronic.ecommerce.repositories.ProductRepository;
@@ -15,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -67,5 +70,16 @@ public class StatisticServiceImpl implements StatisticService {
     shopOverview.setAvgStar(Utils.toBeTruncatedDouble(avgStar));
     shopOverview.setTimeDistanceFromCreateAt(Utils.getTimeDistance(shopFound.getCreatedAt(), null).timeDistance);
     return shopOverview;
+  }
+
+  @Override public List<GroupOrderByDate> statisticOrderByShop(
+      String loginKey,
+      Integer shopId,
+      Date startDate,
+      Date endDate,
+      ETimeDistance timeDistance
+  ) {
+
+    return null;
   }
 }

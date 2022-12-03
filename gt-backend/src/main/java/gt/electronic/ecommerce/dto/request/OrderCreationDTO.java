@@ -49,14 +49,15 @@ public class OrderCreationDTO {
   @NotNull(message = "Address not null!")
   private AddressCreationDTO address;
   private EPayment payment;
-  private EShippingMethod shippingMethod;
-  private Date expectedDeliveryTime;
-  private BigDecimal transportFee;
+//  private EShippingMethod shippingMethod;
+//  private Date expectedDeliveryTime;
+//  private BigDecimal transportFee;
   private Long[] discountIds;
   private String note;
   private EOrderStatus status;
 
 //  @NotBlank(message = "OrderItems not blank!")
+  private List<OrderShopCreationDTO> orderShops;
   @NotNull(message = "OrderItems not null!")
   private List<OrderDetailCreationDTO> orderItems;
 
@@ -68,7 +69,7 @@ public class OrderCreationDTO {
     this.phone = user.getPhone();
     this.address = new AddressCreationDTO(user.getAddresses());
     this.payment = EPayment.CASH;
-    this.shippingMethod = EShippingMethod.GHN_EXPRESS;
+//    this.shippingMethod = EShippingMethod.GHN_EXPRESS;
     this.orderItems = orderItems;
     this.status=EOrderStatus.ORDER_PENDING;
   }

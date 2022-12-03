@@ -1,11 +1,14 @@
 package gt.electronic.ecommerce.controller;
 
 import gt.electronic.ecommerce.dto.request.ShopCreationDTO;
+import gt.electronic.ecommerce.dto.response.OrderResponseDTO;
 import gt.electronic.ecommerce.dto.response.ResponseObject;
 import gt.electronic.ecommerce.dto.response.ShopResponseDTO;
 import gt.electronic.ecommerce.entities.Shop;
+import gt.electronic.ecommerce.models.clazzs.GroupOrderByDate;
 import gt.electronic.ecommerce.models.clazzs.ShopOverview;
 import gt.electronic.ecommerce.models.enums.ERole;
+import gt.electronic.ecommerce.models.enums.ETimeDistance;
 import gt.electronic.ecommerce.services.ShopService;
 import gt.electronic.ecommerce.services.StatisticService;
 import gt.electronic.ecommerce.utils.JwtTokenUtil;
@@ -16,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,6 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.security.RolesAllowed;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.Date;
 import java.util.List;
 
 import static gt.electronic.ecommerce.utils.Utils.DEFAULT_PAGE;
@@ -54,6 +59,7 @@ public class ShopController {
   }
 
   private StatisticService statisticService;
+
   @Autowired public void StatisticService(StatisticService statisticService) {
     this.statisticService = statisticService;
   }
@@ -107,8 +113,9 @@ public class ShopController {
       MultipartFile backgroundFile,
       HttpServletRequest request
   ) {
-    isAdmin = isAdmin ? isAdmin : SecurityContextHolder.getContext().getAuthentication().getAuthorities().toString().contains(
-        ERole.ROLE_ADMIN.toString());
+    isAdmin =
+        isAdmin ? isAdmin : SecurityContextHolder.getContext().getAuthentication().getAuthorities().toString().contains(
+            ERole.ROLE_ADMIN.toString());
     String loginKey = jwtTokenUtil.getUserNameFromRequest(request);
     return new ResponseObject<>(HttpStatus.CREATED, String.format(Utils.CREATE_OBJECT_SUCCESSFULLY, branchName),
                                 this.shopService.createShop(loginKey,
@@ -131,8 +138,9 @@ public class ShopController {
       MultipartFile backgroundFile,
       HttpServletRequest request
   ) {
-    isAdmin = isAdmin ? isAdmin : SecurityContextHolder.getContext().getAuthentication().getAuthorities().toString().contains(
-        ERole.ROLE_ADMIN.toString());
+    isAdmin =
+        isAdmin ? isAdmin : SecurityContextHolder.getContext().getAuthentication().getAuthorities().toString().contains(
+            ERole.ROLE_ADMIN.toString());
     String loginKey = jwtTokenUtil.getUserNameFromRequest(request);
     return new ResponseObject<>(HttpStatus.OK, String.format(Utils.UPDATE_OBJECT_SUCCESSFULLY, branchName),
                                 this.shopService.updateShop(loginKey,
@@ -156,8 +164,21 @@ public class ShopController {
                                 this.shopService.deleteShopById(loginKey, id, isAdmin));
   }
 
-  @GetMapping("/overview/{id}")
-  public ResponseObject<ShopOverview> getOverviewShopById(@PathVariable(name = "id") Integer id) {
+  @GetMapping("/overview/{shopId}")
+  public ResponseObject<ShopOverview> getOverviewShopById(@PathVariable(name = "shopId") Integer id) {
     return new ResponseObject<>(HttpStatus.OK, "", this.statisticService.getOverviewByShop(id));
+  }
+
+  @GetMapping("/statistic/order/{shopId}")
+  @RolesAllowed({ERole.Names.SELLER, ERole.Names.ADMIN})
+  public ResponseObject<List<GroupOrderByDate>> statisticOrder(
+      @PathVariable(name = "shopId") Integer shopId,
+      @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate,
+      @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate,
+      @RequestParam(value = "timeDistance", required = false, defaultValue = "DAY") ETimeDistance timeDistance,
+      HttpServletRequest request
+  ) {
+    String loginKey = jwtTokenUtil.getUserNameFromRequest(request);
+    return new ResponseObject<>(HttpStatus.OK, "", this.statisticService.statisticOrderByShop(loginKey, shopId, startDate, endDate, timeDistance));
   }
 }

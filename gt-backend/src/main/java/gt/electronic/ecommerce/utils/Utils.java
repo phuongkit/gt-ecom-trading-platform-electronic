@@ -339,4 +339,18 @@ public class Utils {
       return new String[]{firstName, lastName};
     }
   }
+
+  public static OrderShop getOrderShopFromList(Set<OrderShop> orderShops, Shop shop, Order order) {
+    OrderShop orderShop = null;
+    for (OrderShop item : orderShops) {
+      if (item.getShop() == shop) {
+        orderShop = item;
+      }
+    }
+    if (orderShop != null) {
+      orderShops.remove(orderShop);
+    }
+    orderShop = new OrderShop(order, shop);
+    return orderShop;
+  }
 }

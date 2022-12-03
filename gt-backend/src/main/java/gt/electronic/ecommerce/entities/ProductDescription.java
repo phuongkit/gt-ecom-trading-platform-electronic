@@ -15,7 +15,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="tbl_product_description")
+@Table(name = "tbl_product_description")
 public class ProductDescription {
   @EmbeddedId
   private ProductDescriptionKey id;

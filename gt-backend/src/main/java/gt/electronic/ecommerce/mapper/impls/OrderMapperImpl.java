@@ -6,12 +6,14 @@ import gt.electronic.ecommerce.dto.response.OrderResponseDTO;
 import gt.electronic.ecommerce.entities.Discount;
 import gt.electronic.ecommerce.entities.Order;
 import gt.electronic.ecommerce.entities.OrderItem;
+import gt.electronic.ecommerce.entities.OrderShop;
 import gt.electronic.ecommerce.mapper.*;
 import gt.electronic.ecommerce.models.clazzs.OrderPaymentOnly;
 import gt.electronic.ecommerce.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -54,6 +56,13 @@ public class OrderMapperImpl implements OrderMapper {
     if (entity == null) {
       return null;
     }
+    OrderShop orderShop = null;
+    for (OrderShop shop : entity.getOrderShops()) {
+      if (Objects.equals(shop.getShop().getId(), shopId)) {
+        orderShop = shop;
+        break;
+      }
+    }
     OrderResponseDTO responseDTO = new OrderResponseDTO();
     responseDTO.setId(entity.getId());
     if (entity.getUser() != null) {
@@ -61,20 +70,20 @@ public class OrderMapperImpl implements OrderMapper {
     }
     responseDTO.setGender(entity.getGender().ordinal());
     responseDTO.setFullName(entity.getFullName());
-    responseDTO.setTotalPrice(Utils.getTotalPriceFromOrderItems(entity.getOrderItemSet(), shopId));
+    responseDTO.setTotalPrice(entity.getTotalPrice());
     if (entity.getPayment() != null) {
-      responseDTO.setPayment(entity.getPayment().getName().ordinal());
+      responseDTO.setPayment(entity.getPayment().ordinal());
     }
-    if (entity.getShippingMethod() != null) {
-      responseDTO.setShippingMethod(entity.getShippingMethod().getName().ordinal());
-    }
-    responseDTO.setTransportFee(entity.getTransportFee());
+//    if (entity.getShippingMethod() != null) {
+//      responseDTO.setShippingMethod(entity.getShippingMethod().getName().ordinal());
+//    }
+    responseDTO.setTransportFee(entity.getTotalFee());
     responseDTO.setEmail(entity.getEmail());
     responseDTO.setPhone(entity.getPhone());
     if (entity.getDiscounts() != null && entity.getDiscounts().size() > 0) {
-      DiscountResponseDTO[] discountDTOs= new DiscountResponseDTO[entity.getDiscounts().size()];
-      int i =0;
-      for (Discount discount:entity.getDiscounts()) {
+      DiscountResponseDTO[] discountDTOs = new DiscountResponseDTO[entity.getDiscounts().size()];
+      int i = 0;
+      for (Discount discount : entity.getDiscounts()) {
         discountDTOs[i] = new DiscountResponseDTO();
         discountDTOs[i] = this.discountMapper.discountToDiscountResponseDTO(discount);
         i++;
@@ -87,14 +96,16 @@ public class OrderMapperImpl implements OrderMapper {
               entity.getLine(), entity.getLocation()));
     }
     responseDTO.setStatus(entity.getStatus().ordinal());
-    responseDTO.setPayAt(entity.getPayAt());
+    assert orderShop != null;
+    responseDTO.setPayAt(orderShop.getPayAt());
     responseDTO.setNote(entity.getNote());
     if (isFull.length > 0 && isFull[0]) {
-      if (!entity.getOrderItemSet().isEmpty()) {
+
+      if (!orderShop.getOrderItems().isEmpty()) {
         OrderDetailResponseDTO[] orderItems =
-            new OrderDetailResponseDTO[entity.getOrderItemSet().size()];
+            new OrderDetailResponseDTO[orderShop.getOrderItems().size()];
         int i = 0;
-        for (OrderItem orderItem : entity.getOrderItemSet()) {
+        for (OrderItem orderItem : orderShop.getOrderItems()) {
           if (shopId == null || Objects.equals(orderItem.getProduct().getShop().getId(), shopId)) {
             orderItems[i] = new OrderDetailResponseDTO();
             orderItems[i] = this.orderItemMapper.orderItemToOrderDetailResponseDTO(orderItem);
@@ -111,6 +122,6 @@ public class OrderMapperImpl implements OrderMapper {
     if (entity == null) {
       return null;
     }
-    return new OrderPaymentOnly(entity.getId(), entity.getUser(), entity.getPayment(), entity.getPayAt());
+    return new OrderPaymentOnly(entity.getId(), entity.getUser(), entity.getPayment(), new Date());//entity.getPayAt());
   }
 }
