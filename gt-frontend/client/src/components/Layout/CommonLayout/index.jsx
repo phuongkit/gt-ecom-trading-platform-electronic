@@ -28,6 +28,11 @@ function CommonLayout({ children }) {
                 <div className="select-none text- text-[21px] w-[110px] px-6 py-2 font-semibold text-green-400 border-r-4 border-green-200 rounded shadow-lg text-center">
                     Phúc Xi Cúc
                 </div>
+                <div className="header__navbar-item--openqr header__navbar-item">
+                            <Link to="/Seller" className="w-32  text-center " onClick={()=>setSingIn(!singIn)}>
+                                            Kênh người bán
+                                </Link>
+                        </div>
                 <div className="select-none text-[23px] px-6 py-2 font-semibold text-white bg-blue-400 border-r-4 border-blue-400 rounded shadow-lg shadow-purple-600/50">
                     Sàn giao dịch thiết bị công nghệ 4.0
                 </div>
