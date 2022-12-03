@@ -1,12 +1,11 @@
 import { useEffect } from 'react';
 import PurchaseHistory from './PurchaseHistory';
-import SingInForm from '../../../components/SingInForm';
+import DangNhap from './DangNhap';
 import { useDispatch } from 'react-redux';
 import { getHistoryOrderbyUserIds } from '~/redux/history/historyOrdersApi';
 import Info from './Info';
-import { DEFAULT_STORE } from '../../../utils';
 const History = () => {
-    let customer = JSON.parse(localStorage.getItem(DEFAULT_STORE.USER_INFO));
+    let customer = JSON.parse(localStorage.getItem('customerInfo'));
 
    
     const dispatch = useDispatch();
@@ -17,6 +16,6 @@ const History = () => {
         }   
     }, []);
 
-    return <div>{customer ? <Info /> : <SingInForm />}</div>;
+    return <div>{customer ? <Info /> : <DangNhap />}</div>;
 };
 export default History;

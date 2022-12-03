@@ -2,9 +2,8 @@ import { useState, useEffect } from 'react';
 import firebase from 'firebase';
 import { userService } from '~/services';
 import { useNavigate } from 'react-router-dom';
-import { DEFAULT_STORE } from '../../../utils';
 const Welcome = () => {
-    const user = JSON.parse(localStorage.getItem(DEFAULT_STORE.USER_INFO));
+    const user = JSON.parse(localStorage.getItem('customerInfo'));
     const navigate = useNavigate();
 
     const handleLogOut = () => {
@@ -19,8 +18,8 @@ const Welcome = () => {
                     .catch((error) => {
                         console.log(error);
                     });
-                localStorage.removeItem(DEFAULT_STORE.TOKEN);
-                localStorage.removeItem(DEFAULT_STORE.USER_INFO);
+                localStorage.removeItem('access');
+                localStorage.removeItem('customerInfo');
                 location.reload();
             } catch (error) {
                 console.log(error);

@@ -6,9 +6,9 @@ import Navbar from './../../seller/navbar/Navbar';
 function DefaultLayout({ children }) {
     return (
         <div className="list">
-        {/* <Sidebar/> */}
+        <Sidebar/>
         <div className="listContainer">
-            {/* <Navbar/> */}
+            <Navbar/>
             <Outlet></Outlet>
         </div>
         </div>

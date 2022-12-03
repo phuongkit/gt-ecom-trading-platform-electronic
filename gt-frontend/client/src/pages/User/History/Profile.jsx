@@ -1,10 +1,9 @@
 import { useState, useEffect } from 'react';
 import Welcome from './Welcome';
 import { userService } from '~/services';
-import { DEFAULT_STORE } from '../../../utils';
 
 const Profile = (props) => {
-    const user = JSON.parse(localStorage.getItem(DEFAULT_STORE.USER_INFO));
+    const user = JSON.parse(localStorage.getItem('customerInfo'));
     const { address } = user;
     const phoneNumber = user.phone.toString();
     const [checkGender, setCheckGender] = useState(-1);
