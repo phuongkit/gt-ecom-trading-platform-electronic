@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { PostLogin } from '../../redux/user/userApi';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { FACEBOOK_AUTH_URL, GOOGLE_AUTH_URL } from '../../utils/constants';
+import { FACEBOOK_AUTH_URL, GOOGLE_AUTH_URL } from '../../utils';
 import { Facebook, Google } from 'react-bootstrap-icons';
 import './SignInForm.scss';
 

@@ -34,6 +34,5 @@ module.exports = {
         require('postcss'),
 	  	require('@tailwindcss/line-clamp'),
 		require('flowbite/plugin'),
-  ],
-  important: true,
+  ]
 }

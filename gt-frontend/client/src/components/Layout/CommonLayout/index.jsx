@@ -7,7 +7,7 @@ import {getUserByAccess,logUserByAccess} from '../../../redux/user/userApi';
 import { Link } from 'react-router-dom';
 
 import './header.scss';
-import { DEFAULT_STORE, DEFAULT_VARIABLE } from '../../../utils/constants';
+import { DEFAULT_STORE, DEFAULT_VARIABLE } from '../../../utils';
 function CommonLayout({ children }) {
    
     const dispatch = useDispatch()
@@ -34,7 +34,7 @@ function CommonLayout({ children }) {
                 <nav className=" header__navbar hide-on-mobile-tablet">
                     <ul className="header__navbar-list">
                         <li className="header__navbar-item--openqr header__navbar-item header__navbar-item--separate-week">
-                            <Link to="/History" className="w-32  text-center " onClick={()=>setSingIn(!singIn)}>
+                            <Link to="/history" className="w-32  text-center " onClick={()=>setSingIn(!singIn)}>
                                             Tra cứu đơn hàng
                                 </Link>
                         </li>

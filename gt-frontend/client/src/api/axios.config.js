@@ -1,7 +1,7 @@
 import axios from 'axios';
 // import { useNavigate } from 'react-router-dom';
 import { handleLogout } from '../redux/user/userApi';
-import { DEFAULT_STORE } from '../utils/constants';
+import { DEFAULT_STORE } from '../utils';
 
 
 const apiProduction = process.env.BACKEND_URL+ '/api/v1';

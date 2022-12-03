@@ -16,7 +16,7 @@ import ProductCategory from './ProductCategory';
 import { Sticky } from 'react-bootstrap-icons';
 import { useDispatch } from 'react-redux';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { DEFAULT_STORE } from '../../../utils/constants';
+import { DEFAULT_STORE } from '../../../utils';
 import { getUserByAccess } from '../../../redux/user/userApi';
 function Home({ title='' }) {
     const [displayTicket, setDisplayTicket] = useState(false);

@@ -3,7 +3,7 @@ import { PostLogin, PostRegister } from '../../redux/user/userApi';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import './SignUpForm.scss';
-import { FACEBOOK_AUTH_URL, GOOGLE_AUTH_URL } from '../../utils/constants';
+import { FACEBOOK_AUTH_URL, GOOGLE_AUTH_URL } from '../../utils';
 import { Google, Facebook } from 'react-bootstrap-icons';
 
 function SingUpForm() {
