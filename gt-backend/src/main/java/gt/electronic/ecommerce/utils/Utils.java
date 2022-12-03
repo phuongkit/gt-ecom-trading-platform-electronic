@@ -273,19 +273,29 @@ public class Utils {
     return true;
   }
 
-  public static BigDecimal getPriceProduct(Product product, Sale sale, Integer... quantity) {
+  public static BigDecimal getPriceProduct(Product product, Sale sale, Long... quantity) {
     BigDecimal price;
     Double percent = 0d;
     if (sale != null) {
       percent = sale.getPercent();
     }
-    Integer count = 1;
+    Long count = 1L;
     if (quantity.length > 0) {
       count = quantity[0];
     }
     price = product.getPrice().multiply(BigDecimal.valueOf((1 - percent) * count)).setScale(0, RoundingMode.HALF_UP);
 
     return price;
+  }
+
+  public static final Double toBeTruncatedDouble(Double number, int... scales) {
+    int scale = 2;
+    if (scales.length > 0) {
+      scale = scales[0];
+    }
+    return BigDecimal.valueOf(number)
+        .setScale(scale, RoundingMode.HALF_UP)
+        .doubleValue();
   }
 
 

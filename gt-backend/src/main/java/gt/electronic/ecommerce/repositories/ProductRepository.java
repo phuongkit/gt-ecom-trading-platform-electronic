@@ -94,5 +94,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
       "where " +
       "item.order is not null " +
       "and item.product = :product")
-  Integer getSoldQuantityByProduct(Product product);
+  Long getSoldQuantityByProduct(Product product);
+
+  Long countAllByShop(Shop shop);
 }

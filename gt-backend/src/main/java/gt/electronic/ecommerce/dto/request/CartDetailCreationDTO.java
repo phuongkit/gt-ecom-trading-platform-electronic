@@ -11,5 +11,5 @@ import lombok.Getter;
 @Data
 public class CartDetailCreationDTO {
   private Long productId;
-  private Integer quantity;
+  private Long quantity;
 }

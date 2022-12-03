@@ -2,11 +2,14 @@ package gt.electronic.ecommerce.repositories;
 
 import gt.electronic.ecommerce.entities.Feedback;
 import gt.electronic.ecommerce.entities.Product;
+import gt.electronic.ecommerce.entities.Shop;
 import gt.electronic.ecommerce.entities.User;
+import gt.electronic.ecommerce.models.interfaces.IInfoRating;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,4 +40,10 @@ public interface FeedbackRepository extends JpaRepository<Feedback, Long> {
   List<Feedback> getFeedbackByProductAndUser(Product product, User author);
 
   List<Feedback> findAllByProduct(Product product);
+
+  @Query(value = "select count(fb) as totalVote, fb.star as star " +
+      "from Feedback fb where " +
+      "fb.product.shop = :shop " +
+      "group by fb.star")
+  List<IInfoRating> getAllInfoRatingByShop(@Param("shop") Shop shop);
 }

@@ -126,7 +126,7 @@ public class OrderItemMapperImpl implements OrderItemMapper {
       if (productFound != null) {
         OrderItem orderItemFound = this.orderItemRepo.findByUserAndProductAndStatus(user, productFound,
             EOrdertemStatus.UN_PAID).orElse(null);
-        Integer newQuantity = creationDTO.getQuantity();
+        Long newQuantity = creationDTO.getQuantity();
         if (orderItemFound != null) {
           newQuantity = newQuantity + orderItemFound.getQuantity();
         } else {

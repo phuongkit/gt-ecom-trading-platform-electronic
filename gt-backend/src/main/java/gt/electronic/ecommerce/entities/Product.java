@@ -55,7 +55,7 @@ public class Product {
   @Column(name = "quantity", nullable = false)
   @NotNull(message = "An quantity is required!")
   @DecimalMin(value = "0", message = "Quantity must be greater than or equal to 0.")
-  private Integer quantity;
+  private Long quantity;
 
   @ManyToOne
   @JoinColumn(name = "shop_id", nullable = false)
@@ -141,7 +141,7 @@ public class Product {
     saleGallery.forEach(sale -> sale.removeProduct(this));
   }
 
-  public Product(String name, BigDecimal price, Integer quantity, Category category, Brand brand, Shop shop, Location location, Image thumbnail, String description) {
+  public Product(String name, BigDecimal price, Long quantity, Category category, Brand brand, Shop shop, Location location, Image thumbnail, String description) {
     this.name = name;
     this.slug = Utils.toSlug(name) + "." + UUID.randomUUID().toString().replace("-", "");
     this.price = price;
