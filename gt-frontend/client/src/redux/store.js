@@ -13,6 +13,7 @@ import orderSlice from './order/orderSlice';
 import historyOrdersSlice from './history/historyOrdersSlice';
 import discountReducer from './discount/discountsSlice';
 import brandReducer from './brand/brandSlice';
+import productModalReducer from './product-modal/productModalSlice';
 //khoi tao store
 export const store = configureStore({
     reducer: {
@@ -27,5 +28,6 @@ export const store = configureStore({
         historyOrders: historyOrdersSlice,
         discounts: discountReducer,
         brands: brandReducer,
+        productModal: productModalReducer,
     },
 });

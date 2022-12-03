@@ -1,12 +1,12 @@
 import { lazy, Suspense } from 'react';
 import Loading from '~/components/Loading';
-
+import SingInSeller from '~/components/SingInSellerForm';
 const SingIn = lazy(() => import('~/components/SingInForm'));
 const SingUp = lazy(() => import('~/components/SignUpForm'));
-const HomeSeller = lazy(() => import('../../pages/Seller/Home/HomeSeller'));
+const HomeSeller = lazy(() => import('~/pages/Seller/Home/HomeSeller'));
 const ListOders = lazy(() => import('~/pages/Seller/List/ListOder'));
 const ListProducts = lazy(() => import('~/pages/Seller/List/ListProduct'));
-
+const AddProducts = lazy(() => import('~/pages/Seller/New/NewProduct'));
 export const publishRoutesSeller = [
     {
         index: true,
@@ -26,7 +26,23 @@ export const publishRoutesSeller = [
                         <ListProducts />
                     </Suspense>
                 ),
-            }
+            },
+            {
+                path: 'addProduct',
+                element: (
+                    <Suspense fallback={<Loading />}>
+                        <AddProducts />
+                    </Suspense>
+                ),
+            },
+            {
+                path: 'edit/:productId',
+                element: (
+                    <Suspense fallback={<Loading />}>
+                        <AddProducts isUpdate />
+                    </Suspense>
+                ),
+            },
         ],
     },
     {
@@ -52,5 +68,13 @@ export const publishRoutesSeller = [
                 <SingUp />
             </Suspense>
         ),
-    }
+    },
+    {
+        path: 'SignInSeller',
+        element: (
+            <Suspense fallback={<Loading />}>
+                <SingInSeller />
+            </Suspense>
+        ),
+    },
 ];
