@@ -6,8 +6,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { numberWithCommas } from '~/utils';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { orderService } from '~/services';
+import { vnpay } from '../../../services/payment';
 import { EGender, EPayment, MESSAGE } from './../../../utils';
 import { deleteOrdersByIdApi } from '../../../redux/order/ordersApi';
+import { ghn } from '../../../services/shipping';
+import { clearCheckoutDiscount } from '../../../redux/discount/discountsSlice';
 
 const Order = ({ title }) => {
     const dispatch = useDispatch();
@@ -25,10 +28,22 @@ const Order = ({ title }) => {
         console.log('data', data);
         try {
             const res = await orderService.postOrder(data);
-            console.log('res', res, res?.status);
-            if (res?.status === 'CREATED') {         
+            if (res?.status === 'CREATED') {
+                if (data.payment === EPayment.VNPAY.index) {
+                    const dataVNPay = {
+                        orderId: res?.data?.id,
+                        // orderInfo: `${order.fullName} thanh toán đơn hàng ${order.id} với MoMo`,
+                        fullName: order.fullName,
+                        redirectUrl: window.location.origin + '/#/',
+                        totalPrice: order?.totalPriceProduct || 1000 + order?.transportFee || 0,
+                        // extraData: '',
+                    };
+                    const resVNPay = await vnpay.createVNPayPayment(dataVNPay);
+                    window.location = resVNPay.data.payUrl || window.location.origin + '/#/';
+                } else {
                     alert('Tạo đơn hàng thành công');
-                    navigate('/');           
+                    navigate('/');
+                }
             } else {
                 alert(MESSAGE.ERROR_ACTION);
                 navigate('/');
@@ -37,7 +52,7 @@ const Order = ({ title }) => {
             alert(MESSAGE.ERROR_ACTION);
             navigate('/');
         }
-        localStorage.removeItem('order');
+        // localStorage.removeItem('order');
     };
     const getPayment = () => {
         const radios = document.querySelectorAll('input[name="payment"]');
@@ -56,7 +71,22 @@ const Order = ({ title }) => {
         deleteOrdersByIdApi(dispatch, order.id, navigate);
     };
     useEffect(() => {
+        if (order && ship.expectedDeliveryTime === null) {
+            const getShip = async () => {
+                let res = await ghn.getPreviewOrderGHN(order);
+                console.log(res?.data?.data);
+                let date = new Date(Date.parse(res?.data?.data?.expected_delivery_time));
+                setShip({
+                    expectedDeliveryTime: date,
+                    transportFee: res?.data?.data?.total_fee,
+                });
+            };
+            getShip();
+        }
+    }, [order]);
+    useEffect(() => {
         document.title = title;
+        dispatch(clearCheckoutDiscount());
     }, []);
     return (
         <>
@@ -150,10 +180,21 @@ const Order = ({ title }) => {
                                     <span>
                                         <i className="info-order__dot-icon"></i>
                                         <span>
+                                            <strong>
+                                                Giảm giá: {numberWithCommas(129000) || 0}
+                                                {' đ'}
+                                            </strong>
+                                        </span>
+                                    </span>
+                                </label>
+                                <label htmlFor="">
+                                    <span>
+                                        <i className="info-order__dot-icon"></i>
+                                        <span>
                                             <strong>Tổng thanh toán: {'   '}</strong>
                                             <strong className="text-red-500 text-5xl">
                                                 {numberWithCommas(
-                                                    Number(ship.transportFee) + Number(order.totalPriceProduct),
+                                                    Number(ship.transportFee) + Number(order.totalPriceProduct) - Number(order.totalPriceDiscount) || 0
                                                 ) || 0}{' '}
                                                 {' đ'}
                                             </strong>
@@ -213,6 +254,59 @@ const Order = ({ title }) => {
                                             </span>
                                         </div>
                                     </li>
+
+                                    {/**<li className="normal-payment">
+                                        <div className="text-payment">
+                                            <span>
+                                                <input type="radio" id="ck" name="payment" value="banking" />
+                                                <label htmlFor="ck">Chuyển khoản ngân hàng</label>
+                                            </span>
+                                        </div>
+                                    </li>
+
+                                    <li className="normal-payment">
+                                        <div className="text-payment">
+                                            <span>
+                                                <input type="radio" id="atm" name="payment" value="atm" />
+                                                <label htmlFor="atm">Qua thẻ ATM (có Internet Banking)</label>
+                                            </span>
+                                        </div>
+                                    </li>
+
+                                    <li className="normal-payment">
+                                        <div className="text-payment">
+                                            <span>
+                                                <input type="radio" id="qr" name="payment" value="qrcode" />
+                                                <label htmlFor="qr">Qua QR Code</label>
+                                            </span>
+                                        </div>
+                                    </li>
+
+                                    <li className="normal-payment">
+                                        <div className="text-payment">
+                                            <span>
+                                                <input type="radio" id="visa" name="payment" value="visa" />
+                                                <label htmlFor="visa">Qua thẻ quốc tế Visa, Master, JCB</label>
+                                            </span>
+                                        </div>
+                                    </li>
+
+                                    <li className="normal-payment">
+                                        <div className="text-payment">
+                                            <span>
+                                                <input type="radio" id="moca" name="payment" value="moca" />
+                                                <label htmlFor="moca">Qua Ví điện tử Moca trên Grab</label>
+                                            </span>
+                                        </div>
+                                    </li>
+                                    <li className="normal-payment">
+                                        <div className="text-payment">
+                                            <span>
+                                                <input type="radio" id="machine" name="payment" value="marchinecard" />
+                                                <label htmlFor="machine">Nhân viên mang máy cà thẻ khi nhận hàng</label>
+                                            </span>
+                                        </div>
+                                    </li> */}
                                 </ul>
 
                                 <button onClick={handleConfirm} className="confirm-payment-button">
