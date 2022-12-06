@@ -20,7 +20,7 @@ public class OrderDetailResponseDTO {
   private Long id;
   private ProductGalleryDTO product;
   private Double sale;
-  private Integer quantity;
+  private Long quantity;
   private BigDecimal totalPrice;
   private String note;
 }

@@ -21,7 +21,7 @@ import java.util.Map;
 public class ProductCreationDTO {
   private String name;
   private BigDecimal price;
-  private Integer quantity;
+  private Long quantity;
   private Integer shopId;
   private EProductStatus status;
   private Integer brandId;

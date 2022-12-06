@@ -9,4 +9,7 @@ export const shopService = {
     postShopApi(data) {
         return axiosClient.post(`${branch_api}`,data);
     },
+    getOverviewById(id) {
+        return axiosClient.get(`${branch_api}/overview/${id}`)
+    }
 };

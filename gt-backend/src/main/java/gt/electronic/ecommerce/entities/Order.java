@@ -2,6 +2,7 @@ package gt.electronic.ecommerce.entities;
 
 import gt.electronic.ecommerce.models.enums.EGender;
 import gt.electronic.ecommerce.models.enums.EOrderStatus;
+import gt.electronic.ecommerce.models.enums.EPayment;
 import gt.electronic.ecommerce.utils.Utils;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -64,13 +65,14 @@ public class Order {
   @JoinColumn(name = "location_id", nullable = false)
   private Location location;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "payment_id", nullable = false)
-  private Payment payment;
+  @Enumerated(EnumType.STRING)
+  @Column(name = "payment", length = 50, nullable = false)
+  @NotNull(message = "An payment is required!")
+  private EPayment payment;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "shipping_method_id", nullable = false)
-  private ShippingMethod shippingMethod;
+//  @ManyToOne(fetch = FetchType.LAZY)
+//  @JoinColumn(name = "shipping_method_id", nullable = false)
+//  private ShippingMethod shippingMethod;
 
   @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
   @JoinTable(name = "tbl_order_discounts",
@@ -78,9 +80,9 @@ public class Order {
       inverseJoinColumns = @JoinColumn(name = "discount_id"))
   private Set<Discount> discounts = new HashSet<>();
 
-  @Column(name = "pay_at")
-  @Temporal(TemporalType.TIMESTAMP)
-  private Date payAt;
+//  @Column(name = "pay_at")
+//  @Temporal(TemporalType.TIMESTAMP)
+//  private Date payAt;
 
   @Column(name = "note", length = 500)
   private String note;
@@ -88,42 +90,42 @@ public class Order {
   @Column(name = "payment_order_code")
   private String paymentOrderCode;
 
-  @Column(name = "ship_order_code")
-  private String shipOrderCode;
+//  @Column(name = "ship_order_code")
+//  private String shipOrderCode;
 
-  @Column(name = "log", length = 500)
-  private String log;
+//  @Column(name = "log", length = 500)
+//  private String log;
 
-  @Column(name = "expected_delivery_time")
-  @Temporal(TemporalType.TIMESTAMP)
-  private Date expectedDeliveryTime;
+//  @Column(name = "expected_delivery_time")
+//  @Temporal(TemporalType.TIMESTAMP)
+//  private Date expectedDeliveryTime;
 
   @Column(name = "total_price_product", nullable = false)
   @NotNull(message = "An totalPriceProduct is required!")
   @DecimalMin(value = "0", message = "An totalPriceProduct must be greater than or equal to 0.")
-  private BigDecimal totalPriceProduct;
+  private BigDecimal totalPriceProduct = new BigDecimal(0);
 
   @Column(name = "total_price_discount", nullable = false)
   @NotNull(message = "An totalPriceDiscount is required!")
   @DecimalMin(value = "0", message = "An totalPriceDiscount must be greater than or equal to 0.")
-  private BigDecimal totalPriceDiscount;
+  private BigDecimal totalPriceDiscount = new BigDecimal(0);
 
   @Column(name = "transport_fee", nullable = false)
   @NotNull(message = "An transportFee is required!")
-  private BigDecimal transportFee;
+  private BigDecimal totalFee = new BigDecimal(0);
 
   @Column(name = "total_price", nullable = false)
   @NotNull(message = "An totalPrice is required!")
   @DecimalMin(value = "0", message = "An totalPrice must be greater than or equal to 0.")
-  private BigDecimal totalPrice;
-
-  @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
-  private Set<OrderItem> orderItemSet = new HashSet<>();
+  private BigDecimal totalPrice = new BigDecimal(0);
 
   @Enumerated(EnumType.STRING)
   @Column(name = "status", length = 50, nullable = false)
   @NotNull(message = "An status is required!")
   private EOrderStatus status;
+
+  @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+  private Set<OrderShop> orderShops = new HashSet<>();
 
   @Column(name = "created_at")
   @CreationTimestamp

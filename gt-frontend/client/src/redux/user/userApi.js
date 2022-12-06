@@ -1,7 +1,7 @@
 import { Link, Navigate, resolvePath } from 'react-router-dom';
 import { authService } from '../../services/auth.service';
 import {userService} from '../../services/user.service'
-import { DEFAULT_STORE } from '../../utils/constants';
+import { DEFAULT_STORE } from '../../utils';
 import { login,logout } from './userSlice';
 export const PostLogin = async (dispatch, data, Navigate) => {
 

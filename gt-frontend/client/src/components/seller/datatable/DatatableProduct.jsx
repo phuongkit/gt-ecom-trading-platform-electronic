@@ -12,7 +12,7 @@ const Datatable = () => {
     const navigate = useNavigate();
     const getUser = JSON.parse(localStorage.getItem('customerInfo'));
     useEffect(() => {
-        getAllProductApi(dispatch, { shopId: getUser.shopId });
+        getAllProductApi(dispatch, { shopId: getUser?.shopId });
     }, []);
     const productList = useSelector((state) => state.products?.pageProduct?.data);
     useEffect(() => {

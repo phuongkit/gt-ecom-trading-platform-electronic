@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { DEFAULT_STORE } from '../../utils/constants';
+import { DEFAULT_STORE } from '../../utils';
 
 export const userSlice = createSlice({
     name: 'user',

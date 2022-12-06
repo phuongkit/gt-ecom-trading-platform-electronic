@@ -92,7 +92,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
   @Query(value = "select sum(item.quantity) from OrderItem item " +
       "where " +
-      "item.order is not null " +
+      "item.orderShop is not null " +
       "and item.product = :product")
-  Integer getSoldQuantityByProduct(Product product);
+  Long getSoldQuantityByProduct(Product product);
+
+  Long countAllByShop(Shop shop);
 }

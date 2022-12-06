@@ -26,8 +26,8 @@ public class ProductResponseDTO {
   private String title;
   private BigDecimal originPrice;
   private BigDecimal price;
-  private Integer availableQuantity;
-  private Integer soldQuantity;
+  private Long availableQuantity;
+  private Long soldQuantity;
   private ShopSimpleResponseDTO shop;
   private String url;
   private String slug;

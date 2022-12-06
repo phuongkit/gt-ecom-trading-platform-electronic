@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static gt.electronic.ecommerce.utils.Utils.IMAGE_DEFAULT_PATH;
+import static gt.electronic.ecommerce.utils.Utils.toBeTruncatedDouble;
 
 /**
  * @author minh phuong
@@ -168,7 +169,7 @@ public class ProductMapperImpl implements ProductMapper {
     }
     ProductRating productRating = this.feedbackService.getProductRatingByProduct(entity.getId());
     if (productRating != null) {
-      responseDTO.setStar(productRating.getStar());
+      responseDTO.setStar(toBeTruncatedDouble(productRating.getStar()));
       responseDTO.setTotalVote(productRating.getTotalVote());
     } else {
       responseDTO.setStar(0);

@@ -1,7 +1,7 @@
 import './ShopAllProduct.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { ESortOptions } from '../../../../utils/variableDefault';
+import { ESortOptions } from '../../../../utils';
 import ProductFilter from '../../../../components/ProductFilter';
 import { getPageProductShop } from '../../../../redux/product/productsSlice';
 import { getAllProductApi } from '../../../../redux/product/productsApi';

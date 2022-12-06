@@ -12,6 +12,7 @@ import gt.electronic.ecommerce.mapper.ProductMapper;
 import gt.electronic.ecommerce.mapper.UserMapper;
 import gt.electronic.ecommerce.models.enums.EOrdertemStatus;
 import gt.electronic.ecommerce.repositories.OrderItemRepository;
+import gt.electronic.ecommerce.repositories.OrderShopRepository;
 import gt.electronic.ecommerce.repositories.ProductRepository;
 import gt.electronic.ecommerce.repositories.SaleRepository;
 import gt.electronic.ecommerce.services.SaleService;
@@ -21,9 +22,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author minh phuong
@@ -33,10 +32,16 @@ import java.util.Set;
 @Component
 public class OrderItemMapperImpl implements OrderItemMapper {
   private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
+
   private OrderItemRepository orderItemRepo;
 
   @Autowired public void OrderItemRepository(OrderItemRepository orderItemRepo) {
     this.orderItemRepo = orderItemRepo;
+  }
+  private OrderShopRepository orderShopRepo;
+
+  @Autowired public void OrderShopRepository(OrderShopRepository orderShopRepo) {
+    this.orderShopRepo = orderShopRepo;
   }
 
   private ProductMapper productMapper;
@@ -71,21 +76,23 @@ public class OrderItemMapperImpl implements OrderItemMapper {
     this.userMapper = userMapper;
   }
 
-  @Override public Set<OrderItem> orderDetailCreationDTOsToOrderItems(Order order,
-                                                                      List<OrderDetailCreationDTO> creationDTOList) {
+  @Override public Set<OrderShop> orderDetailCreationDTOsToGroupOrderItemByShops(
+      Order order,
+      List<OrderDetailCreationDTO> creationDTOList
+  ) {
     if (order == null || creationDTOList == null || creationDTOList.size() < 1) {
       return null;
     }
-    Set<OrderItem> orderItemSet = new HashSet<>();
+    Set<OrderShop> orderShops = new HashSet<>();
     for (OrderDetailCreationDTO orderItemDTO : creationDTOList) {
       if (orderItemDTO.getProductId() != null) {
-        OrderItem orderItem = new OrderItem();
         Product productFound = this.productRepo.findById(orderItemDTO.getProductId())
             .orElseThrow(() -> new ResourceNotFoundException(String.format(
                 Utils.OBJECT_NOT_FOUND_BY_FIELD, Product.class.getSimpleName(), "ID", orderItemDTO.getProductId())));
         if (productFound.getQuantity() < orderItemDTO.getQuantity()) {
           throw new ResourceNotSufficientException(Utils.PRODUCT_NOT_ENOUGH);
         }
+        OrderShop orderShop = Utils.getOrderShopFromList(orderShops, productFound.getShop(), order);
         Sale saleFound = null;
         if (orderItemDTO.getSaleName() != null && orderItemDTO.getSaleName().trim().length() > 1) {
           saleFound = this.saleRepo.findByName(orderItemDTO.getSaleName()).orElse(null);
@@ -99,8 +106,8 @@ public class OrderItemMapperImpl implements OrderItemMapper {
             }
           }
         }
-        orderItem.setUser(order.getUser());
-        orderItem.setOrder(order);
+        OrderItem orderItem = new OrderItem();
+        orderItem.setOrderShop(orderShop);
         orderItem.setProduct(productFound);
         orderItem.setSale(saleFound);
         orderItem.setQuantity(orderItemDTO.getQuantity());
@@ -108,15 +115,18 @@ public class OrderItemMapperImpl implements OrderItemMapper {
         // update product quantity;
         productFound.setQuantity(productFound.getQuantity() - orderItemDTO.getQuantity());
         orderItem.setNote(orderItemDTO.getNote());
-        orderItem.setStatus(EOrdertemStatus.PAID);
-        orderItemSet.add(orderItem);
+        orderShop.addOrderItem(orderItem);
+        orderShops.add(orderShop);
       }
     }
-    return orderItemSet;
+    updateTotalPriceProduct(orderShops);
+    return orderShops;
   }
 
-  @Override public Set<OrderItem> cartDetailCreationDTOsToOrderItems(User user,
-                                                                     List<CartDetailCreationDTO> creationDTOList) {
+  @Override public Set<OrderItem> cartDetailCreationDTOsToOrderItems(
+      User user,
+      List<CartDetailCreationDTO> creationDTOList
+  ) {
     if (user == null || creationDTOList == null || creationDTOList.size() < 1) {
       return null;
     }
@@ -125,15 +135,15 @@ public class OrderItemMapperImpl implements OrderItemMapper {
       Product productFound = this.productRepo.findById(creationDTO.getProductId()).orElse(null);
       if (productFound != null) {
         OrderItem orderItemFound = this.orderItemRepo.findByUserAndProductAndStatus(user, productFound,
-            EOrdertemStatus.UN_PAID).orElse(null);
-        Integer newQuantity = creationDTO.getQuantity();
+                                                                                    EOrdertemStatus.UN_PAID)
+            .orElse(null);
+        Long newQuantity = creationDTO.getQuantity();
         if (orderItemFound != null) {
           newQuantity = newQuantity + orderItemFound.getQuantity();
         } else {
           orderItemFound = new OrderItem();
-          orderItemFound.setUser(user);
           orderItemFound.setProduct(productFound);
-          orderItemFound.setStatus(EOrdertemStatus.UN_PAID);
+//          orderItemFound.setStatus(EOrdertemStatus.UN_PAID);
         }
         newQuantity = newQuantity < productFound.getQuantity() ? newQuantity : productFound.getQuantity();
         Sale sale = this.saleService.getMostOptimalSaleByProduct(productFound.getId());
@@ -163,5 +173,12 @@ public class OrderItemMapperImpl implements OrderItemMapper {
     responseDTO.setTotalPrice(Utils.getPriceProduct(entity.getProduct(), entity.getSale(), responseDTO.getQuantity()));
     responseDTO.setNote(entity.getNote());
     return responseDTO;
+  }
+
+  public void updateTotalPriceProduct(Set<OrderShop> orderShops) {
+    for (OrderShop orderShop: orderShops) {
+      orderShop.setTotalPriceProduct(Utils.getTotalPriceFromOrderItems(orderShop.getOrderItems(), orderShop.getShop()
+          .getId()));
+    }
   }
 }

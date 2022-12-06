@@ -283,13 +283,17 @@ import java.util.*;
       }
       if (sortOption == ESortOption.TOP_SALES.ordinal()) {
         productList.sort((o1, o2) -> {
-          int delta = getSoldQuantityById(o2.getId()) - getSoldQuantityById(o1.getId());
+          long delta = getSoldQuantityById(o2.getId()) - getSoldQuantityById(o1.getId());
           if (delta == 0) {
             if (order != null) {
               return comparePriceProduct(o1, o2, order);
             }
+            return 0;
+          } else if (delta > 0) {
+            return 1;
+          } else {
+            return -1;
           }
-          return delta;
         });
       } else if (sortOption == ESortOption.POPULAR.ordinal()) {
         productList.sort((o1, o2) -> {
@@ -600,15 +604,15 @@ import java.util.*;
 
   }
 
-  @Override public Integer getSoldQuantityById(Long id) {
+  @Override public Long getSoldQuantityById(Long id) {
     Product entityFound = this.productRepo.findById(id).orElse(null);
     if (entityFound != null) {
-      Integer soldQuantity = this.productRepo.getSoldQuantityByProduct(entityFound);
+      Long soldQuantity = this.productRepo.getSoldQuantityByProduct(entityFound);
       if (soldQuantity != null) {
         return soldQuantity;
       }
     }
-    return 0;
+    return 0L;
   }
 
   @Override public void createDescription(Product product, Map<String, String> descriptions) {

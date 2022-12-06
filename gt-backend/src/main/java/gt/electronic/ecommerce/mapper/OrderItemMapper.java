@@ -7,9 +7,11 @@ import gt.electronic.ecommerce.dto.response.OrderDetailResponseDTO;
 import gt.electronic.ecommerce.dto.response.OrderResponseDTO;
 import gt.electronic.ecommerce.entities.Order;
 import gt.electronic.ecommerce.entities.OrderItem;
+import gt.electronic.ecommerce.entities.OrderShop;
 import gt.electronic.ecommerce.entities.User;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -18,7 +20,7 @@ import java.util.Set;
  * @project gt-backend
  */
 public interface OrderItemMapper {
-  Set<OrderItem> orderDetailCreationDTOsToOrderItems(Order order, List<OrderDetailCreationDTO> creationDTOList);
+  Set<OrderShop> orderDetailCreationDTOsToGroupOrderItemByShops(Order order, List<OrderDetailCreationDTO> creationDTOList);
   Set<OrderItem> cartDetailCreationDTOsToOrderItems(User user, List<CartDetailCreationDTO> creationDTOList);
   OrderDetailResponseDTO orderItemToOrderDetailResponseDTO(OrderItem entity);
 }

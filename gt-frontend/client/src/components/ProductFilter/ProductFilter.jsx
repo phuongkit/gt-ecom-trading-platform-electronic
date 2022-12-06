@@ -3,7 +3,7 @@ import ProductCard from '../ProductCard';
 import Paging from '../Paging';
 
 import { SearchHeartFill } from 'react-bootstrap-icons';
-import { ESortOptions } from '../../utils/variableDefault';
+import { ESortOptions } from '../../utils';
 
 function ProductFilter({ params, setParams, productList, page }) {
     return (

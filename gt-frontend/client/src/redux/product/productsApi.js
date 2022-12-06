@@ -1,4 +1,4 @@
-import {  productService } from '~/services';
+import {  productService } from '../../services';
 
 import {
     getAllProducts,

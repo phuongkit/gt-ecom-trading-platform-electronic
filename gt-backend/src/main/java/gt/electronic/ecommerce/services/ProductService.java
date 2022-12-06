@@ -45,7 +45,7 @@ public interface ProductService {
 
   ProductResponseDTO deleteProductById(String loginKey, Long id, boolean...isAdmin);
 
-  Integer getSoldQuantityById(Long id);
+  Long getSoldQuantityById(Long id);
 
   void createDescription(Product product, Map<String, String> descriptions);
 }

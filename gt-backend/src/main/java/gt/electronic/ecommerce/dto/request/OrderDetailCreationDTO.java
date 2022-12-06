@@ -29,10 +29,10 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class OrderDetailCreationDTO {
   private Long productId;
-  private Integer quantity;
+  private Long quantity;
   private String saleName;
   private String note;
-  public OrderDetailCreationDTO (Product product, Integer quantity) {
+  public OrderDetailCreationDTO (Product product, Long quantity) {
     this.productId = product.getId();
     this.quantity = quantity;
   }
