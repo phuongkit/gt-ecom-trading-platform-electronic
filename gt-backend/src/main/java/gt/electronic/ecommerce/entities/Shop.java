@@ -10,6 +10,7 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -104,6 +105,17 @@ public class Shop {
 
   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "shop")
   private Set<Discount> discounts = new HashSet<>();
+
+  @Override public int hashCode() {
+    return this.id;
+  }
+
+  @Override public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof Shop) || getClass() != o.getClass()) return false;
+    Shop that = (Shop) o;
+    return this.getId().equals(that.getId());
+  }
 
   public Shop(String name, User user, FullAddress fullAddress, String avatar, String background) {
     this.name = name;

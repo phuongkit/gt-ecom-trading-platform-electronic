@@ -1,5 +1,7 @@
 package gt.electronic.ecommerce.entities.keys;
 
+import gt.electronic.ecommerce.entities.Order;
+import gt.electronic.ecommerce.entities.Shop;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,5 +39,10 @@ public class OrderShopKey implements Serializable {
   @Override
   public int hashCode() {
     return Objects.hash(this.getOrderId(), this.getShopId());
+  }
+
+  public OrderShopKey(Order order, Shop shop) {
+    this.orderId = order.getId();
+    this.shopId = shop.getId();
   }
 }

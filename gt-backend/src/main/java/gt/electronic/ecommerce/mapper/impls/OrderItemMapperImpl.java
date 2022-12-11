@@ -2,8 +2,10 @@ package gt.electronic.ecommerce.mapper.impls;
 
 import gt.electronic.ecommerce.dto.request.CartDetailCreationDTO;
 import gt.electronic.ecommerce.dto.request.OrderDetailCreationDTO;
+import gt.electronic.ecommerce.dto.request.OrderShopCreationDTO;
 import gt.electronic.ecommerce.dto.response.OrderDetailResponseDTO;
 import gt.electronic.ecommerce.entities.*;
+import gt.electronic.ecommerce.entities.keys.OrderShopKey;
 import gt.electronic.ecommerce.exceptions.ResourceNotFoundException;
 import gt.electronic.ecommerce.exceptions.ResourceNotSufficientException;
 import gt.electronic.ecommerce.exceptions.ResourceNotValidException;
@@ -11,10 +13,7 @@ import gt.electronic.ecommerce.mapper.OrderItemMapper;
 import gt.electronic.ecommerce.mapper.ProductMapper;
 import gt.electronic.ecommerce.mapper.UserMapper;
 import gt.electronic.ecommerce.models.enums.EOrdertemStatus;
-import gt.electronic.ecommerce.repositories.OrderItemRepository;
-import gt.electronic.ecommerce.repositories.OrderShopRepository;
-import gt.electronic.ecommerce.repositories.ProductRepository;
-import gt.electronic.ecommerce.repositories.SaleRepository;
+import gt.electronic.ecommerce.repositories.*;
 import gt.electronic.ecommerce.services.SaleService;
 import gt.electronic.ecommerce.utils.Utils;
 import org.slf4j.Logger;
@@ -38,6 +37,7 @@ public class OrderItemMapperImpl implements OrderItemMapper {
   @Autowired public void OrderItemRepository(OrderItemRepository orderItemRepo) {
     this.orderItemRepo = orderItemRepo;
   }
+
   private OrderShopRepository orderShopRepo;
 
   @Autowired public void OrderShopRepository(OrderShopRepository orderShopRepo) {
@@ -69,6 +69,12 @@ public class OrderItemMapperImpl implements OrderItemMapper {
     this.saleService = saleService;
   }
 
+  private ShopRepository shopRepo;
+
+  @Autowired public void ShopRepository(ShopRepository shopRepo) {
+    this.shopRepo = shopRepo;
+  }
+
   private UserMapper userMapper;
 
   @Autowired
@@ -78,45 +84,54 @@ public class OrderItemMapperImpl implements OrderItemMapper {
 
   @Override public Set<OrderShop> orderDetailCreationDTOsToGroupOrderItemByShops(
       Order order,
-      List<OrderDetailCreationDTO> creationDTOList
+      List<OrderShopCreationDTO> orderShopCreations
   ) {
-    if (order == null || creationDTOList == null || creationDTOList.size() < 1) {
+    if (order == null || orderShopCreations == null || orderShopCreations.size() < 1) {
       return null;
     }
     Set<OrderShop> orderShops = new HashSet<>();
-    for (OrderDetailCreationDTO orderItemDTO : creationDTOList) {
-      if (orderItemDTO.getProductId() != null) {
-        Product productFound = this.productRepo.findById(orderItemDTO.getProductId())
-            .orElseThrow(() -> new ResourceNotFoundException(String.format(
-                Utils.OBJECT_NOT_FOUND_BY_FIELD, Product.class.getSimpleName(), "ID", orderItemDTO.getProductId())));
-        if (productFound.getQuantity() < orderItemDTO.getQuantity()) {
-          throw new ResourceNotSufficientException(Utils.PRODUCT_NOT_ENOUGH);
-        }
-        OrderShop orderShop = Utils.getOrderShopFromList(orderShops, productFound.getShop(), order);
-        Sale saleFound = null;
-        if (orderItemDTO.getSaleName() != null && orderItemDTO.getSaleName().trim().length() > 1) {
-          saleFound = this.saleRepo.findByName(orderItemDTO.getSaleName()).orElse(null);
-          if (saleFound != null) {
-            try {
-              if (!Utils.checkValidDate(saleFound.getStartDate(), saleFound.getEndDate(), false)) {
+    for (OrderShopCreationDTO orderShopDTO : orderShopCreations) {
+      Shop shopFound = this.shopRepo.findById(orderShopDTO.getShopId())
+          .orElseThrow(() -> new ResourceNotFoundException(String.format(
+              Utils.OBJECT_NOT_FOUND_BY_FIELD, Shop.class.getSimpleName(), "ID", orderShopDTO.getClass())));
+      OrderShop orderShop = new OrderShop(order, shopFound);
+      orderShop.setShippingMethod(orderShopDTO.getShippingMethod());
+      orderShop.setExpectedDeliveryTime(orderShopDTO.getExpectedDeliveryTime());
+      orderShop.setTotalFee(orderShopDTO.getTotalFee());
+      orderShop = this.orderShopRepo.save(orderShop);
+      for (OrderDetailCreationDTO orderItemDTO : orderShopDTO.getItems()) {
+        if (orderItemDTO.getProductId() != null) {
+          Product productFound = this.productRepo.findById(orderItemDTO.getProductId())
+              .orElseThrow(() -> new ResourceNotFoundException(String.format(
+                  Utils.OBJECT_NOT_FOUND_BY_FIELD, Product.class.getSimpleName(), "ID", orderItemDTO.getProductId())));
+          if (productFound.getQuantity() < orderItemDTO.getQuantity()) {
+            throw new ResourceNotSufficientException(Utils.PRODUCT_NOT_ENOUGH);
+          }
+          Sale saleFound = null;
+          if (orderItemDTO.getSaleName() != null && orderItemDTO.getSaleName().trim().length() > 1) {
+            saleFound = this.saleRepo.findByName(orderItemDTO.getSaleName()).orElse(null);
+            if (saleFound != null) {
+              try {
+                if (!Utils.checkValidDate(saleFound.getStartDate(), saleFound.getEndDate(), false)) {
+                  saleFound = null;
+                }
+              } catch (ResourceNotValidException e) {
                 saleFound = null;
               }
-            } catch (ResourceNotValidException e) {
-              saleFound = null;
             }
           }
+          OrderItem orderItem = new OrderItem();
+          orderItem.setOrderShop(orderShop);
+          orderItem.setProduct(productFound);
+          orderItem.setSale(saleFound);
+          orderItem.setQuantity(orderItemDTO.getQuantity());
+          orderItem.setTotalPrice(Utils.getPriceProduct(productFound, saleFound, orderItemDTO.getQuantity()));
+          // update product quantity;
+          productFound.setQuantity(productFound.getQuantity() - orderItemDTO.getQuantity());
+          orderItem.setNote(orderItemDTO.getNote());
+          orderShop.addOrderItem(orderItem);
+          orderShops.add(orderShop);
         }
-        OrderItem orderItem = new OrderItem();
-        orderItem.setOrderShop(orderShop);
-        orderItem.setProduct(productFound);
-        orderItem.setSale(saleFound);
-        orderItem.setQuantity(orderItemDTO.getQuantity());
-        orderItem.setTotalPrice(Utils.getPriceProduct(productFound, saleFound, orderItemDTO.getQuantity()));
-        // update product quantity;
-        productFound.setQuantity(productFound.getQuantity() - orderItemDTO.getQuantity());
-        orderItem.setNote(orderItemDTO.getNote());
-        orderShop.addOrderItem(orderItem);
-        orderShops.add(orderShop);
       }
     }
     updateTotalPriceProduct(orderShops);
@@ -176,9 +191,10 @@ public class OrderItemMapperImpl implements OrderItemMapper {
   }
 
   public void updateTotalPriceProduct(Set<OrderShop> orderShops) {
-    for (OrderShop orderShop: orderShops) {
+    for (OrderShop orderShop : orderShops) {
       orderShop.setTotalPriceProduct(Utils.getTotalPriceFromOrderItems(orderShop.getOrderItems(), orderShop.getShop()
           .getId()));
+      this.orderShopRepo.save(orderShop);
     }
   }
 }

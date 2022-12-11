@@ -96,12 +96,10 @@ public class OrderMapperImpl implements OrderMapper {
               entity.getLine(), entity.getLocation()));
     }
     responseDTO.setStatus(entity.getStatus().ordinal());
-    assert orderShop != null;
-    responseDTO.setPayAt(orderShop.getPayAt());
+    responseDTO.setPayAt(null);
     responseDTO.setNote(entity.getNote());
     if (isFull.length > 0 && isFull[0]) {
-
-      if (!orderShop.getOrderItems().isEmpty()) {
+      if (orderShop != null && orderShop.getOrderItems().isEmpty()) {
         OrderDetailResponseDTO[] orderItems =
             new OrderDetailResponseDTO[orderShop.getOrderItems().size()];
         int i = 0;

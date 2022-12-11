@@ -220,6 +220,8 @@ import static gt.electronic.ecommerce.models.enums.EDiscountType.DISCOUNT_SHOP_P
 //    }
     // initial total price
     newEntity.setTotalPrice(new BigDecimal(0));
+    // set payment
+    newEntity.setPayment(creationDTO.getPayment() != null ? creationDTO.getPayment() : EPayment.CASH);
     // initial status
     newEntity.setStatus(creationDTO.getStatus() == null ?
                             (creationDTO.getPayment().ordinal() > 0 ? EOrderStatus.ORDER_AWAITING_PAYMENT :
@@ -230,7 +232,7 @@ import static gt.electronic.ecommerce.models.enums.EDiscountType.DISCOUNT_SHOP_P
 
     // set order item
     Set<OrderShop> orderShops =
-        this.orderItemMapper.orderDetailCreationDTOsToGroupOrderItemByShops(savedEntity, creationDTO.getOrderItems());
+        this.orderItemMapper.orderDetailCreationDTOsToGroupOrderItemByShops(savedEntity, creationDTO.getOrderShops());
     savedEntity.setTotalPriceProduct(orderShops.stream().map(OrderShop::getTotalPrice)
                                          .reduce(new BigDecimal(0), BigDecimal::add));
     // set discount
@@ -244,6 +246,7 @@ import static gt.electronic.ecommerce.models.enums.EDiscountType.DISCOUNT_SHOP_P
             if (orderShop.getTotalPrice() != null) {
               if (discountFound.getType() == DISCOUNT_SHOP_PERCENT || discountFound.getType() == DISCOUNT_SHOP_PRICE) {
                 orderShop.addDiscount(discountFound);
+                this.orderShopRepo.save(orderShop);
               } else {
                 discounts.add(discountFound);
               }

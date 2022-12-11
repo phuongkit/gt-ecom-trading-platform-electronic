@@ -38,7 +38,7 @@ public class OrderShop {
 
   @ManyToOne(fetch = FetchType.LAZY)
   @MapsId("orderId")
-  @JoinColumn(name = "order_id")
+  @JoinColumn(name = "order_id", nullable = false)
   private Order order;
 
   @ManyToOne
@@ -77,7 +77,7 @@ public class OrderShop {
   @Enumerated(EnumType.STRING)
   @Column(name = "shipping_method", length = 50, nullable = false)
   @NotNull(message = "An shippingMethod is required!")
-  private EShippingMethod shippingMethod;
+  private EShippingMethod shippingMethod = EShippingMethod.GHN_EXPRESS;
 
   @Column(name = "total_price_product", nullable = false)
   @NotNull(message = "An totalPriceProduct is required!")
@@ -89,8 +89,8 @@ public class OrderShop {
   @DecimalMin(value = "0", message = "An totalPriceDiscount must be greater than or equal to 0.")
   private BigDecimal totalPriceDiscount = new BigDecimal(0);
 
-  @Column(name = "transport_fee", nullable = false)
-  @NotNull(message = "An transportFee is required!")
+  @Column(name = "total_fee", nullable = false)
+  @NotNull(message = "An totalFee is required!")
   private BigDecimal totalFee = new BigDecimal(0);
 
   @Column(name = "total_price", nullable = false)
@@ -118,7 +118,7 @@ public class OrderShop {
   @Enumerated(EnumType.STRING)
   @Column(name = "status", length = 50, nullable = false)
   @NotNull(message = "An status is required!")
-  private EOrderStatus status;
+  private EOrderStatus status = EOrderStatus.ORDER_PENDING;
 
   @Column(name = "created_at")
   @CreationTimestamp
@@ -127,6 +127,17 @@ public class OrderShop {
   @Column(name = "updated_at")
   @UpdateTimestamp
   private Date updatedAt;
+
+  @Override public int hashCode() {
+    return this.key.hashCode();
+  }
+
+  @Override public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof OrderShop) || getClass() != o.getClass()) return false;
+    OrderShop that = (OrderShop) o;
+    return this.getKey().equals(that.getKey());
+  }
 
   @PreRemove
   private void preRemove() {

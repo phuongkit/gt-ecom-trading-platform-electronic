@@ -110,8 +110,8 @@ public class Order {
   @DecimalMin(value = "0", message = "An totalPriceDiscount must be greater than or equal to 0.")
   private BigDecimal totalPriceDiscount = new BigDecimal(0);
 
-  @Column(name = "transport_fee", nullable = false)
-  @NotNull(message = "An transportFee is required!")
+  @Column(name = "total_fee", nullable = false)
+  @NotNull(message = "An totalFee is required!")
   private BigDecimal totalFee = new BigDecimal(0);
 
   @Column(name = "total_price", nullable = false)
