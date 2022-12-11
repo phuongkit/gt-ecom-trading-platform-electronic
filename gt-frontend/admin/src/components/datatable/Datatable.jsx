@@ -3,11 +3,14 @@ import { DataGrid } from "@mui/x-data-grid";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useInsertionEffect } from "react";
-
+import { removeComments } from '../../redux/comment/commentApi'
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom'
+import { removeUser } from "../../redux/user/userApi";
+import { removeReviews } from "../../redux/review/reviewApi";
 import { showModal, offModal } from '../../redux/modal/modalApi';
 import CreatePostModal from "../CreateModal";
+import productService from "../../services/product.service";
 import { deleteProduct } from "../../redux/product/productsApi";
 const Datatable = ({ rows, title, productColumns, type = '', reply = false }) => {
   const navigate = useNavigate();
