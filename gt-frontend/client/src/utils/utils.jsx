@@ -104,3 +104,14 @@ export const getNameForProductCard = (name) => {
     }
     return name;
 }
+export const getProductsGroupByShop = (products) => {
+    return products.reduce((acc, item) => {
+        let shopCart = acc.find((shopCart) => shopCart?.id === item?.shop?.id) || null;
+        if (shopCart === null) {
+            return [...acc, { ...item?.shop, products: [item] }];
+        } else {
+            acc = acc.filter(shop => shop?.id !== shopCart?.id);
+            return [...acc, { ...shopCart, products: [...shopCart.products, item] }];
+        }
+    }, []);
+}

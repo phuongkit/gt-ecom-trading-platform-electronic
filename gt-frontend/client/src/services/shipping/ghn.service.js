@@ -1,64 +1,88 @@
-import { toAddressSlug, toFullAddress } from '../../utils/utils';
-import { GHN_CONFIG } from '../../utils/variableDefault';
+import { getProductsGroupByShop, toAddressSlug, toFullAddress } from '../../utils';
+import { GHN_CONFIG } from '../../utils';
 import axiosGHN from './axios.config';
 
 export const ghn = {
     async getPreviewOrderGHN(order) {
+        let productsGroupByShopId = getProductsGroupByShop(order?.orderItems.map((item) => ({ ...item.productId })));
         let addressId = await this.getAddressGHN(order?.address);
-        let items = order?.orderItems.map((item) => {
-            return {
-                name: item.productId?.title,
-                code: item.productId?.slug,
-                quantity: item.quantity,
-                price: item.productId?.price,
-                weight: item.productId?.weight || GHN_CONFIG.weight,
-                length: Number.parseInt(item.productId?.packagingLength || GHN_CONFIG.length),
-                width: Number.parseInt(item.productId?.packagingWidth || GHN_CONFIG.width),
-                height: Number.parseInt(Math.floor(item.productId?.packagingHeight || GHN_CONFIG.height)),
-                category: {
-                    level1: 'Áo',
-                },
-            };
-        });
-        let config = items.reduce(
-            (acc, item) => {
+        let shipGroupByShop = [];
+        for (let shopProduct of productsGroupByShopId) {
+            let items = shopProduct.products.map((item) => {
                 return {
-                    totalWeight: acc.totalWeight + item.weight * item.quantity,
-                    totalLength: acc.totalLength + item.length * item.quantity,
-                    totalWidth: acc.totalWidth + item.width * item.quantity,
-                    totalHeight: acc.totalHeight + item.height * item.quantity,
+                    name: item?.title,
+                    code: item?.slug,
+                    quantity: item.quantity,
+                    price: item?.price,
+                    weight: item?.weight || GHN_CONFIG.weight,
+                    length: Number.parseInt(item?.packagingLength || GHN_CONFIG.length),
+                    width: Number.parseInt(item?.packagingWidth || GHN_CONFIG.width),
+                    height: Number.parseInt(Math.floor(item?.packagingHeight || GHN_CONFIG.height)),
+                    category: {
+                        level1: 'Áo',
+                    },
                 };
-            },
-            { totalWeight: 0, totalLength: 0, totalWidth: 0, totalHeight: 0 },
-        );
-        items = items.map((item) => {
-            return { name: item.name, quantity: item.quantity };
-        });
-        let data = {
-            payment_type_id: 2,
-            note: order?.note,
-            required_note: 'KHONGCHOXEMHANG',
-            to_name: order?.fullName || GHN_CONFIG.toName,
-            to_phone: order?.phone,
-            to_address: toFullAddress(order?.address),
-            to_ward_code: addressId?.wardCode || GHN_CONFIG.wardCode,
-            to_district_id: addressId?.districtId || GHN_CONFIG.districtId,
-            cod_amount: 0,
-            content: 'ABCDEF',
-            weight: (config.totalWeight < GHN_CONFIG.totalWeight ? config.totalWeight : GHN_CONFIG.totalWeight) || 1,
-            length: (config.totalLength < GHN_CONFIG.totalLength ? config.totalLength : GHN_CONFIG.totalLength) || 1,
-            width: (config.totalWidth < GHN_CONFIG.totalWidth ? config.totalWidth : GHN_CONFIG.totalWidth) || 1,
-            height: (config.totalHeight < GHN_CONFIG.totalHeight ? config.totalHeight : GHN_CONFIG.totalHeight) || 1,
-            pick_station_id: 0,
-            insurance_value:
-                order?.totalPrice < GHN_CONFIG.maxInsuranceValue ? order?.totalPrice : GHN_CONFIG.maxInsuranceValue,
-            service_id: 0,
-            service_type_id: 2,
-            coupon: null,
-            // pick_shift: [2],
-            items: items,
-        };
-        return axiosGHN.post('https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/preview', data);
+            });
+            let config = items.reduce(
+                (acc, item) => {
+                    return {
+                        totalWeight: acc.totalWeight + item.weight * item.quantity,
+                        totalLength: acc.totalLength + item.length * item.quantity,
+                        totalWidth: acc.totalWidth + item.width * item.quantity,
+                        totalHeight: acc.totalHeight + item.height * item.quantity,
+                    };
+                },
+                { totalWeight: 0, totalLength: 0, totalWidth: 0, totalHeight: 0 },
+            );
+            items = items.map((item) => ({ name: item.name, quantity: item.quantity }));
+            let returnAddressId = await this.getAddressGHN(shopProduct?.address);
+            let data = {
+                payment_type_id: 2,
+                note: order?.note,
+                required_note: 'KHONGCHOXEMHANG',
+                to_name: order?.fullName || GHN_CONFIG.toName,
+                to_phone: order?.phone,
+                to_address: toFullAddress(order?.address),
+                to_ward_code: addressId?.wardCode || GHN_CONFIG.wardCode,
+                to_district_id: addressId?.districtId || GHN_CONFIG.districtId,
+                return_phone: shopProduct?.phone,
+                return_address: toFullAddress(shopProduct?.address),
+                return_district_id: returnAddressId.districtId,
+                return_ward_code: returnAddressId.wardCode,
+                cod_amount: 0,
+                content: 'ABCDEF',
+                weight:
+                    (config.totalWeight < GHN_CONFIG.totalWeight ? config.totalWeight : GHN_CONFIG.totalWeight) || 1,
+                length:
+                    (config.totalLength < GHN_CONFIG.totalLength ? config.totalLength : GHN_CONFIG.totalLength) || 1,
+                width: (config.totalWidth < GHN_CONFIG.totalWidth ? config.totalWidth : GHN_CONFIG.totalWidth) || 1,
+                height:
+                    (config.totalHeight < GHN_CONFIG.totalHeight ? config.totalHeight : GHN_CONFIG.totalHeight) || 1,
+                pick_station_id: 0,
+                insurance_value:
+                    order?.totalPrice < GHN_CONFIG.maxInsuranceValue ? order?.totalPrice : GHN_CONFIG.maxInsuranceValue,
+                service_id: 0,
+                service_type_id: 2,
+                coupon: null,
+                // pick_shift: [2],
+                items: items,
+            };
+            let res = await axiosGHN.post(
+                'https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/preview',
+                data,
+            );
+            let date = new Date(Date.parse(res?.data?.data?.expected_delivery_time));
+            shipGroupByShop = [
+                ...shipGroupByShop,
+                {
+                    shopId: shopProduct.id,
+                    expectedDeliveryTime: date,
+                    totalFee: res?.data?.data?.total_fee,
+                    items: shopProduct.products?.map(item => ({...item, productId: item.id}))
+                },
+            ];
+        }
+        return shipGroupByShop;
     },
     async createOrderGHN(order) {
         let addressId = await this.getAddressGHN(order?.address);
@@ -130,8 +154,8 @@ export const ghn = {
     async getAddressGHN(address) {
         address = toAddressSlug(address);
         let addressId = {
-            provinceId: GHN_CONFIG.provinceId, 
-            districtId: GHN_CONFIG.districtId, 
+            provinceId: GHN_CONFIG.provinceId,
+            districtId: GHN_CONFIG.districtId,
             wardCode: GHN_CONFIG.wardCode,
         };
 
@@ -165,8 +189,8 @@ export const ghn = {
             }
         }
         return {
-            provinceId: GHN_CONFIG.provinceId, 
-            districtId: GHN_CONFIG.districtId, 
+            provinceId: GHN_CONFIG.provinceId,
+            districtId: GHN_CONFIG.districtId,
             wardCode: GHN_CONFIG.wardCode,
         };
     },

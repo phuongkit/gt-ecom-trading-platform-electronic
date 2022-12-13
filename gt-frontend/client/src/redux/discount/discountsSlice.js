@@ -48,11 +48,11 @@ export const discounts = createSlice({
         addCheckoutDiscount: (state, action) => {
             const newItem = action.payload;
             const duplicate = state.checkoutDiscounts.data.filter(
-                (e) => e.id === newItem.id
+                (e) => e.id === newItem.id || e.shopId=== newItem.shopId
             );
             if (duplicate.length > 0) {
                 state.checkoutDiscounts.data = state.checkoutDiscounts.data.filter(
-                    (e) => e.id !== newItem.id
+                    (e) => e.id !== newItem.id && e.shopId !== newItem.shopId
                 );
 
                 state.checkoutDiscounts.data = [
