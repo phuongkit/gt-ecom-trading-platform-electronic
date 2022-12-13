@@ -5,9 +5,10 @@ import useStyles from './styles'
 import {Button} from '@material-ui/core'
 import { useCallback } from "react";
 import {showModal,offModal} from '../../redux/modal/modalApi';
+import {getAllCommentsfull} from '../../redux/comment/commentApi'
 import { useParams } from "react-router-dom";
 import moment from 'moment'
-
+import {repplyComments} from '../../redux/comment/commentApi'
 function CreatePostModal() {
     const dispatch = useDispatch()
     const more = useRef()
@@ -21,27 +22,40 @@ function CreatePostModal() {
     let isShow = useSelector(state=>state.modal.showModal.isShow);
     let repllyforId = useSelector(state=>state.modal.showModal.repllyforId);
     useEffect(()=>{
-      // getAllCommentsfull(dispatch)
+      getAllCommentsfull(dispatch)
     },[])
 
     let getComment = useSelector((state) => state.comments.comment.data);
     const onSubmit=(e)=>{
         e.preventDefault()
-        // repplyComments(dispatch,idPro.commentId,{ 
-        //     id: getComment[getComment.length-1]?.id + 1,
-        //     content: data.content,
-        //     create_date: moment().format('HH:MM MM/DD, YYYY'),
-        //     creator: {
-        //         id: parseInt(data.sdt),
-        //         name: data.name,
-        //         avatar: 'https://cafedev.vn/wp-content/uploads/2019/12/cafedev_javascript.png',
-        //         username: data.gmail,
-        //         admin: true,
-        //         replyforId: repllyforId,
-        //     },
-        //     productId: idPro.commentId,
-        //   })
-      
+        repplyComments(dispatch,idPro.commentId,{ 
+            id: getComment[getComment.length-1]?.id + 1,
+            content: data.content,
+            create_date: moment().format('HH:MM MM/DD, YYYY'),
+            creator: {
+                id: parseInt(data.sdt),
+                name: data.name,
+                avatar: 'https://cafedev.vn/wp-content/uploads/2019/12/cafedev_javascript.png',
+                username: data.gmail,
+                admin: true,
+                replyforId: repllyforId,
+            },
+            productId: idPro.commentId,
+          })
+          console.log({ 
+            id: getComment[getComment.length-1]?.id + 1,
+            content: data.content,
+            create_date: moment().format('HH:MM MM/DD, YYYY'),
+            creator: {
+                id: parseInt(data.sdt),
+                name: data.name,
+                avatar: 'https://cafedev.vn/wp-content/uploads/2019/12/cafedev_javascript.png',
+                username: data.gmail,
+                admin: true,
+                replyforId: repllyforId,
+            },
+            productId: idPro.commentId,
+          })
         onClose()
         setData({
           content: '',
