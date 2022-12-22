@@ -30,8 +30,6 @@ const Order = ({ title }) => {
         }))
         let discountIds = order.discountIds.map(item => item.id);
         const data = { ...order, ...payment, discountIds, orderItems, orderShops };
-        console.log(data);
-        return
         try {
             const res = await orderService.postOrder(data);
             if (res?.status === 'CREATED') {
@@ -56,7 +54,7 @@ const Order = ({ title }) => {
             alert(MESSAGE.ERROR_ACTION);
         }
         navigate('/');
-        // localStorage.removeItem('order');
+        localStorage.removeItem('order');
     };
     const getPayment = () => {
         const radios = document.querySelectorAll('input[name="payment"]');

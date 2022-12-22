@@ -78,7 +78,12 @@ export const ghn = {
                     shopId: shopProduct.id,
                     expectedDeliveryTime: date,
                     totalFee: res?.data?.data?.total_fee,
-                    items: shopProduct.products?.map(item => ({...item, productId: item.id}))
+                    items: shopProduct.products?.map((item) => ({
+                        productId: item.id,
+                        quantity: item.quantity,
+                        saleName: item.tag,
+                        note: item?.note || '',
+                    })),
                 },
             ];
         }

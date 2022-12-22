@@ -127,6 +127,8 @@ public class OrderController {
                                                       @RequestBody OrderCreationDTO orderCreationDTO,
                                                       HttpServletRequest request) {
     //    this.LOGGER.info(String.valueOf(SecurityContextHolder.getContext().getAuthentication().getAuthorities()));
+    this.LOGGER.info("123");
+    this.LOGGER.info(orderCreationDTO.toString());
     String loginKey = jwtTokenUtil.getUserNameFromRequest(request);
     return new ResponseObject<>(HttpStatus.OK, String.format(Utils.UPDATE_OBJECT_SUCCESSFULLY, branchName),
         this.orderService.updateOrder(loginKey, id, orderCreationDTO));
