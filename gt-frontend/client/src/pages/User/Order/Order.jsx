@@ -7,10 +7,11 @@ import { numberWithCommas } from '~/utils';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { orderService } from '~/services';
 import { vnpay } from '../../../services/payment';
-import { EGender, EPayment, MESSAGE } from './../../../utils';
+import { EGender, EPayment, EShippingMethod, MESSAGE } from './../../../utils';
 import { deleteOrdersByIdApi } from '../../../redux/order/ordersApi';
 import { ghn } from '../../../services/shipping';
 import { clearCheckoutDiscount } from '../../../redux/discount/discountsSlice';
+import { deleteOrder } from '../../../redux/order/orderSlice';
 
 const Order = ({ title }) => {
     const dispatch = useDispatch();
@@ -24,8 +25,13 @@ const Order = ({ title }) => {
     const handleConfirm = async () => {
         const payment = getPayment();
         let orderItems = [...order.orderItems].map((value) => ({ ...value, productId: value.productId?.id }));
-        const data = { ...order, orderItems, ...ship, ...payment };
-        console.log('data', data);
+        let orderShops = ship.shipGroupByShop.map(item => ({
+            ...item, shippingMethod: EShippingMethod.GHN_EXPRESS.index
+        }))
+        let discountIds = order.discountIds.map(item => item.id);
+        const data = { ...order, ...payment, discountIds, orderItems, orderShops };
+        console.log(data);
+        return
         try {
             const res = await orderService.postOrder(data);
             if (res?.status === 'CREATED') {
@@ -42,16 +48,14 @@ const Order = ({ title }) => {
                     window.location = resVNPay.data.payUrl || window.location.origin + '/#/';
                 } else {
                     alert('Tạo đơn hàng thành công');
-                    navigate('/');
                 }
             } else {
                 alert(MESSAGE.ERROR_ACTION);
-                navigate('/');
             }
         } catch (err) {
             alert(MESSAGE.ERROR_ACTION);
-            navigate('/');
         }
+        navigate('/');
         // localStorage.removeItem('order');
     };
     const getPayment = () => {
@@ -68,18 +72,20 @@ const Order = ({ title }) => {
             : { payment: EPayment.CASH.index, paid: false };
     };
     const handleCancel = async () => {
-        deleteOrdersByIdApi(dispatch, order.id, navigate);
+        dispatch(deleteOrder());
+        navigate('/');
     };
     useEffect(() => {
         if (order && ship.expectedDeliveryTime === null) {
             const getShip = async () => {
-                let res = await ghn.getPreviewOrderGHN(order);
-                console.log(res?.data?.data);
-                let date = new Date(Date.parse(res?.data?.data?.expected_delivery_time));
-                setShip({
-                    expectedDeliveryTime: date,
-                    transportFee: res?.data?.data?.total_fee,
-                });
+                let shipGroupByShop = await ghn.getPreviewOrderGHN(order);
+                let totalFee = shipGroupByShop.reduce((acc, item) => acc + item.totalFee, 0);
+                setShip({ totalFee: totalFee, shipGroupByShop: shipGroupByShop });
+                // let date = new Date(Date.parse(res?.data?.data?.expected_delivery_time));
+                // setShip({
+                //     expectedDeliveryTime: date,
+                //     transportFee: res?.data?.data?.total_fee,
+                // });
             };
             getShip();
         }
@@ -170,7 +176,7 @@ const Order = ({ title }) => {
                                         <i className="info-order__dot-icon"></i>
                                         <span>
                                             <strong>
-                                                Phí vận chuyển: {numberWithCommas(Number(ship.transportFee)) || 0}
+                                                Phí vận chuyển: {numberWithCommas(Number(ship.totalFee)) || 0}
                                                 {' đ'}
                                             </strong>
                                         </span>
@@ -194,7 +200,7 @@ const Order = ({ title }) => {
                                             <strong>Tổng thanh toán: {'   '}</strong>
                                             <strong className="text-red-500 text-5xl">
                                                 {numberWithCommas(
-                                                    Number(ship.transportFee) + Number(order.totalPriceProduct) - Number(order.totalPriceDiscount) || 0
+                                                    Number(ship.totalFee) + Number(order.totalPriceProduct) - Number(order.totalPriceDiscount) || 0
                                                 ) || 0}{' '}
                                                 {' đ'}
                                             </strong>
