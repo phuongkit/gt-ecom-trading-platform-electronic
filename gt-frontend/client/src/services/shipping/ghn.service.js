@@ -93,14 +93,14 @@ export const ghn = {
         let addressId = await this.getAddressGHN(order?.address);
         let items = order?.orderItems.map((item) => {
             return {
-                name: item.productId?.name,
-                code: item.productId?.slug,
+                name: item.product?.title,
+                code: item.product?.slug,
                 quantity: item.quantity,
-                price: item.productId?.price,
-                weight: item.productId?.weight || GHN_CONFIG.weight,
-                length: Number.parseInt(item.productId?.packagingLength || GHN_CONFIG.length),
-                width: Number.parseInt(item.productId?.packagingWidth || GHN_CONFIG.width),
-                height: Number.parseInt(Math.floor(item.productId?.packagingHeight || GHN_CONFIG.height)),
+                price: item.product?.price,
+                weight: item.product?.weight || GHN_CONFIG.weight,
+                length: Number.parseInt(item.product?.packagingLength || GHN_CONFIG.length),
+                width: Number.parseInt(item.product?.packagingWidth || GHN_CONFIG.width),
+                height: Number.parseInt(Math.floor(item.product?.packagingHeight || GHN_CONFIG.height)),
                 category: {
                     level1: 'Áo',
                 },

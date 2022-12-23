@@ -3,15 +3,15 @@ import DriveFolderUploadOutlinedIcon from "@mui/icons-material/DriveFolderUpload
 import { useState, useEffect } from "react";
 import { productInputs } from "../../formSource";
 import { useNavigate, useParams } from "react-router-dom";
-import {
-  ref,
-  uploadBytes,
-  getDownloadURL,
-  listAll,
-  list,
-} from "firebase/storage";
-import { storage } from "../../utils/firebase";
-import { v4 } from "uuid";
+// import {
+//   ref,
+//   uploadBytes,
+//   getDownloadURL,
+//   listAll,
+//   list,
+// } from "firebase/storage";
+// import { storage } from "../../utils/firebase";
+// import { v4 } from "uuid";
 import { useDispatch, useSelector } from "react-redux";
 import { useLanguage } from "../../context/LanguageContext";
 import { createProduct } from "../../redux/product/productsApi";

@@ -15,8 +15,8 @@ import java.util.List;
 @Data
 @ToString
 public class GroupOrderByDate {
-  @JsonFormat(pattern = "yyyy-MM-dd")
-  private Date dateStatistic;
+  //  @JsonFormat(pattern = "yyyy-MM-dd")
+  private String dateStatistic;
   private BigDecimal totalPrice;
   List<SimpleOrder> orderDetails;
 }

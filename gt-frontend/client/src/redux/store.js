@@ -10,10 +10,12 @@ import productReducer from './product/productsSlice';
 import shopReducer from './shop/shopSlice';
 import cartItemsReducer from './shopping-cart/cartItemsSlide';
 import orderSlice from './order/orderSlice';
+import orderShopSlice from './orderShop/orderShopSlice';
 import historyOrdersSlice from './history/historyOrdersSlice';
 import discountReducer from './discount/discountsSlice';
 import brandReducer from './brand/brandSlice';
 import productModalReducer from './product-modal/productModalSlice';
+import statisticReducer from './statistic/statisticsSlice';
 //khoi tao store
 export const store = configureStore({
     reducer: {
@@ -25,9 +27,11 @@ export const store = configureStore({
         rates: rateReducer,
         shops: shopReducer,
         orders: orderSlice,
+        orderShops: orderShopSlice,
         historyOrders: historyOrdersSlice,
         discounts: discountReducer,
         brands: brandReducer,
         productModal: productModalReducer,
+        statistics: statisticReducer,
     },
 });

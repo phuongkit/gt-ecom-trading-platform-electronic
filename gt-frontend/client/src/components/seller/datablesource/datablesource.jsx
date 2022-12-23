@@ -1,4 +1,4 @@
-import { EProductStatus, EPayment, EShippingMethod, EGender } from '../../../utils';
+import { EProductStatus, EPayment, EShippingMethod, EGender, EOrderStatus } from '../../../utils';
 
 export const OderColumns = [
     {
@@ -94,7 +94,7 @@ export const OderColumns = [
         headerName: 'Status',
         width: 160,
         renderCell: (params) => {
-            return <div className={`cellWithStatus`}>{params.row.status}</div>;
+            return <div className={`cellWithStatus`}>{EOrderStatus.getNameFromIndex(params.row.status)}</div>;
         },
     },
 ];

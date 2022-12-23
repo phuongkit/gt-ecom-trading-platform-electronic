@@ -5,7 +5,10 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
-import { getAllOrdersByShopApi } from '../../../redux/order/ordersApi';
+import { getAllOrdersByShopApi, updateStatusOrderApi } from '../../../redux/orderShop/orderShopsApi';
+import { EOrderStatus, EOrderStatusGHN } from '../../../utils';
+import { ghn } from '../../../services/shipping'
+import swal from 'sweetalert';
 
 const Datatable = () => {
     const dispatch = useDispatch();
@@ -15,19 +18,115 @@ const Datatable = () => {
         getAllOrdersByShopApi(dispatch, getUser.shopId);
     }, []);
 
-    const { content: orderList = [] } = useSelector((state) => state.orders.pageOrder.data);
-    // const [data, setData] = useState(oderList);
+    const { content: orderList = [] } = useSelector((state) => state.orderShops.pageOrder.data);
 
-    // useEffect(()=>{
+    const handleAccept = async (order) => {
+        console.log('order', order);
+        swal({
+            text: 'Bạn có xác nhận đơn hàng và tạo đơn hàng shipper không',
+            icon: 'info',
+            buttons: {
+                cancel: true,
+                confirm: true,
+            },
+        }).then(async (isOK) => {
+            if (isOK) {
+                let res = await ghn.createOrderGHN(order);
+                console.log('res', res?.data?.data);
+                let data = res.data?.data;
 
-    //   if(user?.accessToken){
-    //     getBySeller(user?.accessToken,dispatch,user?._id)
-    //   }
+                let resDetails = await ghn.getOrderDetailGHN(data.order_code);
 
-    // // eslint-disable-next-line react-hooks/exhaustive-deps
-    // },[]
+                const dataResponse = {
+                    status: EOrderStatusGHN.getIndexFromName(resDetails?.data?.data.status),
+                    shipOrderCode: data?.order_code,
+                    expectedDeliveryTime: data?.expected_delivery_time,
+                    transportFee: data?.total_fee,
+                };
+                updateStatusOrderApi(dispatch, order.id, dataResponse);
+
+                swal({
+                    title: 'Thành công',
+                    text: 'Xác nhận đơn hàng thành công',
+                    icon: 'success',
+                });
+            }
+        });
+    };
+
+    const handleCancel = async (order) => {
+        swal({
+            text: 'Bạn có muốn hủy đơn này không',
+            icon: 'info',
+            buttons: {
+                cancel: true,
+                confirm: true,
+            },
+            dangerMode: true,
+        }).then(async (isOK) => {
+            if (isOK) {
+                //let reason = prompt('Nhập lý do hủy đơn hàng này', 'Không đủ hàng');
+                swal({
+                    text: 'Nhập lý do hủy đơn hàng',
+                    content: {
+                        element: 'input',
+                        attributes: {
+                            defaultValue: 'Không đủ hàng',
+                        },
+                    },
+                }).then(async (reason) => {
+                    if (reason !== null) {
+                        let data = {
+                            status: EOrderStatus.ORDER_CANCELLED.index,
+                            log: reason,
+                            shipOrderCode: null,
+                            expectedDeliveryTime: null,
+                        };
+                        if (order?.shipOrderCode) {
+                            let res = await ghn.cancelOrderGHN(order.shipOrderCode);
+                            // if (res.data?.data?.result) {
+                            updateStatusOrderApi(dispatch, order.id, data);
+                            swal({
+                                title: 'Thành công',
+                                text: 'Hủy đơn hàng thành công',
+                                icon: 'success',
+                            });
+                        } else {
+                            updateStatusOrderApi(dispatch, order.id, data);
+                            swal({
+                                title: 'Thành công',
+                                text: 'Hủy đơn hàng thành công',
+                                icon: 'success',
+                            });
+                        }
+                    }
+                });
+            }
+        });
+    };
 
     const actionColumn = [
+        {
+            field: 'actionStatus',
+            headerName: 'Action Update Status',
+            width: 200,
+            renderCell: (params) => {
+                return (
+                    <div className="cellAction text-[12px]">
+                        {params.row.status === EOrderStatus.ORDER_PENDING.index && (
+                            <div className="updateButton" onClick={() => handleAccept(params.row)}>
+                                Accept
+                            </div>
+                        )}
+                        {params.row.status !== EOrderStatus.ORDER_CANCELLED.index && (
+                            <div className="deleteButton" onClick={() => handleCancel(params.row)}>
+                                Cancel
+                            </div>
+                        )}
+                    </div>
+                );
+            },
+        },
         {
             field: 'action',
             headerName: 'Action',

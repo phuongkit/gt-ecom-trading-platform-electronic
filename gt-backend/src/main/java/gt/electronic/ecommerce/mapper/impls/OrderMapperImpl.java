@@ -9,7 +9,6 @@ import gt.electronic.ecommerce.entities.OrderItem;
 import gt.electronic.ecommerce.entities.OrderShop;
 import gt.electronic.ecommerce.mapper.*;
 import gt.electronic.ecommerce.models.clazzs.OrderPaymentOnly;
-import gt.electronic.ecommerce.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -112,6 +111,61 @@ public class OrderMapperImpl implements OrderMapper {
         }
         responseDTO.setOrderItems(orderItems);
       }
+    }
+    return responseDTO;
+  }
+
+  @Override public OrderResponseDTO orderShopToOrderResponseDTO(OrderShop entity, Integer shopId, boolean... isFull) {
+    if (entity == null || entity.getOrder() == null) {
+      return null;
+    }
+    OrderResponseDTO responseDTO = new OrderResponseDTO();
+    responseDTO.setId(entity.getId());
+    if (entity.getOrder().getUser() != null) {
+      responseDTO.setUser(this.userMapper.userToUserSimpleResponseDTO(entity.getOrder().getUser()));
+    }
+    responseDTO.setGender(entity.getOrder().getGender().ordinal());
+    responseDTO.setFullName(entity.getOrder().getFullName());
+    responseDTO.setTotalPrice(entity.getTotalPrice());
+    if (entity.getOrder().getPayment() != null) {
+      responseDTO.setPayment(entity.getOrder().getPayment().ordinal());
+    }
+//    if (entity.getShippingMethod() != null) {
+//      responseDTO.setShippingMethod(entity.getShippingMethod().getName().ordinal());
+//    }
+    responseDTO.setTransportFee(entity.getTotalFee());
+    responseDTO.setEmail(entity.getOrder().getEmail());
+    responseDTO.setPhone(entity.getOrder().getPhone());
+    if (entity.getDiscounts() != null && entity.getDiscounts().size() > 0) {
+      DiscountResponseDTO[] discountDTOs = new DiscountResponseDTO[entity.getDiscounts().size()];
+      int i = 0;
+      for (Discount discount : entity.getDiscounts()) {
+        discountDTOs[i] = new DiscountResponseDTO();
+        discountDTOs[i] = this.discountMapper.discountToDiscountResponseDTO(discount);
+        i++;
+      }
+      responseDTO.setDiscounts(discountDTOs);
+    }
+    if (entity.getOrder().getLocation() != null) {
+      responseDTO.setAddress(
+          this.addressMapper.lineAndLocationToAddressResponseDTO(
+              entity.getOrder().getLine(), entity.getOrder().getLocation()));
+    }
+    responseDTO.setStatus(entity.getStatus().ordinal());
+    responseDTO.setPayAt(null);
+    responseDTO.setNote(entity.getNote());
+    if (isFull.length > 0 && isFull[0]) {
+      OrderDetailResponseDTO[] orderItems =
+          new OrderDetailResponseDTO[entity.getOrderItems().size()];
+      int i = 0;
+      for (OrderItem orderItem : entity.getOrderItems()) {
+        if (shopId == null || Objects.equals(orderItem.getProduct().getShop().getId(), shopId)) {
+          orderItems[i] = new OrderDetailResponseDTO();
+          orderItems[i] = this.orderItemMapper.orderItemToOrderDetailResponseDTO(orderItem);
+          i++;
+        }
+      }
+      responseDTO.setOrderItems(orderItems);
     }
     return responseDTO;
   }

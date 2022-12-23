@@ -8,17 +8,18 @@ import Table from "../../../components/seller/table/Table";
 
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllOrdersByShopApi } from "../../../redux/ordershop/ordershopsApi";
 
 const HomeSeller = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const user = useSelector((state) => state?.auth?.login?.currentUser);
+  const getUser = JSON.parse(localStorage.getItem('customerInfo'));
   useEffect(() => {
-    // if (user === null || user?.role !== "2") {
-    //   navigate("/");
-    // }
-  });
+    getAllOrdersByShopApi(dispatch, getUser.shopId, { limit: 5, sortField: 'createdAt', sortDir: 'dec' });
+  }, []);
 
   return ( 
     <div>

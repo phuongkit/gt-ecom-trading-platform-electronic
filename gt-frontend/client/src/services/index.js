@@ -8,5 +8,7 @@ export { historyService } from './history.service';
 export { ratingService } from './rate.service';
 export { customerService } from './customer.service';
 export { orderService } from './order.service';
+export { orderShopService } from './order.shop.service';
 export { promoService } from './promo.service';
 export { shopService } from './shop.service';
+export { statisticService } from './statistic.service';

@@ -14,7 +14,7 @@ const Datatable = () => {
     useEffect(() => {
         getAllProductApi(dispatch, { shopId: getUser?.shopId });
     }, []);
-    const productList = useSelector((state) => state.products?.pageProduct?.data);
+    const productList = useSelector((state) => state.products?.pageProductShop?.data);
     useEffect(() => {
         if (getUser.role != 1) {
             navigate('/');

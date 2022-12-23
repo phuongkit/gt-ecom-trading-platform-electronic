@@ -46,7 +46,7 @@ const Navbar = () => {
           </div>
           <div className="item">
             <img
-              src={getSeller.avatar ? getSeller.avatar : 'https://cdn.tgdd.vn/GameApp/4/242186/Screentshots/tai-avatar-star-online-game-ban-sung-kinh-dien-11-06-2021-1.jpg'}
+              src={getSeller?.avatar ? getSeller?.avatar : 'https://cdn.tgdd.vn/GameApp/4/242186/Screentshots/tai-avatar-star-online-game-ban-sung-kinh-dien-11-06-2021-1.jpg'}
               alt=""
               className="avatar"
             />

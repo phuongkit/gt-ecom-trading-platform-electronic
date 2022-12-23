@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Generated;
+import org.hibernate.annotations.GenerationTime;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
@@ -32,8 +34,9 @@ public class OrderShop {
   @EmbeddedId
   OrderShopKey key;
 
-  @Column(unique = true)
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Generated(GenerationTime.INSERT)
+  @Column(name = "internal_id", nullable = false, insertable = false, updatable = false, columnDefinition = "serial")
+//  @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
 
   @ManyToOne(fetch = FetchType.LAZY)
