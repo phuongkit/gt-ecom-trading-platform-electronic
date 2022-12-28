@@ -1,5 +1,3 @@
-import Sidebar from "../../../Components/seller/sidebar/Sidebar";
-import Navbar from "../../../Components/seller/navbar/Navbar";
 import "./home.scss";
 import Widget from "../../../components/seller/widget/Widget";
 import Chart from "../../../components/seller/chart/Chart";
