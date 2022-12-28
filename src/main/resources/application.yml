@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:mysql://us-cdbr-east-06.cleardb.net/heroku_758d21ca1cf3460?createDatabaseIfNotExist=true
+    url: jdbc:mysql://us-cdbr-east-06.cleardb.net/heroku_758d21ca1cf3460?reconnect=true&createDatabaseIfNotExist=true
     username: b0a1965d534060
     password: ef7e3227
 #  datasource:
