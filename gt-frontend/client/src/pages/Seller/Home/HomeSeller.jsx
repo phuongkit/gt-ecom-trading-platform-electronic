@@ -7,7 +7,7 @@ import Table from "../../../components/seller/table/Table";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllOrdersByShopApi } from "../../../redux/orderShop/ordershopsApi";
+import { getAllOrdersByShopApi } from "../../../redux/orderShop/orderShopsApi";
 
 const HomeSeller = () => {
   const navigate = useNavigate();
