@@ -36,7 +36,7 @@ public class GtBackendApplication implements CommandLineRunner {
     if (Objects.equals(hibernate_ddl, "create") || Objects.equals(hibernate_ddl, "create-drop")) {
       initData();
     }
-//    initData();
+    initData();
   }
 
   public void initData() {
