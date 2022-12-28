@@ -11,7 +11,7 @@ function CartButton(props) {
                 <span className="text-white text-xl">{totalQuantity}</span>
             </div>
             <i className="">
-                <CartFill className='text-[22px] text-gray-100'></CartFill>
+                <CartFill className='text-[22px] text-gray-400'></CartFill>
             </i>
             <span className="ml-2">Giỏ hàng</span>
         </div>

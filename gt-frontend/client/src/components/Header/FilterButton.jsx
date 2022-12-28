@@ -797,9 +797,9 @@ function FilterButton() {
                         role="dialog"
                     >
                         <div className="fixed top-0 right-0 bottom-0 left-0 z-10 bg-black opacity-30 m-auto"></div>
-                        <div class="relative p-1 w-full max-w-3xl h-full md:h-auto z-20">
+                        <div class="relative p-1 w-full max-w-3xl h-full md:h-auto z-20 rounded-lg">
                             <div class="relative bg-white rounded-lg shadow">
-                                <div class="flex flex-col  items-start p-4 rounded-t border-b bg-blue-400">
+                                <div class="flex flex-col  items-start p-4 rounded-t border-b bg-green-300 ">
                                     <div className="flex py-2 gap-x-3  justify-between w-full">
                                         {valueLocation?.length >= 1 && (
                                             <ChevronLeft

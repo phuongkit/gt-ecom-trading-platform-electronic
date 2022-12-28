@@ -15,7 +15,7 @@ const BigBanner = () => {
     return (
         <div className="container__bigbanner">
             <div className="containner__body">
-                <div className="containner__first-item">
+                <div className="containner__first-item rounded-lg text-center">
                     <Slider dots={true} slidesToShow={1} slidesToScroll={1} autoplay={true} autoplaySpeed={2000} className="w-[800px] h-[290px]">
                         {images.map((src, index) => (
                             <div key={index} className="owl-item" style={{ width: '800px', height:'100px'}}>
@@ -29,7 +29,7 @@ const BigBanner = () => {
                     </Slider>
                 </div>
                 <div className="containner__second-item">
-                    <div>
+                    {/* <div>
                         <a href="" className = "h-[200px] w-[200px]">
                             <img className='w-full h-full' src="https://png.pngtree.com/thumb_back/fh260/back_our/20200701/ourmid/pngtree-atmospheric-high-end-skin-care-product-advertising-background-image_344527.jpg" alt="" />
                         </a>
@@ -38,7 +38,7 @@ const BigBanner = () => {
                         <a href="" className = "h-[200px] w-[200px]">
                             <img className='w-full h-full' src="https://png.pngtree.com/thumb_back/fh260/back_our/20200701/ourmid/pngtree-atmospheric-high-end-skin-care-product-advertising-background-image_344527.jpg" alt="" />
                         </a>
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </div>

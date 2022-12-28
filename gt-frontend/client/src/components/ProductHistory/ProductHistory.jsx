@@ -6,25 +6,25 @@ import ProductCard from '../ProductCard';
 // import PrevArrow from '../Slick/PrevArrow';
 // import Slider from 'react-slick';
 import SlideProduct from '../SlideProduct/SlideProduct';
-
+import { productHistory } from '~/helpers/localStorage';
 function ProductHistory({ styleTitle }) {
     const section = useRef();
     const [products, setProducts] = useState([]);
     const handleClick = () => {
         section.current.remove();
-        // productHistory.clearProductHistory();
+        productHistory.clearProductHistory();
     };
 
     useEffect(() => {
-        // const data = productHistory.getItems();
-        const data = [];
+        const data = productHistory.getItems();
+       
         setProducts(data);
     }, []);
     return (
         <Section
             title="Sản phẩm bạn đã xem"
             styleTitle={styleTitle}
-            styles="bg-white"
+            styles="bg-white mt-[1%] rounded-md"
             rightOption={
                 <span onClick={handleClick} className="cursor-pointer">
                     <span>{styleTitle ? 'XÓA LỊCH SỬ' : 'Xóa lịch sử'}</span>

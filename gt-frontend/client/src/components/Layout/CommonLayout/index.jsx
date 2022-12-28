@@ -24,22 +24,25 @@ function CommonLayout({ children }) {
     };
     return (
         <>
-            <div className="w-full h-[140px] flex justify-center gap-16 items-center bg-slate-700">
-                <div className="select-none text- text-[21px] w-[110px] px-6 py-2 font-semibold text-green-400 border-r-4 border-green-200 rounded shadow-lg text-center">
+            <div className="w-full h-[140px] flex justify-center gap-16 items-center ">
+                {/* <div className="select-none text- text-[21px] w-[110px] px-6 py-2 font-semibold text-green-400 border-r-4 border-green-200 rounded shadow-lg text-center">
                     Phúc Xi Cúc
-                </div>
-                <div className="header__navbar-item--openqr header__navbar-item">
+                </div> */}
+                <Link to={'/'} className='select-none text- text-[21px] px-2 py-2 font-semibold text-green-400 border-r-4 border-green-200 rounded shadow-lg text-center w-[110px] h-[100px]'>
+                    <img src='./public/logowb.png' className='w-full h-full'></img>
+                </Link>
+                {/* <div className="hover:text-gray-500 header__navbar-item--openqr header__navbar-item text-black font-semibold">
                             <Link to="/Seller" className="w-32  text-center " onClick={()=>setSingIn(!singIn)}>
                                             Kênh người bán
                                 </Link>
-                        </div>
+                        </div> */}
                 <div className="select-none text-[23px] px-6 py-2 font-semibold text-white bg-blue-400 border-r-4 border-blue-400 rounded shadow-lg shadow-purple-600/50">
-                    Sàn giao dịch thiết bị công nghệ 4.0
+                   
                 </div>
                 <nav className=" header__navbar hide-on-mobile-tablet">
                     <ul className="header__navbar-list">
-                        <li className="header__navbar-item--openqr header__navbar-item header__navbar-item--separate-week">
-                            <Link to="/history" className="w-32  text-center " onClick={()=>setSingIn(!singIn)}>
+                        <li className="text-black font-semibold header__navbar-item--openqr header__navbar-item header__navbar-item--separate-week hover:text-gray-500">
+                            <Link to="/history" className="w-32  text-center ">
                                             Tra cứu đơn hàng
                                 </Link>
                         </li>
@@ -90,8 +93,8 @@ function CommonLayout({ children }) {
                     </li> */}
                      
 
-                        <li className="header__navbar-item header__navbar-item--openNotify">
-                            <a href="" className="header__navbar-item-link">
+                        <li className=" header__navbar-item header__navbar-item--openNotify">
+                            <a href="" className="hover:text-gray-500 header__navbar-item-link text-black font-semibold">
                                 <i className="header__navbar-icon far fa-bell"></i>
                                 Thông báo
                             </a>

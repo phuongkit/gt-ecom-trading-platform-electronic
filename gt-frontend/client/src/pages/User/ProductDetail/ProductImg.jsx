@@ -103,6 +103,7 @@ function ProductImg({item,mess}) {
                         <button className="plus" onClick={(e)=>setMount(mount+1)}>+</button>
                     </div> */}
                    <CounterQuantity
+                                sphientai = {item.availableQuantity}
                                 value={1}
                                 onChange={(quantity) => {
                                     
@@ -110,7 +111,7 @@ function ProductImg({item,mess}) {
                                     productForCart = { ...productForCart, quantity: quantity };
                                 }}
                     />
-                    <p className="product__quantity-desc">{stateQuantity ? stateQuantity : item.availableQuantity-1} sản phẩm có sẵn</p>
+                    {/* <p className="product__quantity-desc">{stateQuantity==item.availableQuantity ? '0':(stateQuantity ? stateQuantity : item.availableQuantity)} sản phẩm có sẵn</p> */}
                 </div>
 
                 <div className="product__buy">

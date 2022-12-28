@@ -5,11 +5,11 @@ import { HashRouter } from 'react-router-dom';
 import './App.css';
 function App() {
     return (
-        <Router>
+        <HashRouter>
             <div className="App">
                     <Routes />
             </div>
-        </Router>
+        </HashRouter>
     );
 }
 

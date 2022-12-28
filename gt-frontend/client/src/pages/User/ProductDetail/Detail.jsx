@@ -16,25 +16,14 @@ function Detail() {
         getProductDetailApi(dispatch, productSlug);
     }, []);
     const initProductDetail = useSelector((state) => state.products.productDetail.data);
-    useEffect(() => {
-        const script = document.createElement('script');
-    
-        script.src = "./logic.js";
-        script.async = true;
-    
-        document.body.appendChild(script);
-    
-        return () => {
-          document.body.removeChild(script);
-        }
-      }, []);
+  
     return ( 
         <div style={{width: '86%', maxWidth: '1240px', margin: '50px auto'}}>
             {/* Product is here */}
             <ProductImg item={initProductDetail}></ProductImg>
             {/* Product detail is here */}
             <ProductBody></ProductBody>
-            <ProductHistory />
+            {/* <ProductHistory/> */}
         </div>
      );
 }

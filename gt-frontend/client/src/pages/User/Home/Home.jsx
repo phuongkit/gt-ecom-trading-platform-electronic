@@ -1,16 +1,11 @@
 import { useState, useEffect } from 'react';
 import styles from './home.module.scss';
-import Promo from './Promo';
+
 import Ticket from './Ticket';
-import News from './News';
-import BigBanner from './BigBanner';
-import PromoFirst from './PromoFirst';
-import PromoSecond from './PromoSecond';
+
+
 import ProductDeal from './ProductDeal';
-import ProductBrand from './ProductBrand';
-import ProductTrend from './ProductTrend';
-import CovenientService from './CovenientService';
-import DiscountOnline from './DiscountOnline';
+
 import ProductSuggest from './ProductSuggest';
 import ProductCategory from './ProductCategory';
 import { Sticky } from 'react-bootstrap-icons';
@@ -56,10 +51,6 @@ function Home({ title='' }) {
                     <ProductCategory />
                     <Ticket show={displayTicket} />
                     <ProductSuggest />
-                    <DiscountOnline />
-                    <CovenientService />       
-                    <News />
-
                     <ProductDeal />
                 </main>
             </div>

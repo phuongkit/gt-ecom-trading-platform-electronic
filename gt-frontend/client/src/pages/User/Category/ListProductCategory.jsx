@@ -49,6 +49,7 @@ const ListProductCategory = (props) => {
     const [checked, setChecked] = useState([]);
 
     const data = useSelector((state) => state.categories.oneCategory.data);
+    console.log(data)
     const {content: products = [], page} = useSelector((state) => state.products.pageProduct.data);
     let dataFilter = products;
     const filter = useSelector((state) => state.products.filter.data);

@@ -66,10 +66,10 @@ function ProductRating() {
         // createdAt: moment().format('HH:MM MM/DD, YYYY'),
     };
     const images = [
-        'https://cdn.tgdd.vn/comment/51982240/7230F870-6211-4567-A752-EAF2DCD900E0ITETG.jpeg',
-        'https://cdn.tgdd.vn/comment/51690516/imageA70I9.jpg',
-        'https://cdn.tgdd.vn/comment/51690511/imageJI9W2.jpg',
-        'https://cdn.tgdd.vn/comment/51341098/IMG_UPLOAD_20220503_162905-20220503162907.jpg',
+        'https://images.fpt.shop/unsafe/filters:quality(5)/fptshop.com.vn/uploads/images/tin-tuc/149387/Originals/dien-thoai-tam-trung-chup-anh-dep-2022-hinh1.png',
+        'https://vcdn1-sohoa.vnecdn.net/2021/08/02/iPhone-12-Pro-Max-1627882467.jpg?w=1200&h=0&q=100&dpr=1&fit=crop&s=JvvZkSOc839aGDhKueX-Tw',
+        'https://cdn-www.vinid.net/2020/09/e9e5897c-i%E1%BB%87n-tho%E1%BA%A1i-ch%E1%BB%A5p-%E1%BA%A3nh-%C4%91%E1%BA%B9p.jpg',
+        'https://didongviet.vn/dchannel/wp-content/uploads/2022/05/2-dien-thoai-chup-anh-dep-didongviet.jpg',
     ];
     // const vote = [
     //     {
@@ -200,7 +200,7 @@ function ProductRating() {
         infoRating.replyForFeedbackId = null;
     };
     return (
-        <div className="border rounded-lg p-4 w-fit">
+        <div className=" p-4 w-full bg-while ">
             <p className="text-3xl font-bold">Đánh giá {title}</p>
             <div className="flex items-center border-b py-4">
                 <div className="rating w-96">
