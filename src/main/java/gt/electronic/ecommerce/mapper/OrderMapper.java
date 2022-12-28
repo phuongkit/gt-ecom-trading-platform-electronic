@@ -4,6 +4,7 @@ import gt.electronic.ecommerce.dto.response.BrandResponseDTO;
 import gt.electronic.ecommerce.dto.response.OrderResponseDTO;
 import gt.electronic.ecommerce.entities.Brand;
 import gt.electronic.ecommerce.entities.Order;
+import gt.electronic.ecommerce.entities.OrderShop;
 import gt.electronic.ecommerce.models.clazzs.OrderPaymentOnly;
 
 /**
@@ -13,6 +14,7 @@ import gt.electronic.ecommerce.models.clazzs.OrderPaymentOnly;
  */
 public interface OrderMapper {
   OrderResponseDTO orderToOrderResponseDTO(Order entity, Integer shopId, boolean...isFull);
+  OrderResponseDTO orderShopToOrderResponseDTO(OrderShop entity, Integer shopId, boolean...isFull);
 
   OrderPaymentOnly orderToOrderPaymentOnly(Order entity);
 }

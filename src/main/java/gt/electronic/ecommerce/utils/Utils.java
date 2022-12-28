@@ -3,6 +3,7 @@ package gt.electronic.ecommerce.utils;
 import gt.electronic.ecommerce.entities.*;
 import gt.electronic.ecommerce.exceptions.ResourceNotValidException;
 import gt.electronic.ecommerce.models.enums.EPattern;
+import gt.electronic.ecommerce.models.enums.ETimeDistance;
 import lombok.Getter;
 import lombok.Setter;
 import org.slf4j.Logger;
@@ -12,11 +13,10 @@ import org.springframework.beans.factory.annotation.Value;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.net.InetAddress;
+import java.text.DateFormat;
 import java.text.Normalizer;
-import java.util.Date;
-import java.util.Locale;
-import java.util.Objects;
-import java.util.Set;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.regex.Pattern;
 
 /**
@@ -352,5 +352,33 @@ public class Utils {
     }
     orderShop = new OrderShop(order, shop);
     return orderShop;
+  }
+
+  //Convert Date to Calendar
+  public static Calendar dateToCalendar(Date date) {
+
+    Calendar calendar = Calendar.getInstance();
+    calendar.setTime(date);
+    return calendar;
+
+  }
+
+  //Convert Calendar to Date
+  public static Date calendarToDate(Calendar calendar) {
+    return calendar.getTime();
+  }
+
+  public static String getStringFromCalendar(Calendar calendar, ETimeDistance timeDistance) {
+    DateFormat sdfDay = new SimpleDateFormat("dd/MM/yyyy");
+    DateFormat sdfMonth = new SimpleDateFormat("MM/yyyy");
+    DateFormat sdfYear = new SimpleDateFormat("yyyy");
+    switch (timeDistance) {
+      case MONTH:
+        return sdfMonth.format(calendar.getTime());
+      case YEAR:
+        return sdfYear.format(calendar.getTime());
+      default:
+        return sdfDay.format(calendar.getTime());
+    }
   }
 }

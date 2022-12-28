@@ -20,7 +20,6 @@ import java.util.*;
 /**
  * @author minh phuong
  * @created 20/09/2022 - 9:13 PM
- * @project gt-backend
  */
 @Setter @Getter @NoArgsConstructor @AllArgsConstructor public class OrderCreationDTO {
   private Integer userId;
@@ -64,7 +63,7 @@ import java.util.*;
     for (Map.Entry<Product, Long> entry : productMap.entrySet()) {
       OrderDetailCreationDTO detail = new OrderDetailCreationDTO(entry.getKey(), entry.getValue());
       List<OrderDetailCreationDTO> details = groupProductByShop.get(entry.getKey().getShop());
-      if (details == null){
+      if (details == null) {
         groupProductByShop.put(entry.getKey().getShop(), new ArrayList<>(Collections.singleton(detail)));
       } else {
         details.add(detail);
