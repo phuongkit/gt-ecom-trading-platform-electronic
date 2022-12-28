@@ -5,7 +5,7 @@ import Paging from '../Paging';
 import { SearchHeartFill } from 'react-bootstrap-icons';
 import { ESortOptions } from '../../utils';
 
-function ProductFilter({ params, setParams, productList, page }) {
+function ProductFilter({ params, setParams, productList, page = {totalElements: 0, number: 0, totalPages: 0} }) {
     return (
         <>
             <ul className="shop__sorting bg-white px-12">
@@ -79,10 +79,10 @@ function ProductFilter({ params, setParams, productList, page }) {
                         setParams((prev) => ({ ...prev, keySearch: document.getElementById('search').value }))
                     }
                 ></SearchHeartFill>
-                <span className="ml-12">Tất cả sản phẩm: {page.totalElements || 0} kết quả</span>
+                <span className="ml-12">Tất cả sản phẩm: {page?.totalElements || 0} kết quả</span>
             </div>
 
-            <div className="row flex flex-wrap gap-24">
+            <div className="row flex flex-wrap gap-12">
                 {productList.map((item, index) => (
                     <ProductCard key={index} {...item}></ProductCard>
                 ))}

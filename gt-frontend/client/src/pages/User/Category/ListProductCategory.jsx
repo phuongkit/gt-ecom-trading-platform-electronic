@@ -6,6 +6,8 @@ import './category.scss';
 import { useSelector, useDispatch } from 'react-redux';
 import {  getAllProductApi } from '../../../redux/product/productsApi';
 import handleData from '../../../components/Filter/handleData';
+import ProductFilter from '../../../components/ProductFilter';
+import { ESortOptions } from '../../../utils';
 const dataFake = [
     {
         title: 'Giảm giá',
@@ -49,17 +51,33 @@ const ListProductCategory = (props) => {
     const [checked, setChecked] = useState([]);
 
     const data = useSelector((state) => state.categories.oneCategory.data);
-    console.log(data)
-    const {content: products = [], page} = useSelector((state) => state.products.pageProduct.data);
+
+    const [params, setParams] = useState({
+        keySearch: null,
+        numberPage: 1,
+        sortOption: ESortOptions.POPULAR.index,
+        sortPrice: null,
+    });
+    const {content: products = [], ...page} = useSelector((state) => state.products.pageProductCategory.data);
     let dataFilter = products;
     const filter = useSelector((state) => state.products.filter.data);
 
     const dispatch = useDispatch();
     useEffect(() => {
         if (data.id) {
-            getAllProductApi(dispatch, {categoryIds:[data.id]});
+            let parameter = {
+                categoryIds: [data.id],
+                keyword: params.keySearch,
+                page: params.numberPage,
+                limit: 20,
+                sortOption: params.sortOption,
+            };
+            if (params.sortPrice) {
+                parameter = { ...parameter, sortField: 'price', sortDir: params.sortPrice };
+            }
+            getAllProductApi(dispatch, parameter);
         }
-    }, [data.id]);
+    }, [data.id, params]);
 
     // console.log(data, dataFilter);
 
@@ -107,6 +125,7 @@ const ListProductCategory = (props) => {
     } else if (checked.includes('tragop')) {
         dataFilter = dataFilter.filter((item) => item.promotion === 'Trả góp 0%');
     }
+    console.log(dataFilter);
     return (
         <>
             <BoxSort
@@ -116,21 +135,22 @@ const ListProductCategory = (props) => {
                 selected={selected}
                 setSelected={setSelected}
                 chose={chose}
-                countProduct={props.isOpen === false ? dataFilter.length : dataAfter.length}
+                countProduct={props.isOpen === false ? page?.totalElements || 0 : dataAfter.length}
                 title={props.chose}
                 checked={checked}
                 setChecked={setChecked}
-                category={'Máy tính bảng'}
+                category={data.title}
                 
                 >
             </BoxSort>
             <div className="category__content">
-                <div className="listcontent">
-                    {props.isOpen === false ? (
+                <div className="listcontent mt-12">
+                    {/* {props.isOpen === false ? (
                         <ListProduct products={dataFilter} isSlide={false}></ListProduct>
                     ) : (
                         <ListProduct products={dataAfter} isSlide={false}></ListProduct>
-                    )}
+                    )} */}
+                     <ProductFilter params={params} setParams={setParams} productList={products} page={page}/>
                 </div>
             </div>
         </>

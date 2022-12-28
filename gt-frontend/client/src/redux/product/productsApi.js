@@ -1,7 +1,8 @@
-import {  productService } from '../../services';
+import {  productService, ratingService } from '../../services';
 
 import {
     getAllProducts,
+    getPageProductCategory,
     getPageProduct,
     getPageProductShop,
     getOneProduct,
@@ -28,6 +29,9 @@ export const getAllProductApi = async (dispatch, params) => {
     let res = await productService.getProducts(params);
     if (params.hasOwnProperty('shopId')) {
         dispatch(getPageProductShop(res.data));
+    } else if (params.hasOwnProperty('categoryIds')) {
+        console.log(params, res.data);
+        dispatch(getPageProductCategory(res.data));
     } else {
         dispatch(getPageProduct(res.data));
     }
@@ -35,9 +39,8 @@ export const getAllProductApi = async (dispatch, params) => {
 
 export const getProductDetailApi = async (dispatch, slug) => {
     let res = await productService.getProductBySlug(slug);
-    // let resRating = await ratingService.getRating(res.data.id);
-    console.log({ ...res.data, rating: res.data.Rating })
-    dispatch(getProductDetail({ ...res.data, rating: res.data.Rating }));
+    let resRating = await ratingService.getRating(res.data.id);
+    dispatch(getProductDetail({ ...res.data, rating: resRating.data }));
 };
 
 export const getProductByIdApi = async (dispatch, id) => {

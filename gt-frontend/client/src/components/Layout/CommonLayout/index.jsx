@@ -49,13 +49,13 @@ function CommonLayout({ children }) {
 
                         <li className="header__navbar-item ">
                         {user && (
-                            <li className="header__navbar-item header__navbar-user">
+                            <li className="header__navbar-item header__navbar-user ml-4">
                                 <img
                                     src={user.avatar || "https://haycafe.vn/wp-content/uploads/2022/03/avatar-facebook-doc.jpg"}
                                     alt=""
                                     className="header__user-img"
                                 ></img>
-                                <span className="header__user-name">{user?.fullName || DEFAULT_VARIABLE.FULL_NAME}</span>
+                                <span className="header__user-name text-black">{user?.fullName || DEFAULT_VARIABLE.FULL_NAME}</span>
 
                                 <ul className="header__navbar-user-menu">
                                     <li className="header__navbar-user-item text-gray-600">

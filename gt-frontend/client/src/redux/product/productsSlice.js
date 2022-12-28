@@ -6,6 +6,9 @@ export const products = createSlice({
         allProducts: {
             data: [],
         },
+        pageProductCategory: {
+            data: [],
+        },
         pageProduct: {
             data: [],
         },
@@ -28,6 +31,9 @@ export const products = createSlice({
     reducers: {
         getAllProducts: (state, action) => {
             state.allProducts.data = action.payload ? action.payload : [];
+        },
+        getPageProductCategory: (state, action) => {
+            state.pageProductCategory.data = action.payload || {content: []};
         },
         getPageProduct: (state, action, list) => {     
             state.pageProduct.data = action.payload || {content: []};
@@ -61,6 +67,7 @@ export const products = createSlice({
 export const {
     updateDiscussRating,
     getAllProducts,
+    getPageProductCategory,
     getPageProduct,
     getPageProductShop,
     getOneProduct,

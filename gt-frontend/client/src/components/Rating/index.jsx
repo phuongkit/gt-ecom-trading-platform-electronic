@@ -48,6 +48,8 @@ function ProductRating() {
         return rating?.content ? rating?.content.slice(rating?.content.length > 4 ? 4 : rating?.content.length) : [];
     });
 
+    console.log('rating: ', rating);
+
     const [showModal, setShowModal] = useState(false);
     const [showPopupInfo, setShowPopupInfo] = useState(false);
     // const [star, setStar] = useState(0);
