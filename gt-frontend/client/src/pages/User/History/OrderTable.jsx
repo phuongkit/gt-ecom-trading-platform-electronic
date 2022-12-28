@@ -5,6 +5,8 @@ import './table.scss';
 import OrderDetail from './OrderDetail';
 import clsx from 'clsx';
 import { historyService } from '~/services';
+import swal from 'sweetalert';
+
 const OrderTable = (props) => {
     const style = (text) => {
         switch (text) {
@@ -32,7 +34,7 @@ const OrderTable = (props) => {
             const data = JSON.stringify({ status: 'Đã hủy' });
             const res = await historyService.updateHistoryOrder(id, data);
             if (res) {
-                alert('Hủy thành công');
+                swal({text: 'Hủy đơn hàng thành công', icon: 'success',});
                 setStatus((e) => {
                     const data = e.map((order) => {
                         return order.id == id

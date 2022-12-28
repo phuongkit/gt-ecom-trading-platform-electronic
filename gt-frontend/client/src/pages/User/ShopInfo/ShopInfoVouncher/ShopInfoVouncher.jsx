@@ -7,6 +7,8 @@ import { useEffect, useState } from 'react';
 import { getAllDiscountByUser } from '../../../../redux/discount/discountsApi';
 import { saveDiscountUser, loadDiscountUserForShop, reduceDiscount } from '../../../../redux/discount/discountsApi';
 import numberWithCommas from '../../../../utils/numberWithCommas';
+import swal from 'sweetalert';
+
 function ShopInfoVoucher({ props }) {
     const dispatch = useDispatch();
     const [checked, setChecked] = useState(1);
@@ -55,7 +57,7 @@ function ShopInfoVoucher({ props }) {
 
     const handleSaveDiscount = (code, id, index) => {
         if (checklistDup(id)) {
-            alert('Tối đa chỉ lấy được 1 vouncher cùng loại');
+            swal({text: 'Tối đa chỉ lấy được 1 voucher cùng loại', icon: 'warning',});
         } else {
             saveDiscountUser(dispatch, { discountCodes: [code] });
             reduceDiscount(dispatch, id);

@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { ChevronDown, PlusLg, DashLg } from 'react-bootstrap-icons';
+import swal from 'sweetalert';
+
 function CounterQuantity({ onChange, value, sphientai }) {
     const [quantity, setQuantity] = useState(value);
 
@@ -7,7 +9,7 @@ function CounterQuantity({ onChange, value, sphientai }) {
 
         let number = parseInt(e.target.value);
         if( number > sphientai){
-            alert("Chỉ được mua tối đa sản phẩm hiện có!")
+            swal({text: 'Chỉ được mua tối đa sản phẩm hiện có!', icon: 'warning',});
         }else{
             if (Number.isInteger(number)) {
                 setQuantity(number);

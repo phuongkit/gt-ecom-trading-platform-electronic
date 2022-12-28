@@ -28,6 +28,8 @@ import {
     updateAllCheckoutDiscount,
 } from '../../../redux/discount/discountsSlice';
 import { getAllDiscountByShopId, getAllDiscountByUser } from '../../../redux/discount/discountsApi';
+import swal from 'sweetalert';
+
 function CartInfo() {
     const $ = document.querySelector.bind(document);
     const portalRef = useRef(null);
@@ -201,7 +203,7 @@ function CartInfo() {
                     ? `giảm ${numberWithCommas(discount.price)}đ`
                     : `giảm ${discount.percent * 100}%${discount.cappedAt !== null ? `, tối đa ${numberWithCommas(discount.cappedAt)}đ` : ''}`
                     } với đơn tối thiểu ${numberWithCommas(discount.minSpend) || 0}đ thành công!`;
-                alert(message);
+                swal({ text: message, icon: 'warning', });
             }
             setCurrentDiscount(null);
         }
@@ -404,27 +406,27 @@ function CartInfo() {
                     </div>
                 </div>
                 <Portal container={portalRef.current}>
-                <form className="flex gap-8 border p-4 rounded-xl" onSubmit={(e) => handleAddDiscountCode(e)}>
-                    <Input
-                        placeholder="Nhập mã giảm giá/ Phiếu mua hàng"
-                        id="ticketid"
-                        onBlur={handleCheckDiscountCode}
-                        onChange={(e) => {
-                            e.target.setCustomValidity(''),
-                                setOrderDetail((prev) => ({ ...prev, discountCode: e.target.value }));
-                        }}
-                    />
-                    <button
-                        type="submit"
-                        className="py-4 px-10 border bg-blue-500 rounded-lg text-white"
-                    // onClick={handleCheckDiscountCode}
-                    >
-                        Áp dụng
-                    </button>
-                </form>
-            </Portal>
+                    <form className="flex gap-8 border p-4 rounded-xl" onSubmit={(e) => handleAddDiscountCode(e)}>
+                        <Input
+                            placeholder="Nhập mã giảm giá/ Phiếu mua hàng"
+                            id="ticketid"
+                            onBlur={handleCheckDiscountCode}
+                            onChange={(e) => {
+                                e.target.setCustomValidity(''),
+                                    setOrderDetail((prev) => ({ ...prev, discountCode: e.target.value }));
+                            }}
+                        />
+                        <button
+                            type="submit"
+                            className="py-4 px-10 border bg-blue-500 rounded-lg text-white"
+                        // onClick={handleCheckDiscountCode}
+                        >
+                            Áp dụng
+                        </button>
+                    </form>
+                </Portal>
             </form>
-          
+
         </div>
     );
 }

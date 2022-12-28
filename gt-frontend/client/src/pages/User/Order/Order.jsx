@@ -12,6 +12,7 @@ import { deleteOrdersByIdApi } from '../../../redux/order/ordersApi';
 import { ghn } from '../../../services/shipping';
 import { clearCheckoutDiscount } from '../../../redux/discount/discountsSlice';
 import { deleteOrder } from '../../../redux/order/orderSlice';
+import swal from 'sweetalert';
 
 const Order = ({ title }) => {
     const dispatch = useDispatch();
@@ -45,13 +46,13 @@ const Order = ({ title }) => {
                     const resVNPay = await vnpay.createVNPayPayment(dataVNPay);
                     window.location = resVNPay.data.payUrl || window.location.origin + '/#/';
                 } else {
-                    alert('Tạo đơn hàng thành công');
+                    swal({text: 'Tạo đơn hàng thành công', icon: 'success',});
                 }
             } else {
-                alert(MESSAGE.ERROR_ACTION);
+                swal({text: MESSAGE.ERROR_ACTION, icon: 'error',});
             }
         } catch (err) {
-            alert(MESSAGE.ERROR_ACTION);
+            swal({text: MESSAGE.ERROR_ACTION, icon: 'error',});
         }
         navigate('/');
         localStorage.removeItem('order');

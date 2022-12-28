@@ -8,6 +8,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { useDispatch, useSelector } from 'react-redux';
 import PopupInfo from './PopupInfo';
 import { updateDiscussRating } from '~/redux/product/productsSlice';
+import swal from 'sweetalert';
 
 const Rating = ({ onClick }) => {
     const [numberStar, setNumberStar] = useState(5);
@@ -147,10 +148,10 @@ function ProductRating() {
                 ...state,
                 data: [newDiscuss, ...state.data],
             }));
-            alert('Thanh cong');
+            swal({text: 'Thành công!', icon: 'success',});
             setShowPopupInfo(false);
         } else {
-            alert('That bai');
+            swal({text: 'Thất bại', icon: 'error',});
         }
     };
     const handleSubmit = async () => {
@@ -193,10 +194,10 @@ function ProductRating() {
                 // if (res.status ==== 'created')
                 // setProductRating((old) => [...old, res]);
             } else {
-                alert(res.message);
+                swal({text: res.message, icon: 'error',});
             }
         } catch (err) {
-            alert(err.message);
+            swal({text: err.message, icon: 'error',});
         }
         setShowModal(false);
         infoRating.replyForFeedbackId = null;
@@ -295,7 +296,7 @@ function ProductRating() {
                                         onClick={() => {
                                             let content = document.getElementById(`inputDiscuss${index}`).value;
                                             if (content === '') {
-                                                alert('Vui long nhap noi dung');
+                                                swal({text: 'Vui long nhap noi dung', icon: 'warning',});
                                             }
                                             infoRating.content = content;
                                             infoRating.replyForFeedbackId = comment.id;

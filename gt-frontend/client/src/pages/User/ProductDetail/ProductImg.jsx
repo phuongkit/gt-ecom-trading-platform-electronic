@@ -5,6 +5,8 @@ import { Modal, Button, Alert } from 'flowbite-react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addItem } from '~/redux/shopping-cart/cartItemsSlide';
+import swal from 'sweetalert';
+
 function ProductImg({item,mess}) {
     const initProductDetail = useSelector((state) => state.products.productDetail.data);
     const [stateQuantity,setStateQuantity]= useState(parseInt(item.availableQuantity) - 1)
@@ -17,9 +19,9 @@ function ProductImg({item,mess}) {
     const dispatch = useDispatch();
     const addToCart = (data) => {
         if (dispatch(addItem(data))) {
-            alert("Thêm thành công")
+            swal({text: 'Thêm thành công', icon: 'success',});
         } else {
-            alert("Vui lòng thử lại sau")
+            swal({text: 'Vui lòng thử lại sau', icon: 'error',});
         }
     };
 

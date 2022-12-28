@@ -6,7 +6,9 @@ import { Navigate, useNavigate } from 'react-router-dom';
 import { customerService } from '~/services';
 import { PostLogin } from '../../../../redux/user/userApi';
 import { useDispatch } from 'react-redux';
-import {PhoneLandscape} from 'react-bootstrap-icons'
+import {PhoneLandscape} from 'react-bootstrap-icons';
+import swal from 'sweetalert';
+
 const DangNhap = () => {
     const [txtPhoneNumber, setTxtPhoneNumber] = useState('');
     const [otp, setOtp] = useState('');
@@ -36,7 +38,7 @@ const DangNhap = () => {
         }
         const phoneNumber = '+84' + numberPhone.join('');
         if (phoneNumber.length < 10 || phoneNumber === '' || phoneNumber === undefined) {
-            alert('Số điện thoại không hợp lệ');
+            swal({text: 'Số điện thoại không hợp lệ', icon: 'error',});
         } else {
             setFlag(true);
             configureCaptcha();

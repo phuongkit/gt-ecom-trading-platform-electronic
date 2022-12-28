@@ -1,6 +1,7 @@
 import { getPageOrder, postOrder, createOrder, deleteOrder,getOrderDetail } from './orderSlice';
 import { orderService } from '~/services/order.service';
 import { MESSAGE } from '../../utils';
+import swal from 'sweetalert';
 
 export const getAllOrdersByShopApi = async (dispatch, shopId) => {
     let res = await orderService.getAllOrdersByShopId(shopId);
@@ -20,7 +21,7 @@ export const postOrdersApi = async (dispatch, data, navigate) => {
         dispatch(postOrder(res?.data));
         navigate('/order');
     } catch (err) {
-        alert(MESSAGE.ERROR_ACTION);
+        swal({text: MESSAGE.ERROR_ACTION, icon: 'error',});
         navigate('/');
     }
 };
@@ -39,9 +40,9 @@ export const deleteOrdersByIdApi = async (dispatch, id, navigate=null) => {
     try {
         await orderService.deleteOrderById(id);
         dispatch(deleteOrder());
-        alert('Hủy đơn hàng thành công !');
+        swal({text: 'Hủy đơn hàng thành công!', icon: 'success',});
     } catch (err) {
-        alert(MESSAGE.ERROR_ACTION);
+        swal({text: MESSAGE.ERROR_ACTION, icon: 'error',});
     } 
     if (navigate) {
         navigate('/');
