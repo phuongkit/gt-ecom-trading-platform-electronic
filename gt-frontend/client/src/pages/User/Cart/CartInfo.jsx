@@ -403,8 +403,7 @@ function CartInfo() {
                         </small>
                     </div>
                 </div>
-            </form>
-            <Portal container={portalRef.current}>
+                <Portal container={portalRef.current}>
                 <form className="flex gap-8 border p-4 rounded-xl" onSubmit={(e) => handleAddDiscountCode(e)}>
                     <Input
                         placeholder="Nhập mã giảm giá/ Phiếu mua hàng"
@@ -424,6 +423,8 @@ function CartInfo() {
                     </button>
                 </form>
             </Portal>
+            </form>
+          
         </div>
     );
 }

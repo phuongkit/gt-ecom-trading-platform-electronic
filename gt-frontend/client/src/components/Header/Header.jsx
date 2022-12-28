@@ -16,9 +16,9 @@ function Header() {
         <header className={styles.heading}>
             <div className={styles.top}>
                 <div className={styles.wrap}>
-                    <Link to="/">
+                    {/* <Link to="/">
                     <div className='select-none text-[13px] w-[60px] px-6 py-2 font-semibold text-green-400 border-r-4 border-green-200 rounded shadow-lg text-center'>Phúc Xi Cúc</div>
-                    </Link>
+                    </Link> */}
                     <FilterButton></FilterButton>
                     <SearchInput />
                     {!getAccess &&(<Link to="/SignIn" className="w-32 text-center" onClick={()=>setSingIn(!singIn)}>
@@ -33,9 +33,7 @@ function Header() {
                     </Link>
                 </div>
             </div>
-            <div className={styles.bottom}>
-            
-            </div>
+      
         </header>
     );
 }

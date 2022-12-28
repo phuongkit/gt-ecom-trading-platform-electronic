@@ -60,7 +60,11 @@ function ProductBody() {
                             <h1 className="product__details-title">Thông tin Shop</h1>
                         </div>
                     <div className='product__details-list'>
-                            <Link to={`/ShopInfo/${initProductDetail?.shop?.slug}`} className='w-[100px] h-[100px]'><img src={initProductDetail?.shop?.avatar} alt="" className="home-product-item__img rounded-full w-full h-full"></img></Link>
+                            <Link to={`/ShopInfo/${initProductDetail?.shop?.slug}`} >
+                                <div className='w-[100px] h-[100px]'>
+                                <img src={initProductDetail?.shop?.avatar} alt="" className="home-product-item__img rounded-full w-full h-full"></img>
+                                </div>
+                            </Link>
                                     <h5 className="home-product-item__name">{initProductDetail?.shop?.name}</h5>
                                     <div className="home-product-item__price">
                                         <div className="flex flex-col gap-8 home-product-item__price-new">
@@ -81,17 +85,7 @@ function ProductBody() {
                                     <Art />
                                 ) : (
                                     <p className="product__desc-para">
-                                        ⚠️ CAM KẾT 1 ĐỔI 1 TRONG 7 NGÀY NẾU CÓ LỖI CỦA SHOP ⚠️ Giao hàng tận nơi trên
-                                        toàn quốc, Nhận hàng nhanh chóng tại nhà. PHỤ KIỆN XANH 247 xin giới thiệu sản
-                                        phẩm: Tai nghe mèo bluetooth không dây đèn led, headphone chụp tai chống ồn CAO
-                                        CẤP gấp gọn, âm bass mạnh mẽ, thời lượng PIN KHỦNG 400mAh, có micro chìm - CAM
-                                        KẾT bảo hành 6 tháng NHẬP MÃ PHUKIEN50 GIẢM 25K TRỰC TIẾP ĐƠN HÀNG *THÔNG TIN
-                                        SẢN PHẨM: Tai nghe mèo, Headphone chụp tai bluetooth không dây - Sản phẩm bao
-                                        gồm: 1 Tai nghe và 1 dây sạc đi kèm - Tai nghe bluetooth tai mèo không chỉ là 1
-                                        phụ kiện điện thoại thông thường nó là 1 phụ kiện thời trang vô cùng đẹp với 5
-                                        tông màu đa dạng phù hợp với nhiều cá tính. Phù hợp với tất cả các nam thanh nữ
-                                        tú khi ra đường cũng như học trực tuyến, dùng để nghe nhạc, chơi game, xem
-                                        phim.... - Có khả năng gấp gọn lại cũng như kéo dãn ra để vừa mọi cỡ đầu. Ngoài
+                                        ⚠️ Có khả năng gấp gọn lại cũng như kéo dãn ra để vừa mọi cỡ đầu. Ngoài
                                         ra phần khung được làm bằng nhựa cao cấp cực bền và không gây mùi khó chịu như
                                         các sản phẩm rẻ tiền khác - Hỗ trợ micro đàm thoại khả năng tương thích với các
                                         smartphone là 100%. Có cổng cắm chuyển đổi thay vì kết nối bluetooth - Nệm tai

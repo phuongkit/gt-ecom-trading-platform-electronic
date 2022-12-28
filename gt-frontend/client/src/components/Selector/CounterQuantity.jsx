@@ -1,14 +1,20 @@
 import { useState } from 'react';
 import { ChevronDown, PlusLg, DashLg } from 'react-bootstrap-icons';
-function CounterQuantity({ onChange, value }) {
+function CounterQuantity({ onChange, value, sphientai }) {
     const [quantity, setQuantity] = useState(value);
 
     const handleChange = (e) => {
+
         let number = parseInt(e.target.value);
-        if (Number.isInteger(number)) {
-            setQuantity(number);
-            onChange(number);
+        if( number > sphientai){
+            alert("Chỉ được mua tối đa sản phẩm hiện có!")
+        }else{
+            if (Number.isInteger(number)) {
+                setQuantity(number);
+                onChange(number);
+            }
         }
+       
     };
     return (
         <div className="flex items-center">

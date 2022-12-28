@@ -21,7 +21,7 @@ body {
     display: flex;
     column-gap: 50px;
     background-color: #fff;
-    border-radius: 3px;
+    border-radius: 7px;
     
 
 }
@@ -347,15 +347,17 @@ img {
 
 .product__body-left {
     background-color: #fff;
-    border-radius: 2px;
+    border-radius: 7px;
     padding: 25px 27px;
 }
 
 .product__details-title-wrap {
     padding: 15px;
-    background-color: rgba(0,0,0,.02);
+   
 }
-
+.product__body-left-wrap{
+ background-color: white;
+}
 .product__details-title {
     margin: 0;
     color: rgba(0,0,0,.95);
@@ -395,20 +397,20 @@ img {
     overflow: hidden;
     text-overflow: ellipsis;
     padding: 0px 15px 15px;
-    margin-bottom: -40px;
+    // margin-bottom: -40px;
 }
 
 .product__desc-para {
     margin: 0;
     line-height: 2.3rem;
     letter-spacing: -.5px;
-    margin-top: -10px;
+
     font-weight: 500;
 }
 
 .product__body-right {
     background-color: #fff;
-    border-radius: 2px;
+    border-radius: 7px;
     padding-top: 15px;
 }
 

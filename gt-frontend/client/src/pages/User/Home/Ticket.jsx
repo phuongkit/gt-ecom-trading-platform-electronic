@@ -14,12 +14,9 @@ function Ticket({ show }) {
             {show && (
                 <>
                  
-                    <img
-                        className={` ${css.ticketRight} fixed top-80 duration-500`}
-                        src="https://cdn.tgdd.vn/2022/08/banner/Phai-79x271-7.png"
-                    />
+                    
                     <button
-                        className="rounded-full bg-yellow-300 fixed right-4 bottom-4 h-14 w-14"
+                        className="rounded-full bg-blue-300 fixed right-4 bottom-4 h-14 w-14"
                         onClick={scrollToTop}
                     >
                         <ArrowUp />
