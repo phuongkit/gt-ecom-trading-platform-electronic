@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.text.DateFormat;
 import java.text.Normalizer;
 import java.text.SimpleDateFormat;
@@ -231,14 +232,20 @@ public class Utils {
     if (path.startsWith("http")) {
       return path;
     }
-//    // Local address
-//    String hostAddress = InetAddress.getLocalHost().getHostAddress();
-//    String hostName = InetAddress.getLocalHost().getHostName();
+    String remoteName = InetAddress.getLoopbackAddress().getHostName();
+    try {
+      //    // Local address
+//      String hostAddress = InetAddress.getLocalHost().getHostAddress();
+      String hostName = InetAddress.getLocalHost().getHostName();
+      if (!Objects.equals(remoteName, "localhost")) {
+        return hostName + PRE_API_IMAGE + "/" + path;
+      }
+    } catch (UnknownHostException ignored) {
 
+    }
     // Remote address
     String remoteAddress = InetAddress.getLoopbackAddress().getHostAddress();
-//    String remoteName = InetAddress.getLoopbackAddress().getHostName();
-    return "http://" + remoteAddress + ":" + (port == null ? 8080 : port) + PRE_API_IMAGE + "/" + path;
+    return remoteName + ":" + (port == null ? 8080 : port) + PRE_API_IMAGE + "/" + path;
   }
 
   public static String getFullNameFromLastNameAndFirstName(String lastName, String firstName) {
