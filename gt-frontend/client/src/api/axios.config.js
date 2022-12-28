@@ -4,7 +4,7 @@ import { handleLogout } from '../redux/user/userApi';
 import { DEFAULT_STORE } from '../utils';
 import swal from 'sweetalert';
 
-const apiProduction = process.env.BACKEND_URL + '/api/v1';
+const apiProduction = process.env.BACKEND_URL_PRODUCTION + '/api/v1';
 const apiDev = process.env.BACKEND_URL + '/api/v1';
 
 const baseURL = import.meta.env.MODE === 'production' ? apiProduction : apiDev;
