@@ -21,7 +21,6 @@ import { getUserByAccess } from '../../../redux/user/userApi';
 function Home({ title='' }) {
     const [displayTicket, setDisplayTicket] = useState(false);
     useEffect(() => {
-        console.log(searchParams, searchParams.entries);
         const clearParamByGoogle = async () => {
             let token = searchParams.get(DEFAULT_STORE.TOKEN);
             localStorage.setItem(DEFAULT_STORE.TOKEN, JSON.stringify(token));

@@ -29,7 +29,7 @@ function ProductBody() {
 
     const color = colors ? colors[0] : '';
     const handleClickPay = () => {
-        addToCart({...initProductDetail, quantity: 1});
+        addToCart({ ...initProductDetail, quantity: 1 });
     };
 
     const [products, setProducts] = useState([]);
@@ -59,17 +59,17 @@ function ProductBody() {
                         <div className="product__details-title-wrap">
                             <h1 className="product__details-title">Thông tin Shop</h1>
                         </div>
-                    <div className='product__details-list'>
-                            <Link to={`/ShopInfo/${initProductDetail?.shop?.slug}`} className='w-[100px] h-[100px]'><img src={initProductDetail?.shop?.avatar} alt="" className="home-product-item__img rounded-full w-full h-full"></img></Link>
-                                    <h5 className="home-product-item__name">{initProductDetail?.shop?.name}</h5>
-                                    <div className="home-product-item__price">
-                                        <div className="flex flex-col gap-8 home-product-item__price-new">
-                                            <span>Email: {initProductDetail?.shop?.email}</span>
-                                            <span className="home-product-item__price-new-prices">Location: {initProductDetail?.shop?.address?.city}</span>
-                                        </div>
-                                    </div>
-                    </div>
-                     
+                        <div className='product__details-list'>
+                            <Link to={`/ShopInfo/${initProductDetail?.shop?.slug}`} className='w-[100px] h-[100px]'><img src={initProductDetail?.shop?.avatar} alt="" className="home-product-item__img rounded-full w-full h-full" style={{ height: '240px', width: '240px' }}></img></Link>
+                            <h5 className="home-product-item__name">{initProductDetail?.shop?.name}</h5>
+                            <div className="home-product-item__price">
+                                <div className="flex flex-col gap-8 home-product-item__price-new">
+                                    <span>Email: {initProductDetail?.shop?.email}</span>
+                                    <span className="home-product-item__price-new-prices">Location: {initProductDetail?.shop?.address?.city}</span>
+                                </div>
+                            </div>
+                        </div>
+
 
                         <div className="product__desc">
                             <div className="product__details-title-wrap">
@@ -133,43 +133,43 @@ function ProductBody() {
                     <div className="product__best-seller-list">
                         <a className="home-product-wrap">
                             <div className="home-product-item">
-                            {parameter ? (
-                            <div className="product__details-list">
-                                {Object.entries(parameter).map((param, index) => {
-                                    if (index != 0) {
-                                        return (
-                                            // <tr className={clsx(index % 2 === 0 && 'bg-gray-100')} key={index}>
-                                            //     <td colSpan="4">{param[0]}</td>
-                                            //     <td colSpan="6">{param[1]}</td>
-                                            // </tr>
-                                            <div className="product__details-item flex">
-                                                <span className="product__details-item-title">{param[0]}</span>
-                                                <span className="product__details-item-desc">{param[1]}</span>
-                                            </div>
-                                        );
-                                    }
-                                })}
-                            </div>
-                        ) : (
-                            <div className="product__details-list">
-                                <div className="product__details-item flex items-center h-full">
-                                    <span className="product__details-item-title">Danh Mục</span>
-                                    <span className="product__details-item-desc">Tên nhãn hiệu</span>
-                                </div>
-                                <div className="product__details-item flex items-center">
-                                    <span className="product__details-item-title">Kiểu kết nối</span>
-                                    <span className="product__details-item-desc">Không dây</span>
-                                </div>
-                                <div className="product__details-item flex">
-                                    <span className="product__details-item-title">Kho hàng</span>
-                                    <span className="product__details-item-desc">498</span>
-                                </div>
-                                <div className="product__details-item flex">
-                                    <span className="product__details-item-title">Gửi từ</span>
-                                    <span className="product__details-item-desc">Quận Cầu Giấy, Hà Nội</span>
-                                </div>
-                            </div>
-                        )}
+                                {parameter ? (
+                                    <div className="product__details-list">
+                                        {Object.entries(parameter).map((param, index) => {
+                                            if (index != 0) {
+                                                return (
+                                                    // <tr className={clsx(index % 2 === 0 && 'bg-gray-100')} key={index}>
+                                                    //     <td colSpan="4">{param[0]}</td>
+                                                    //     <td colSpan="6">{param[1]}</td>
+                                                    // </tr>
+                                                    <div className="product__details-item flex">
+                                                        <span className="product__details-item-title">{param[0]}</span>
+                                                        <span className="product__details-item-desc">{param[1]}</span>
+                                                    </div>
+                                                );
+                                            }
+                                        })}
+                                    </div>
+                                ) : (
+                                    <div className="product__details-list">
+                                        <div className="product__details-item flex items-center h-full">
+                                            <span className="product__details-item-title">Danh Mục</span>
+                                            <span className="product__details-item-desc">Tên nhãn hiệu</span>
+                                        </div>
+                                        <div className="product__details-item flex items-center">
+                                            <span className="product__details-item-title">Kiểu kết nối</span>
+                                            <span className="product__details-item-desc">Không dây</span>
+                                        </div>
+                                        <div className="product__details-item flex">
+                                            <span className="product__details-item-title">Kho hàng</span>
+                                            <span className="product__details-item-desc">498</span>
+                                        </div>
+                                        <div className="product__details-item flex">
+                                            <span className="product__details-item-title">Gửi từ</span>
+                                            <span className="product__details-item-desc">Quận Cầu Giấy, Hà Nội</span>
+                                        </div>
+                                    </div>
+                                )}
                             </div>
                         </a>
                     </div>
