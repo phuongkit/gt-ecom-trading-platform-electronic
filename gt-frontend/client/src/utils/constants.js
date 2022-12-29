@@ -455,10 +455,12 @@ export const DEFAULT_VARIABLE = {
     FULL_NAME: 'Ẩn Danh',
 }
 
+console.log(import.meta.env.MODE)
 export const API_BASE_URL = import.meta.env.MODE === 'production' ? process.env.BACKEND_URL_PRODUCTION : process.env.BACKEND_URL;
 
 export const OAUTH2_REDIRECT_URI = window.location.origin.toString();
 
 export const GOOGLE_AUTH_URL = API_BASE_URL + '/oauth2/authorize/google?redirect_uri=' + OAUTH2_REDIRECT_URI;
+console.log(GOOGLE_AUTH_URL);
 export const FACEBOOK_AUTH_URL = API_BASE_URL + '/oauth2/authorize/facebook?redirect_uri=' + OAUTH2_REDIRECT_URI;
 export const GITHUB_AUTH_URL = API_BASE_URL + '/oauth2/authorize/github?redirect_uri=' + OAUTH2_REDIRECT_URI;
