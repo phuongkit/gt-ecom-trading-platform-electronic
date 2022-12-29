@@ -1,1 +1,1 @@
-web java -Dserver.port=$PORT $JAVA_OPTS -jar gt-backendtarget/ecommerce-0.0.1-SNAPSHOT.jar
+web java -Dserver.port=$PORT $JAVA_OPTS -jar gt-backend/ecommerce-0.0.1-SNAPSHOT.jar
