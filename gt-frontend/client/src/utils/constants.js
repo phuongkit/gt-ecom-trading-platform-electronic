@@ -446,6 +446,7 @@ export const DEFAULT_STORE = {
     USER_INFO: 'customerInfo',
     CART_ITEM: 'cartItem',
     ORDER: 'order',
+    TRANSACTION_STATUS: 'transaction_status',
 }
 
 export const DEFAULT_VARIABLE = {
@@ -454,9 +455,9 @@ export const DEFAULT_VARIABLE = {
     FULL_NAME: 'Ẩn Danh',
 }
 
-export const API_BASE_URL = process.env.BACKEND_URL;
+export const API_BASE_URL = import.meta.env.MODE === 'production' ? process.env.BACKEND_URL_PRODUCTION : process.env.BACKEND_URL;
 
-export const OAUTH2_REDIRECT_URI = process.env.FRONTEND_URL + ':' + process.env.PORT;
+export const OAUTH2_REDIRECT_URI = window.location.origin.toString();
 
 export const GOOGLE_AUTH_URL = API_BASE_URL + '/oauth2/authorize/google?redirect_uri=' + OAUTH2_REDIRECT_URI;
 export const FACEBOOK_AUTH_URL = API_BASE_URL + '/oauth2/authorize/facebook?redirect_uri=' + OAUTH2_REDIRECT_URI;

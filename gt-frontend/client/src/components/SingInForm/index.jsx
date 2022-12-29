@@ -7,6 +7,7 @@ import { Facebook, Google } from 'react-bootstrap-icons';
 import './SignInForm.scss';
 
 function SingInForm() {
+    console.log(GOOGLE_AUTH_URL);
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [data, setData] = useState({

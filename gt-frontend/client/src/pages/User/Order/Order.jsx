@@ -55,7 +55,7 @@ const Order = ({ title }) => {
             swal({text: MESSAGE.ERROR_ACTION, icon: 'error',});
         }
         navigate('/');
-        localStorage.removeItem('order');
+        // localStorage.removeItem('order');
     };
     const getPayment = () => {
         const radios = document.querySelectorAll('input[name="payment"]');
