@@ -2,17 +2,22 @@ package gt.electronic.ecommerce.controller;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import gt.electronic.ecommerce.config.AppProperties;
 import gt.electronic.ecommerce.dto.request.VNPayCreationDTO;
 import gt.electronic.ecommerce.dto.response.ResponseObject;
+import gt.electronic.ecommerce.handlers.HttpCookieOAuth2AuthorizationRequestRepository;
 import gt.electronic.ecommerce.services.OrderService;
 import gt.electronic.ecommerce.services.VNPayService;
+import gt.electronic.ecommerce.utils.CookieUtils;
 import gt.electronic.ecommerce.utils.VNPayConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -26,6 +31,8 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.*;
+
+import static gt.electronic.ecommerce.utils.Utils.*;
 
 /**
  * @author minh phuong
@@ -51,8 +58,14 @@ public class PaymentController {
     this.vnPayService = vnPayService;
   }
 
-  @PostMapping("/vnpay/return")
-  public String getVNPayReturn(HttpServletRequest request) {
+  private AppProperties appProperties;
+  @Autowired
+  public void AppProperties(AppProperties appProperties) {
+    this.appProperties = appProperties;
+  }
+
+  @GetMapping("/vnpay/return")
+  public String getVNPayReturn(HttpServletRequest request, HttpServletResponse response) {
     try {
       Map fields = new HashMap();
       for (Enumeration params = request.getParameterNames(); params.hasMoreElements(); ) {
@@ -88,7 +101,12 @@ public class PaymentController {
               success = false;
               // Here Code update PaymnentStatus = 2 into your Database
             }
+            Optional<String> redirectUri = CookieUtils.getCookie(request, HttpCookieOAuth2AuthorizationRequestRepository.REDIRECT_URI_PARAM_COOKIE_NAME)
+                .map(Cookie::getValue);
+
+            String targetUrl = redirectUri.orElse(appProperties.getOauth2().getAuthorizedRedirectUris().get(0));
             this.orderService.updatePostPaymentOrder(payString, paymentOrderCode, success);
+            response.sendRedirect(UriComponentsBuilder.fromUriString(targetUrl).queryParam(TRANSACTION_STATUS, success).build().toUriString());
             return "{\"RspCode\":\"00\",\"Message\":\"Confirm Success\"}";
           } else {
             return "{\"RspCode\":\"02\",\"Message\":\"Order already confirmed\"}";
@@ -184,9 +202,10 @@ public class PaymentController {
 
   @PostMapping("/vnpay/create-payment-url")
   public ResponseObject<?> getPaymentUrlVNPay(
-      @RequestBody @Valid VNPayCreationDTO vnPayCreationDTO, HttpServletRequest req)
+      @RequestBody @Valid VNPayCreationDTO vnPayCreationDTO, HttpServletRequest request, HttpServletResponse response)
       throws IOException {
-    String ipAddress = VNPayConfig.getIpAddress(req);
+    String ipAddress = VNPayConfig.getIpAddress(request);
+    CookieUtils.addCookie(response, REDIRECT_URI_PARAM_COOKIE_NAME, vnPayCreationDTO.getRedirectUrl(), cookieExpireSeconds);
     return new ResponseObject<>(
         HttpStatus.OK,
         "Get url vnpay sucess",

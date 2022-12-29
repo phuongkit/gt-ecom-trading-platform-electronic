@@ -6,6 +6,7 @@ import gt.electronic.ecommerce.entities.Order;
 import gt.electronic.ecommerce.exceptions.ResourceNotFoundException;
 import gt.electronic.ecommerce.repositories.OrderRepository;
 import gt.electronic.ecommerce.services.VNPayService;
+import gt.electronic.ecommerce.utils.CookieUtils;
 import gt.electronic.ecommerce.utils.VNPayConfig;
 import gt.electronic.ecommerce.utils.Utils;
 import org.slf4j.Logger;
@@ -13,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
@@ -20,6 +22,8 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.*;
+
+import static gt.electronic.ecommerce.utils.Utils.*;
 
 /**
  * @author minh phuong
@@ -91,7 +95,7 @@ public class VNPayServiceImpl implements VNPayService {
     vnp_Params.put("vnp_OrderInfo", vnp_OrderInfo);
     vnp_Params.put("vnp_OrderType", orderType);
     vnp_Params.put("vnp_Amount", String.valueOf(creationDTO.getTotalPrice().multiply(new BigInteger("100"))));
-    vnp_Params.put("vnp_ReturnUrl", creationDTO.getRedirectUrl());
+    vnp_Params.put("vnp_ReturnUrl", ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString() + PRE_API_PAYMENT + "/vnpay/return");
     vnp_Params.put("vnp_IpAddr", vnp_IpAddr);
     vnp_Params.put("vnp_CreateDate", vnp_CreateDate);
     vnp_Params.put("vnp_ExpireDate", vnp_ExpireDate);
