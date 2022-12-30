@@ -84,7 +84,7 @@ app:
     # We're not using cookies because they won't work well in mobile clients.
     authorizedRedirectUris:
       - http://localhost:5000
-      - https://gt-ecom-trading-platform-electronic-kg6ktlzhu-phuongkit.vercel.app
+      - https://gt-ecom-trading-platform-electronic.vercel.app
   shop:
     default:
       percent: 0.05
