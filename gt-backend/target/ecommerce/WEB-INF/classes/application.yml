@@ -84,6 +84,7 @@ app:
     # We're not using cookies because they won't work well in mobile clients.
     authorizedRedirectUris:
       - http://localhost:5000
+      - https://gt-ecom-trading-platform-electronic.vercel.app
   shop:
     default:
       percent: 0.05
@@ -99,7 +100,7 @@ server:
     key-store-type: PKCS12
     # The password used to generate the certificate
     key-store-password: demo123321
-    enabled: false
+    enabled: true
   servlet:
     session:
       tracking-modes: cookie
