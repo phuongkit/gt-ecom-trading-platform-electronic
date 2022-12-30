@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: gt.electronic.ecommerce.GtBackendApplicationTests
--------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 23.488 s - in gt.electronic.ecommerce.GtBackendApplicationTests
