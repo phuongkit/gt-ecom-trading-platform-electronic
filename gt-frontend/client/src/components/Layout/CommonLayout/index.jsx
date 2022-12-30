@@ -3,23 +3,24 @@ import Footer from '../../Footer';
 import { useState, useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import {getUserByAccess,logUserByAccess} from '../../../redux/user/userApi';
+import { getUserByAccess, logUserByAccess } from '../../../redux/user/userApi';
 import { Link } from 'react-router-dom';
+import MessengerCustomerChat from 'react-messenger-customer-chat/lib/MessengerCustomerChat';
 
 import './header.scss';
 import { DEFAULT_STORE, DEFAULT_VARIABLE } from '../../../utils';
 function CommonLayout({ children }) {
-   
+
     const dispatch = useDispatch()
     const [getUserAccess, setUserAccess] = useState(undefined);
     const getAccess = JSON.parse(localStorage.getItem(DEFAULT_STORE.TOKEN))
-    useEffect(()=>{   
-        if(getAccess){
-            getUserByAccess(dispatch)  
-        }   
-    },[localStorage.getItem(DEFAULT_STORE.TOKEN)])
+    useEffect(() => {
+        if (getAccess) {
+            getUserByAccess(dispatch)
+        }
+    }, [localStorage.getItem(DEFAULT_STORE.TOKEN)])
     const user = useSelector((state) => state.user?.user);
-    const hanleLogout = () => {    
+    const hanleLogout = () => {
         logUserByAccess(dispatch)
     };
     return (
@@ -37,50 +38,50 @@ function CommonLayout({ children }) {
                                 </Link>
                         </div> */}
                 <div className="select-none text-[23px] px-6 py-2 font-semibold text-white bg-blue-400 border-r-4 border-blue-400 rounded shadow-lg shadow-purple-600/50">
-                   
+
                 </div>
                 <nav className=" header__navbar hide-on-mobile-tablet">
                     <ul className="header__navbar-list">
                         <li className="text-black font-semibold header__navbar-item--openqr header__navbar-item header__navbar-item--separate-week hover:text-gray-500">
                             <Link to="/history" className="w-32  text-center ">
-                                            Tra cứu đơn hàng
-                                </Link>
+                                Tra cứu đơn hàng
+                            </Link>
                         </li>
 
                         <li className="header__navbar-item ">
-                        {user && (
-                            <li className="header__navbar-item header__navbar-user ml-4">
-                                <img
-                                    src={user.avatar || "https://haycafe.vn/wp-content/uploads/2022/03/avatar-facebook-doc.jpg"}
-                                    alt=""
-                                    className="header__user-img"
-                                ></img>
-                                <span className="header__user-name text-black">{user?.fullName || DEFAULT_VARIABLE.FULL_NAME}</span>
+                            {user && (
+                                <li className="header__navbar-item header__navbar-user ml-4">
+                                    <img
+                                        src={user.avatar || "https://haycafe.vn/wp-content/uploads/2022/03/avatar-facebook-doc.jpg"}
+                                        alt=""
+                                        className="header__user-img"
+                                    ></img>
+                                    <span className="header__user-name text-black">{user?.fullName || DEFAULT_VARIABLE.FULL_NAME}</span>
 
-                                <ul className="header__navbar-user-menu">
-                                    <li className="header__navbar-user-item text-gray-600">
-                                        <Link to="history">Tài khoản của tôi</Link>
-                                    </li>
-                                    <li className="header__navbar-user-item text-gray-600">
-                                        <Link to="history">Đơn mua</Link>
-                                    </li>
-                                    {user.role != 1 && (
-                                          <li className="header__navbar-user-item text-gray-600">
-                                          <Link to="/SignInSeller" className="">
-                                              Đăng ký bán hàng
-                                          </Link>
-                                         </li>
-                                    )}
-                                 
-                                    <li
-                                        className="header__navbar-user-item header__navbar-user-item--separate text-gray-600"
-                                        onClick={hanleLogout}
-                                    >
-                                        <a href="">Đăng xuất</a>
-                                    </li>
-                                </ul>
-                            </li>
-                        )}
+                                    <ul className="header__navbar-user-menu">
+                                        <li className="header__navbar-user-item text-gray-600">
+                                            <Link to="history">Tài khoản của tôi</Link>
+                                        </li>
+                                        <li className="header__navbar-user-item text-gray-600">
+                                            <Link to="history">Đơn mua</Link>
+                                        </li>
+                                        {user.role != 1 && (
+                                            <li className="header__navbar-user-item text-gray-600">
+                                                <Link to="/SignInSeller" className="">
+                                                    Đăng ký bán hàng
+                                                </Link>
+                                            </li>
+                                        )}
+
+                                        <li
+                                            className="header__navbar-user-item header__navbar-user-item--separate text-gray-600"
+                                            onClick={hanleLogout}
+                                        >
+                                            <a href="">Đăng xuất</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            )}
                         </li>
                     </ul>
 
@@ -91,7 +92,7 @@ function CommonLayout({ children }) {
                             Hỗ trợ
                         </a>
                     </li> */}
-                     
+
 
                         <li className=" header__navbar-item header__navbar-item--openNotify">
                             <a href="" className="hover:text-gray-500 header__navbar-item-link text-black font-semibold">
@@ -157,7 +158,7 @@ function CommonLayout({ children }) {
                             </div>
                         </li>
                         <li className="header__navbar-item ">
-                    
+
                         </li>
                     </ul>
                 </nav>
@@ -170,6 +171,11 @@ function CommonLayout({ children }) {
                 </div>
             </main>
             <Footer />
+            <MessengerCustomerChat
+                pageId="101178992810439"
+                appId="952881962336925"
+                htmlRef="https://connect.facebook.net/vi_VN/sdk/xfbml.customerchat.js"
+            />
         </>
     );
 }
