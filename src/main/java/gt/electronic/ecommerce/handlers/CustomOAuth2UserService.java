@@ -52,8 +52,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
   @Override
   public OAuth2User loadUser(OAuth2UserRequest oAuth2UserRequest) throws OAuth2AuthenticationException {
     OAuth2User oAuth2User = super.loadUser(oAuth2UserRequest);
-
     try {
+
       return processOAuth2User(oAuth2UserRequest, oAuth2User);
     } catch (AuthenticationException ex) {
       throw ex;
@@ -64,6 +64,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
   }
 
   private OAuth2User processOAuth2User(OAuth2UserRequest oAuth2UserRequest, OAuth2User oAuth2User) {
+    this.LOGGER.info("processOAuth2User");
     OAuth2UserInfo oAuth2UserInfo =
         OAuth2UserInfoFactory.getOAuth2UserInfo(oAuth2UserRequest.getClientRegistration().getRegistrationId(),
                                                 oAuth2User.getAttributes());
@@ -81,7 +82,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                                                               user.getProvider() + " account. Please use your " + user.getProvider() +
                                                               " account to login.");
       }
-      System.out.println(oAuth2User.getAttributes());
       user = updateExistingUser(user, oAuth2UserInfo);
     } else {
       user = registerNewUser(oAuth2UserRequest, oAuth2UserInfo);
@@ -94,8 +94,14 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     user.setProvider(AuthProvider.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId()));
     user.setProviderId(oAuth2UserInfo.getId());
-    user.setFirstName((String) oAuth2UserInfo.getAttributes().get("given_name"));
-    user.setLastName((String) oAuth2UserInfo.getAttributes().get("family_name"));
+    if (oAuth2UserInfo.getAttributes().get("given_name") == null || oAuth2UserInfo.getAttributes().get("family_name") == null) {
+      String[] name = Utils.getFirstNameAndLastNameFromFullName(oAuth2UserInfo.getName());
+      user.setFirstName(name[0]);
+      user.setLastName(name[1]);
+    } else {
+      user.setFirstName((String) oAuth2UserInfo.getAttributes().get("given_name"));
+      user.setLastName((String) oAuth2UserInfo.getAttributes().get("family_name"));
+    }
     user.setEmail(oAuth2UserInfo.getEmail());
     user.setEmailVerified(true);
     String usernameGenerate;
@@ -106,8 +112,10 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     Role roleFound = this.roleRepo.findByName(ERole.ROLE_CUSTOMER).orElseThrow(() -> new BadRequestException(
         "Sorry! We've got an Unauthorized Redirect URI and can't proceed with the authentication"));
     user.setRole(roleFound);
-    Image image = new Image(oAuth2UserInfo.getImageUrl(), EImageType.IMAGE_USER);
-    user.setAvatar(image);
+    if (oAuth2UserInfo.getImageUrl() != null) {
+      Image image = new Image(oAuth2UserInfo.getImageUrl(), EImageType.IMAGE_USER);
+      user.setAvatar(image);
+    }
     return this.userRepo.save(user);
   }
 

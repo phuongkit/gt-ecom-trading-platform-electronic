@@ -4,12 +4,18 @@ import gt.electronic.ecommerce.entities.*;
 import gt.electronic.ecommerce.exceptions.ResourceNotValidException;
 import gt.electronic.ecommerce.models.enums.EPattern;
 import gt.electronic.ecommerce.models.enums.ETimeDistance;
+import io.swagger.v3.oas.annotations.servers.Server;
 import lombok.Getter;
 import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.servlet.function.ServerRequest;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.net.InetAddress;
@@ -77,11 +83,13 @@ public class Utils {
   public static final String LOG_GET_OBJECT = "Fetching %s with %s = %s";
   public static final String LOG_GET_ALL_OBJECT_BY_FIELD = "Fetching all %ss with %s = %s";
   public static final String LOG_GET_ALL_OBJECT_BY_TWO_FIELD = "Fetching all %ss with %s = %s and %s = %s";
-  public static final String LOG_GET_ALL_OBJECT_BY_THREE_FIELD = "Fetching all %ss with %s = %s and %s = %s and %s = %s";
+  public static final String LOG_GET_ALL_OBJECT_BY_THREE_FIELD =
+      "Fetching all %ss with %s = %s and %s = %s and %s = %s";
   public static final String AND_FIELD = " and %s = %s";
   public static final String LOG_CREATE_OBJECT = "Creating new %s with %s = %s to the database";
   public static final String LOG_REGISTER_OBJECT = "Registering new %S with %s = %s to database";
-  public static final String LOG_CREATE_OBJECT_BY_TWO_FIELD = "Creating new %s with %s = %s and %s = %s to the database";
+  public static final String LOG_CREATE_OBJECT_BY_TWO_FIELD =
+      "Creating new %s with %s = %s and %s = %s to the database";
   public static final String LOG_UPDATE_OBJECT = "Updating %s with %s = %s to the database";
   public static final String LOG_UPDATE_OBJECT_BY_TWO_FIELD = "Updating %s with %s = %s and %s = %s to the database";
   public static final String LOG_DELETE_OBJECT = "Deleting %s with %s = %s from the database";
@@ -121,11 +129,13 @@ public class Utils {
   public static final String PRE_API_COMMENT = "/api/v1/comments";
   public static final String PRE_API_FEEDBACK = "/api/v1/feedbacks";
   public static final String PRE_API_IMAGE = "/api/v1/images";
+  public static final String PRE_API_PAYMENT = "/api/v1/payment";
   public static final String PRE_API_PRODUCT = "/api/v1/products";
   //
   public static final String IMAGE_DEFAULT_PATH = "IMAGE_OTHER/l9faer7pevfo5kgs7zztubvgt9ikxy4u.jpg";
-  @Value("${server.port}")
-  private static Integer port;
+  public static final String REDIRECT_URI_PARAM_COOKIE_NAME = "redirect_uri";
+  public static final String TRANSACTION_STATUS = "transaction_status";
+  public static final int cookieExpireSeconds = 600;
 
   public static String toSlug(String input) {
     String noWhitespace = WHITESPACE.matcher(input).replaceAll("-");
@@ -228,24 +238,32 @@ public class Utils {
     return line + ", " + locationString;
   }
 
+  @Value("#{servletContext.contextPath}")
+  private static String servletContextPath;
+
   public static String getUrlFromPathImage(String path) {
     if (path.startsWith("http")) {
       return path;
     }
-    String remoteName = InetAddress.getLoopbackAddress().getHostName();
+    // Local address
+    String hostAddress;
+    String hostName;
     try {
-      //    // Local address
-//      String hostAddress = InetAddress.getLocalHost().getHostAddress();
-      String hostName = InetAddress.getLocalHost().getHostName();
-      if (!Objects.equals(remoteName, "localhost")) {
-        return hostName + PRE_API_IMAGE + "/" + path;
-      }
-    } catch (UnknownHostException ignored) {
-
+      hostAddress = InetAddress.getLocalHost().getHostAddress();
+    } catch (UnknownHostException e) {
+      throw new RuntimeException(e);
+    }
+    try {
+      hostName = InetAddress.getLocalHost().getHostName();
+    } catch (UnknownHostException e) {
+      throw new RuntimeException(e);
     }
     // Remote address
     String remoteAddress = InetAddress.getLoopbackAddress().getHostAddress();
-    return remoteName + ":" + (port == null ? 8080 : port) + PRE_API_IMAGE + "/" + path;
+    String remoteName = InetAddress.getLoopbackAddress().getHostName();
+    LOGGER.info(servletContextPath + ";" + ServletUriComponentsBuilder.fromCurrentContextPath()
+        .build().toUriString() + ";" + remoteAddress + ";" + remoteName + ";" + hostAddress + ";" + hostName);
+    return ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString() + PRE_API_IMAGE + "/" + path;
   }
 
   public static String getFullNameFromLastNameAndFirstName(String lastName, String firstName) {
@@ -341,8 +359,8 @@ public class Utils {
     if (firstSpace == -1) {
       return new String[]{fullName, ""};
     } else {
-      String lastName = fullName.substring(0, firstSpace);
-      String firstName = fullName.substring(firstSpace+1);
+      String firstName = fullName.substring(0, firstSpace);
+      String lastName = fullName.substring(firstSpace + 1);
       return new String[]{firstName, lastName};
     }
   }

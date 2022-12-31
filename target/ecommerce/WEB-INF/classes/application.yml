@@ -54,6 +54,8 @@ spring:
           facebook:
             clientId: 952881962336925
             clientSecret: c52cf96a10a67d18b5fa9e12834544e9
+#            clientId: 664290098492336
+#            clientSecret: 470013abd20af14a58e437768a8eda67
             redirectUri: "{baseUrl}/oauth2/callback/{registrationId}"
             scope:
               - email
@@ -65,11 +67,11 @@ spring:
             scope:
               - user:email
               - read:user
-        provider:
-          facebook:
-            authorizationUri: https://www.facebook.com/v3.0/dialog/oauth
-            tokenUri: https://graph.facebook.com/v3.0/oauth/access_token
-            userInfoUri: https://graph.facebook.com/v3.0/me?fields=id,first_name,middle_name,last_name,name,email,verified,is_verified,picture.width(250).height(250)
+#        provider:
+#          facebook:
+#            authorizationUri: https://www.facebook.com/v3.0/dialog/oauth
+#            tokenUri: https://graph.facebook.com/v3.0/oauth/access_token
+#            userInfoUri: https://graph.facebook.com/v3.0/me?fields=id,first_name,middle_name,last_name,name,email,verified,is_verified,picture.width(250).height(250)
 app:
   auth:
     tokenSecret: abcdefghijklmnOPQRSTUVWXYZ
@@ -84,6 +86,7 @@ app:
     # We're not using cookies because they won't work well in mobile clients.
     authorizedRedirectUris:
       - http://localhost:5000
+      - https://gt-ecom-trading-platform-electronic.vercel.app
   shop:
     default:
       percent: 0.05
@@ -99,7 +102,7 @@ server:
     key-store-type: PKCS12
     # The password used to generate the certificate
     key-store-password: demo123321
-    enabled: false
+    enabled: true
   servlet:
     session:
       tracking-modes: cookie
