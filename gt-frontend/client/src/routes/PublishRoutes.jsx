@@ -73,7 +73,7 @@ export const publishRoutes = [
     }
     ,
     {
-        path: 'cart',
+        path: '/cart',
         element: (
             <Suspense fallback={<Loading />}>
                 <Cart title="Giỏ hàng - Phúc Xi Cúc" />

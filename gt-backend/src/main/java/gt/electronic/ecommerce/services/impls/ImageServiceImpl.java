@@ -84,16 +84,15 @@ public class ImageServiceImpl implements ImageService {
   @Override
   public Image deleteImageById(Long id) {
     LOGGER.info(String.format(Utils.LOG_DELETE_OBJECT, branchName, "ID", id));
-    Optional<Image> imageFound = this.imageRepo.findById(id);
-    if (imageFound.isPresent()) {
+    Image imageFound = this.imageRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException(
+        String.format(Utils.OBJECT_NOT_FOUND_BY_FIELD, branchName, "ID", id)));
       // delete Image entity
       this.imageRepo.deleteById(id);
 
-      // delete Image file
-      this.storageService.deleteFile(imageFound.get().getPath());
+      if (!imageFound.getPath().startsWith("http")) {
+        // delete Image file
+        this.storageService.deleteFile(imageFound.getPath());
+      }
       return null;
-    }
-    throw new ResourceNotFoundException(
-        String.format(Utils.OBJECT_NOT_FOUND_BY_FIELD, branchName, "ID", id));
   }
 }

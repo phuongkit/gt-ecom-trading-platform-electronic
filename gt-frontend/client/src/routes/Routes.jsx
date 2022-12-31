@@ -1,9 +1,12 @@
-import { useRoutes } from 'react-router-dom';
+import { Navigate, useRoutes } from 'react-router-dom';
 import { CommonLayout, DefaultLayout } from '../components/Layout';
 import NotFound from '../pages/User/NotFound';
 import { publishRoutes } from './PublishRoutes';
 import { publishRoutesSeller } from './seller/PublishRoutesSeller';
 import { productDetailRoute } from './ProductDetailRoutes';
+import { lazy, Suspense, useEffect } from 'react';
+import Loading from '~/components/Loading';
+const Home = lazy(() => import('../pages/User/Home'));
 
 export default function Routes() {
     const routes = [
@@ -23,6 +26,14 @@ export default function Routes() {
                 ...publishRoutesSeller,
                 { path: '*', element: <NotFound title="Not found" /> },
             ],
+        },
+        {
+            path: '*',
+            element: <Navigate to="/"/>
+        },
+        {
+            path: '#',
+            element: <Navigate to="/"/>
         },
     ];
     return useRoutes(routes);

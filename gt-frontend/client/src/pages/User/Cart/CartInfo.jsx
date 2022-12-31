@@ -113,39 +113,41 @@ function CartInfo() {
         }
     };
     useEffect(() => {
-        const setCustomerInfo = () => {
-            let customerInfo = localStorage.getItem('customerInfo');
-            if (customerInfo) {
-                customerInfo = JSON.parse(customerInfo);
+        if (getUser) {
+            const setCustomerInfo = () => {
+                let customerInfo = localStorage.getItem('customerInfo');
+                if (customerInfo) {
+                    customerInfo = JSON.parse(customerInfo);
 
-                // console.log(customerInfo);
-                // console.log(customerInfo);
-                let fullName = (document.getElementById('fullname').value =
-                    customerInfo?.fullName === null ||
-                        customerInfo?.fullName === undefined ||
-                        customerInfo?.fullName.trim() === ''
-                        ? 'Ẩn Danh'
-                        : customerInfo?.fullName);
-                let phone = (document.getElementById('phone').value = customerInfo.phone);
-                let email = (document.getElementById('email').value = customerInfo.email);
-                document.getElementById('homeAddress').value = customerInfo?.address?.homeAdd || '';
-                let address = customerInfo?.address || {
-                    homeAdd: '',
-                    ward: '',
-                    district: '',
-                    city: '',
-                };
-                setOrderDetail((prev) => ({
-                    ...prev,
-                    fullName: fullName,
-                    phone: phone,
-                    email: email,
-                    address: address,
-                }));
-            }
-        };
-        setCustomerInfo();
-        getAllDiscountByUser(dispatch)
+                    // console.log(customerInfo);
+                    // console.log(customerInfo);
+                    let fullName = (document.getElementById('fullname').value =
+                        customerInfo?.fullName === null ||
+                            customerInfo?.fullName === undefined ||
+                            customerInfo?.fullName.trim() === ''
+                            ? 'Ẩn Danh'
+                            : customerInfo?.fullName);
+                    let phone = (document.getElementById('phone').value = customerInfo.phone);
+                    let email = (document.getElementById('email').value = customerInfo.email);
+                    document.getElementById('homeAddress').value = customerInfo?.address?.homeAdd || '';
+                    let address = customerInfo?.address || {
+                        homeAdd: '',
+                        ward: '',
+                        district: '',
+                        city: '',
+                    };
+                    setOrderDetail((prev) => ({
+                        ...prev,
+                        fullName: fullName,
+                        phone: phone,
+                        email: email,
+                        address: address,
+                    }));
+                }
+            };
+            setCustomerInfo();
+            getAllDiscountByUser(dispatch)
+        }
     }, []);
     useEffect(() => {
         if (discounts && discounts.length > 0) {

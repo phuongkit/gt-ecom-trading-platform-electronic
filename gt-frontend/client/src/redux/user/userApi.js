@@ -50,7 +50,8 @@ export const getUserByAccess = async (dispatch) => {
             handleLogout();
         }
     } catch (error) {
-        console.error(error)
+        console.error(error);
+        handleLogout();
     }
 };
 export const logUserByAccess = async (dispatch) => {

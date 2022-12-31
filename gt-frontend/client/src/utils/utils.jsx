@@ -117,7 +117,6 @@ export const getProductsGroupByShop = (products) => {
 }
 
 export const parseQueryString = function(search) {
-    console.log(search);
     let objURL = {};
 
     search.replace(

@@ -49,6 +49,8 @@ function Home({ title = '' }) {
             } else if (searchParams.get(DEFAULT_STORE.TOKEN) || param[DEFAULT_STORE.TOKEN]) {
                 clearParamByGoogle();
                 swal({ text: 'Đăng nhập với google thành công!', icon: 'success' });
+            } else if (searchParams.get('error') || param['error']) {
+                swal({text: decodeURI(searchParams.get('error') || param['error']), icon: 'error',})
             }
             history.replaceState({}, document.title, '/');
         }

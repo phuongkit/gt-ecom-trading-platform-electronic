@@ -4,13 +4,18 @@ import gt.electronic.ecommerce.entities.*;
 import gt.electronic.ecommerce.exceptions.ResourceNotValidException;
 import gt.electronic.ecommerce.models.enums.EPattern;
 import gt.electronic.ecommerce.models.enums.ETimeDistance;
+import io.swagger.v3.oas.annotations.servers.Server;
 import lombok.Getter;
 import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.servlet.function.ServerRequest;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.net.InetAddress;
@@ -237,10 +242,10 @@ public class Utils {
     if (path.startsWith("http")) {
       return path;
     }
-    // Local address
+//    // Local address
 //    String hostAddress = InetAddress.getLocalHost().getHostAddress();
 //    String hostName = InetAddress.getLocalHost().getHostName();
-    // Remote address
+//    // Remote address
 //    String remoteAddress = InetAddress.getLoopbackAddress().getHostAddress();
 //    String remoteName = InetAddress.getLoopbackAddress().getHostName();
     return ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString() + PRE_API_IMAGE + "/" + path;
@@ -339,8 +344,8 @@ public class Utils {
     if (firstSpace == -1) {
       return new String[]{fullName, ""};
     } else {
-      String lastName = fullName.substring(0, firstSpace);
-      String firstName = fullName.substring(firstSpace + 1);
+      String firstName = fullName.substring(0, firstSpace);
+      String lastName = fullName.substring(firstSpace + 1);
       return new String[]{firstName, lastName};
     }
   }

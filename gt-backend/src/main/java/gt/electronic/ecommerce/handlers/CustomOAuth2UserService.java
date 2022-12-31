@@ -10,8 +10,10 @@ import gt.electronic.ecommerce.handlers.user.OAuth2UserInfoFactory;
 import gt.electronic.ecommerce.models.enums.AuthProvider;
 import gt.electronic.ecommerce.models.enums.EImageType;
 import gt.electronic.ecommerce.models.enums.ERole;
+import gt.electronic.ecommerce.repositories.ImageRepository;
 import gt.electronic.ecommerce.repositories.RoleRepository;
 import gt.electronic.ecommerce.repositories.UserRepository;
+import gt.electronic.ecommerce.services.ImageService;
 import gt.electronic.ecommerce.utils.CodeConfig;
 import gt.electronic.ecommerce.utils.GenerateUtil;
 import gt.electronic.ecommerce.utils.Utils;
@@ -27,6 +29,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -37,6 +40,12 @@ import java.util.Optional;
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
   private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
   public static final String branchName = OAuth2User.class.getSimpleName();
+  private ImageService imageService;
+
+  @Autowired public void ImageService(ImageService imageService) {
+    this.imageService = imageService;
+  }
+
   private RoleRepository roleRepo;
 
   @Autowired public void RoleRepository(RoleRepository roleRepo) {
@@ -49,11 +58,12 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     this.userRepo = userRepo;
   }
 
+
   @Override
   public OAuth2User loadUser(OAuth2UserRequest oAuth2UserRequest) throws OAuth2AuthenticationException {
     OAuth2User oAuth2User = super.loadUser(oAuth2UserRequest);
-
     try {
+
       return processOAuth2User(oAuth2UserRequest, oAuth2User);
     } catch (AuthenticationException ex) {
       throw ex;
@@ -81,7 +91,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                                                               user.getProvider() + " account. Please use your " + user.getProvider() +
                                                               " account to login.");
       }
-      System.out.println(oAuth2User.getAttributes());
       user = updateExistingUser(user, oAuth2UserInfo);
     } else {
       user = registerNewUser(oAuth2UserRequest, oAuth2UserInfo);
@@ -94,8 +103,15 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     user.setProvider(AuthProvider.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId()));
     user.setProviderId(oAuth2UserInfo.getId());
-    user.setFirstName((String) oAuth2UserInfo.getAttributes().get("given_name"));
-    user.setLastName((String) oAuth2UserInfo.getAttributes().get("family_name"));
+    if (oAuth2UserInfo.getAttributes().get("given_name") == null || oAuth2UserInfo.getAttributes()
+        .get("family_name") == null) {
+      String[] name = Utils.getFirstNameAndLastNameFromFullName(oAuth2UserInfo.getName());
+      user.setFirstName(name[0]);
+      user.setLastName(name[1]);
+    } else {
+      user.setFirstName((String) oAuth2UserInfo.getAttributes().get("given_name"));
+      user.setLastName((String) oAuth2UserInfo.getAttributes().get("family_name"));
+    }
     user.setEmail(oAuth2UserInfo.getEmail());
     user.setEmailVerified(true);
     String usernameGenerate;
@@ -106,15 +122,40 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     Role roleFound = this.roleRepo.findByName(ERole.ROLE_CUSTOMER).orElseThrow(() -> new BadRequestException(
         "Sorry! We've got an Unauthorized Redirect URI and can't proceed with the authentication"));
     user.setRole(roleFound);
-    Image image = new Image(oAuth2UserInfo.getImageUrl(), EImageType.IMAGE_USER);
-    user.setAvatar(image);
+    if (oAuth2UserInfo.getImageUrl() != null) {
+      System.out.println(1);
+      Image image = new Image(oAuth2UserInfo.getImageUrl(), EImageType.IMAGE_USER);
+      user.setAvatar(image);
+    } else if (user.getProvider().ordinal() == AuthProvider.facebook.ordinal()) {
+      Image image = new Image("http://graph.facebook.com/" + user.getProviderId() + "/picture?type=square",
+                              EImageType.IMAGE_USER);
+      user.setAvatar(image);
+    }
     return this.userRepo.save(user);
   }
 
   private User updateExistingUser(User existingUser, OAuth2UserInfo oAuth2UserInfo) {
-    existingUser.setFirstName(oAuth2UserInfo.getName());
-    Image image = new Image(oAuth2UserInfo.getImageUrl(), EImageType.IMAGE_USER);
-    existingUser.setAvatar(image);
+    if (oAuth2UserInfo.getAttributes().get("given_name") == null || oAuth2UserInfo.getAttributes()
+        .get("family_name") == null) {
+      String[] name = Utils.getFirstNameAndLastNameFromFullName(oAuth2UserInfo.getName());
+      existingUser.setFirstName(name[0]);
+      existingUser.setLastName(name[1]);
+    } else {
+      existingUser.setFirstName((String) oAuth2UserInfo.getAttributes().get("given_name"));
+      existingUser.setLastName((String) oAuth2UserInfo.getAttributes().get("family_name"));
+    }
+    if (oAuth2UserInfo.getImageUrl() != null && (existingUser.getAvatar() == null || Objects.equals(oAuth2UserInfo.getImageUrl(),
+                                                                                                    existingUser.getAvatar()
+                                                                                                        .getPath()))) {
+      Image image;
+      if (existingUser.getAvatar() == null) {
+        image = new Image(oAuth2UserInfo.getImageUrl(), EImageType.IMAGE_USER);
+      } else {
+        image = existingUser.getAvatar();
+        image.setPath(oAuth2UserInfo.getImageUrl());
+      }
+      existingUser.setAvatar(image);
+    }
     return userRepo.save(existingUser);
   }
 
