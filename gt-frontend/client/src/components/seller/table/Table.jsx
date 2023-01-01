@@ -10,7 +10,8 @@ import { EOrderStatus, EPayment } from "../../../utils";
 import { useSelector } from "react-redux";
 
 const List = () => {
-  const {content: rows = []} = useSelector(state => state.orderShops.statisticPageOrder.data);
+  const { content: rows = [] } = useSelector(state => state.orderShops.statisticPageOrder.data);
+  console.log(rows);
   console.log('rows', rows);
   return (
     <TableContainer component={Paper} className="table">
@@ -46,8 +47,9 @@ const List = () => {
               <TableCell className="tableCell">{row.fullName}</TableCell>
               <TableCell className="tableCell">{row.createdAt}</TableCell>
               <TableCell className="tableCell">{EPayment.getNameFromIndex(row.payment)}</TableCell>
+              <TableCell className="tableCell">{row?.createdAt}</TableCell>
               <TableCell className="tableCell">
-                <span className={`status ${row.status}`}>{EOrderStatus.getNameFromIndex(row.status)}</span>
+                {EOrderStatus.getNameFromIndex(row.status)}
               </TableCell>
             </TableRow>
           ))}

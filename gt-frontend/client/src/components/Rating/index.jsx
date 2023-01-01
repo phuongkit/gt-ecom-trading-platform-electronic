@@ -178,9 +178,7 @@ function ProductRating() {
         
         try {
             const res = await ratingService.postRating(formData);
-            console.log(res);
             if (res.status === 'CREATED') {
-                console.log(res.data);
                 if (infoRating.replyForFeedbackId === null) {
                     setProductRating((old) => [res.data, ...old]);
                 } else {

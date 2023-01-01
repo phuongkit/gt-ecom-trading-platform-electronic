@@ -1,10 +1,9 @@
 import { getPageOrder, getStatisticPageOrder, postOrder, updateOrder, deleteOrder } from './orderShopSlice';
 import { orderShopService } from '../../services';
 
-export const getAllOrdersByShopApi = async (dispatch, shopId, ...params) => {
-    console.log('result: ', shopId, params);
+export const getAllOrdersByShopApi = async (dispatch, shopId, params = {}) => {
     let res = await orderShopService.getAllOrdersByShopId(shopId, params);
-    if (params?.sortDir) {
+    if (params?.limit === 5) {
         dispatch(getStatisticPageOrder(res.data));
     } else {
         dispatch(getPageOrder(res.data));

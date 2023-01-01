@@ -20,6 +20,7 @@ export const orderShops = createSlice({
         },
         getStatisticPageOrder: (state, action) => {
             state.statisticPageOrder.data = action.payload || {content: []};
+            console.log(state.statisticPageOrder.data);
         },
         postOrder: (state, action) => {
             state.pageOrder.data = [...state.pageOrder.data, action.payload];

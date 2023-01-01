@@ -1,5 +1,73 @@
 import { EProductStatus, EPayment, EShippingMethod, EGender, EOrderStatus } from '../../../utils';
 
+export const feedbackColumns = [
+    {
+        field: 'id',
+        headerName: 'ID',
+        width: 50,
+        renderCell: (params) => {
+            return <div className="cellWithImg">{params.row.id}</div>;
+        },
+    },
+    {
+        field: 'content',
+        headerName: 'Content',
+        width: 500,
+        renderCell: (params) => {
+            return <div className="cellWithImg">{params.row.content}</div>;
+        },
+    },
+    {
+        field: 'author',
+        headerName: 'Author',
+        width: 150,
+        renderCell: (params) => {
+            return <div className="cellWithImg">{params.row.author.fullName}</div>;
+        },
+    },
+    {
+        field: 'productId',
+        headerName: 'Product Id',
+        width: 100,
+        renderCell: (params) => {
+            return <div className="cellWithImg">{params.row.productId}</div>;
+        },
+    },
+    {
+        field: 'star',
+        headerName: 'Star',
+        width: 50,
+        renderCell: (params) => {
+            return <div className="cellWithImg">{params.row.star}</div>;
+        },
+    },
+    {
+        field: 'timeDistance',
+        headerName: 'Time Distance',
+        width: 150,
+        renderCell: (params) => {
+            return <div className="cellWithImg">{params.row.timeDistance}</div>;
+        },
+    },
+    {
+        field: 'updated',
+        headerName: 'Updated',
+        width: 100,
+        renderCell: (params) => {
+            return <div className="cellWithImg">{params.row.updated ? 'Mới' : 'Đã cập nhật'}</div>;
+        },
+    },
+    {
+        field: 'createdAt',
+        headerName: 'Create dAt',
+        width: 150,
+        renderCell: (params) => {
+            return <div className="cellWithImg">{params.row.createdAt}</div>;
+        },
+    },
+];
+
+
 export const OderColumns = [
     {
         field: 'id',
@@ -87,6 +155,14 @@ export const OderColumns = [
           return (
               <div className={`cellWithStatus`}>{EShippingMethod.getNameFromIndex(params.row.shippingMethod)}</div>
           );
+      },
+  },
+  {
+      field: 'createdAt',
+      headerName: 'Create dAt',
+      width: 150,
+      renderCell: (params) => {
+          return <div className="cellWithImg">{params.row.createdAt}</div>;
       },
   },
     {

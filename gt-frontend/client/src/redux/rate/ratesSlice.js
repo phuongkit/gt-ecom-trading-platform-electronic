@@ -10,6 +10,7 @@ export const rates = createSlice({
     reducers: {
         getRate: (state, action) => {
             state.rate.data = action.payload;
+            console.log(state.rate.data);
         },
         postRate: (state, action) => {
             state.rate.data = action.payload;

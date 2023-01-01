@@ -46,6 +46,12 @@ const Sidebar = () => {
                     </Link>
                     <p className="title">LISTS</p>
                     <Link to="/seller/users" style={{ textDecoration: 'none' }}></Link>
+                    <Link to="/seller/feedbacks" style={{ textDecoration: 'none' }}>
+                        <li>
+                            <StoreIcon className="icon" />
+                            <span>Feedbacks</span>
+                        </li>
+                    </Link>
                     <Link to="/seller/products" style={{ textDecoration: 'none' }}>
                         <li>
                             <StoreIcon className="icon" />
