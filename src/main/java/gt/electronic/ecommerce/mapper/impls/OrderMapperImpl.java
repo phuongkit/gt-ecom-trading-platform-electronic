@@ -112,6 +112,9 @@ public class OrderMapperImpl implements OrderMapper {
         responseDTO.setOrderItems(orderItems);
       }
     }
+    responseDTO.setCreatedAt(entity.getCreatedAt());
+    responseDTO.setUpdatedAt(entity.getUpdatedAt());
+
     return responseDTO;
   }
 
@@ -167,6 +170,9 @@ public class OrderMapperImpl implements OrderMapper {
       }
       responseDTO.setOrderItems(orderItems);
     }
+    responseDTO.setCreatedAt(entity.getCreatedAt());
+    responseDTO.setUpdatedAt(entity.getUpdatedAt());
+
     return responseDTO;
   }
 

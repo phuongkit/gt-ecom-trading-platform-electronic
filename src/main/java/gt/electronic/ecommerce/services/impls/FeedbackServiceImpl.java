@@ -11,10 +11,7 @@ import gt.electronic.ecommerce.mapper.FeedbackMapper;
 import gt.electronic.ecommerce.models.clazzs.ProductRating;
 import gt.electronic.ecommerce.models.enums.ECommentType;
 import gt.electronic.ecommerce.models.enums.EImageType;
-import gt.electronic.ecommerce.repositories.CommentRepository;
-import gt.electronic.ecommerce.repositories.FeedbackRepository;
-import gt.electronic.ecommerce.repositories.ProductRepository;
-import gt.electronic.ecommerce.repositories.UserRepository;
+import gt.electronic.ecommerce.repositories.*;
 import gt.electronic.ecommerce.services.FeedbackService;
 import gt.electronic.ecommerce.services.ImageService;
 import gt.electronic.ecommerce.services.UserService;
@@ -72,6 +69,12 @@ public class FeedbackServiceImpl implements FeedbackService {
     this.productRepo = productRepo;
   }
 
+  private ShopRepository shopRepo;
+
+  @Autowired public void ShopRepository(ShopRepository shopRepo) {
+    this.shopRepo = shopRepo;
+  }
+
   private UserRepository userRepo;
 
   @Autowired public void UserRepository(UserRepository userRepo) {
@@ -90,10 +93,11 @@ public class FeedbackServiceImpl implements FeedbackService {
   ) {
     Product productFound = this.productRepo.findById(productId).orElseThrow(() -> new ResourceNotFound(
         String.format(Utils.OBJECT_NOT_FOUND_BY_FIELD, Product.class.getSimpleName(), "ID", productId)));
-    Page<Feedback> feedbacks = this.feedbackRepo.getAllMainFeedbackByProductOrUser(productFound, null, pageable);
+    Page<Feedback> feedbacks =
+        this.feedbackRepo.getAllMainFeedbackByShopOrProductOrUser(null, productFound, null, pageable);
     if (feedbacks.getContent().size() < 1) {
       throw new ResourceNotFound(
-          String.format(Utils.OBJECT_NOT_FOUND_BY_FIELD, branchName, Product.class.getSimpleName(),
+          String.format(Utils.OBJECT_NOT_FOUND_BY_FIELD, branchName, "ProductId",
                         productId));
     }
     return feedbacks.map(feedback -> this.feedbackMapper.feedbackToFeedbackResponseDTO(feedback, isHasChild));
@@ -103,11 +107,27 @@ public class FeedbackServiceImpl implements FeedbackService {
   public Page<FeedbackResponseDTO> getAllFeedbacksByUser(Integer userId, boolean isHasChild, Pageable pageable) {
     User userFound = this.userRepo.findById(userId).orElseThrow(() -> new ResourceNotFound(
         String.format(Utils.OBJECT_NOT_FOUND_BY_FIELD, User.class.getSimpleName(), "ID", userId)));
-    Page<Feedback> feedbacks = this.feedbackRepo.getAllMainFeedbackByProductOrUser(null, userFound, pageable);
+    Page<Feedback> feedbacks =
+        this.feedbackRepo.getAllMainFeedbackByShopOrProductOrUser(null, null, userFound, pageable);
     if (feedbacks.getContent().size() < 1) {
       throw new ResourceNotFound(
-          String.format(Utils.OBJECT_NOT_FOUND_BY_FIELD, branchName, Product.class.getSimpleName(),
+          String.format(Utils.OBJECT_NOT_FOUND_BY_FIELD, branchName, "UserId",
                         userId));
+    }
+    return feedbacks.map(feedback -> this.feedbackMapper.feedbackToFeedbackResponseDTO(feedback, isHasChild));
+  }
+
+  @Override
+  public Page<FeedbackResponseDTO> getAllFeedbacksByShop(Integer shopId, boolean isHasChild, Pageable pageable) {
+    this.LOGGER.info(String.format(Utils.LOG_GET_ALL_OBJECT_BY_FIELD, branchName, "ShopId", shopId));
+    Shop shopFound = this.shopRepo.findById(shopId).orElseThrow(() -> new ResourceNotFound(
+        String.format(Utils.OBJECT_NOT_FOUND_BY_FIELD, Shop.class.getSimpleName(), "ID", shopId)));
+    Page<Feedback> feedbacks =
+        this.feedbackRepo.getAllMainFeedbackByShopOrProductOrUser(shopFound, null, null, pageable);
+    if (feedbacks.getContent().size() < 1) {
+      throw new ResourceNotFound(
+          String.format(Utils.OBJECT_NOT_FOUND_BY_FIELD, branchName, "ShopId",
+                        shopId));
     }
     return feedbacks.map(feedback -> this.feedbackMapper.feedbackToFeedbackResponseDTO(feedback, isHasChild));
   }

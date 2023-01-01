@@ -124,7 +124,7 @@ public class Order {
   @NotNull(message = "An status is required!")
   private EOrderStatus status;
 
-  @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+  @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   private Set<OrderShop> orderShops = new HashSet<>();
 
   @Column(name = "created_at")

@@ -84,6 +84,22 @@ public class FeedbackController {
         HttpStatus.OK, "", this.feedbackService.getAllFeedbacksByUser(userId, isHasChild, pageable));
   }
 
+  @GetMapping("/shopId/{shopId}")
+  public ResponseObject<Page<FeedbackResponseDTO>> getAllFeedbacksByShop(
+      @PathVariable(name = "shopId") Integer shopId,
+      @RequestParam(name = "isHasChild", required = false, defaultValue = "false")
+      Boolean isHasChild,
+      @RequestParam(name = "page", required = false, defaultValue = DEFAULT_PAGE) Integer page,
+      @RequestParam(name = "limit", required = false, defaultValue = FEEDBACK_PER_PAGE) Integer size,
+      @RequestParam(name = "sortField", required = false, defaultValue = "id") String sortField,
+      @RequestParam(name = "sortDir", required = false, defaultValue = "asc") String sortDir) {
+    Sort sort = Sort.by(sortField);
+    sort = sortDir.equals("asc") ? sort.ascending() : sort.descending();
+    Pageable pageable = PageRequest.of(page > 0 ? page - 1 : 0, size, sort);
+    return new ResponseObject<>(
+        HttpStatus.OK, "", this.feedbackService.getAllFeedbacksByShop(shopId, isHasChild, pageable));
+  }
+
   @GetMapping("/{mainFeedbackId}/rely")
   public ResponseObject<Page<FeedbackResponseDTO>> getAllChildFeedbacksByMainFeedback(
       @PathVariable(name = "mainFeedbackId") Long mainFeedbackId,

@@ -238,31 +238,16 @@ public class Utils {
     return line + ", " + locationString;
   }
 
-  @Value("#{servletContext.contextPath}")
-  private static String servletContextPath;
-
   public static String getUrlFromPathImage(String path) {
     if (path.startsWith("http")) {
       return path;
     }
-    // Local address
-    String hostAddress;
-    String hostName;
-    try {
-      hostAddress = InetAddress.getLocalHost().getHostAddress();
-    } catch (UnknownHostException e) {
-      throw new RuntimeException(e);
-    }
-    try {
-      hostName = InetAddress.getLocalHost().getHostName();
-    } catch (UnknownHostException e) {
-      throw new RuntimeException(e);
-    }
-    // Remote address
-    String remoteAddress = InetAddress.getLoopbackAddress().getHostAddress();
-    String remoteName = InetAddress.getLoopbackAddress().getHostName();
-    LOGGER.info(servletContextPath + ";" + ServletUriComponentsBuilder.fromCurrentContextPath()
-        .build().toUriString() + ";" + remoteAddress + ";" + remoteName + ";" + hostAddress + ";" + hostName);
+//    // Local address
+//    String hostAddress = InetAddress.getLocalHost().getHostAddress();
+//    String hostName = InetAddress.getLocalHost().getHostName();
+//    // Remote address
+//    String remoteAddress = InetAddress.getLoopbackAddress().getHostAddress();
+//    String remoteName = InetAddress.getLoopbackAddress().getHostName();
     return ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString() + PRE_API_IMAGE + "/" + path;
   }
 

@@ -1,0 +1,121 @@
+# Created at 2023-01-01T23:22:57.159
+TestSet has not finished before stream error has appeared >> initializing exit by non-null configuration: null
+java.io.EOFException
+	at java.base/java.io.DataInputStream.readInt(DataInputStream.java:398)
+	at org.apache.maven.surefire.booter.MasterProcessCommand.decode(MasterProcessCommand.java:115)
+	at org.apache.maven.surefire.booter.CommandReader$CommandRunnable.run(CommandReader.java:391)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+
+
+# Created at 2023-01-01T23:22:57.750
+Unexpected IOException with stream: 
+
+
+# Created at 2023-01-01T23:22:57.750
+Unexpected IOException with stream:   .   ____          _            __ _ _
+
+
+# Created at 2023-01-01T23:22:57.751
+Unexpected IOException with stream:  /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+
+
+# Created at 2023-01-01T23:22:57.751
+Unexpected IOException with stream: ( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+
+
+# Created at 2023-01-01T23:22:57.752
+Unexpected IOException with stream:  \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+
+
+# Created at 2023-01-01T23:22:57.752
+Unexpected IOException with stream:   '  |____| .__|_| |_|_| |_\__, | / / / /
+
+
+# Created at 2023-01-01T23:22:57.754
+Unexpected IOException with stream:  =========|_|==============|___/=/_/_/_/
+
+
+# Created at 2023-01-01T23:22:57.756
+Unexpected IOException with stream:  :: Spring Boot ::                (v2.7.3)
+
+
+# Created at 2023-01-01T23:22:57.757
+Unexpected IOException with stream: 
+
+
+# Created at 2023-01-01T23:22:57.820
+Unexpected IOException with stream: 2023-01-01 23:22:57.812  INFO 19172 --- [           main] g.e.e.GtBackendApplicationTests          : Starting GtBackendApplicationTests using Java 17.0.2 on DESKTOP-UFU6GC4 with PID 19172 (started by ASUS in D:\Git\gt-ecom-trading-platform-electronic\gt-backend)
+
+
+# Created at 2023-01-01T23:22:57.828
+Unexpected IOException with stream: 2023-01-01 23:22:57.827  INFO 19172 --- [           main] g.e.e.GtBackendApplicationTests          : No active profile set, falling back to 1 default profile: "default"
+
+
+# Created at 2023-01-01T23:23:00.184
+Unexpected IOException with stream: 2023-01-01 23:23:00.183  INFO 19172 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+
+
+# Created at 2023-01-01T23:23:00.400
+Unexpected IOException with stream: 2023-01-01 23:23:00.399  INFO 19172 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 203 ms. Found 18 JPA repository interfaces.
+
+
+# Created at 2023-01-01T23:23:01.059
+Unexpected IOException with stream: 2023-01-01 23:23:01.058  INFO 19172 --- [           main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.ws.config.annotation.DelegatingWsConfiguration' of type [org.springframework.ws.config.annotation.DelegatingWsConfiguration$$EnhancerBySpringCGLIB$$c74381ff] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+
+
+# Created at 2023-01-01T23:23:01.107
+Unexpected IOException with stream: 2023-01-01 23:23:01.106  INFO 19172 --- [           main] .w.s.a.s.AnnotationActionEndpointMapping : Supporting [WS-Addressing August 2004, WS-Addressing 1.0]
+
+
+# Created at 2023-01-01T23:23:01.659
+Unexpected IOException with stream: 2023-01-01 23:23:01.658  INFO 19172 --- [           main] o.h.j.i.u.LogHelper                      : HHH000204: Processing PersistenceUnitInfo [name: default]
+
+
+# Created at 2023-01-01T23:23:01.779
+Unexpected IOException with stream: 2023-01-01 23:23:01.778  INFO 19172 --- [           main] o.h.Version                              : HHH000412: Hibernate ORM core version 5.6.10.Final
+
+
+# Created at 2023-01-01T23:23:02.173
+Unexpected IOException with stream: 2023-01-01 23:23:02.172  INFO 19172 --- [           main] o.h.a.c.Version                          : HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+
+
+# Created at 2023-01-01T23:23:02.494
+Unexpected IOException with stream: 2023-01-01 23:23:02.493  INFO 19172 --- [           main] c.z.h.HikariDataSource                   : HikariPool-1 - Starting...
+
+
+# Created at 2023-01-01T23:23:03.444
+Unexpected IOException with stream: 2023-01-01 23:23:03.443  INFO 19172 --- [           main] c.z.h.HikariDataSource                   : HikariPool-1 - Start completed.
+
+
+# Created at 2023-01-01T23:23:03.482
+Unexpected IOException with stream: 2023-01-01 23:23:03.482  INFO 19172 --- [           main] o.h.d.Dialect                            : HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+
+
+# Created at 2023-01-01T23:23:06.778
+Unexpected IOException with stream: 2023-01-01 23:23:06.778  INFO 19172 --- [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+
+
+# Created at 2023-01-01T23:23:06.789
+Unexpected IOException with stream: 2023-01-01 23:23:06.789  INFO 19172 --- [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+
+
+# Created at 2023-01-01T23:23:12.861
+Unexpected IOException with stream: 2023-01-01 23:23:12.860  INFO 19172 --- [           main] o.s.s.w.DefaultSecurityFilterChain       : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@37ec9c49, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@3ab2d64c, org.springframework.security.web.context.SecurityContextPersistenceFilter@7793eaca, org.springframework.security.web.header.HeaderWriterFilter@6222a343, org.springframework.security.web.authentication.logout.LogoutFilter@e00f822, org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter@79f14c56, org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter@3d3709d0, gt.electronic.ecommerce.filter.JwtTokenFilter@7e7ee3b7, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@1a262e93, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@720b52a7, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@3f6f26cb, org.springframework.security.web.session.SessionManagementFilter@61c1be2f, org.springframework.security.web.access.ExceptionTranslationFilter@340ef431, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@4268c16]
+
+
+# Created at 2023-01-01T23:23:19.889
+Unexpected IOException with stream: 2023-01-01 23:23:19.887  INFO 19172 --- [           main] g.e.e.GtBackendApplicationTests          : Started GtBackendApplicationTests in 22.6 seconds (JVM running for 23.998)
+
+
+# Created at 2023-01-01T23:23:19.951
+Unexpected IOException: 5,1,gt.electronic.ecommerce.GtBackendApplicationTests,contextLoads,null,null,null
+
+
+# Created at 2023-01-01T23:23:20.341
+Unexpected IOException: 6,1,gt.electronic.ecommerce.GtBackendApplicationTests,contextLoads,null,null,null
+
+
+# Created at 2023-01-01T23:23:20.346
+Unexpected IOException: 2,1,org.apache.maven.surefire.junitplatform.JUnitPlatformProvider,gt.electronic.ecommerce.GtBackendApplicationTests,null,null,null
+
+
