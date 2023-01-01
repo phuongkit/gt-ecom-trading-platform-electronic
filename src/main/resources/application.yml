@@ -1,20 +1,8 @@
 spring:
   datasource:
-    url: jdbc:mysql://us-cdbr-east-06.cleardb.net/heroku_758d21ca1cf3460?createDatabaseIfNotExist=true&reconnect=true
+    url: jdbc:mysql://us-cdbr-east-06.cleardb.net/heroku_758d21ca1cf3460?reconnect=true&createDatabaseIfNotExist=true
     username: b0a1965d534060
     password: ef7e3227
-#  datasource:
-#    url: jdbc:mysql://us-cdbr-east-06.cleardb.net/heroku_2f2cbfeabf35e63?reconnect=true&createDatabaseIfNotExist=true
-#    username: bb43f8df33cea7
-#    password: 9be007c8
-#  datasource:
-#    url: jdbc:mysql://usy6rlaimsbfwton:aGpBaW0ZLfSq6dJbmGCG@bc9tzzvmmtegmyuawwro-mysql.services.clever-cloud.com:3306/bc9tzzvmmtegmyuawwro?reconnect=true&createDatabaseIfNotExist=true
-#    username: usy6rlaimsbfwton
-#    password: aGpBaW0ZLfSq6dJbmGCG
-#  datasource:
-#    url: jdbc:mysql://localhost:3306/gt_ecommerce?createDatabaseIfNotExist=true
-#    username: root
-#    password: 12345
   jpa:
     hibernate:
       ddl-auto: update
