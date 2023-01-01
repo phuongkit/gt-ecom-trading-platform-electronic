@@ -110,7 +110,7 @@ server:
     key-store-type: PKCS12
     # The password used to generate the certificate
     key-store-password: demo123321
-    enabled: true
+    enabled: false
   servlet:
     session:
       tracking-modes: cookie
