@@ -3,9 +3,12 @@ package gt.electronic.ecommerce.utils;
 import gt.electronic.ecommerce.dto.request.AuthRegisterDTO;
 import gt.electronic.ecommerce.dto.request.OrderCreationDTO;
 import gt.electronic.ecommerce.dto.request.OrderDetailCreationDTO;
+import gt.electronic.ecommerce.dto.response.OrderResponseDTO;
 import gt.electronic.ecommerce.entities.*;
 import gt.electronic.ecommerce.models.clazzs.FullAddress;
-import gt.electronic.ecommerce.models.enums.*;
+import gt.electronic.ecommerce.models.enums.EDiscountType;
+import gt.electronic.ecommerce.models.enums.EGender;
+import gt.electronic.ecommerce.models.enums.ERole;
 import gt.electronic.ecommerce.repositories.*;
 import gt.electronic.ecommerce.services.*;
 import org.slf4j.Logger;
@@ -41,6 +44,7 @@ import java.util.stream.Stream;
   @Autowired private FeedbackRepository feedbackRepo;
   @Autowired private ImageRepository imageRepo;
   @Autowired private LocationService locationService;
+  @Autowired private OrderRepository orderRepo;
   @Autowired private OrderService orderService;
   @Autowired private ProductRepository productRepo;
   @Autowired private ProductService productService;
@@ -108,7 +112,7 @@ import java.util.stream.Stream;
     int maxChildFeedback =
         createChildFeedbacks(childFeedbacks, mainFeedbacks, maxIndexMainFeedback, uv.customers, uv.maxIndexCustomer);
 
-    createOrder(products, maxIndexProduct, uv.customers, uv.maxIndexCustomer);
+    createOrder(products, maxIndexProduct, uv.customers, uv.maxIndexCustomer, currentDate, dayTime, monthTime);
 
 
     this.LOGGER.info("Init data to database is done!");
@@ -165,7 +169,15 @@ import java.util.stream.Stream;
     return countDiscount;
   }
 
-  private void createOrder(Product[] products, int maxIndexProduct, User[] customers, int maxIndexCustomer) {
+  private void createOrder(
+      Product[] products,
+      int maxIndexProduct,
+      User[] customers,
+      int maxIndexCustomer,
+      Date currentDate,
+      long dayTime,
+      long monthTime
+  ) {
     OrderCreationDTO[] orders = new OrderCreationDTO[500];
     List<OrderDetailCreationDTO> orderItems;
     int countOrder = 50;
@@ -176,12 +188,24 @@ import java.util.stream.Stream;
       Map<Product, Long> productMap = new HashMap<>();
       for (int j = 0; j < rand; j++) {
         productMap.putIfAbsent(products[generator.nextInt(maxIndexProduct + 1)],
-                                                  (long) (generator.nextInt(maxQuantityProduct) + 1));
+                               (long) (generator.nextInt(maxQuantityProduct) + 1));
       }
       User user = customers[generator.nextInt(maxIndexCustomer + 1)];
 
       orders[i] = new OrderCreationDTO(user, productMap);
-      this.orderService.createOrder(user.getPhone() != null ? user.getPhone() : user.getEmail(), orders[i]);
+      OrderResponseDTO response =
+          this.orderService.createOrder(user.getPhone() != null ? user.getPhone() : user.getEmail(), orders[i]);
+      Order orderFound = this.orderRepo.findById(response.getId()).orElse(null);
+      if (orderFound != null) {
+        long time = currentDate.getTime() - dayTime * maxProductOrder + dayTime * rand;
+        orderFound.setCreatedAt(new Date(time));
+        orderFound.setUpdatedAt(new Date(time));
+        for (OrderShop orderShop : orderFound.getOrderShops()) {
+          orderShop.setCreatedAt(new Date(time));
+          orderShop.setUpdatedAt(new Date(time));
+        }
+        this.orderRepo.save(orderFound);
+      }
     }
   }
 
@@ -379,9 +403,10 @@ import java.util.stream.Stream;
 
     i++;
 
-    products[i] = new Product("eValu PA F1 Air", new BigDecimal(4790000), 1000L, cv.categoryBackupCharger, bv.brandOther,
-                              shop[generator.nextInt(maxIndexShop + 1)], lv.locationHaNoi,
-                              Image.createImageProduct("aw2kh2whgu1ehaxjeznpi8t7gua9xr6g.jpeg"), "");
+    products[i] =
+        new Product("eValu PA F1 Air", new BigDecimal(4790000), 1000L, cv.categoryBackupCharger, bv.brandOther,
+                    shop[generator.nextInt(maxIndexShop + 1)], lv.locationHaNoi,
+                    Image.createImageProduct("aw2kh2whgu1ehaxjeznpi8t7gua9xr6g.jpeg"), "");
     products[i] = this.productRepo.save(products[i]);
 
     i++;
@@ -566,9 +591,15 @@ import java.util.stream.Stream;
     i++;
 
     products[i] =
-        new Product("Acer TravelMate B3 31 P49D N5030 (NX.VNFSV.005)", new BigDecimal(3490000), 1000L, cv.categoryLaptop,
-                    bv.brandAcer, shop[generator.nextInt(maxIndexShop + 1)], lv.locationHaNoi,
-                    Image.createImageProduct("68fx28jk93n2opzg162ezj62gnr7a265.jpg"), "");
+        new Product("Acer TravelMate B3 31 P49D N5030 (NX.VNFSV.005)",
+                    new BigDecimal(3490000),
+                    1000L,
+                    cv.categoryLaptop,
+                    bv.brandAcer,
+                    shop[generator.nextInt(maxIndexShop + 1)],
+                    lv.locationHaNoi,
+                    Image.createImageProduct("68fx28jk93n2opzg162ezj62gnr7a265.jpg"),
+                    "");
     products[i] = this.productRepo.save(products[i]);
 
     i++;
@@ -1855,110 +1886,111 @@ import java.util.stream.Stream;
         {"Thương hiệu", "coocaa"},
         {"Xuất xứ thương hiệu", "Trung Quốc"},
         {
-            "Chất liệu", "* Tivi Thông Minh Coocaa Hệ Điều Hành Mới Nhất Google Tivi 50\" 50-Y72\n" +
-            "\n" +
-            " Chính Sách Bảo Hành\n" +
-            "- Bảo hành chính hãng 24 tháng trên toàn quốc.\n" +
-            "\n" +
-            "         Hotline: 1800.1180 (miễn phí cuộc gọi)\n" +
-            "\n" +
-            "         Thời gian: 8h-17h, từ Thứ 2- Thứ 7\n" +
-            "\n" +
-            "- CÁCH ĐĂNG KÍ/ KIỂM TRA BẢO HÀNH ĐIỆN TỬ:\n" +
-            "\n" +
-            "         Vui lòng liên hệ CSKH coocaa qua mục chat (trò chuyện) để chúng tôi có thể hướng dẫn bạn tốt nhất.\n" +
-            "\n" +
-            " \n" +
-            "\n" +
-            "Tính Năng\n" +
-            "- Hình Ảnh\n" +
-            "\n" +
-            "    + Chameleon\n" +
-            "\n" +
-            "Extreme 2.0: Bộ xử lý chất lượng hình ảnh Chameleon cực 2.0 có thể tối ưu hóa\n" +
-            "\n" +
-            "chất lượng hình ảnh TV đa chiều để đảm bảo cảnh phim thực tế hơn\n" +
-            "\n" +
-            "    + Eye care TV: Sử dụng công nghệ Filmmaker Mode\n" +
-            "\n" +
-            "giúp hạn chế sáng xanh và sự nhấp nháy của màng hình bảo vệ đôi mắt khi xem\n" +
-            "\n" +
-            "tivi.\n" +
-            "\n" +
-            "    + Màn hình LED chất lượng cao 8,29 megapixel,\n" +
-            "\n" +
-            "được trang bị công nghệ cải tiến chất lượng hình ảnh mở rộng HDR10 & HLG,\n" +
-            "\n" +
-            "mang đến tầm nhìn rực rỡ tươi mới.\n" +
-            "\n" +
-            "- Âm Thanh\n" +
-            "\n" +
-            "    + Dolby\n" +
-            "\n" +
-            "Digital Plus là công nghệ âm thanh dựa trên Dolby Digital 5.1, đây là công nghệ\n" +
-            "\n" +
-            "âm thanh âm thanh vòm tiên tiến cho phép trải nghiệm tivi như trong rạp chiếu phim hiện đại.\n" +
-            "\n" +
-            "    +Với hai loa monomer 10W, Dolby Audio Sound tối ưu hóa hiệu suất âm thanh, tạo ra âm\n" +
-            "\n" +
-            "thanh phong phú, rõ ràng và hấp dẫn để bạn thưởng thức.\n" +
-            "\n" +
-            "    +Bidirectional Bluetooth 5.1: Bluetooth hai\n" +
-            "\n" +
-            "chiều, Kết nối điện thoại di động của bạn với Bluetooth của TV để phát nhạc hay\n" +
-            "\n" +
-            "làm bất cứ điều gì bạn muốn.\n" +
-            "\n" +
-            "- Cấu Hình\n" +
-            "\n" +
-            "    + Màn hình không giới hạn 4.0, tỷ lệ màn hình cao  \n" +
-            "\n" +
-            "    + Lưng kim loại trải ra: bền và tản nhiệt tốt hơn.\n" +
-            "\n" +
-            "    + Thiết kế liền mạch: Khung kim loại liền mạch, đơn giản, tinh tế\n" +
-            "\n" +
-            "Điều khiển bằng giọng nói từ xa: Thông qua tương tác bằng giọng nói, TV cho bạn biết những thông tin mới nhất như thời tiết, phát nhạc, phim nổi tiếng, để cuộc sống của bạn không còn nhàm chán, bạn có thể trò chuyện bất cứ lúc nào\n" +
-            "\n" +
-            "- Hệ Điều Hành Google Tivi\n" +
-            "\n" +
-            "    + Hệ thống mới nhất của Google được cập nhật dựa trên Android 11. So với Android, hệ thống mới này được Google thiết kế dành riêng cho người dùng TV.\n" +
-            "\n" +
-            "    + Tài nguyên khổng lồ: Google là nền tảng mạng lớn nhất thế giới, với hơn 8.000\n" +
-            "\n" +
-            "+ ứng dụng phục vụ hơn 190 quốc gia và hỗ trợ hơn 1 tỷ thiết bị sinh thái. Trò chơi đám mây, Hình nền Google, gọi điện video, nhiều tài khoản đăng nhập, hệ sinh thái dành cho trẻ em và nhiều ứng dụng phổ biến, chỉ cần bạn tải xuống là có thể tận hưởng.\n" +
-            "\n" +
-            "    + CC Cast: truyền chia sẻ màn hình từ điện thoại của bạn sang tivi một cách dễ dàng.\n" +
-            "\n" +
-            " \n" +
-            "\n" +
-            "Thông Số Kỹ Thuật\n" +
-            "- Chameleon Extreme 2,0\n" +
-            "\n" +
-            "- Filmmaker mode\n" +
-            "\n" +
-            "- DTS Studio Sound\n" +
-            "\n" +
-            "- Bidirectional Bluetooth 5.1\n" +
-            "\n" +
-            "- Google Assistant\n" +
-            "\n" +
-            "- HDMI2.0*3；USB2.0*2\n" +
-            "\n" +
-            "- Memory 2+16GB\n" +
-            "\n" +
-            " \n" +
-            "\n" +
-            "Bộ sản phẩm đầy đủ:\n" +
-            "2 x Chân đế, 1 x Remote, 1 x Sách HDSD, 1 x Dây nguồn.\n" +
-            "\n" +
-            " \n" +
-            "\n" +
-            "Chính Sách Đổi Trả\n" +
-            "- Chỉ đổi/trả sản phẩm, từ chối nhận hàng tại thời điểm nhận hàng trong trường hợp sản phẩm giao đến không còn nguyên vẹn, thiếu phụ kiện hoặc nhận được sai hàng. Khi sản phẩm đã được cắm điện sử dụng và/hoặc lắp đặt, và gặp lỗi kĩ thuật, sản phẩm sẽ được hưởng chế độ bảo hành theo đúng chính sách của nhà sản xuất.\n" +
-            "\n" +
-            "- Vui lòng liên hệ CSKH coocaa qua mục chat (trò chuyện) để chúng tôi có thể hướng dẫn bạn tốt nhất.\n" +
-            "\n" +
-            "=> Coocaa luôn cố gắng cung cấp sản phẩm TV chất lượng và dịch vụ tuyệt vời. Nhận xét đánh giá 5 sao sẽ có ý nghĩa cực kỳ lớn đối với chúng tôi!"},
+            "Chất liệu",
+            "* Tivi Thông Minh Coocaa Hệ Điều Hành Mới Nhất Google Tivi 50\" 50-Y72\n" +
+                "\n" +
+                " Chính Sách Bảo Hành\n" +
+                "- Bảo hành chính hãng 24 tháng trên toàn quốc.\n" +
+                "\n" +
+                "         Hotline: 1800.1180 (miễn phí cuộc gọi)\n" +
+                "\n" +
+                "         Thời gian: 8h-17h, từ Thứ 2- Thứ 7\n" +
+                "\n" +
+                "- CÁCH ĐĂNG KÍ/ KIỂM TRA BẢO HÀNH ĐIỆN TỬ:\n" +
+                "\n" +
+                "         Vui lòng liên hệ CSKH coocaa qua mục chat (trò chuyện) để chúng tôi có thể hướng dẫn bạn tốt nhất.\n" +
+                "\n" +
+                " \n" +
+                "\n" +
+                "Tính Năng\n" +
+                "- Hình Ảnh\n" +
+                "\n" +
+                "    + Chameleon\n" +
+                "\n" +
+                "Extreme 2.0: Bộ xử lý chất lượng hình ảnh Chameleon cực 2.0 có thể tối ưu hóa\n" +
+                "\n" +
+                "chất lượng hình ảnh TV đa chiều để đảm bảo cảnh phim thực tế hơn\n" +
+                "\n" +
+                "    + Eye care TV: Sử dụng công nghệ Filmmaker Mode\n" +
+                "\n" +
+                "giúp hạn chế sáng xanh và sự nhấp nháy của màng hình bảo vệ đôi mắt khi xem\n" +
+                "\n" +
+                "tivi.\n" +
+                "\n" +
+                "    + Màn hình LED chất lượng cao 8,29 megapixel,\n" +
+                "\n" +
+                "được trang bị công nghệ cải tiến chất lượng hình ảnh mở rộng HDR10 & HLG,\n" +
+                "\n" +
+                "mang đến tầm nhìn rực rỡ tươi mới.\n" +
+                "\n" +
+                "- Âm Thanh\n" +
+                "\n" +
+                "    + Dolby\n" +
+                "\n" +
+                "Digital Plus là công nghệ âm thanh dựa trên Dolby Digital 5.1, đây là công nghệ\n" +
+                "\n" +
+                "âm thanh âm thanh vòm tiên tiến cho phép trải nghiệm tivi như trong rạp chiếu phim hiện đại.\n" +
+                "\n" +
+                "    +Với hai loa monomer 10W, Dolby Audio Sound tối ưu hóa hiệu suất âm thanh, tạo ra âm\n" +
+                "\n" +
+                "thanh phong phú, rõ ràng và hấp dẫn để bạn thưởng thức.\n" +
+                "\n" +
+                "    +Bidirectional Bluetooth 5.1: Bluetooth hai\n" +
+                "\n" +
+                "chiều, Kết nối điện thoại di động của bạn với Bluetooth của TV để phát nhạc hay\n" +
+                "\n" +
+                "làm bất cứ điều gì bạn muốn.\n" +
+                "\n" +
+                "- Cấu Hình\n" +
+                "\n" +
+                "    + Màn hình không giới hạn 4.0, tỷ lệ màn hình cao  \n" +
+                "\n" +
+                "    + Lưng kim loại trải ra: bền và tản nhiệt tốt hơn.\n" +
+                "\n" +
+                "    + Thiết kế liền mạch: Khung kim loại liền mạch, đơn giản, tinh tế\n" +
+                "\n" +
+                "Điều khiển bằng giọng nói từ xa: Thông qua tương tác bằng giọng nói, TV cho bạn biết những thông tin mới nhất như thời tiết, phát nhạc, phim nổi tiếng, để cuộc sống của bạn không còn nhàm chán, bạn có thể trò chuyện bất cứ lúc nào\n" +
+                "\n" +
+                "- Hệ Điều Hành Google Tivi\n" +
+                "\n" +
+                "    + Hệ thống mới nhất của Google được cập nhật dựa trên Android 11. So với Android, hệ thống mới này được Google thiết kế dành riêng cho người dùng TV.\n" +
+                "\n" +
+                "    + Tài nguyên khổng lồ: Google là nền tảng mạng lớn nhất thế giới, với hơn 8.000\n" +
+                "\n" +
+                "+ ứng dụng phục vụ hơn 190 quốc gia và hỗ trợ hơn 1 tỷ thiết bị sinh thái. Trò chơi đám mây, Hình nền Google, gọi điện video, nhiều tài khoản đăng nhập, hệ sinh thái dành cho trẻ em và nhiều ứng dụng phổ biến, chỉ cần bạn tải xuống là có thể tận hưởng.\n" +
+                "\n" +
+                "    + CC Cast: truyền chia sẻ màn hình từ điện thoại của bạn sang tivi một cách dễ dàng.\n" +
+                "\n" +
+                " \n" +
+                "\n" +
+                "Thông Số Kỹ Thuật\n" +
+                "- Chameleon Extreme 2,0\n" +
+                "\n" +
+                "- Filmmaker mode\n" +
+                "\n" +
+                "- DTS Studio Sound\n" +
+                "\n" +
+                "- Bidirectional Bluetooth 5.1\n" +
+                "\n" +
+                "- Google Assistant\n" +
+                "\n" +
+                "- HDMI2.0*3；USB2.0*2\n" +
+                "\n" +
+                "- Memory 2+16GB\n" +
+                "\n" +
+                " \n" +
+                "\n" +
+                "Bộ sản phẩm đầy đủ:\n" +
+                "2 x Chân đế, 1 x Remote, 1 x Sách HDSD, 1 x Dây nguồn.\n" +
+                "\n" +
+                " \n" +
+                "\n" +
+                "Chính Sách Đổi Trả\n" +
+                "- Chỉ đổi/trả sản phẩm, từ chối nhận hàng tại thời điểm nhận hàng trong trường hợp sản phẩm giao đến không còn nguyên vẹn, thiếu phụ kiện hoặc nhận được sai hàng. Khi sản phẩm đã được cắm điện sử dụng và/hoặc lắp đặt, và gặp lỗi kĩ thuật, sản phẩm sẽ được hưởng chế độ bảo hành theo đúng chính sách của nhà sản xuất.\n" +
+                "\n" +
+                "- Vui lòng liên hệ CSKH coocaa qua mục chat (trò chuyện) để chúng tôi có thể hướng dẫn bạn tốt nhất.\n" +
+                "\n" +
+                "=> Coocaa luôn cố gắng cung cấp sản phẩm TV chất lượng và dịch vụ tuyệt vời. Nhận xét đánh giá 5 sao sẽ có ý nghĩa cực kỳ lớn đối với chúng tôi!"},
         {"Model", "50Y72"},
         {"Xuất xứ", "Indonesia"},
         {"Loại Tivi", "Google Tivi"},
@@ -3737,11 +3769,11 @@ import java.util.stream.Stream;
     int i = 0;
 
     authRegisterCustomers[i] = new AuthRegisterDTO("Trình",
-                                                "Khánh Duy",
-                                                EGender.MALE,
-                                                "039500011" + i,
-                                                "customer" + i + "@gmail.com",
-                                                Utils.DEFAULT_PASSWORD);
+                                                   "Khánh Duy",
+                                                   EGender.MALE,
+                                                   "039500011" + i,
+                                                   "customer" + i + "@gmail.com",
+                                                   Utils.DEFAULT_PASSWORD);
     this.userService.registerUser(authRegisterCustomers[i], false);
     customers[i] = this.userRepo.findUserByPhone(authRegisterCustomers[i].getPhone()).orElse(null);
     if (customers[i] != null) {
@@ -3754,11 +3786,11 @@ import java.util.stream.Stream;
 
     i++;
     authRegisterCustomers[i] = new AuthRegisterDTO("Lê",
-                                                "Triều Quý",
-                                                EGender.MALE,
-                                                "039500011" + i,
-                                                "customer" + i + "@gmail.com",
-                                                Utils.DEFAULT_PASSWORD);
+                                                   "Triều Quý",
+                                                   EGender.MALE,
+                                                   "039500011" + i,
+                                                   "customer" + i + "@gmail.com",
+                                                   Utils.DEFAULT_PASSWORD);
     this.userService.registerUser(authRegisterCustomers[i], false);
     customers[i] = this.userRepo.findUserByPhone(authRegisterCustomers[i].getPhone()).orElse(null);
     if (customers[i] != null) {
@@ -3771,11 +3803,11 @@ import java.util.stream.Stream;
 
     i++;
     authRegisterCustomers[i] = new AuthRegisterDTO("Ngô",
-                                                "Hảo Hán",
-                                                EGender.MALE,
-                                                "039500011" + i,
-                                                "customer" + i + "@gmail.com",
-                                                Utils.DEFAULT_PASSWORD);
+                                                   "Hảo Hán",
+                                                   EGender.MALE,
+                                                   "039500011" + i,
+                                                   "customer" + i + "@gmail.com",
+                                                   Utils.DEFAULT_PASSWORD);
     this.userService.registerUser(authRegisterCustomers[i], false);
     customers[i] = this.userRepo.findUserByPhone(authRegisterCustomers[i].getPhone()).orElse(null);
     if (customers[i] != null) {
@@ -3788,11 +3820,11 @@ import java.util.stream.Stream;
 
     i++;
     authRegisterCustomers[i] = new AuthRegisterDTO("Tạ",
-                                                "Quang Lê",
-                                                EGender.MALE,
-                                                "039500011" + i,
-                                                "customer" + i + "@gmail.com",
-                                                Utils.DEFAULT_PASSWORD);
+                                                   "Quang Lê",
+                                                   EGender.MALE,
+                                                   "039500011" + i,
+                                                   "customer" + i + "@gmail.com",
+                                                   Utils.DEFAULT_PASSWORD);
     this.userService.registerUser(authRegisterCustomers[i], false);
     customers[i] = this.userRepo.findUserByPhone(authRegisterCustomers[i].getPhone()).orElse(null);
     if (customers[i] != null) {
@@ -3805,11 +3837,11 @@ import java.util.stream.Stream;
 
     i++;
     authRegisterCustomers[i] = new AuthRegisterDTO("Phan",
-                                                "Trúc Mai",
-                                                EGender.FEMALE,
-                                                "039500011" + i,
-                                                "customer" + i + "@gmail.com",
-                                                Utils.DEFAULT_PASSWORD);
+                                                   "Trúc Mai",
+                                                   EGender.FEMALE,
+                                                   "039500011" + i,
+                                                   "customer" + i + "@gmail.com",
+                                                   Utils.DEFAULT_PASSWORD);
     this.userService.registerUser(authRegisterCustomers[i], false);
     customers[i] = this.userRepo.findUserByPhone(authRegisterCustomers[i].getPhone()).orElse(null);
     if (customers[i] != null) {
@@ -3822,11 +3854,11 @@ import java.util.stream.Stream;
 
     i++;
     authRegisterCustomers[i] = new AuthRegisterDTO("Phùng",
-                                                "Khắc Mai",
-                                                EGender.MALE,
-                                                "039500011" + i,
-                                                "customer" + i + "@gmail.com",
-                                                Utils.DEFAULT_PASSWORD);
+                                                   "Khắc Mai",
+                                                   EGender.MALE,
+                                                   "039500011" + i,
+                                                   "customer" + i + "@gmail.com",
+                                                   Utils.DEFAULT_PASSWORD);
     this.userService.registerUser(authRegisterCustomers[i], false);
     customers[i] = this.userRepo.findUserByPhone(authRegisterCustomers[i].getPhone()).orElse(null);
     if (customers[i] != null) {
@@ -3839,11 +3871,11 @@ import java.util.stream.Stream;
 
     i++;
     authRegisterCustomers[i] = new AuthRegisterDTO("Lý",
-                                                "Nhã Kỳ",
-                                                EGender.FEMALE,
-                                                "039500011" + i,
-                                                "customer" + i + "@gmail.com",
-                                                Utils.DEFAULT_PASSWORD);
+                                                   "Nhã Kỳ",
+                                                   EGender.FEMALE,
+                                                   "039500011" + i,
+                                                   "customer" + i + "@gmail.com",
+                                                   Utils.DEFAULT_PASSWORD);
     this.userService.registerUser(authRegisterCustomers[i], false);
     customers[i] = this.userRepo.findUserByPhone(authRegisterCustomers[i].getPhone()).orElse(null);
     if (customers[i] != null) {
@@ -3856,11 +3888,11 @@ import java.util.stream.Stream;
 
     i++;
     authRegisterCustomers[i] = new AuthRegisterDTO("Trần",
-                                                "Lệ Thủy",
-                                                EGender.FEMALE,
-                                                "039500011" + i,
-                                                "customer" + i + "@gmail.com",
-                                                Utils.DEFAULT_PASSWORD);
+                                                   "Lệ Thủy",
+                                                   EGender.FEMALE,
+                                                   "039500011" + i,
+                                                   "customer" + i + "@gmail.com",
+                                                   Utils.DEFAULT_PASSWORD);
     this.userService.registerUser(authRegisterCustomers[i], false);
     customers[i] = this.userRepo.findUserByPhone(authRegisterCustomers[i].getPhone()).orElse(null);
     if (customers[i] != null) {
@@ -3873,11 +3905,11 @@ import java.util.stream.Stream;
 
     i++;
     authRegisterCustomers[i] = new AuthRegisterDTO("Bùi",
-                                                "Khánh Ly",
-                                                EGender.FEMALE,
-                                                "039500011" + i,
-                                                "customer" + i + "@gmail.com",
-                                                Utils.DEFAULT_PASSWORD);
+                                                   "Khánh Ly",
+                                                   EGender.FEMALE,
+                                                   "039500011" + i,
+                                                   "customer" + i + "@gmail.com",
+                                                   Utils.DEFAULT_PASSWORD);
     this.userService.registerUser(authRegisterCustomers[i], false);
     customers[i] = this.userRepo.findUserByPhone(authRegisterCustomers[i].getPhone()).orElse(null);
     if (customers[i] != null) {

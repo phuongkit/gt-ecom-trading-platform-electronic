@@ -11,8 +11,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
-import java.util.Objects;
-
 @SpringBootApplication
 @EnableConfigurationProperties(AppProperties.class)
 // @Import(EmbeddedTomcatConfiguration.class)
@@ -33,13 +31,6 @@ public class GtBackendApplication implements CommandLineRunner {
 
   @Override
   public void run(String... args) {
-    if (Objects.equals(hibernate_ddl, "create") || Objects.equals(hibernate_ddl, "create-drop")) {
-      initData();
-    }
-//    initData();
-  }
-
-  public void initData() {
-    initData.Init();
+//    initData.Init();
   }
 }

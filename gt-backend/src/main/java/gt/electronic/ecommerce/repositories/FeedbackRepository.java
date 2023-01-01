@@ -26,10 +26,11 @@ public interface FeedbackRepository extends JpaRepository<Feedback, Long> {
   @Query(
       value =
           "select fb from Feedback fb where "
-              + "(:product is null or fb.product = :product) "
+              + "(:shop is null or fb.product.shop = :shop) "
+              + "and (:product is null or fb.product = :product) "
               + "and (:author is null or fb.author = :author) "
               + "order by fb.createdAt desc")
-  Page<Feedback> getAllMainFeedbackByProductOrUser(Product product, User author, Pageable pageable);
+  Page<Feedback> getAllMainFeedbackByShopOrProductOrUser(Shop shop, Product product, User author, Pageable pageable);
 
   @Query(
       value =

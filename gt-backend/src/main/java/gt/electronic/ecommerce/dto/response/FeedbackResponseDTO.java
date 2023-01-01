@@ -28,4 +28,6 @@ public class FeedbackResponseDTO {
   private String[] imageGallery;
   private String timeDistance;
   private boolean isUpdated;
+  private Date createdAt;
+  private Date updatedAt;
 }

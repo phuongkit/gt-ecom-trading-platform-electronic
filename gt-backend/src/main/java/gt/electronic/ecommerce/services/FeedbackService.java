@@ -14,9 +14,8 @@ import org.springframework.web.multipart.MultipartFile;
  */
 public interface FeedbackService {
   Page<FeedbackResponseDTO> getAllMainFeedbacksByProduct(Long productId, boolean isHasChild, Pageable pageable);
-
   Page<FeedbackResponseDTO> getAllFeedbacksByUser(Integer userId, boolean isHasChild, Pageable pageable);
-
+  Page<FeedbackResponseDTO> getAllFeedbacksByShop(Integer shopId, boolean isHasChild, Pageable pageable);
   Page<FeedbackResponseDTO> getAllRelyFeedbacksByMainFeedback(Long mainFeedbackId, Pageable pageable);
 
   FeedbackResponseDTO getFeedbackById(Long id, boolean isHasChild);

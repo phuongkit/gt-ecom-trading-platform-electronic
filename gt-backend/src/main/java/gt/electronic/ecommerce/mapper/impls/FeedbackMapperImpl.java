@@ -63,6 +63,8 @@ public class FeedbackMapperImpl implements FeedbackMapper {
     Utils.TimeDistance timeDistance = Utils.getTimeDistance(entity.getCreatedAt(), entity.getUpdatedAt());
     responseDTO.setTimeDistance(timeDistance.getTimeDistance());
     responseDTO.setUpdated(timeDistance.isUpdated());
+    responseDTO.setCreatedAt(entity.getCreatedAt());
+    responseDTO.setUpdatedAt(entity.getUpdatedAt());
     return responseDTO;
   }
 
@@ -82,6 +84,8 @@ public class FeedbackMapperImpl implements FeedbackMapper {
     Utils.TimeDistance timeDistance = Utils.getTimeDistance(entity.getCreatedAt(), entity.getUpdatedAt());
     responseDTO.setTimeDistance(timeDistance.getTimeDistance());
     responseDTO.setUpdated(timeDistance.isUpdated());
+    responseDTO.setCreatedAt(entity.getCreatedAt());
+    responseDTO.setUpdatedAt(entity.getUpdatedAt());
     return responseDTO;
   }
 }
