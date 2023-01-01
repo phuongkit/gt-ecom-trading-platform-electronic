@@ -5,6 +5,7 @@ import { Outlet } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import {getUserByAccess,logUserByAccess} from '../../../redux/user/userApi';
 import { Link } from 'react-router-dom';
+import MessengerCustomerChat from 'react-messenger-customer-chat/lib/MessengerCustomerChat';
 
 import './header.scss';
 import { DEFAULT_STORE, DEFAULT_VARIABLE } from '../../../utils';
@@ -173,6 +174,11 @@ function CommonLayout({ children }) {
                 </div>
             </main>
             <Footer />
+            <MessengerCustomerChat
+                pageId="101178992810439"
+                appId="952881962336925"
+                htmlRef="https://connect.facebook.net/vi_VN/sdk/xfbml.customerchat.js"
+            />
         </>
     );
 }
