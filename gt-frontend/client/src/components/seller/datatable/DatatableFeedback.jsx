@@ -16,7 +16,6 @@ const Datatable = () => {
         getAllRatesByShopApi(dispatch, getUser?.shopId, {limit: 9999});
     }, []);
     const rates = useSelector((state) => state.rates?.rate?.data);
-    console.log(rates);
     useEffect(() => {
         if (getUser.role != 1) {
             navigate('/');
