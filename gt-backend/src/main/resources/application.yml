@@ -101,16 +101,16 @@ app:
 
 server:
   port: 8080
-  ssl:
-    # The alias mapped to the certificate
-    key-alias: gt-ecom
-    # The path to the keystore containing the certificate
-    key-store: classpath:keystore/gt-ecom.p12
-    # The format used for the keystore. It could be set to JKS in case it is a JKS file
-    key-store-type: PKCS12
-    # The password used to generate the certificate
-    key-store-password: demo123321
-    enabled: true
+#  ssl:
+#    # The alias mapped to the certificate
+#    key-alias: gt-ecom
+#    # The path to the keystore containing the certificate
+#    key-store: classpath:keystore/gt-ecom.p12
+#    # The format used for the keystore. It could be set to JKS in case it is a JKS file
+#    key-store-type: PKCS12
+#    # The password used to generate the certificate
+#    key-store-password: demo123321
+#    enabled: true
   servlet:
     session:
       tracking-modes: cookie

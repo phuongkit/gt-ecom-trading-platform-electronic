@@ -98,6 +98,7 @@ public class ImageStorageServiceImpl implements ImageStorageService {
   public byte[] readFileContent(String path) {
     try {
       Path file = storageFolder.resolve(path);
+
       Resource resource = new UrlResource(file.toUri());
       if (resource.exists() || resource.isReadable()) {
         byte[] bytes = StreamUtils.copyToByteArray(resource.getInputStream());
