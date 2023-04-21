@@ -127,3 +127,7 @@ export const parseQueryString = function(search) {
     );
     return objURL;
 };
+
+export const isObjEmpty = function(obj) {
+    return Object.keys(obj).length === 0;
+}

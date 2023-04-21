@@ -16,6 +16,8 @@ import discountReducer from './discount/discountsSlice';
 import brandReducer from './brand/brandSlice';
 import productModalReducer from './product-modal/productModalSlice';
 import statisticReducer from './statistic/statisticsSlice';
+
+import chatContactReducer from './chat/contact/contactsSlice';
 //khoi tao store
 export const store = configureStore({
     reducer: {
@@ -33,5 +35,7 @@ export const store = configureStore({
         brands: brandReducer,
         productModal: productModalReducer,
         statistics: statisticReducer,
+
+        chatContacts: chatContactReducer,
     },
 });
