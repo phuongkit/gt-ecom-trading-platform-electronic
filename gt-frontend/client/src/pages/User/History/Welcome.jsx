@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import firebase from 'firebase';
+import firebase from '../../../firebase';
 import { userService } from '~/services';
 import { useNavigate } from 'react-router-dom';
 const Welcome = () => {

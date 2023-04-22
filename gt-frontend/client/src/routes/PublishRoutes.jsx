@@ -3,9 +3,11 @@ import Loading from '~/components/Loading';
 
 const Home = lazy(() => import('../pages/User/Home'));
 const SingIn = lazy(() => import('../components/SingInForm'));
-const SingUp = lazy(() => import('../components/SignUpForm'));  
+const SingUp = lazy(() => import('../components/SignUpForm'));
 const Category = lazy(() => import('../pages/User/Category'));
 const Cart = lazy(() => import('../pages/User/Cart'));
+import { ChatContextProvider } from '../context/ChatContext';
+const Chat = lazy(() => import('../pages/User/Chat'));
 const ShopInfo = lazy(() => import('../pages/User/ShopInfo'));
 const Order = lazy(() => import('../pages/User/Order'));
 const PurchaseHistory = lazy(() => import('../pages/User/History/PurchaseHistory'));
@@ -14,8 +16,9 @@ const Profile = lazy(() => import('../pages/User/History/Profile'));
 const OrderDetail = lazy(() => import('../pages/User/OrderDetail'));
 const SearchPage = lazy(() => import('../pages/User/Search'));
 //serler
-const HomeSeller = lazy(() => import('../pages/Seller/Home/HomeSeller'));  
+const HomeSeller = lazy(() => import('../pages/Seller/Home/HomeSeller'));
 import SingInSeller from '~/components/SingInSellerForm';
+import ChatContainer from '../components/Chat/ChatContainer';
 export const publishRoutes = [
     {
         index: true,
@@ -31,9 +34,9 @@ export const publishRoutes = [
             <Suspense fallback={<Loading />}>
                 <Category title="Máy tính bảng, tablet giá rẻ, trả góp 0%" />
             </Suspense>
-        )
+        ),
     },
-    
+
     {
         path: '/search',
         // path: 'tim-kiem',
@@ -70,8 +73,7 @@ export const publishRoutes = [
                 <SingUp />
             </Suspense>
         ),
-    }
-    ,
+    },
     {
         path: '/cart',
         element: (
@@ -81,6 +83,30 @@ export const publishRoutes = [
         ),
     },
     {
+        path: '/chat',
+        element: (
+            <Suspense fallback={<Loading />}>
+                <ChatContextProvider>
+                    <Chat title="Chat - Phúc Xi Cúc" />
+                </ChatContextProvider>
+            </Suspense>
+        ),
+        children: [
+            {
+                path: ':userId',
+                index: true,
+                // path: 'tim-kiem',
+                element: (
+                    <Suspense fallback={<Loading />}>
+                        <ChatContextProvider>
+                            <Chat title="Chat - Phúc Xi Cúc" />
+                        </ChatContextProvider>
+                    </Suspense>
+                ),
+            },
+        ],
+    },
+    {
         path: '/ShopInfo/:slug',
         element: (
             <Suspense fallback={<Loading />}>
@@ -88,7 +114,7 @@ export const publishRoutes = [
             </Suspense>
         ),
     },
-    
+
     {
         path: 'order',
         element: (
@@ -96,7 +122,7 @@ export const publishRoutes = [
                 <Order title="Đơn hàng - Phúc Xi Cúc" />
             </Suspense>
         ),
-    },    
+    },
     {
         path: 'order/detail/:id',
         element: (
@@ -105,7 +131,7 @@ export const publishRoutes = [
             </Suspense>
         ),
     },
-    
+
     {
         path: 'history',
         element: (

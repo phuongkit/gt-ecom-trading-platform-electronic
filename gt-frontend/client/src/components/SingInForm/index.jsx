@@ -4,10 +4,10 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { FACEBOOK_AUTH_URL, GOOGLE_AUTH_URL } from '../../utils';
 import { Facebook, Google } from 'react-bootstrap-icons';
+import { Link } from 'react-router-dom'
 import './SignInForm.scss';
 
 function SingInForm() {
-    console.log(GOOGLE_AUTH_URL);
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [data, setData] = useState({
@@ -97,12 +97,12 @@ function SingInForm() {
                                 </button>
                                 <p className="text-sm font-semibold mt-2 pt-1 mb-0">
                                     Don't have an account?
-                                    <a
-                                        href="SignUp"
+                                    <Link
+                                        to="/SignUp"
                                         className="text-red-600 hover:text-red-700 focus:text-red-700 transition duration-200 ease-in-out"
                                     >
                                         Register
-                                    </a>
+                                    </Link>
                                 </p>
                             </div>
                             <hr className="my-4" />

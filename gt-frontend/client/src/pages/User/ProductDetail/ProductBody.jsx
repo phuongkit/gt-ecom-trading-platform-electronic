@@ -59,17 +59,35 @@ function ProductBody() {
                         <div className="product__details-title-wrap">
                             <h1 className="product__details-title">Thông tin Shop</h1>
                         </div>
-                        <div className='product__details-list'>
-                            <Link to={`/ShopInfo/${initProductDetail?.shop?.slug}`} className='w-[100px] h-[100px]'><img src={initProductDetail?.shop?.avatar} alt="" className="home-product-item__img rounded-full w-full h-full" style={{ height: '240px', width: '240px' }}></img></Link>
+                        <div className="product__details-list">
+                            <Link to={`/ShopInfo/${initProductDetail?.shop?.slug}`} className="w-[100px] h-[100px]">
+                                <img
+                                    src={initProductDetail?.shop?.avatar}
+                                    alt=""
+                                    className="home-product-item__img rounded-full w-full h-full"
+                                    style={{ height: '240px', width: '240px' }}
+                                ></img>
+                            </Link>
                             <h5 className="home-product-item__name">{initProductDetail?.shop?.name}</h5>
                             <div className="home-product-item__price">
                                 <div className="flex flex-col gap-8 home-product-item__price-new">
                                     <span>Email: {initProductDetail?.shop?.email}</span>
-                                    <span className="home-product-item__price-new-prices">Location: {initProductDetail?.shop?.address?.city}</span>
+                                    <span className="home-product-item__price-new-prices">
+                                        Location: {initProductDetail?.shop?.address?.city}
+                                    </span>
                                 </div>
                             </div>
-                        </div>
 
+                            <Link
+                                to={{
+                                    pathname: `/chat/${initProductDetail.shop?.user?.id}`,
+                                    search: `?product=${initProductDetail.id}`,
+                                }}
+                                className="select-none text-[23px] px-6 py-2 font-semibold rounded shadow-lg shadow-purple-600/50"
+                            >
+                                Chat
+                            </Link>
+                        </div>
 
                         <div className="product__desc">
                             <div className="product__details-title-wrap">
