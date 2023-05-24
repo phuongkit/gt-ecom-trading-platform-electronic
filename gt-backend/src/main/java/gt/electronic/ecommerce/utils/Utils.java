@@ -391,4 +391,52 @@ public class Utils {
         return sdfDay.format(calendar.getTime());
     }
   }
+
+  public static String generateUsername(String firstName, String lastName) {
+    if (!Objects.equals(firstName, "") || !Objects.equals(lastName, "")) {
+      return vnToSlug(lastName + firstName) + getRandomNumberString(4);
+    } else {
+      return "user100" + getRandomNumberString(6);
+    }
+  }
+
+  public static String getRandomNumberString(int digit) {
+    // It will generate 6 digit random Number.
+    // from 0 to 999999
+    Random rnd = new Random();
+    long number = rnd.nextLong((long) (Math.pow(10, digit + 1) - 1));
+
+    // this will convert any number sequence into 6 character.
+    return String.format("%06d", number);
+  }
+
+  public static String vnToSlug(String title) {
+    //Đổi chữ hoa thành chữ thường
+    String slug = title.toLowerCase();
+
+    //Đổi ký tự có dấu thành không dấu
+    slug = slug.replaceAll("(?i)(á|à|ả|ạ|ã|ă|ắ|ằ|ẳ|ẵ|ặ|â|ấ|ầ|ẩ|ẫ|ậ)", "a");
+    slug = slug.replaceAll("(?i)(é|è|ẻ|ẽ|ẹ|ê|ế|ề|ể|ễ|ệ)", "e");
+    slug = slug.replaceAll("(?i)(i|í|ì|ỉ|ĩ|ị)", "i");
+    slug = slug.replaceAll("(?i)(ó|ò|ỏ|õ|ọ|ô|ố|ồ|ổ|ỗ|ộ|ơ|ớ|ờ|ở|ỡ|ợ)", "o");
+    slug = slug.replaceAll("(?i)(ú|ù|ủ|ũ|ụ|ư|ứ|ừ|ử|ữ|ự)", "u");
+    slug = slug.replaceAll("(?i)(ý|ỳ|ỷ|ỹ|ỵ)", "y");
+    slug = slug.replaceAll("(?i)(đ)", "d");
+    System.out.println(slug);
+    //Xóa các ký tự đặt biệt
+    slug = slug.replaceAll(
+            "(?i)(\\`|\\~|\\!|\\@|\\#|\\||\\$|\\%|\\^|\\&|\\*|\\(|\\)|\\+|\\=|\\,|\\.|\\/|\\?|\\>|\\<|'|\"|\\:|\\;|_)", "");
+    //Đổi khoảng trắng thành ký tự gạch ngang
+    slug = slug.replaceAll("(?i)( )", "-");
+    //Đổi nhiều ký tự gạch ngang liên tiếp thành 1 ký tự gạch ngang
+    //Phòng trường hợp người nhập vào quá nhiều ký tự trắng
+    slug = slug.replaceAll("(?i)(\\-\\-\\-\\-\\-)", "-");
+    slug = slug.replaceAll("(?i)(\\-\\-\\-\\-)", "-");
+    slug = slug.replaceAll("(?i)(\\-\\-\\-)", "-");
+    slug = slug.replaceAll("(?i)(\\-\\-)", "-");
+    //Xóa các ký tự gạch ngang ở đầu và cuối
+    slug = '@' + slug + '@';
+    slug = slug.replaceAll("(?i)(\\@\\-|\\-\\@|\\@)", "");
+    return slug;
+  }
 }

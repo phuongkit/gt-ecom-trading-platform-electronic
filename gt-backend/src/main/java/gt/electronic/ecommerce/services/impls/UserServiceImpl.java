@@ -222,7 +222,7 @@ public class UserServiceImpl implements UserService {
     }
     String usernameGenerate;
     do {
-      usernameGenerate = GenerateUtil.generate(CodeConfig.length(Utils.LENGTH_USERNAME_GENERATE));
+      usernameGenerate = Utils.generateUsername(user.getFirstName(), user.getLastName());
     } while (!isUsernameUnique(usernameGenerate, true));
     user.setUsername(usernameGenerate);
 //      user.setChangedUsername(false);

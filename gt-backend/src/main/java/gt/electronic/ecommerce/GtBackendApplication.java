@@ -2,6 +2,7 @@ package gt.electronic.ecommerce;
 
 import gt.electronic.ecommerce.config.AppProperties;
 import gt.electronic.ecommerce.utils.InitData;
+import gt.electronic.ecommerce.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
