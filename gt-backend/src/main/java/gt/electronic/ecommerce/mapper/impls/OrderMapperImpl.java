@@ -12,8 +12,7 @@ import gt.electronic.ecommerce.models.clazzs.OrderPaymentOnly;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * @author minh phuong
@@ -110,6 +109,24 @@ public class OrderMapperImpl implements OrderMapper {
           }
         }
         responseDTO.setOrderItems(orderItems);
+      } else {
+        OrderDetailResponseDTO[] orderItems =
+                new OrderDetailResponseDTO[100];
+//        List<OrderDetailResponseDTO> orderItems = new ArrayList<>();
+        int i = 0;
+        for (OrderShop orderShopItem: entity.getOrderShops()) {
+          for (OrderItem orderItem : orderShopItem.getOrderItems()) {
+            if (shopId == null || Objects.equals(orderItem.getProduct().getShop().getId(), shopId)) {
+//              OrderDetailResponseDTO orderItemDTO = new OrderDetailResponseDTO();
+//              orderItemDTO = this.orderItemMapper.orderItemToOrderDetailResponseDTO(orderItem);
+//              orderItems.add(orderItemDTO);
+              orderItems[i] = new OrderDetailResponseDTO();
+              orderItems[i] = this.orderItemMapper.orderItemToOrderDetailResponseDTO(orderItem);
+              i++;
+            }
+          }
+        }
+        responseDTO.setOrderItems(Arrays.copyOf(orderItems, i));
       }
     }
     responseDTO.setCreatedAt(entity.getCreatedAt());
