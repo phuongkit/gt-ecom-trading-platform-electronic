@@ -15,7 +15,12 @@ export const PostLogin = async (dispatch, data, Navigate) => {
         const email = data?.email ? data?.email : data?.phone + '@' + 'pxc.com';
         const password = email;
         const avatar = res.data?.avatar || '';
-        await firebase.auth().signInWithEmailAndPassword(email, password);
+        try {
+            await firebase.auth().signInWithEmailAndPassword(email, password);
+        } catch (err) {
+            await createUserFirebase(res.data);
+            await firebase.auth().signInWithEmailAndPassword(email, password);
+        }
         
         var userNow = auth.currentUser;
         if (userNow.displayName === null || userNow.photoURL === null) {
