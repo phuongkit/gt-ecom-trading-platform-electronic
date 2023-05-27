@@ -18,7 +18,7 @@ export default function Contacts({ contacts, changeChat }) {
         changeChat(contact.userInfo);
         dispatch({ type: 'CHANGE_USER', payload: contact.userInfo });
     };
-    console.log(Object.values(contacts));
+    // console.log(Object.values(contacts));
     return (
         <>
             {(currentUserName || currentUserImage) && (

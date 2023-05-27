@@ -7,7 +7,6 @@ export const orderService = {
         return axiosClient.post(`${branch_api}`, data);
     },
     getOderById(id){
-        console.log(id);
         return axiosClient.get(`${branch_api}/${id}`);
     },
     updateOrder(data, id) {
