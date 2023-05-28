@@ -10,6 +10,7 @@ import reviewSlice from './review/reviewSlice';
 import shopSlice from './shop/shopSlice';
 import userSlice from './user/userSlice';
 import showModalSlice from './modal/showModalSlice';
+import notificationsSlice from './notification/notificationsSlice';
 //khoi tao store
 export const store = configureStore({
     reducer: {   
@@ -21,6 +22,8 @@ export const store = configureStore({
         reviews: reviewSlice,
         shops: shopSlice,
         users: userSlice,
-        modal:showModalSlice
+        modal:showModalSlice,
+
+        notifications: notificationsSlice,
     },
 });

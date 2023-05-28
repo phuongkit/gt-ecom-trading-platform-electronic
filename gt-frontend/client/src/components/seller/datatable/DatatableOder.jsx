@@ -7,8 +7,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { getAllOrdersByShopApi, updateStatusOrderApi } from '../../../redux/orderShop/orderShopsApi';
 import { EOrderStatus, EOrderStatusGHN } from '../../../utils';
-import { ghn } from '../../../services/shipping'
+import { ghn } from '../../../services/shipping';
 import swal from 'sweetalert';
+import { addNotificationByIdApi } from '../../../redux/notification/notificationsApi';
 
 const Datatable = () => {
     const dispatch = useDispatch();
@@ -21,7 +22,6 @@ const Datatable = () => {
     const { content: orderList = [] } = useSelector((state) => state.orderShops.pageOrder.data);
 
     const handleAccept = async (order) => {
-        console.log('order', order);
         swal({
             text: 'Bạn có xác nhận đơn hàng và tạo đơn hàng shipper không',
             icon: 'info',
@@ -50,6 +50,13 @@ const Datatable = () => {
                     text: 'Xác nhận đơn hàng thành công',
                     icon: 'success',
                 });
+                addNotificationByIdApi(
+                    order.user.id,
+                    `Đơn hàng với mã ${order.id} đã được cập nhật trạng thái`,
+                    `Vào lúc ${Date.now()}, đơn hàng với mã ${
+                        order.id
+                    } đã được cập nhật trạng thái thành "Đã xác nhận" và tạo đơn hàng vận chuyển thành công!`,
+                );
             }
         });
     };
@@ -84,13 +91,19 @@ const Datatable = () => {
                         };
                         if (order?.shipOrderCode) {
                             let res = await ghn.cancelOrderGHN(order.shipOrderCode);
-                            // if (res.data?.data?.result) {
                             updateStatusOrderApi(dispatch, order.id, data);
                             swal({
                                 title: 'Thành công',
                                 text: 'Hủy đơn hàng thành công',
                                 icon: 'success',
                             });
+                            addNotificationByIdApi(
+                                order.user.id,
+                                `Đơn hàng với mã ${order.id} đã được cập nhật trạng thái`,
+                                `Vào lúc ${Date.now()}, đơn hàng với mã ${
+                                    order.id
+                                } đã bị hủy bởi shop với lý do "${reason}"!`,
+                            );
                         } else {
                             updateStatusOrderApi(dispatch, order.id, data);
                             swal({
@@ -98,6 +111,13 @@ const Datatable = () => {
                                 text: 'Hủy đơn hàng thành công',
                                 icon: 'success',
                             });
+                            addNotificationByIdApi(
+                                order.user.id,
+                                `Đơn hàng với mã ${order.id} đã được cập nhật trạng thái`,
+                                `Vào lúc ${Date.now()}, đơn hàng với mã ${
+                                    order.id
+                                } đã bị hủy bởi shop với lý do "${reason}"!`,
+                            );
                         }
                     }
                 });
@@ -145,7 +165,6 @@ const Datatable = () => {
     return (
         <div className="datatable">
             <div className="datatableTitle">
-               
                 <Link to="/admin/products/new" className="link">
                     Add New
                 </Link>
@@ -156,7 +175,7 @@ const Datatable = () => {
                         fontSize: 12,
                         '& .MuiTablePagination-displayedRows': {
                             fontSize: 12,
-                          },
+                        },
                     },
                 }}
                 getRowId={(row) => row.id}

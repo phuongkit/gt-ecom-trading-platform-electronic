@@ -316,6 +316,7 @@
 
 .header__notify-item {
     display: flex;
+    background-color: rgba(249, 81, 47, 0.08);
 }
 
 .header__notify-item:hover {
@@ -323,7 +324,7 @@
 }
 
 .header__notify-item--viewed {
-    background-color: rgba(249, 81, 47, 0.08);
+    background-color: transparent;
 }
 
 .header__notify-link {

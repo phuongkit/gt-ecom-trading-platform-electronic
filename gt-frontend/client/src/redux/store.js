@@ -18,6 +18,7 @@ import productModalReducer from './product-modal/productModalSlice';
 import statisticReducer from './statistic/statisticsSlice';
 
 import chatContactReducer from './chat/contact/contactsSlice';
+import notificationReducer from './notification/notificationsSlice';
 //khoi tao store
 export const store = configureStore({
     reducer: {
@@ -37,5 +38,6 @@ export const store = configureStore({
         statistics: statisticReducer,
 
         chatContacts: chatContactReducer,
+        notifications: notificationReducer,
     },
 });

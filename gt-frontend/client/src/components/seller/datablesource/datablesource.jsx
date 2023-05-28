@@ -116,6 +116,14 @@ export const OderColumns = [
         },
     },
     {
+        field: 'email',
+        headerName: 'email',
+        width: 200,
+        renderCell: (params) => {
+            return <div className={`cellWithStatus`}>{params.row.email}</div>;
+        },
+    },
+    {
         field: 'address',
         headerName: 'Address',
         width: 450,

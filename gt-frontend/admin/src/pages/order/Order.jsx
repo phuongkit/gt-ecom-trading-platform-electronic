@@ -12,6 +12,9 @@ import { useState } from "react";
 import { orderService } from "../../services/order.service";
 import Sidebar from "~/components/sidebar/Sidebar";
 import Navbar from "~/components/navbar/Navbar";
+import { EOrderStatus } from "../../utils/variableDefault";
+import { db } from "../../firebase";
+import { addNotificationByIdApi } from "../../redux/notification/notificationsApi";
 
 const Order = (props) => {
     const style = (text) => {
@@ -28,11 +31,13 @@ const Order = (props) => {
         }
     };
     const [orderDetail, setOrderDetail] = useState({ index: -1, id: null });
-    const handleCancel = async (e) => {
+    const handleAccept = async(order) => {
         if (confirm("Bạn có muốn Xác nhận đơn hàng không?")) {
-            const id = e.target.id;
+            const id = order.id;
             const data = JSON.stringify({ status: "Đã xác nhận" });
-            const res = await orderService.updateHistoryOrder(id, data);
+            console.log(order)
+            await orderService.updateHistoryOrder(id, data);
+            addNotificationByIdApi(order.id, 'Cập nhật đơn hàng', `Trạng thái đơn hàng với mã số ${order.id} đã chuyển thành "Đã xác nhận"`)
             console.log(res);
 
             if (res) {
@@ -53,7 +58,7 @@ const Order = (props) => {
         document.title = props.title;
     }, [props.title]);
 
-    console.log(orders);
+    // console.log(orders);
 
     return (
         <div>
@@ -73,7 +78,7 @@ const Order = (props) => {
                     {orders.map((order, index) => {
                         const styleStatus = style(order.status);
                         const displayDetail = index === orderDetail.index;
-                        const displayCancelBtn = order.status != "Đặt hàng";
+                        const displayAcceptBtn = order.status === 0;
                         const styleDisable = "bg-gray-100";
                         return (
                             <>
@@ -115,16 +120,16 @@ const Order = (props) => {
                                     </Table.Cell>
 
                                     <Table.Cell className={styleStatus}>
-                                        {order.status}
+                                        {EOrderStatus.getNameFromIndex(order.status)}
                                     </Table.Cell>
                                     <Table.Cell>
                                         <button
-                                            disabled={displayCancelBtn}
+                                            disabled={!displayAcceptBtn}
                                             id={order.id}
-                                            onClick={handleCancel}
+                                            onClick={() => handleAccept(order)}
                                             className={clsx(
                                                 "bg-red-500 text-xl font-medium p-4 rounded-lg  text-white",
-                                                displayCancelBtn &&
+                                                !displayAcceptBtn &&
                                                     "!bg-gray-100 !text-gray-700"
                                             )}
                                         >
