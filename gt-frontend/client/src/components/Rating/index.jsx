@@ -9,6 +9,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import PopupInfo from './PopupInfo';
 import { updateDiscussRating } from '~/redux/product/productsSlice';
 import swal from 'sweetalert';
+import { sentimentService } from '../../services';
+import { getSentimentByResponse } from '../../utils';
 
 const Rating = ({ onClick }) => {
     const [numberStar, setNumberStar] = useState(5);
@@ -137,7 +139,6 @@ function ProductRating() {
         };
         const oldDiscuss = rating.content[ratingId.index]?.childFeedbacks || [];
         const discussData = [...oldDiscuss, newDiscuss];
-
         const data = JSON.stringify({ discuss: discussData });
         const res = await ratingService.patchRating(ratingId.id, data);
         if (true) {
@@ -155,6 +156,8 @@ function ProductRating() {
         }
     };
     const handleSubmit = async () => {
+        let sentiment = await sentimentService.getSentimentByString(infoRating.content)
+        sentiment = getSentimentByResponse(sentiment)
         const formData = new FormData();
         formData.append(
             'data',
@@ -165,6 +168,7 @@ function ProductRating() {
                         content: infoRating.content,
                         replyForFeedbackId: infoRating.replyForFeedbackId,
                         star: infoRating.star,
+                        sentiment
                     }),
                 ],
                 { type: 'application/json' },
@@ -177,6 +181,7 @@ function ProductRating() {
         }
         
         try {
+            setShowModal(false);
             const res = await ratingService.postRating(formData);
             if (res.status === 'CREATED') {
                 if (infoRating.replyForFeedbackId === null) {
@@ -197,7 +202,6 @@ function ProductRating() {
         } catch (err) {
             swal({text: err.message, icon: 'error',});
         }
-        setShowModal(false);
         infoRating.replyForFeedbackId = null;
     };
     return (

@@ -144,15 +144,15 @@ export const ghn = {
             // pick_shift: [2],
             items: items,
         };
-        return axiosGHN.post('https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/create', data);
+        return axiosGHN.post('https://dev-online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/create', data);
     },
     cancelOrderGHN(orderCode) {
-        return axiosGHN.post('https://online-gateway.ghn.vn/shiip/public-api/v2/switch-status/cancel', {
+        return axiosGHN.post('https://dev-online-gateway.ghn.vn/shiip/public-api/v2/switch-status/cancel', {
             order_codes: [orderCode],
         });
     },
     getOrderDetailGHN(orderCode) {
-        return axiosGHN.post('https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/detail', {
+        return axiosGHN.post('https://dev-online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/detail', {
             order_code: orderCode,
         });
     },
@@ -200,16 +200,16 @@ export const ghn = {
         };
     },
     getProvinceList() {
-        return axiosGHN.get('https://online-gateway.ghn.vn/shiip/public-api/master-data/province');
+        return axiosGHN.get('https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/province');
     },
     getDistrictList(provinceId) {
         return axiosGHN.get(
-            `https://online-gateway.ghn.vn/shiip/public-api/master-data/district?province_id=${provinceId}`,
+            `https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/district?province_id=${provinceId}`,
         );
     },
     getWardList(districtId) {
         return axiosGHN.get(
-            `https://online-gateway.ghn.vn/shiip/public-api/master-data/ward?district_id=${districtId}`,
+            `https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/ward?district_id=${districtId}`,
         );
     },
 };

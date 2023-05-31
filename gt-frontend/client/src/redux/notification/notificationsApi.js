@@ -12,7 +12,7 @@ export const getAllNotificationsApi = async (dispatch, uid) => {
         });
 };
 
-export const addNotificationByIdApi = async (userId, title, content) => {
+export const addNotificationByIdApi = async (userId, title, content, url) => {
     console.log(userId, title, content);
     db.collection("users")
       .where("_id", "==", userId)
@@ -28,7 +28,7 @@ export const addNotificationByIdApi = async (userId, title, content) => {
               [uuid()]: {
                 title,
                 content,
-                url: "history",
+                url,
                 img: "",
                 date: firebase.firestore.Timestamp.now(),
               },
@@ -40,7 +40,7 @@ export const addNotificationByIdApi = async (userId, title, content) => {
               [uuid()]: {
                 title,
                 content,
-                url: "history",
+                url,
                 img: "",
                 date: firebase.firestore.Timestamp.now(),
               },

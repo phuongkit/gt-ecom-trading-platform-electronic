@@ -56,6 +56,7 @@ const Datatable = () => {
                     `Vào lúc ${Date.now()}, đơn hàng với mã ${
                         order.id
                     } đã được cập nhật trạng thái thành "Đã xác nhận" và tạo đơn hàng vận chuyển thành công!`,
+                    'history',
                 );
             }
         });
@@ -103,6 +104,7 @@ const Datatable = () => {
                                 `Vào lúc ${Date.now()}, đơn hàng với mã ${
                                     order.id
                                 } đã bị hủy bởi shop với lý do "${reason}"!`,
+                                'history',
                             );
                         } else {
                             updateStatusOrderApi(dispatch, order.id, data);
@@ -117,6 +119,7 @@ const Datatable = () => {
                                 `Vào lúc ${Date.now()}, đơn hàng với mã ${
                                     order.id
                                 } đã bị hủy bởi shop với lý do "${reason}"!`,
+                                'history',
                             );
                         }
                     }

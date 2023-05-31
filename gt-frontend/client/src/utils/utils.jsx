@@ -131,3 +131,8 @@ export const parseQueryString = function(search) {
 export const isObjEmpty = function(obj) {
     return Object.keys(obj).length === 0;
 }
+
+export const getSentimentByResponse = function(response) {
+    let sentiment = response?.data?.sentiment?.trim() || null;
+    return sentiment !== 0 ? sentiment : 'Neutral';
+}

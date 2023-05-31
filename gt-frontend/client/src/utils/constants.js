@@ -417,8 +417,8 @@ export const REGEXP = {
 };
 
 export const GHN_CONFIG = {
-    token: '1a54568c-4713-11ed-8a70-52fa25d1292f',
-    shopId: '3330973',
+    token: '841e800e-6e2a-11ed-a83f-5a63c54f968d',
+    shopId: '120835',
     thuduc: 3695,
     truongtho: 90746,
     weight: 250,
@@ -462,3 +462,5 @@ export const OAUTH2_REDIRECT_URI = window.location.origin.toString();//window.lo
 export const GOOGLE_AUTH_URL = API_BASE_URL + '/oauth2/authorize/google?redirect_uri=' + OAUTH2_REDIRECT_URI;
 export const FACEBOOK_AUTH_URL = API_BASE_URL + '/oauth2/authorize/facebook?redirect_uri=' + OAUTH2_REDIRECT_URI;
 export const GITHUB_AUTH_URL = API_BASE_URL + '/oauth2/authorize/github?redirect_uri=' + OAUTH2_REDIRECT_URI;
+export const SENTIMENT_STRING_URL = 'http://localhost:7070/api/sentiment?text=';
+export const SENTIMENT_STRING_ARRAY_URL = 'http://localhost:7070/api/array/sentiment';

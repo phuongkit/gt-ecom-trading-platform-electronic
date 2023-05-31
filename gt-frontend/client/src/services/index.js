@@ -1,3 +1,5 @@
+import { Form } from 'react-router-dom';
+
 export { brandService } from './brand.service';
 export { categoryService } from './category.service';
 export { discountService } from './discount.service';
@@ -12,3 +14,5 @@ export { orderShopService } from './order.shop.service';
 export { promoService } from './promo.service';
 export { shopService } from './shop.service';
 export { statisticService } from './statistic.service';
+
+export { sentimentService } from './sentiment/sentiment.service';
