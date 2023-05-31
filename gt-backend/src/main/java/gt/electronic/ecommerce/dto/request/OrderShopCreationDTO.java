@@ -19,7 +19,7 @@ import java.util.List;
 @AllArgsConstructor
 @ToString
 public class OrderShopCreationDTO {
-  private Integer shopId;
+  private Long shopId;
   private EShippingMethod shippingMethod;
   private Date expectedDeliveryTime;
   private BigDecimal totalFee;

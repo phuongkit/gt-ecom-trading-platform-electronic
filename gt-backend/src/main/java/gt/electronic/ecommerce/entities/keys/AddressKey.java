@@ -21,7 +21,7 @@ import java.util.Objects;
 @Embeddable
 public class AddressKey implements Serializable {
   @Column(name = "user_id")
-  Integer userId;
+  Long userId;
 
   @Column(name = "location_id")
   Long locationId;

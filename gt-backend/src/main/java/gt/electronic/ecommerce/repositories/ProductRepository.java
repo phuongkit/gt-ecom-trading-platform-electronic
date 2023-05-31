@@ -97,4 +97,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
   Long getSoldQuantityByProduct(Product product);
 
   Long countAllByShop(Shop shop);
+
+
 }

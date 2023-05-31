@@ -70,7 +70,7 @@ public class FeedbackController {
 
   @GetMapping("/userId/{userId}")
   public ResponseObject<Page<FeedbackResponseDTO>> getAllFeedbacksByUser(
-      @PathVariable(name = "userId") Integer userId,
+      @PathVariable(name = "userId") Long userId,
       @RequestParam(name = "isHasChild", required = false, defaultValue = "false")
       Boolean isHasChild,
       @RequestParam(name = "page", required = false, defaultValue = DEFAULT_PAGE) Integer page,
@@ -86,7 +86,7 @@ public class FeedbackController {
 
   @GetMapping("/shopId/{shopId}")
   public ResponseObject<Page<FeedbackResponseDTO>> getAllFeedbacksByShop(
-      @PathVariable(name = "shopId") Integer shopId,
+      @PathVariable(name = "shopId") Long shopId,
       @RequestParam(name = "isHasChild", required = false, defaultValue = "false")
       Boolean isHasChild,
       @RequestParam(name = "page", required = false, defaultValue = DEFAULT_PAGE) Integer page,
@@ -126,7 +126,7 @@ public class FeedbackController {
   @GetMapping("/productId/{productId}/userId/{userId}")
   public ResponseObject<FeedbackResponseDTO> getFeedbackByProductAndUser(
       @PathVariable(name = "productId") Long productId,
-      @PathVariable(name = "userId") Integer userId,
+      @PathVariable(name = "userId") Long userId,
       @RequestParam(name = "isHasChild", required = false, defaultValue = "false")
       Boolean isHasChild) {
     return new ResponseObject<>(

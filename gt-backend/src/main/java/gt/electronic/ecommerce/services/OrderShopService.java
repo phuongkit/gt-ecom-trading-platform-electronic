@@ -11,8 +11,8 @@ import org.springframework.data.domain.Pageable;
  */
 public interface OrderShopService {
   Page<OrderResponseDTO> getAllOrderShops(Pageable pageable);
-  Page<OrderResponseDTO> getAllOrderShopsByUser(String loginKey, Integer userId, Pageable pageable);
-  Page<OrderResponseDTO> getAllOrderShopsByShop(String loginKey, Integer shopId, Pageable pageable, boolean ...isAdmin);
+  Page<OrderResponseDTO> getAllOrderShopsByUser(String loginKey, Long userId, Pageable pageable);
+  Page<OrderResponseDTO> getAllOrderShopsByShop(String loginKey, Long shopId, Pageable pageable, boolean ...isAdmin);
   OrderResponseDTO getOrderShopByOrderId(String loginKey, Long orderId);
   OrderResponseDTO updateStatusOrderShop(String loginKey, Long id, OrderUpdateStatusDTO updateStatusDTO);
 }

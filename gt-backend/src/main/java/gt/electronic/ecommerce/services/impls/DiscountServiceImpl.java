@@ -72,7 +72,7 @@ public class DiscountServiceImpl implements DiscountService {
     this.userService = userService;
   }
 
-  @Override public Page<DiscountResponseDTO> getAllDiscountByShop(Integer shopId, Pageable pageable) {
+  @Override public Page<DiscountResponseDTO> getAllDiscountByShop(Long shopId, Pageable pageable) {
     this.LOGGER.info(String.format(Utils.LOG_GET_ALL_OBJECT_BY_FIELD, branchName, "ShopId", shopId));
     Shop shopFound = this.shopRepo.findById(shopId).orElseThrow(
         () ->
@@ -96,7 +96,7 @@ public class DiscountServiceImpl implements DiscountService {
       Double toPercent,
       Date fromDate,
       Date toDate,
-      Integer shopId,
+      Long shopId,
       Pageable pageable
   ) {
     this.LOGGER.info(String.format(Utils.LOG_GET_ALL_OBJECT_BY_FIELD, branchName, "ShopId", shopId));

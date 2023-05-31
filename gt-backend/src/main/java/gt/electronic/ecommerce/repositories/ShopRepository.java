@@ -19,7 +19,7 @@ import java.util.Optional;
  */
 @Repository
 @Transactional
-public interface ShopRepository extends JpaRepository<Shop, Integer> {
+public interface ShopRepository extends JpaRepository<Shop, Long> {
   @Query(
       value =
           "select s from Shop s where :keyword is null "

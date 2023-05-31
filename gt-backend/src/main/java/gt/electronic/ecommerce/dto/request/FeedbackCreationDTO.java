@@ -24,4 +24,5 @@ public class FeedbackCreationDTO {
   private String content;
   private int star;
   private Long replyForFeedbackId;
+  private String sentiment;
 }

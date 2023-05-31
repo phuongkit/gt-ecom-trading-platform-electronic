@@ -95,7 +95,7 @@ public class BrandServiceImpl implements BrandService {
     return brandList.stream().map(brand -> this.brandMapper.brandToBrandResponseDTO(brand)).collect(Collectors.toList());
   }
 
-  @Override public List<BrandResponseDTO> getAllBrandsByShop(Integer shopId) {
+  @Override public List<BrandResponseDTO> getAllBrandsByShop(Long shopId) {
     this.LOGGER.info(String.format(Utils.LOG_GET_ALL_OBJECT_BY_FIELD,branchName, "ShopId", shopId));
     Shop shopFound =
         this.shopRepo

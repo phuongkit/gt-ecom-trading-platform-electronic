@@ -96,7 +96,15 @@ public class JwtTokenUtil {
   }
 
   public String getUserNameFromRequest(HttpServletRequest request) {
-    return this.getSubject(getAccessToken(request)).split(",")[1];
+    try {
+      if (getAccessToken(request) != null) {
+        return this.getSubject(getAccessToken(request)).split(",")[1];
+      } else {
+        return null;
+      }
+    } catch (Exception e) {
+      return null;
+    }
   }
 
 //  public String setExpiredJwtToken(String token) {

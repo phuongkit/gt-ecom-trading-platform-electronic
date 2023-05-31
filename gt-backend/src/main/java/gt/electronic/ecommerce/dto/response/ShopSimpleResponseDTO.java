@@ -10,7 +10,7 @@ import java.util.Date;
  */
 @Data
 public class ShopSimpleResponseDTO {
-  private Integer id;
+  private Long id;
   private String name;
   private String slug;
   private String description;

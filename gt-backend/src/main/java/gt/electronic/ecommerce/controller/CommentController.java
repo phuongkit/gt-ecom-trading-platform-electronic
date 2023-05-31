@@ -71,7 +71,7 @@ public class CommentController {
 
   @GetMapping("/userId/{userId}")
   public ResponseObject<Page<CommentResponseDTO>> getAllCommentsByUser(
-      @PathVariable(name = "userId") Integer userId,
+      @PathVariable(name = "userId") Long userId,
       @RequestParam(name = "isHasChild", required = false, defaultValue = "false")
       Boolean isHasChild,
       @RequestParam(name = "page", required = false, defaultValue = DEFAULT_PAGE) Integer page,
@@ -88,7 +88,7 @@ public class CommentController {
   @GetMapping("/productId/{productId}/userId/{userId}")
   public ResponseObject<Page<CommentResponseDTO>> getAllCommentsByProductAndUser(
       @PathVariable(name = "productId") Long productId,
-      @PathVariable(name = "userId") Integer userId,
+      @PathVariable(name = "userId") Long userId,
       @RequestParam(name = "isHasChild", required = false, defaultValue = "false")
       Boolean isHasChild,
       @RequestParam(name = "page", required = false, defaultValue = DEFAULT_PAGE) Integer page,

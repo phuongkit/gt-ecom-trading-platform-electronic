@@ -59,7 +59,7 @@ public class CartController {
       @RequestParam(name = "limit", required = false, defaultValue = DEFAULT_SIZE) Integer size,
       @RequestParam(name = "sortField", required = false, defaultValue = "id") String sortField,
       @RequestParam(name = "sortDir", required = false, defaultValue = "asc") String sortDir,
-      @RequestParam(name = "userId", required = false, defaultValue = "0") Integer userId,
+      @RequestParam(name = "userId", required = false, defaultValue = "0") Long userId,
       HttpServletRequest request) {
 //    this.LOGGER.info(String.valueOf(SecurityContextHolder.getContext().getAuthentication().getAuthorities()));
     String loginKey = jwtTokenUtil.getUserNameFromRequest(request);
@@ -113,7 +113,7 @@ public class CartController {
   @RolesAllowed({ERole.Names.CUSTOMER, ERole.Names.SELLER, ERole.Names.ADMIN})
   public ResponseObject<OrderDetailResponseDTO> deleteCartItem(
       @PathVariable(name = "id") Long id,
-      @RequestParam(name = "userId", required = false, defaultValue = "0") Integer userId,
+      @RequestParam(name = "userId", required = false, defaultValue = "0") Long userId,
       HttpServletRequest request) {
 //    this.LOGGER.info(String.valueOf(SecurityContextHolder.getContext().getAuthentication().getAuthorities()));
     String loginKey = jwtTokenUtil.getUserNameFromRequest(request);

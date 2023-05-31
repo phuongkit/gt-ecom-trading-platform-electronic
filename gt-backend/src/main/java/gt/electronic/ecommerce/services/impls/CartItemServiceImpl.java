@@ -79,7 +79,7 @@ public class CartItemServiceImpl implements CartItemService {
   }
 
   @Override
-  public List<OrderDetailResponseDTO> getAllCartItemByUser(String loginKey, Integer userId, Pageable pageable) {
+  public List<OrderDetailResponseDTO> getAllCartItemByUser(String loginKey, Long userId, Pageable pageable) {
     User userFound;
     if (Utils.isPattern(loginKey) == EPattern.PHONE) {
       userFound = this.userRepo
@@ -128,7 +128,7 @@ public class CartItemServiceImpl implements CartItemService {
   }
 
   @Override
-  public OrderDetailResponseDTO getCartItemByUserAndProduct(Integer userId, Long productId) {
+  public OrderDetailResponseDTO getCartItemByUserAndProduct(Long userId, Long productId) {
     Product productFound =
         this.productRepo
             .findById(productId)
@@ -249,7 +249,7 @@ public class CartItemServiceImpl implements CartItemService {
   }
 
   @Override
-  public OrderDetailResponseDTO deleteCartItemById(String loginKey, Integer userId, Long id) {
+  public OrderDetailResponseDTO deleteCartItemById(String loginKey, Long userId, Long id) {
     this.LOGGER.info(
         String.format(Utils.LOG_DELETE_OBJECT, EModelName.Names.CART_ITEM, "ID", id));
     User userFound = this.userService.getUserByLoginKey(loginKey);

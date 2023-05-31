@@ -54,7 +54,7 @@ public class BrandController {
 
   @GetMapping("/shopId/{shopId}")
   public ResponseObject<List<BrandResponseDTO>> getAllBrandsByShop(
-      @PathVariable(name = "shopId") Integer shopId) {
+      @PathVariable(name = "shopId") Long shopId) {
     return new ResponseObject<>(
         HttpStatus.OK, "", this.brandService.getAllBrandsByShop(shopId));
   }

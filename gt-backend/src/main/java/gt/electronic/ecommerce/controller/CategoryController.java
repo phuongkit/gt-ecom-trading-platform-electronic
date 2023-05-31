@@ -52,7 +52,7 @@ public class CategoryController {
 
   @GetMapping("/shopId/{shopId}")
   public ResponseObject<List<CategoryResponseDTO>> getAllCategoriesByShop(
-      @PathVariable(name = "shopId") Integer shopId) {
+      @PathVariable(name = "shopId") Long shopId) {
     return new ResponseObject<>(
         HttpStatus.OK, "", this.categoryService.getAllCategoriesByShop(shopId));
   }

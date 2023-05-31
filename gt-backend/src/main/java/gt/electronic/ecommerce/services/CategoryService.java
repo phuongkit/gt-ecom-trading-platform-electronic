@@ -12,7 +12,7 @@ import java.util.List;
  */
 public interface CategoryService {
   List<CategoryResponseDTO> getAllCategories(String keyword);
-  List<CategoryResponseDTO> getAllCategoriesByShop(Integer shopId);
+  List<CategoryResponseDTO> getAllCategoriesByShop(Long shopId);
   CategoryResponseDTO getCategoryById(Integer id);
 
   CategoryResponseDTO getCategoryBySlug(String slug);

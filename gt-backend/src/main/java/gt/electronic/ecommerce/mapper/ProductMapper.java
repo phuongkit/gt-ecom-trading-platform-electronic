@@ -12,7 +12,7 @@ import gt.electronic.ecommerce.entities.Product;
  * @project gt-backend
  */
 public interface ProductMapper {
-  ProductResponseDTO productToProductResponseDTO(Product entity);
+  ProductResponseDTO productToProductResponseDTO(Product entity, Boolean...haveSentiment);
 
   ProductGalleryDTO productToProductGalleryDTO(Product entity);
 }

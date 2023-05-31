@@ -20,8 +20,8 @@ import java.util.List;
  */
 public interface OrderService {
   Page<OrderResponseDTO> getAllOrders(Pageable pageable);
-  Page<OrderResponseDTO> getAllOrdersByUser(String loginKey, Integer userId, Pageable pageable);
-  Page<OrderResponseDTO> getAllOrdersByShop(String loginKey, Integer shopId, Pageable pageable, boolean ...isAdmin);
+  Page<OrderResponseDTO> getAllOrdersByUser(String loginKey, Long userId, Pageable pageable);
+  Page<OrderResponseDTO> getAllOrdersByShop(String loginKey, Long shopId, Pageable pageable, boolean ...isAdmin);
   OrderResponseDTO getOrderById(String loginKey, Long id);
   OrderResponseDTO createOrder(String loginKey, OrderCreationDTO creationDTO);
   OrderResponseDTO updateOrder(String loginKey, Long id, OrderCreationDTO creationDTO);

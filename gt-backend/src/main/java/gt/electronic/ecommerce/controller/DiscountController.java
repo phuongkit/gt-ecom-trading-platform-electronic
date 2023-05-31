@@ -60,7 +60,7 @@ public class DiscountController {
       @RequestParam(name = "endDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate,
       @RequestParam(name = "fromDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date fromDate,
       @RequestParam(name = "toDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date toDate,
-      @RequestParam(name = "shopId", required = false) Integer shopId
+      @RequestParam(name = "shopId", required = false) Long shopId
   ) {
     Pageable pageable = PageRequest.of(page - 1, size);
     System.out.println(title + " | " + percent + " | " + code + " | " + startDate + " | " + endDate);

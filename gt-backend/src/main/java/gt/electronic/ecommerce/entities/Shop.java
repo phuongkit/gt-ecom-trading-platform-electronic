@@ -10,7 +10,6 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -27,7 +26,7 @@ import java.util.Set;
 public class Shop {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Integer id;
+  private Long id;
 
   @Column(name = "name", length = 50, nullable = false, unique = true)
   @Size(message = "Invalid email size.", max = 50, min = 1)
@@ -106,14 +105,9 @@ public class Shop {
   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "shop")
   private Set<Discount> discounts = new HashSet<>();
 
-  @Override public int hashCode() {
-    return this.id;
-  }
-
   @Override public boolean equals(Object o) {
     if (this == o) return true;
-    if (!(o instanceof Shop) || getClass() != o.getClass()) return false;
-    Shop that = (Shop) o;
+    if (!(o instanceof Shop that) || getClass() != o.getClass()) return false;
     return this.getId().equals(that.getId());
   }
 

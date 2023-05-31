@@ -88,7 +88,7 @@ public class OrderShopServiceImpl implements OrderShopService {
     }
 
     @Override
-    public Page<OrderResponseDTO> getAllOrderShopsByUser(String loginKey, Integer userId, Pageable pageable) {
+    public Page<OrderResponseDTO> getAllOrderShopsByUser(String loginKey, Long userId, Pageable pageable) {
         this.LOGGER.info(String.format(Utils.LOG_GET_ALL_OBJECT_BY_FIELD + Utils.ADD_LOG_FOR_USER,
                                        branchName,
                                        "User",
@@ -103,7 +103,7 @@ public class OrderShopServiceImpl implements OrderShopService {
     @Override
     public Page<OrderResponseDTO> getAllOrderShopsByShop(
             String loginKey,
-            Integer shopId,
+            Long shopId,
             Pageable pageable,
             boolean... isAdmin
     ) {

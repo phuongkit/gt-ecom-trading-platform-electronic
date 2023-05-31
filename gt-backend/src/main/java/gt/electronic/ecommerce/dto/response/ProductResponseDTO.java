@@ -1,7 +1,9 @@
 package gt.electronic.ecommerce.dto.response;
 
 import gt.electronic.ecommerce.models.clazzs.ProductRating;
+import gt.electronic.ecommerce.models.clazzs.ProductSentiment;
 import gt.electronic.ecommerce.models.clazzs.RatingDetail;
+import gt.electronic.ecommerce.models.clazzs.SentimentDetail;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -45,5 +47,6 @@ public class ProductResponseDTO {
   private Map<String, String> parameter;
   private String info;
   private RatingDetail[] vote;
+  private ProductSentiment sentiment;
   private int status;
 }

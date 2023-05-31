@@ -4,6 +4,8 @@ import gt.electronic.ecommerce.dto.request.FeedbackCreationDTO;
 import gt.electronic.ecommerce.dto.request.FeedbackUpdationDTO;
 import gt.electronic.ecommerce.dto.response.FeedbackResponseDTO;
 import gt.electronic.ecommerce.models.clazzs.ProductRating;
+import gt.electronic.ecommerce.models.clazzs.ProductSentiment;
+import gt.electronic.ecommerce.models.clazzs.SentimentDetail;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,15 +16,16 @@ import org.springframework.web.multipart.MultipartFile;
  */
 public interface FeedbackService {
   Page<FeedbackResponseDTO> getAllMainFeedbacksByProduct(Long productId, boolean isHasChild, Pageable pageable);
-  Page<FeedbackResponseDTO> getAllFeedbacksByUser(Integer userId, boolean isHasChild, Pageable pageable);
-  Page<FeedbackResponseDTO> getAllFeedbacksByShop(Integer shopId, boolean isHasChild, Pageable pageable);
+  Page<FeedbackResponseDTO> getAllFeedbacksByUser(Long userId, boolean isHasChild, Pageable pageable);
+  Page<FeedbackResponseDTO> getAllFeedbacksByShop(Long shopId, boolean isHasChild, Pageable pageable);
   Page<FeedbackResponseDTO> getAllRelyFeedbacksByMainFeedback(Long mainFeedbackId, Pageable pageable);
 
   FeedbackResponseDTO getFeedbackById(Long id, boolean isHasChild);
 
-  FeedbackResponseDTO getFeedbackByProductAndUser(Long productId, Integer userId, boolean isHasChild);
+  FeedbackResponseDTO getFeedbackByProductAndUser(Long productId, Long userId, boolean isHasChild);
 
   ProductRating getProductRatingByProduct(Long productId);
+  ProductSentiment getProductSentimentByProduct(Long productId);
 
   FeedbackResponseDTO createFeedback(String loginKey, FeedbackCreationDTO creationDTO, MultipartFile[] imageGalleryFile);
 

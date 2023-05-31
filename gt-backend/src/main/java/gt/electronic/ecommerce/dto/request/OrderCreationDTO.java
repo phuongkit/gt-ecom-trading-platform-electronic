@@ -22,7 +22,7 @@ import java.util.*;
  * @created 20/09/2022 - 9:13 PM
  */
 @Setter @Getter @NoArgsConstructor @AllArgsConstructor public class OrderCreationDTO {
-  private Integer userId;
+  private Long userId;
 
   //  @NotBlank(message = "Gender not blank!")
 //  @NotNull(message = "Gender not null!")

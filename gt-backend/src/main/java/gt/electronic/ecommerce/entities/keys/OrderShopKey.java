@@ -26,7 +26,7 @@ public class OrderShopKey implements Serializable {
   Long orderId;
 
   @Column(name = "shop_id")
-  Integer shopId;
+  Long shopId;
 
   @Override
   public boolean equals(Object o) {

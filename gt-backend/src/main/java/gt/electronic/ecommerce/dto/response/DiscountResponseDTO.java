@@ -27,7 +27,7 @@ public class DiscountResponseDTO {
   private BigDecimal cappedAt;
   private BigDecimal price;
   private BigDecimal minSpend;
-  private Integer shopId;
+  private Long shopId;
   private Date startDate;
   private Date endDate;
   private int type;

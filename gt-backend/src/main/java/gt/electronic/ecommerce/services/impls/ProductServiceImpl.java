@@ -13,6 +13,7 @@ import gt.electronic.ecommerce.mapper.ProductMapper;
 import gt.electronic.ecommerce.models.clazzs.ProductRating;
 import gt.electronic.ecommerce.models.enums.EImageType;
 import gt.electronic.ecommerce.models.enums.EProductStatus;
+import gt.electronic.ecommerce.models.enums.ERole;
 import gt.electronic.ecommerce.models.enums.ESortOption;
 import gt.electronic.ecommerce.repositories.*;
 import gt.electronic.ecommerce.services.*;
@@ -211,7 +212,7 @@ import java.util.*;
       String keyword,
       List<Integer> brandIds,
       List<Integer> categoryIds,
-      Integer shopId,
+      Long shopId,
       String locationString,
       int sortOption,
       BigDecimal minPrice,
@@ -340,11 +341,17 @@ import java.util.*;
     }
   }
 
-  @Override public ProductResponseDTO getProductById(Long id) {
+  @Override public ProductResponseDTO getProductById(String loginKey, Long id, boolean haveSentiment) {
     this.LOGGER.info(String.format(Utils.LOG_GET_OBJECT, branchName, "ID", id));
     Product product = this.productRepo.findById(id)
         .orElseThrow(() -> new ResourceNotFound(String.format(Utils.OBJECT_NOT_FOUND_BY_FIELD, branchName, "ID", id)));
-    return this.productMapper.productToProductResponseDTO(product);
+    if (haveSentiment && loginKey != null) {
+      User authorFound = this.userService.getUserByLoginKey(loginKey);
+      if ((authorFound.getShop() == null || !Objects.equals(authorFound.getShop().getId(), product.getShop().getId())) && authorFound.getRole().getName() != ERole.ROLE_ADMIN) {
+        haveSentiment = false;
+      }
+    }
+    return this.productMapper.productToProductResponseDTO(product, haveSentiment);
   }
 
   @Override public ProductResponseDTO getProductBySlug(String slug) {

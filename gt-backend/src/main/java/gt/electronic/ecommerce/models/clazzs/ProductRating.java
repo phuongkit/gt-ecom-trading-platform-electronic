@@ -31,7 +31,7 @@ public class ProductRating {
     } else {
       this.totalVote = 0;
       for (int i = 1; i < 6; i++) {
-        voteDetails[i-1] = new RatingDetail(1, 0, 0);
+        voteDetails[i-1] = new RatingDetail(i, 0, 0);
       }
     }
   }

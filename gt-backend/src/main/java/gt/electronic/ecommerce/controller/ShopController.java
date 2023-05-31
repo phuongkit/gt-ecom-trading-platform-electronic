@@ -7,6 +7,7 @@ import gt.electronic.ecommerce.dto.response.ShopResponseDTO;
 import gt.electronic.ecommerce.entities.Shop;
 import gt.electronic.ecommerce.models.clazzs.GroupOrderByDate;
 import gt.electronic.ecommerce.models.clazzs.ShopOverview;
+import gt.electronic.ecommerce.models.clazzs.ShopSentiment;
 import gt.electronic.ecommerce.models.enums.ERole;
 import gt.electronic.ecommerce.models.enums.ETimeDistance;
 import gt.electronic.ecommerce.services.ShopService;
@@ -80,7 +81,7 @@ public class ShopController {
   }
 
   @GetMapping("/{id}")
-  public ResponseObject<ShopResponseDTO> getShopById(@PathVariable(name = "id") Integer id) {
+  public ResponseObject<ShopResponseDTO> getShopById(@PathVariable(name = "id") Long id) {
     return new ResponseObject<>(HttpStatus.OK, "", this.shopService.getShopById(id));
   }
 
@@ -90,7 +91,7 @@ public class ShopController {
   }
 
   @GetMapping("/userId/{userId}")
-  public ResponseObject<ShopResponseDTO> getShopByUser(@PathVariable(name = "userId") Integer userId) {
+  public ResponseObject<ShopResponseDTO> getShopByUser(@PathVariable(name = "userId") Long userId) {
     return new ResponseObject<>(HttpStatus.OK, "", this.shopService.getShopByUser(userId));
   }
 
@@ -128,7 +129,7 @@ public class ShopController {
   @PutMapping("/{id}")
   @RolesAllowed({ERole.Names.SELLER, ERole.Names.ADMIN})
   public ResponseObject<ShopResponseDTO> updateShop(
-      @PathVariable(name = "id") Integer id,
+      @PathVariable(name = "id") Long id,
       @RequestParam(name = "isAdmin", required = false, defaultValue = "false")
       boolean isAdmin,
       @RequestPart("data") ShopCreationDTO shopCreationDTO,
@@ -154,7 +155,7 @@ public class ShopController {
   @DeleteMapping("/{id}")
   @RolesAllowed({ERole.Names.SELLER, ERole.Names.ADMIN})
   public ResponseObject<ShopResponseDTO> deleteShop(
-      @PathVariable(name = "id") Integer id,
+      @PathVariable(name = "id") Long id,
       @RequestParam(name = "isAdmin", required = false, defaultValue = "false")
       boolean isAdmin,
       HttpServletRequest request
@@ -165,14 +166,14 @@ public class ShopController {
   }
 
   @GetMapping("/overview/{shopId}")
-  public ResponseObject<ShopOverview> getOverviewShopById(@PathVariable(name = "shopId") Integer id) {
+  public ResponseObject<ShopOverview> getOverviewShopById(@PathVariable(name = "shopId") Long id) {
     return new ResponseObject<>(HttpStatus.OK, "", this.statisticService.getOverviewByShop(id));
   }
 
   @GetMapping("/statistic/order/{shopId}")
   @RolesAllowed({ERole.Names.SELLER, ERole.Names.ADMIN})
   public ResponseObject<List<GroupOrderByDate>> statisticOrder(
-      @PathVariable(name = "shopId") Integer shopId,
+      @PathVariable(name = "shopId") Long shopId,
       @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate,
       @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate,
       @RequestParam(value = "timeDistance", required = false, defaultValue = "DAY") ETimeDistance timeDistance,
@@ -180,5 +181,15 @@ public class ShopController {
   ) {
     String loginKey = jwtTokenUtil.getUserNameFromRequest(request);
     return new ResponseObject<>(HttpStatus.OK, "", this.statisticService.statisticOrderByShop(loginKey, shopId, startDate, endDate, timeDistance));
+  }
+
+  @GetMapping("/statistic/sentiment/{shopId}")
+  @RolesAllowed({ERole.Names.SELLER, ERole.Names.ADMIN})
+  ResponseObject<ShopSentiment> statisticSentiment(
+          @PathVariable(name = "shopId") Long shopId,
+          HttpServletRequest request
+  ) {
+    String loginKey = jwtTokenUtil.getUserNameFromRequest(request);
+    return new ResponseObject<>(HttpStatus.OK, "", this.statisticService.statisticSentimentByShop(loginKey, shopId));
   }
 }

@@ -106,7 +106,7 @@ public class UserServiceImpl implements UserService {
   }
 
   @Transactional
-  public UserDetails loadUserById(Integer id) {
+  public UserDetails loadUserById(Long id) {
     User user = this.userRepo.findById(id).orElseThrow(
         () -> new ResourceNotFoundException("User", "id", id)
     );
@@ -124,7 +124,7 @@ public class UserServiceImpl implements UserService {
     return users.map(user -> this.userMapper.userToUserResponseDTO(user));
   }
 
-  @Override public UserResponseDTO getUserById(Integer id) {
+  @Override public UserResponseDTO getUserById(Long id) {
     this.LOGGER.info(String.format(Utils.LOG_GET_OBJECT, branchName, "ID", id));
     return this.userMapper.userToUserResponseDTO(this.userRepo.findById(id).orElseThrow(
         () -> new ResourceNotFoundException(
@@ -326,7 +326,7 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override public UserResponseDTO updateUser(
-      Integer id, UserCreationDTO creationDTO,
+      Long id, UserCreationDTO creationDTO,
       MultipartFile imageFile
   ) {
     this.LOGGER.info(String.format(Utils.LOG_UPDATE_OBJECT, branchName, "ID", id));
@@ -400,7 +400,7 @@ public class UserServiceImpl implements UserService {
 
   }
 
-  @Override public UserResponseDTO deleteUserById(Integer id) {
+  @Override public UserResponseDTO deleteUserById(Long id) {
     this.LOGGER.info(String.format(Utils.LOG_DELETE_OBJECT, branchName, "ID", id));
     User userFound = this.userRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException(
         String.format(Utils.OBJECT_NOT_FOUND_BY_FIELD, branchName, "ID", id)));

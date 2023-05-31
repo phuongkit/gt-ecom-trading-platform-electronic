@@ -17,7 +17,7 @@ import java.util.Optional;
  */
 @Repository
 @Transactional
-public interface UserRepository extends SearchRepository<User, Integer> {
+public interface UserRepository extends SearchRepository<User, Long> {
 
   @Query(
       value =

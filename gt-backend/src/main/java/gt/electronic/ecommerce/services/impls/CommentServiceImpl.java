@@ -109,7 +109,7 @@ public class CommentServiceImpl implements CommentService {
 
   @Override
   public Page<CommentResponseDTO> getAllCommentsByUser(
-      Integer userId, boolean isHasChild, Pageable pageable) {
+      Long userId, boolean isHasChild, Pageable pageable) {
     this.LOGGER.info(
         String.format(Utils.LOG_GET_ALL_OBJECT_BY_FIELD, branchName,
             User.class.getSimpleName() + "Id", userId));
@@ -136,7 +136,7 @@ public class CommentServiceImpl implements CommentService {
 
   @Override
   public Page<CommentResponseDTO> getAllCommentsByProductAndUser(
-      Long productId, Integer userId, boolean isHasChild, Pageable pageable) {
+      Long productId, Long userId, boolean isHasChild, Pageable pageable) {
     this.LOGGER.info(
         String.format(Utils.LOG_GET_ALL_OBJECT_BY_TWO_FIELD, branchName,
             Product.class.getSimpleName() + "Id", productId, User.class.getSimpleName() + "Id", userId));

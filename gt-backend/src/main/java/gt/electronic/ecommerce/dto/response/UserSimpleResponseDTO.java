@@ -17,7 +17,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserSimpleResponseDTO {
-  private Integer id;
+  private Long id;
   private String fullName;
   private String username;
   private String email;

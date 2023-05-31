@@ -14,9 +14,9 @@ import org.springframework.web.multipart.MultipartFile;
 public interface CommentService {
   Page<CommentResponseDTO> getAllMainCommentsByProduct(Long productId, boolean isHasChild, Pageable pageable);
 
-  Page<CommentResponseDTO> getAllCommentsByUser(Integer userId, boolean isHasChild, Pageable pageable);
+  Page<CommentResponseDTO> getAllCommentsByUser(Long userId, boolean isHasChild, Pageable pageable);
 
-  Page<CommentResponseDTO> getAllCommentsByProductAndUser(Long productId, Integer userId, boolean isHasChild, Pageable pageable);
+  Page<CommentResponseDTO> getAllCommentsByProductAndUser(Long productId, Long userId, boolean isHasChild, Pageable pageable);
 
   Page<CommentResponseDTO> getAllRelyCommentsByMainComment(Long mainCommentId, Pageable pageable);
 

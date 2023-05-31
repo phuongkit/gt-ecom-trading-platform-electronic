@@ -20,11 +20,11 @@ import java.util.List;
 public interface ShopService {
   List<ShopResponseDTO> getAllShops(String keyword);
 
-  ShopResponseDTO getShopById(Integer id);
+  ShopResponseDTO getShopById(Long id);
   
   ShopResponseDTO getShopBySlug(String slug);
 
-  ShopResponseDTO getShopByUser(Integer userId);
+  ShopResponseDTO getShopByUser(Long userId);
 
   ShopResponseDTO getShopByAccessToken(String accessToken);
 
@@ -32,7 +32,7 @@ public interface ShopService {
 
   ShopResponseDTO createShop(String loginKey, ShopCreationDTO creationDTO, MultipartFile avatarFile, MultipartFile backgroundFile, boolean... isAdmin);
 
-  ShopResponseDTO updateShop(String loginKey, Integer id, ShopCreationDTO creationDTO, MultipartFile avatarFile, MultipartFile backgroundFile, boolean... isAdmin);
+  ShopResponseDTO updateShop(String loginKey, Long id, ShopCreationDTO creationDTO, MultipartFile avatarFile, MultipartFile backgroundFile, boolean... isAdmin);
 
-  ShopResponseDTO deleteShopById(String loginKey, Integer id, boolean... isAdmin);
+  ShopResponseDTO deleteShopById(String loginKey, Long id, boolean... isAdmin);
 }

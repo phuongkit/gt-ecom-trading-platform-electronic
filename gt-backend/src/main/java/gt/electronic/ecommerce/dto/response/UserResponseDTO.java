@@ -17,7 +17,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserResponseDTO {
-  private Integer id;
+  private Long id;
   private String username;
   //  private boolean isChangedUsername;
   private String fullName;
@@ -32,7 +32,7 @@ public class UserResponseDTO {
   private Date birthDate;
   private int gender;
   private AddressResponseDTO address;
-  private Integer shopId;
+  private Long shopId;
   private boolean enabled;
   private String avatar;
   //  private ERole[] roles;

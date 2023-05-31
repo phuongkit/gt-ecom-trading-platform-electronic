@@ -71,7 +71,7 @@ public class OrderShopController {
       @RequestParam(name = "limit", required = false, defaultValue = DEFAULT_SIZE) Integer size,
       @RequestParam(name = "sortField", required = false, defaultValue = "id") String sortField,
       @RequestParam(name = "sortDir", required = false, defaultValue = "asc") String sortDir,
-      @PathVariable(name = "userId") Integer userId, HttpServletRequest request) {
+      @PathVariable(name = "userId") Long userId, HttpServletRequest request) {
     Sort sort = Sort.by(sortField);
     sort = sortDir.equals("asc") ? sort.ascending() : sort.descending();
     Pageable pageable = PageRequest.of(page > 0 ? page - 1 : 0, size, sort);
@@ -84,7 +84,7 @@ public class OrderShopController {
   @GetMapping("/shopId/{shopId}")
   @RolesAllowed({ERole.Names.SELLER, ERole.Names.ADMIN})
   public ResponseObject<Page<OrderResponseDTO>> getAllOrdersByShop(
-      @PathVariable(name = "shopId") Integer shopId,
+      @PathVariable(name = "shopId") Long shopId,
       @RequestParam(name = "page", required = false, defaultValue = DEFAULT_PAGE) Integer page,
       @RequestParam(name = "limit", required = false, defaultValue = DEFAULT_SIZE) Integer size,
       @RequestParam(name = "sortField", required = false, defaultValue = "id") String sortField,

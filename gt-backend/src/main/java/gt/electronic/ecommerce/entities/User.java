@@ -42,7 +42,7 @@ public class User implements OAuth2User, UserDetails {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Integer id;
+  private Long id;
 
   @Column(name = "username", length = 20, nullable = false, unique = true)
   @NotNull(message = "An username is required!")
@@ -203,7 +203,7 @@ public class User implements OAuth2User, UserDetails {
     this.discounts = new HashSet<>();
   }
 
-  public User(Integer id, String username, String email, String password, Role role) {
+  public User(Long id, String username, String email, String password, Role role) {
     this.id = id;
     this.username = username;
     this.email = email;

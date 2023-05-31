@@ -18,7 +18,7 @@ public class ShopCreationDTO {
 
   private String description;
 
-  private Integer userId;
+  private Long userId;
 
   @Size(message = "Invalid phone size.", max = 13, min = 9)
 //  @NotNull(message="An phone is required!")

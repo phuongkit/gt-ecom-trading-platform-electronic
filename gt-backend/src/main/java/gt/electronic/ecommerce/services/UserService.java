@@ -16,7 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 public interface UserService extends UserDetailsService {
   Page<UserResponseDTO> getAllUsers(String keyword, Pageable pageable);
 
-  UserResponseDTO getUserById(Integer id);
+  UserResponseDTO getUserById(Long id);
   
   UserResponseDTO getUserByAccessToken(String accessToken);
 
@@ -26,7 +26,7 @@ public interface UserService extends UserDetailsService {
 
   UserResponseDTO createUser(UserCreationDTO creationDTO, MultipartFile imageFile);
 
-  UserResponseDTO updateUser(Integer id, UserCreationDTO creationDTO, MultipartFile imageFile);
+  UserResponseDTO updateUser(Long id, UserCreationDTO creationDTO, MultipartFile imageFile);
 
-  UserResponseDTO deleteUserById(Integer id);
+  UserResponseDTO deleteUserById(Long id);
 }

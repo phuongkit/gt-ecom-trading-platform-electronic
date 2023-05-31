@@ -107,7 +107,7 @@ public class ShopServiceImpl implements ShopService {
     return shopList.stream().map(shop -> this.shopMapper.shopToShopResponseDTO(shop)).collect(Collectors.toList());
   }
 
-  @Override public ShopResponseDTO getShopById(Integer id) {
+  @Override public ShopResponseDTO getShopById(Long id) {
     this.LOGGER.info(String.format(Utils.LOG_GET_OBJECT, branchName, "ID", id));
     Shop shop =
         this.shopRepo
@@ -139,7 +139,7 @@ public class ShopServiceImpl implements ShopService {
     return this.shopMapper.shopToShopResponseDTO(entityFound);
   }
 
-  @Override public ShopResponseDTO getShopByUser(Integer userId) {
+  @Override public ShopResponseDTO getShopByUser(Long userId) {
     this.LOGGER.info(String.format(Utils.LOG_GET_OBJECT, branchName, "UserId", userId));
     User userFound = this.userRepo.findById(userId).orElseThrow(() -> new ResourceNotFoundException(
         String.format(Utils.OBJECT_NOT_FOUND_BY_FIELD, branchName, "ID", userId)));
@@ -320,7 +320,7 @@ public class ShopServiceImpl implements ShopService {
   }
 
   @Override public ShopResponseDTO updateShop(
-      String loginKey, Integer id, ShopCreationDTO creationDTO,
+      String loginKey, Long id, ShopCreationDTO creationDTO,
       MultipartFile avatarFile, MultipartFile backgroundFile,
       boolean... isAdmin
   ) {
@@ -432,7 +432,7 @@ public class ShopServiceImpl implements ShopService {
     return this.shopMapper.shopToShopResponseDTO(this.shopRepo.save(entityFound));
   }
 
-  @Override public ShopResponseDTO deleteShopById(String loginKey, Integer id, boolean... isAdmin) {
+  @Override public ShopResponseDTO deleteShopById(String loginKey, Long id, boolean... isAdmin) {
     this.LOGGER.info(
         String.format(
             Utils.LOG_DELETE_OBJECT, branchName, "Id", id));

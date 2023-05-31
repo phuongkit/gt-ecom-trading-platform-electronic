@@ -23,7 +23,7 @@ public class SaleCreationDTO {
   private String description;
   private Double percent;
   private List<Long> productIds;
-  private Integer creatorId;
+  private Long creatorId;
   @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   private Date startDate;
   @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")

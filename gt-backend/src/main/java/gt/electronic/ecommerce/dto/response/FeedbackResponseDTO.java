@@ -27,6 +27,7 @@ public class FeedbackResponseDTO {
   private UserSimpleResponseDTO replyForUser;
   private String[] imageGallery;
   private String timeDistance;
+  private String sentiment;
   private boolean isUpdated;
   private Date createdAt;
   private Date updatedAt;

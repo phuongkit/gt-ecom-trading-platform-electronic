@@ -31,6 +31,7 @@ public class FeedbackMapperImpl implements FeedbackMapper {
     responseDTO.setId(entity.getId());
     responseDTO.setContent(entity.getContent());
     responseDTO.setStar(entity.getStar());
+    responseDTO.setSentiment(entity.getSentiment() != null ? entity.getSentiment().toString() : null);
     if (entity.getProduct() != null) {
       responseDTO.setProductId(entity.getProduct().getId());
     }

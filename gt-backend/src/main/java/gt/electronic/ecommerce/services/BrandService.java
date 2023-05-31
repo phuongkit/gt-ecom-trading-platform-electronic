@@ -14,7 +14,7 @@ public interface BrandService {
   List<BrandResponseDTO> getAllBrands(String keyword);
 
   List<BrandResponseDTO> getAllBrandsByCategory(String keyword, Integer categoryId);
-  List<BrandResponseDTO> getAllBrandsByShop(Integer shopId);
+  List<BrandResponseDTO> getAllBrandsByShop(Long shopId);
 
   BrandResponseDTO getBrandById(Integer id);
   BrandResponseDTO getBrandBySlug(String slug);

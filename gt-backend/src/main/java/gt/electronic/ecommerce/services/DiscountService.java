@@ -16,10 +16,10 @@ import java.util.List;
  * @created 11/09/2022 - 10:01 AM
  */
 public interface DiscountService {
-  Page<DiscountResponseDTO> getAllDiscountByShop(Integer shopId, Pageable pageable);
+  Page<DiscountResponseDTO> getAllDiscountByShop(Long shopId, Pageable pageable);
   Page<DiscountResponseDTO> searchDiscount(String name, Double percent, String code,
                                            Date startDate, Date endDate, Double fromPercent, Double toPercent, Date fromDate,
-                                           Date toDate, Integer shopId, Pageable pageable);
+                                           Date toDate, Long shopId, Pageable pageable);
   DiscountResponseDTO getDiscountById(Long id);
   DiscountResponseDTO checkDiscountByCode(String loginKey, String code);
   DiscountResponseDTO createDiscount(String loginKey, DiscountCreationDTO creationDTO, MultipartFile  imageFile);

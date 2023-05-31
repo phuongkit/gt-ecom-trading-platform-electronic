@@ -66,7 +66,7 @@ public class UserController {
   }
 
   @GetMapping("/{id}")
-  public ResponseObject<UserResponseDTO> getUserById(@PathVariable(name = "id") Integer id) {
+  public ResponseObject<UserResponseDTO> getUserById(@PathVariable(name = "id") Long id) {
     return new ResponseObject<>(
         HttpStatus.OK, "", this.userService.getUserById(id));
   }
@@ -98,7 +98,7 @@ public class UserController {
   public ResponseObject<UserResponseDTO> updateUser(
       @RequestPart("data") @Valid UserCreationDTO userCreationDTO,
       @RequestPart(value = "image", required = false) MultipartFile imageFile,
-      @PathVariable(name = "id") Integer id
+      @PathVariable(name = "id") Long id
   ) {
     return new ResponseObject<>(HttpStatus.OK, String.format(Utils.UPDATE_OBJECT_SUCCESSFULLY, branchName),
                                 this.userService.updateUser(id, userCreationDTO, imageFile));
@@ -106,7 +106,7 @@ public class UserController {
 
   @DeleteMapping("/{id}")
   @RolesAllowed({ERole.Names.ADMIN})
-  public ResponseObject<UserResponseDTO> deleteUser(@PathVariable(name = "id") Integer id) {
+  public ResponseObject<UserResponseDTO> deleteUser(@PathVariable(name = "id") Long id) {
     return new ResponseObject<>(HttpStatus.OK, String.format(Utils.DELETE_OBJECT_SUCCESSFULLY, branchName),
                                 this.userService.deleteUserById(id));
   }

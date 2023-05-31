@@ -29,11 +29,11 @@ public interface ProductService {
                                                  int sortOption, BigDecimal minPrice, BigDecimal maxPrice,
                                                  Pageable pageable);
 
-  Page<ProductGalleryDTO> getAllProductCategoryIdAndBrandId(String keyword, List<Integer> brandIds, List<Integer> categoryIds, Integer shopId, String locationString,
+  Page<ProductGalleryDTO> getAllProductCategoryIdAndBrandId(String keyword, List<Integer> brandIds, List<Integer> categoryIds, Long shopId, String locationString,
                                                             int sortOption, BigDecimal minPrice, BigDecimal maxPrice,
                                                             Pageable pageable);
 
-  ProductResponseDTO getProductById(Long id);
+  ProductResponseDTO getProductById(String loginKey, Long id, boolean haveSentiment);
 
   ProductResponseDTO getProductBySlug(String slug);
 

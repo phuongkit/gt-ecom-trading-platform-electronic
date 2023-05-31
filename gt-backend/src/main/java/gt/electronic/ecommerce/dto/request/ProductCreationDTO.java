@@ -22,7 +22,7 @@ public class ProductCreationDTO {
   private String name;
   private BigDecimal price;
   private Long quantity;
-  private Integer shopId;
+  private Long shopId;
   private EProductStatus status;
   private Integer brandId;
   private Integer categoryId;

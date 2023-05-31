@@ -119,7 +119,7 @@ import static gt.electronic.ecommerce.models.enums.EDiscountType.DISCOUNT_SHOP_P
     return orderPage.map(order -> this.orderMapper.orderToOrderResponseDTO(order, null));
   }
 
-  @Override public Page<OrderResponseDTO> getAllOrdersByUser(String loginKey, Integer userId, Pageable pageable) {
+  @Override public Page<OrderResponseDTO> getAllOrdersByUser(String loginKey, Long userId, Pageable pageable) {
     this.LOGGER.info(String.format(Utils.LOG_GET_ALL_OBJECT_BY_FIELD + Utils.ADD_LOG_FOR_USER,
                                    branchName,
                                    "User",
@@ -132,7 +132,7 @@ import static gt.electronic.ecommerce.models.enums.EDiscountType.DISCOUNT_SHOP_P
   }
 
   @Override public Page<OrderResponseDTO> getAllOrdersByShop(
-      String loginKey, Integer shopId, Pageable pageable, boolean... isAdmin
+      String loginKey, Long shopId, Pageable pageable, boolean... isAdmin
   ) {
     this.LOGGER.info(String.format(Utils.LOG_GET_OBJECT + Utils.ADD_LOG_FOR_USER,
                                    branchName,

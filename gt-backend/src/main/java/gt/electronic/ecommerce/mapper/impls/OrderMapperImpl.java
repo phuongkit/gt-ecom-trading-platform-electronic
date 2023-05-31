@@ -50,7 +50,7 @@ public class OrderMapperImpl implements OrderMapper {
   }
 
   @Override
-  public OrderResponseDTO orderToOrderResponseDTO(Order entity, Integer shopId, boolean... isFull) {
+  public OrderResponseDTO orderToOrderResponseDTO(Order entity, Long shopId, boolean... isFull) {
     if (entity == null) {
       return null;
     }
@@ -135,7 +135,7 @@ public class OrderMapperImpl implements OrderMapper {
     return responseDTO;
   }
 
-  @Override public OrderResponseDTO orderShopToOrderResponseDTO(OrderShop entity, Integer shopId, boolean... isFull) {
+  @Override public OrderResponseDTO orderShopToOrderResponseDTO(OrderShop entity, Long shopId, boolean... isFull) {
     if (entity == null || entity.getOrder() == null) {
       return null;
     }

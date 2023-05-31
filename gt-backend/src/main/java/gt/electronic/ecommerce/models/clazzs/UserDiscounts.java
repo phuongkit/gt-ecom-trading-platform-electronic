@@ -14,6 +14,6 @@ import java.util.List;
 @Data
 @ToString
 public class UserDiscounts {
-  Integer userId;
+  Long userId;
   List<String> discountCodes;
 }

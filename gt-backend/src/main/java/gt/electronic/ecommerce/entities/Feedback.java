@@ -1,5 +1,6 @@
 package gt.electronic.ecommerce.entities;
 
+import gt.electronic.ecommerce.models.enums.ESentiment;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -45,6 +46,11 @@ public class Feedback {
   @NotNull(message = "An star is required!")
   private int star;
 
+  @Enumerated(EnumType.STRING)
+  @Column(name = "sentiment", length = 50)
+//  @NotNull(message = "An name is required!")
+  private ESentiment sentiment;
+
   @OneToMany(mappedBy = "mainFeedback", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   private Set<Comment> childComments = new HashSet<>();
 
@@ -76,5 +82,13 @@ public class Feedback {
     this.author = author;
     this.content = content;
     this.star = star;
+  }
+
+  public Feedback(Product product, User author, String content, Integer star, ESentiment sentiment) {
+    this.product = product;
+    this.author = author;
+    this.content = content;
+    this.star = star;
+    this.sentiment = sentiment;
   }
 }

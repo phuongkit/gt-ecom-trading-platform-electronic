@@ -23,7 +23,7 @@ public class AuthResponse {
   private String email;
   private String accessToken;
 
-  private Integer id;
+  private Long id;
   private String username;
 //  private boolean isChangedUsername;
   private String fullName;
@@ -36,7 +36,7 @@ public class AuthResponse {
   private Date birthDate;
   private int gender;
   private AddressResponseDTO address;
-  private Integer shopId;
+  private Long shopId;
   private boolean enabled;
   private String avatar;
   private int role;

@@ -9,6 +9,8 @@ import gt.electronic.ecommerce.entities.Sale;
 import gt.electronic.ecommerce.mapper.ProductMapper;
 import gt.electronic.ecommerce.mapper.ShopMapper;
 import gt.electronic.ecommerce.models.clazzs.ProductRating;
+import gt.electronic.ecommerce.models.clazzs.ProductSentiment;
+import gt.electronic.ecommerce.models.enums.ESentiment;
 import gt.electronic.ecommerce.services.FeedbackService;
 import gt.electronic.ecommerce.services.ProductService;
 import gt.electronic.ecommerce.services.SaleService;
@@ -59,7 +61,7 @@ public class ProductMapperImpl implements ProductMapper {
   }
 
   @Override
-  public ProductResponseDTO productToProductResponseDTO(Product entity) {
+  public ProductResponseDTO productToProductResponseDTO(Product entity, Boolean...haveSentiment) {
     if (entity == null) {
       return null;
     }
@@ -97,6 +99,14 @@ public class ProductMapperImpl implements ProductMapper {
     } else {
       responseDTO.setStar(0);
       responseDTO.setTotalVote(0);
+    }
+    if (haveSentiment.length > 0 && haveSentiment[0]) {
+      ProductSentiment productSentiment = this.feedbackService.getProductSentimentByProduct(entity.getId());
+      if (productSentiment == null) {
+        productSentiment.setSentiment(ESentiment.SENTIMENT_UNKNOW.toString());
+        productSentiment.setTotalSentiment(0);
+      }
+      responseDTO.setSentiment(productSentiment);
     }
     if (entity.getBrand() != null) {
       responseDTO.setBrand(entity.getBrand().getName());

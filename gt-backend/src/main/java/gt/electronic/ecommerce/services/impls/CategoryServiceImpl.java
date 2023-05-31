@@ -67,7 +67,7 @@ public class CategoryServiceImpl implements CategoryService {
         Collectors.toList());
   }
 
-  @Override public List<CategoryResponseDTO> getAllCategoriesByShop(Integer shopId) {
+  @Override public List<CategoryResponseDTO> getAllCategoriesByShop(Long shopId) {
     this.LOGGER.info(String.format(Utils.LOG_GET_ALL_OBJECT_BY_FIELD,branchName, "ShopId", shopId));
     Shop shopFound =
         this.shopRepo

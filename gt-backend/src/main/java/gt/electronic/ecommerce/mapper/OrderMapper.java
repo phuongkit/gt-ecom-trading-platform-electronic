@@ -13,8 +13,8 @@ import gt.electronic.ecommerce.models.clazzs.OrderPaymentOnly;
  * @project gt-backend
  */
 public interface OrderMapper {
-  OrderResponseDTO orderToOrderResponseDTO(Order entity, Integer shopId, boolean...isFull);
-  OrderResponseDTO orderShopToOrderResponseDTO(OrderShop entity, Integer shopId, boolean...isFull);
+  OrderResponseDTO orderToOrderResponseDTO(Order entity, Long shopId, boolean...isFull);
+  OrderResponseDTO orderShopToOrderResponseDTO(OrderShop entity, Long shopId, boolean...isFull);
 
   OrderPaymentOnly orderToOrderPaymentOnly(Order entity);
 }
