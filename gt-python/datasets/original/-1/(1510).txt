@@ -1,0 +1,1 @@
+﻿ chơi 3q thì màn_hình phóng to lên ( trong khi tắt_tai thỏ rồi ) còn chuyển sang chế_độ chia đôi màn_hình và phóng bự ra thì màn_hình lại phóng nhỏ hết_mức ( to thì to quá nhỏ thì cũng nhỏ quá ) sao mà chơi được ? ? ?

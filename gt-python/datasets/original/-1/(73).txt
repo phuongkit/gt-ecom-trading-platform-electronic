@@ -1,0 +1,1 @@
+﻿ chức_năng sạc cho điện_thoại khác tệ , không sạc được nhiều ví_dụ như sạc cho điện_thoại còn 20 % pin thì lên tầm 50 % là hết sạc được rồi đúng_ra thì chỉ giúp chữa_cháy thôi .

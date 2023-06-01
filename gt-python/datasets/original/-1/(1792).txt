@@ -1,0 +1,1 @@
+﻿ tuy_nhiên lâu_lâu bị loạn cảm_ứng ( không chạm màn nhưng máy tự_động chạy ứng_dụng ) , phải tắt_bật lại mới hết .

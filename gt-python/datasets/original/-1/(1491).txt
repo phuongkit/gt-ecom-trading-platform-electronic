@@ -1,0 +1,1 @@
+﻿ 1 : giao_diện : đơn_giản , không kiểm_soát đc ram , không có ip face , chỉ co vân tay 2 : camera : sau chỉ có 12m , trước chỉ có 5 ( trên web để 20,24 vãi thật ) ; loại chụp ít , xử_lý ảnh không đẹp . 3 : bên ngoài nhìn ok , màng hình nhìn hơi tù khi bo tròn 4 góc 4 : cảm_ứng ánh_sáng màng hinh không chuẩn lắm

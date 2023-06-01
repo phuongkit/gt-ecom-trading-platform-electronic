@@ -1,0 +1,1 @@
+﻿ khi chỉnh xoay tự_động , máy không tự xoay được hoặc phải lắc rất nhiều thì máy mới biết , cảm_biến xoay quá tệ

@@ -1,0 +1,1 @@
+﻿ phục_vụ cho nghe gọi nhưng vẫn nghe tạp_âm khi gọi

@@ -1,0 +1,1 @@
+﻿ cấu_hình mạnh nhưng hay bị lỗi điều_khiển . tự_động ngắt điều_khiển khi chạm màn_hình 5 đến 10 giây khiến trải nghiệm game ko tốt . camera lấy nét quá lâu . chip exynos 7870 nhưng bị nóng máy ko giống như dòng j7

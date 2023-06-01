@@ -1,0 +1,1 @@
+﻿ chức_năng định_vị tương_đối chính_xác . nhưng tối_đa 480 phút phải lấy đt con mở giám_sát 1 lần . các chức_năng điều_khiển từ xa k hề xài được . ví_dụ như gọi lại , bật giám_sát từ xa bằng sms . . làm đủ bước nhưng k bật đc . mình đã thử đủ các nhà_mạng vẫn k đc @ @

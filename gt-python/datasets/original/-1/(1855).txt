@@ -1,0 +1,1 @@
+﻿ nếu lưu quá nhiều hình trong máy sẽ làm máy chậm đi thấy rõ , mặc_dù là 32g thì cũng vậy thôi

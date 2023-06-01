@@ -1,0 +1,1 @@
+﻿ loa ngoài quá nhỏ nhiều lúc có cuộc_gọi đến không nghe được nhạc chuông . pin 4000mah mà khi kiểm_tra trên 3 ứng_dụng về pin thì đừng lượng có 3000mah

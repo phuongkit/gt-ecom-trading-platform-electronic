@@ -1,0 +1,1 @@
+﻿ sản_phẩm lỗi k lý_do phím nguồn thì xài lúc dc lúc mất . phím âm_lượng thì tăng k dc hay bi tăng_âm_lượng tự_động

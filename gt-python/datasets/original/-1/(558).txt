@@ -1,0 +1,1 @@
+﻿ chơi lien quân và chơi đá bóng bị lỗi cảm_ứng . nhấn đi cứ bị trượt , chạy nóng là đơ màn_hình luôn . lỗi cảm_ứng tự_động xoay màn_hình . quá ức_chế

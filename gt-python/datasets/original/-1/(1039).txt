@@ -1,0 +1,1 @@
+﻿ từ khi nâng_cấp lên android 8 , máy thường_xuyên bị lỗi , đơ , vào máy_ảnh lun bị văng ra , lúc_nào cũng bị đứng , khởi_động lại thì lúc đầu_vào đc về sau lại đơ . android 7 thấy ổn hơn , lúc đầu rất thích dòng sp này , nhưng về sau lại càng cảm_thấy thất_vọng

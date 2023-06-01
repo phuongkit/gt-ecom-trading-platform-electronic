@@ -1,0 +1,1 @@
+﻿ bin sụt nhanh ở 10 % đầu . xạc lâu đầy tầm 4-5 tiếng . cảm_biến tự_động nghe cuộc_gọi không chính_xác . chế_độ tự_động tắt màn_hình lỗi tự về . mặc_định dù được cài_đặt .

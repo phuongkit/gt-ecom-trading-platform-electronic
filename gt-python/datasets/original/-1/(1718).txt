@@ -1,0 +1,1 @@
+﻿ máy không sử_dụng wifi , máy sử_dụng gprs là công_nghệ cũ , sóng gprs chỗ mạnh chỗ yếu , chỗ không có dù sóng điện_thoại vẫn ok nếu đúng chỗ có gprs thì ok định_vị khá chuẩn nếu đúng chỗ gprs máy sẽ tự_động chuyển qua định_vị vệ_tinh thì sai_số cả chục km ( tính_năng này xem như_không xài được )

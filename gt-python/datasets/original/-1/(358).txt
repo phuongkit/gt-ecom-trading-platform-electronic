@@ -1,0 +1,1 @@
+﻿ với chiếc máy có bộ_nhớ 8g mà ứng_dụng mặc_định chiếm gần hết rồi chưa kể cộng thêm ứng_dụng chạy ngầm nữa là lên 7.3 g , lưu mặc_định về thẻ sd không được thì tải được cái gì . quá_tệ

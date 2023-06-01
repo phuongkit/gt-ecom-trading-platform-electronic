@@ -1,0 +1,1 @@
+﻿ nhận sản_phẩm sau 2h là trưa thứ 6 , máy nguyên seal chưa active nhưng lỗi không lên nguồn cắm sạc chỉ nháy logo apple rồi tắt_phụt , thử mọi cách hard reset cắm vào macbook không lên , góc trái màn_hình bị kênh và hở lên 0.5 mm so với viền .

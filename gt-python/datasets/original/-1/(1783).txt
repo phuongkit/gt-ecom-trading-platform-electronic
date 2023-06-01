@@ -1,0 +1,1 @@
+﻿ sau khi cập_nhật lên android_one 8.1 thì ko dùng được chức_năng nhận_diện khuôn_mặt

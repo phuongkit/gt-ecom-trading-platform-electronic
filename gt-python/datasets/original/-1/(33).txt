@@ -1,0 +1,1 @@
+﻿ máy bị lag khi xóa ứng_dụng bên đa_nhiệm , vừa vào liên_quân bị văng ra , tắt nguồn mở lên rồi vào chơi , cứ thế_lặp_đi lặp_lại , muốn chơi phải tắt nguồn rồi vào

@@ -1,0 +1,1 @@
+﻿ mình đánh_giá thấp mục quản_lý_danh_bạ . mổi tên chỉ lưu được có một_số điện_thoại . thành_ra ai xài hai số thì phải lưu 2 tên làm cho cái_danh_bạ dài ngoằn .

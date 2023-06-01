@@ -1,0 +1,1 @@
+﻿ chức_năng mở khóa nhận_diện khuôn_mặt ko hoạt_động . dù đã cài_đặt khuôn_mặt thành_công

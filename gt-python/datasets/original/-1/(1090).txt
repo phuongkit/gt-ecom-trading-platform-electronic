@@ -1,0 +1,1 @@
+﻿ máy thường_xuyên ko kết_nối dữ_liệu đi động đc , phải khởi_động lại mới đc . cách khắc_phục ntn_vậy ktv ?

@@ -1,0 +1,1 @@
+﻿ mắc phải một lỗi vô_cùng khó_chịu là mất kết_nối 4g và 3g , máy chỉ chạy 2g . khi khởi_động lại thì bình_thường nhưng sau một thời_gian là máy lại không kết_nối được .

@@ -1,0 +1,1 @@
+﻿ tuần đầu_tiên sử_dụng khá tốt , sau đó pin giảm rất nhanh , hay bị đơ , lag kể_cả tác vụ thông_thường , bị văng khi vào ứng_dụng . tgdđ nói là do cài_đặt quá nhiều ứng_dụng trên máy nhưng t chỉ tải có 5 ứng_dụng ( mạng xã_hội , không có game nặng ) nhưng vẫn đơ

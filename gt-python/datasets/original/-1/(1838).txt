@@ -1,0 +1,1 @@
+﻿ tin nhắn ko them đc số dt trong danh_bạ .

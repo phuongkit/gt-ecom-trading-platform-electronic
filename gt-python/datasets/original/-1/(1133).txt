@@ -1,0 +1,1 @@
+﻿ sản_phẩm lỗi . sạc bình_thường không vào , mà sạc bằng pin dự_phòng lại vào . đổi thì không cho đổi .

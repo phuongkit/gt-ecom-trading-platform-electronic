@@ -1,0 +1,1 @@
+﻿ cắm sạc pin không nhận và hiện dòng chữ " hiện không sạc " phải khởi_động lại mới chịu nhận " sạc trên ac " . khá là phiền_phức
