@@ -128,7 +128,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     Category category = new Category();
     category.setName(creationDTO.getName());
-    category.setSlug(Utils.toSlug(category.getName()));
+    category.setSlug(Utils.vnToSlug(category.getName()));
     category.setDescription(creationDTO.getDescription());
     if (creationDTO.getParentCategoryId() != null) {
       Category categoryParentFound =
@@ -163,7 +163,7 @@ public class CategoryServiceImpl implements CategoryService {
         String.format(Utils.OBJECT_NOT_FOUND_BY_FIELD, branchName, "ID", id)));
 
     categoryFound.setName(creationDTO.getName());
-    categoryFound.setSlug(Utils.toSlug(categoryFound.getName()));
+    categoryFound.setSlug(Utils.vnToSlug(categoryFound.getName()));
     categoryFound.setDescription(creationDTO.getDescription());
     if (creationDTO.getParentCategoryId() != null) {
       Category categoryParentFound =

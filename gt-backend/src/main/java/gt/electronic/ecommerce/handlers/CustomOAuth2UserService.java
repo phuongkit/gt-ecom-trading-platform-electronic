@@ -1,17 +1,13 @@
 package gt.electronic.ecommerce.handlers;
 
 import gt.electronic.ecommerce.entities.Image;
-import gt.electronic.ecommerce.entities.Role;
 import gt.electronic.ecommerce.entities.User;
-import gt.electronic.ecommerce.exceptions.BadRequestException;
 import gt.electronic.ecommerce.exceptions.OAuth2AuthenticationProcessingException;
 import gt.electronic.ecommerce.handlers.user.OAuth2UserInfo;
 import gt.electronic.ecommerce.handlers.user.OAuth2UserInfoFactory;
 import gt.electronic.ecommerce.models.enums.AuthProvider;
 import gt.electronic.ecommerce.models.enums.EImageType;
 import gt.electronic.ecommerce.models.enums.ERole;
-import gt.electronic.ecommerce.repositories.ImageRepository;
-import gt.electronic.ecommerce.repositories.RoleRepository;
 import gt.electronic.ecommerce.repositories.UserRepository;
 import gt.electronic.ecommerce.services.ImageService;
 import gt.electronic.ecommerce.utils.CodeConfig;
@@ -44,12 +40,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
   @Autowired public void ImageService(ImageService imageService) {
     this.imageService = imageService;
-  }
-
-  private RoleRepository roleRepo;
-
-  @Autowired public void RoleRepository(RoleRepository roleRepo) {
-    this.roleRepo = roleRepo;
   }
 
   private UserRepository userRepo;
@@ -119,9 +109,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
       usernameGenerate = GenerateUtil.generate(CodeConfig.length(Utils.LENGTH_USERNAME_GENERATE));
     } while (this.userRepo.existsByUsername(usernameGenerate));
     user.setUsername(usernameGenerate);
-    Role roleFound = this.roleRepo.findByName(ERole.ROLE_CUSTOMER).orElseThrow(() -> new BadRequestException(
-        "Sorry! We've got an Unauthorized Redirect URI and can't proceed with the authentication"));
-    user.setRole(roleFound);
+    user.setRole(ERole.ROLE_CUSTOMER);
     if (oAuth2UserInfo.getImageUrl() != null) {
       System.out.println(1);
       Image image = new Image(oAuth2UserInfo.getImageUrl(), EImageType.IMAGE_USER);

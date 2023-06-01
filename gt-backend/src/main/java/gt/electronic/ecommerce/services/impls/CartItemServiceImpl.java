@@ -237,7 +237,7 @@ public class CartItemServiceImpl implements CartItemService {
                             "ID",
                             id)));
     if (Objects.equals(userFound.getId(), cartItemFound.getUser().getId()) || userFound.getRole()
-        .getName() == ERole.ROLE_ADMIN) {
+         == ERole.ROLE_ADMIN) {
       cartItemFound.setQuantity(cartItemFound.getQuantity() + creationDTO.getQuantity() < productFound.getQuantity() ?
                                     cartItemFound.getQuantity() + creationDTO.getQuantity() :
                                     productFound.getQuantity());
@@ -265,7 +265,7 @@ public class CartItemServiceImpl implements CartItemService {
                         id)));
 
     if (Objects.equals(userFound.getId(), cartItemFound.getUser().getId()) || userFound.getRole()
-        .getName() == ERole.ROLE_ADMIN) {
+         == ERole.ROLE_ADMIN) {
       // delete Cart Item
       this.orderItemRepo.deleteById(id);
 

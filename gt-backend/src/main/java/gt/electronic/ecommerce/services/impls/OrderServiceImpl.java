@@ -342,7 +342,7 @@ import static gt.electronic.ecommerce.models.enums.EDiscountType.DISCOUNT_SHOP_P
                                                                        id)));
     if (entityFound.getUser() == null || Objects.equals(userFound.getId(),
                                                         entityFound.getUser().getId()) || userFound.getRole()
-        .getName() == ERole.ROLE_ADMIN) {
+         == ERole.ROLE_ADMIN) {
       entityFound.setPayment(updatePaymentDTO.getPayment() != null ? updatePaymentDTO.getPayment() : EPayment.CASH);
       entityFound.setStatus(updatePaymentDTO.getStatus() == null ?
                                 (updatePaymentDTO.getPayment().ordinal() > 0 ? EOrderStatus.ORDER_AWAITING_PAYMENT :
@@ -378,7 +378,7 @@ import static gt.electronic.ecommerce.models.enums.EDiscountType.DISCOUNT_SHOP_P
                                                                        id)));
     if (entityFound.getUser() == null || Objects.equals(userFound.getId(),
                                                         entityFound.getUser().getId()) || userFound.getRole()
-        .getName() == ERole.ROLE_ADMIN) {
+         == ERole.ROLE_ADMIN) {
       entityFound.setStatus(updateStatusDTO.getStatus());
       if (updateStatusDTO.getLog() != null && !Objects.equals(updateStatusDTO.getLog().trim(), "")) {
 //        entityFound.setLog(updateStatusDTO.getLog());
@@ -444,7 +444,7 @@ import static gt.electronic.ecommerce.models.enums.EDiscountType.DISCOUNT_SHOP_P
                                                                        "ID",
                                                                        id)));
 
-    if (userFound.getRole().getName() == ERole.ROLE_ADMIN || Objects.equals(userFound.getId(),
+    if (userFound.getRole() == ERole.ROLE_ADMIN || Objects.equals(userFound.getId(),
                                                                             entityFound.getUser().getId())) {
 
       for (OrderShop orderShop : entityFound.getOrderShops()) {

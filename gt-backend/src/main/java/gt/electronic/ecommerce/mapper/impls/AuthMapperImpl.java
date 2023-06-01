@@ -1,14 +1,11 @@
 package gt.electronic.ecommerce.mapper.impls;
 
 import gt.electronic.ecommerce.dto.response.AuthResponse;
-import gt.electronic.ecommerce.dto.response.UserResponseDTO;
 import gt.electronic.ecommerce.entities.Address;
-import gt.electronic.ecommerce.entities.Role;
 import gt.electronic.ecommerce.entities.User;
 import gt.electronic.ecommerce.mapper.AddressMapper;
 import gt.electronic.ecommerce.mapper.AuthMapper;
 import gt.electronic.ecommerce.models.enums.EGender;
-import gt.electronic.ecommerce.models.enums.ERole;
 import gt.electronic.ecommerce.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -73,7 +70,7 @@ public class AuthMapperImpl implements AuthMapper {
 //      i++;
 //    }
 //    responseDTO.setRoles(roles);
-    responseDTO.setRole(entity.getRole().getName().ordinal());
+    responseDTO.setRole(entity.getRole().ordinal());
     responseDTO.setCreatedAt(entity.getCreatedAt());
     responseDTO.setUpdatedAt(entity.getUpdatedAt());
     responseDTO.setLastLogin(entity.getLastLogin());

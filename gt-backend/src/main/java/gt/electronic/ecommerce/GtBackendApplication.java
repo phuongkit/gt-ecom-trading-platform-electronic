@@ -32,6 +32,6 @@ public class GtBackendApplication implements CommandLineRunner {
 
   @Override
   public void run(String... args) {
-//    initData.Init();
+    initData.Init();
   }
 }

@@ -398,7 +398,7 @@ public class Utils {
 
     public static String generateUsername(String firstName, String lastName) {
         if (!Objects.equals(firstName, "") || !Objects.equals(lastName, "")) {
-            return vnToSlug(lastName + firstName) + getRandomNumberString(4);
+            return vnToSlug(lastName + firstName, true) + getRandomNumberString(4);
         } else {
             return "user100" + getRandomNumberString(6);
         }
@@ -414,7 +414,7 @@ public class Utils {
         return String.format("%06d", number);
     }
 
-    public static String vnToSlug(String title) {
+    public static String vnToSlug(String title, boolean... isUsername) {
         //Đổi chữ hoa thành chữ thường
         String slug = title.toLowerCase();
 
@@ -426,7 +426,14 @@ public class Utils {
         slug = slug.replaceAll("(?i)(ú|ù|ủ|ũ|ụ|ư|ứ|ừ|ử|ữ|ự)", "u");
         slug = slug.replaceAll("(?i)(ý|ỳ|ỷ|ỹ|ỵ)", "y");
         slug = slug.replaceAll("(?i)(đ)", "d");
-        System.out.println(slug);
+        String noWhitespace;
+        if (isUsername.length > 0 && isUsername[0]) {
+            noWhitespace = WHITESPACE.matcher(slug).replaceAll("");
+        } else {
+            noWhitespace = WHITESPACE.matcher(slug).replaceAll("-");
+        }
+        String normalized = Normalizer.normalize(noWhitespace, Normalizer.Form.NFD);
+        slug = NONLATIN.matcher(normalized).replaceAll("");
         //Xóa các ký tự đặt biệt
         slug = slug.replaceAll(
                 "(?i)(\\`|\\~|\\!|\\@|\\#|\\||\\$|\\%|\\^|\\&|\\*|\\(|\\)|\\+|\\=|\\,|\\.|\\/|\\?|\\>|\\<|'|\"|\\:|\\;|_)",

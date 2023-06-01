@@ -69,7 +69,7 @@ public class UserMapperImpl implements UserMapper {
 //      i++;
 //    }
 //    responseDTO.setRoles(roles);
-    responseDTO.setRole(entity.getRole().getName().ordinal());
+    responseDTO.setRole(entity.getRole().ordinal());
     responseDTO.setCreatedAt(entity.getCreatedAt());
     responseDTO.setUpdatedAt(entity.getUpdatedAt());
     responseDTO.setLastLogin(entity.getLastLogin());
@@ -90,7 +90,7 @@ public class UserMapperImpl implements UserMapper {
     if (entity.getAvatar() != null) {
       responseDTO.setAvatar(Utils.getUrlFromPathImage(entity.getAvatar().getPath()));
     }
-    responseDTO.setAdmin(entity.getRole().getName() == ERole.ROLE_ADMIN);
+    responseDTO.setAdmin(entity.getRole() == ERole.ROLE_ADMIN);
     return responseDTO;
   }
 }

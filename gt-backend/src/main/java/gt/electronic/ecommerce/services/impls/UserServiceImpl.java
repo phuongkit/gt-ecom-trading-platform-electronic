@@ -3,14 +3,16 @@ package gt.electronic.ecommerce.services.impls;
 import gt.electronic.ecommerce.dto.request.AuthRegisterDTO;
 import gt.electronic.ecommerce.dto.request.UserCreationDTO;
 import gt.electronic.ecommerce.dto.response.UserResponseDTO;
-import gt.electronic.ecommerce.entities.*;
+import gt.electronic.ecommerce.entities.Address;
+import gt.electronic.ecommerce.entities.Image;
+import gt.electronic.ecommerce.entities.Location;
+import gt.electronic.ecommerce.entities.User;
 import gt.electronic.ecommerce.entities.keys.AddressKey;
 import gt.electronic.ecommerce.exceptions.InvalidFieldException;
 import gt.electronic.ecommerce.exceptions.ResourceAlreadyExistsException;
 import gt.electronic.ecommerce.exceptions.ResourceNotFoundException;
 import gt.electronic.ecommerce.mapper.UserMapper;
 import gt.electronic.ecommerce.models.enums.*;
-import gt.electronic.ecommerce.repositories.RoleRepository;
 import gt.electronic.ecommerce.repositories.UserRepository;
 import gt.electronic.ecommerce.services.*;
 import gt.electronic.ecommerce.utils.CodeConfig;
@@ -29,7 +31,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.*;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 /**
  * @author minh phuong
@@ -69,12 +73,6 @@ public class UserServiceImpl implements UserService {
 
   @Autowired public void PasswordEncoder(PasswordEncoder passwordEncoder) {
     this.passwordEncoder = passwordEncoder;
-  }
-
-  private RoleRepository roleRepo;
-
-  @Autowired public void RoleRepository(RoleRepository roleRepo) {
-    this.roleRepo = roleRepo;
   }
 
   private ShopService shopService;
@@ -230,9 +228,7 @@ public class UserServiceImpl implements UserService {
     user.setEmailVerified(false);
     user.setEnabled(true);
     user.setGender(EGender.UNKNOWN);
-    Optional<Role> roleFound = this.roleRepo.findByName(isSeller ? ERole.ROLE_SELLER : ERole.ROLE_CUSTOMER);
-
-    roleFound.ifPresent(user::setRole);
+    user.setRole(isSeller ? ERole.ROLE_SELLER : ERole.ROLE_CUSTOMER);
 
     User savedEntity = this.userRepo.save(user);
     if (isSeller) {
@@ -289,11 +285,8 @@ public class UserServiceImpl implements UserService {
     newUser.setBirthDate(creationDTO.getBirthDate());
     newUser.setGender(creationDTO.getGender());
     newUser.setEnabled(creationDTO.isEnabled());
-//    newUser.setRole(getRolesByRoleName(creationDTO.getRole()));
-    Role roleFound = this.roleRepo.findByName(creationDTO.getRole()).orElseThrow(() -> new ResourceNotFoundException(
-        String.format(Utils.OBJECT_NOT_FOUND_BY_FIELD, Role.class.getSimpleName(), "Name", creationDTO.getRole())));
 
-    newUser.setRole(roleFound);
+    newUser.setRole(creationDTO.getRole());
 
     // set image
     if (imageFile != null && !imageFile.isEmpty()) {
@@ -381,11 +374,8 @@ public class UserServiceImpl implements UserService {
       }
     }
     userFound.setEnabled(creationDTO.isEnabled());
-//    userFound.setRoles(getRolesByRoleName(creationDTO.getRoles()));
-    Role roleFound = this.roleRepo.findByName(creationDTO.getRole()).orElseThrow(() -> new ResourceNotFoundException(
-        String.format(Utils.OBJECT_NOT_FOUND_BY_FIELD, Role.class.getSimpleName(), "Name", creationDTO.getRole())));
 
-    userFound.setRole(roleFound);
+    userFound.setRole(creationDTO.getRole());
 
     // update is image
     if (imageFile != null && !imageFile.isEmpty()) {

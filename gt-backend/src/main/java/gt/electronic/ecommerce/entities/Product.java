@@ -143,7 +143,7 @@ public class Product {
 
   public Product(String name, BigDecimal price, Long quantity, Category category, Brand brand, Shop shop, Location location, Image thumbnail, String description) {
     this.name = name;
-    this.slug = Utils.toSlug(name) + "." + UUID.randomUUID().toString().replace("-", "");
+    this.slug = Utils.vnToSlug(name) + "." + UUID.randomUUID().toString().replace("-", "");
     this.price = price;
     this.quantity = quantity;
     this.status = EProductStatus.PRODUCT_TRADING;

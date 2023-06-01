@@ -159,7 +159,7 @@ public class StatisticServiceImpl implements StatisticService {
     public ShopSentiment statisticSentimentByShop(String loginKey, Long shopId) {
         this.LOGGER.info(String.format(Utils.LOG_GET_STATISTIC_BY_USER, "Sentiment", "Shop", loginKey));
         User authorFound = this.userService.getUserByLoginKey(loginKey);
-        if (Objects.equals(authorFound.getId(), shopId) || authorFound.getRole().getName() == ERole.ROLE_ADMIN) {
+        if (Objects.equals(authorFound.getId(), shopId) || authorFound.getRole() == ERole.ROLE_ADMIN) {
             List<IProductSentiment> iProductSentimentList = this.viewRepo.getProductSentiment(null, shopId);
             Map<Long, ProductSentiment> productSentimentMap = new HashMap<>();
             for (IProductSentiment iProductSentiment : iProductSentimentList) {
