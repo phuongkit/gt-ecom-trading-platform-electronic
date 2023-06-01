@@ -11,6 +11,7 @@ import gt.electronic.ecommerce.mapper.ShopMapper;
 import gt.electronic.ecommerce.models.enums.EImageType;
 import gt.electronic.ecommerce.models.enums.EPattern;
 import gt.electronic.ecommerce.models.enums.ERole;
+import gt.electronic.ecommerce.repositories.RoleRepository;
 import gt.electronic.ecommerce.repositories.ShopRepository;
 import gt.electronic.ecommerce.repositories.UserRepository;
 import gt.electronic.ecommerce.services.ImageService;
@@ -60,6 +61,12 @@ public class ShopServiceImpl implements ShopService {
 
   @Autowired public void LocationService(LocationService locationService) {
     this.locationService = locationService;
+  }
+
+  private RoleRepository roleRepo;
+
+  @Autowired public void RoleRepository(RoleRepository roleRepo) {
+    this.roleRepo = roleRepo;
   }
 
   private ShopMapper shopMapper;
@@ -202,8 +209,9 @@ public class ShopServiceImpl implements ShopService {
     }
 
     // update role user to role seller
-    if (user.getRole() == ERole.ROLE_CUSTOMER) {
-      user.setRole(ERole.ROLE_SELLER);
+    if (user.getRole().getName() == ERole.ROLE_CUSTOMER) {
+      Optional<Role> roleSeller = this.roleRepo.findByName(ERole.ROLE_SELLER);
+      roleSeller.ifPresent(user::setRole);
     }
 
     Shop newEntity = new Shop();
@@ -212,7 +220,7 @@ public class ShopServiceImpl implements ShopService {
       usernameGenerate = GenerateUtil.generate(CodeConfig.length(Utils.LENGTH_USERNAME_GENERATE));
     } while (this.shopRepo.findByName(usernameGenerate).isPresent());
     newEntity.setName(usernameGenerate);
-    newEntity.setSlug(Utils.vnToSlug(usernameGenerate));
+    newEntity.setSlug(Utils.toSlug(usernameGenerate));
 //    newEntity.setDescription(creationDTO.getDescription());
     newEntity.setUser(user);
     newEntity.setEmail(user.getEmail());
@@ -273,11 +281,12 @@ public class ShopServiceImpl implements ShopService {
     }
 
     // update role user to role seller
-    userFound.setRole(ERole.ROLE_SELLER);
+    Optional<Role> roleSeller = this.roleRepo.findByName(ERole.ROLE_SELLER);
+    roleSeller.ifPresent(userFound::setRole);
 
     Shop newEntity = new Shop();
     newEntity.setName(creationDTO.getName());
-    newEntity.setSlug(Utils.vnToSlug(creationDTO.getName()));
+    newEntity.setSlug(Utils.toSlug(creationDTO.getName()));
     newEntity.setDescription(creationDTO.getDescription());
     newEntity.setUser(userFound);
     newEntity.setEmail(creationDTO.getEmail());
@@ -366,13 +375,14 @@ public class ShopServiceImpl implements ShopService {
     }
 
     // update role user to role seller if it have not already updated
-    if (userFound.getRole() != ERole.ROLE_SELLER) {
-      userFound.setRole(ERole.ROLE_SELLER);
+    if (userFound.getRole().getName() != ERole.ROLE_SELLER) {
+      Optional<Role> roleSeller = this.roleRepo.findByName(ERole.ROLE_SELLER);
+      roleSeller.ifPresent(userFound::setRole);
     }
 
     if (creationDTO.getName() != null) {
       entityFound.setName(creationDTO.getName());
-      entityFound.setSlug(Utils.vnToSlug(creationDTO.getName()));
+      entityFound.setSlug(Utils.toSlug(creationDTO.getName()));
     }
     if (creationDTO.getDescription() != null) {
       entityFound.setDescription(creationDTO.getDescription());

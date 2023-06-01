@@ -150,7 +150,7 @@ public class BrandServiceImpl implements BrandService {
     }
     Brand brand = new Brand();
     brand.setName(creationDTO.getName());
-    brand.setSlug(Utils.vnToSlug(brand.getName()));
+    brand.setSlug(Utils.toSlug(brand.getName()));
     brand.setDescription(creationDTO.getDescription());
     if (imageFile != null && !imageFile.isEmpty()) {
       Image image = this.imageService.createImageByMultipartFile(imageFile, EImageType.IMAGE_BRAND);
@@ -168,7 +168,7 @@ public class BrandServiceImpl implements BrandService {
     if (brandFound.isPresent()) {
       Brand brand = brandFound.get();
       brand.setName(creationDTO.getName());
-      brand.setSlug(Utils.vnToSlug(brand.getName()));
+      brand.setSlug(Utils.toSlug(brand.getName()));
       brand.setDescription(creationDTO.getDescription());
       if (imageFile != null) {
         if (brand.getImage() != null) {

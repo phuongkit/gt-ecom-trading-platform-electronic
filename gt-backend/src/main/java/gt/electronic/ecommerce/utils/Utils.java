@@ -2,16 +2,25 @@ package gt.electronic.ecommerce.utils;
 
 import gt.electronic.ecommerce.entities.*;
 import gt.electronic.ecommerce.exceptions.ResourceNotValidException;
+import gt.electronic.ecommerce.models.enums.EDiscountType;
 import gt.electronic.ecommerce.models.enums.EPattern;
 import gt.electronic.ecommerce.models.enums.ETimeDistance;
+import io.swagger.v3.oas.annotations.servers.Server;
 import lombok.Getter;
 import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.servlet.function.ServerRequest;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.text.DateFormat;
 import java.text.Normalizer;
 import java.text.SimpleDateFormat;
@@ -389,7 +398,7 @@ public class Utils {
 
     public static String generateUsername(String firstName, String lastName) {
         if (!Objects.equals(firstName, "") || !Objects.equals(lastName, "")) {
-            return vnToSlug(lastName + firstName, true) + getRandomNumberString(4);
+            return vnToSlug(lastName + firstName) + getRandomNumberString(4);
         } else {
             return "user100" + getRandomNumberString(6);
         }
@@ -405,7 +414,7 @@ public class Utils {
         return String.format("%06d", number);
     }
 
-    public static String vnToSlug(String title, boolean...isUsername) {
+    public static String vnToSlug(String title) {
         //Đổi chữ hoa thành chữ thường
         String slug = title.toLowerCase();
 
@@ -417,15 +426,7 @@ public class Utils {
         slug = slug.replaceAll("(?i)(ú|ù|ủ|ũ|ụ|ư|ứ|ừ|ử|ữ|ự)", "u");
         slug = slug.replaceAll("(?i)(ý|ỳ|ỷ|ỹ|ỵ)", "y");
         slug = slug.replaceAll("(?i)(đ)", "d");
-        // Xóa khoảng trắng
-        String noWhitespace;
-        if (isUsername.length > 0 && isUsername[0]) {
-            noWhitespace = WHITESPACE.matcher(slug).replaceAll("");
-        } else {
-            noWhitespace = WHITESPACE.matcher(slug).replaceAll("-");
-        }
-        String normalized = Normalizer.normalize(noWhitespace, Normalizer.Form.NFD);
-        slug = NONLATIN.matcher(normalized).replaceAll("");
+        System.out.println(slug);
         //Xóa các ký tự đặt biệt
         slug = slug.replaceAll(
                 "(?i)(\\`|\\~|\\!|\\@|\\#|\\||\\$|\\%|\\^|\\&|\\*|\\(|\\)|\\+|\\=|\\,|\\.|\\/|\\?|\\>|\\<|'|\"|\\:|\\;|_)",

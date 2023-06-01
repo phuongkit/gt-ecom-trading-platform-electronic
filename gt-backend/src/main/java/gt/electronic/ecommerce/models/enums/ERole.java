@@ -6,19 +6,19 @@ package gt.electronic.ecommerce.models.enums;
  * @project gt-backend
  */
 public enum ERole {
-  // Admin role is the administrator's role
+//  ROLE_ADMIN,
+//  ROLE_SALESPERSON,
+//  ROLE_EDITOR,
+//  ROLE_ASSISTANT,
+//  ROLE_SHIPPER,
+//  ROLE_SELLER,
+//  ROLE_CUSTOMER;
   ROLE_ADMIN(Names.ADMIN),
-  // Seller is a person who sells goods to consumers.
   ROLE_SELLER(Names.SELLER),
-  // Customers are the people who have the conditions to make purchasing decisions. They are the beneficiaries of the characteristics and quality of the product or service.
   ROLE_CUSTOMER(Names.CUSTOMER),
-  // Manage questions and reviews
   ROLE_SALESPERSON(Names.SALESPERSON),
-  // Manage categories, bv.brands, products, articles and menus
   ROLE_EDITOR(Names.EDITOR),
-  // View products, view orders and update order status
   ROLE_ASSISTANT(Names.ASSISTANT),
-  // Manage product price, customers, shipping, orders and sales report
   ROLE_SHIPPER(Names.SHIPPER);
 
   public class Names{

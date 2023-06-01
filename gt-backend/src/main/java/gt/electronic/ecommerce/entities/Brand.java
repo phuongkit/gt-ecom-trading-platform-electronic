@@ -50,11 +50,11 @@ public class Brand {
   public Brand(String name)
   {
     this.name = name;
-    this.slug = Utils.vnToSlug(name);
+    this.slug = Utils.toSlug(name);
   }
   public Brand (String name, Image image) {
     this.name = name;
-    this.slug = Utils.vnToSlug(name);
+    this.slug = Utils.toSlug(name);
     this.image = image;
   }
 }

@@ -65,7 +65,7 @@ public class Category {
 
   public Category(String name, Image thumbnail, Image icon, Set<Brand> brands) {
     this.name = name;
-    this.slug = Utils.vnToSlug(name);
+    this.slug = Utils.toSlug(name);
     this.thumbnail = thumbnail;
     this.icon = icon;
     this.brands = brands;
