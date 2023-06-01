@@ -113,7 +113,7 @@ public class Shop {
 
   public Shop(String name, User user, FullAddress fullAddress, String avatar, String background) {
     this.name = name;
-    this.slug = Utils.toSlug(name);
+    this.slug = Utils.vnToSlug(name);
     user.setShop(this);
     this.user = user;
     this.email = user.getEmail();

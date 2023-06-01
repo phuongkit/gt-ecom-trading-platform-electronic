@@ -2,6 +2,7 @@ package gt.electronic.ecommerce.entities;
 
 import gt.electronic.ecommerce.models.enums.AuthProvider;
 import gt.electronic.ecommerce.models.enums.EGender;
+import gt.electronic.ecommerce.models.enums.ERole;
 import gt.electronic.ecommerce.utils.Utils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -117,9 +118,10 @@ public class User implements OAuth2User, UserDetails {
   @JoinColumn(name = "avatar")
   private Image avatar;
 
-  @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "role_id")
-  private Role role;
+  @Enumerated(EnumType.STRING)
+  @Column(name = "name", length = 50, nullable = false)
+  @NotNull(message = "An name is required!")
+  private ERole role = ERole.ROLE_CUSTOMER;
 
   @OneToMany(mappedBy = "relyForUser", cascade = CascadeType.ALL)
   private Set<Comment> commentReliedList = new HashSet<>();
@@ -173,7 +175,7 @@ public class User implements OAuth2User, UserDetails {
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
     List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-    authorities.add(new SimpleGrantedAuthority(role.getName() + ""));
+    authorities.add(new SimpleGrantedAuthority(this.role + ""));
     return authorities;
   }
 
@@ -203,7 +205,7 @@ public class User implements OAuth2User, UserDetails {
     this.discounts = new HashSet<>();
   }
 
-  public User(Long id, String username, String email, String password, Role role) {
+  public User(Long id, String username, String email, String password, ERole role) {
     this.id = id;
     this.username = username;
     this.email = email;

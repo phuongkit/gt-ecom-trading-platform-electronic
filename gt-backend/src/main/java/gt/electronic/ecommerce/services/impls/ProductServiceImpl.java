@@ -347,7 +347,7 @@ import java.util.*;
         .orElseThrow(() -> new ResourceNotFound(String.format(Utils.OBJECT_NOT_FOUND_BY_FIELD, branchName, "ID", id)));
     if (haveSentiment && loginKey != null) {
       User authorFound = this.userService.getUserByLoginKey(loginKey);
-      if ((authorFound.getShop() == null || !Objects.equals(authorFound.getShop().getId(), product.getShop().getId())) && authorFound.getRole().getName() != ERole.ROLE_ADMIN) {
+      if ((authorFound.getShop() == null || !Objects.equals(authorFound.getShop().getId(), product.getShop().getId())) && authorFound.getRole() != ERole.ROLE_ADMIN) {
         haveSentiment = false;
       }
     }
@@ -408,7 +408,7 @@ import java.util.*;
 
     Product product = new Product();
     product.setName(creationDTO.getName());
-    product.setSlug(Utils.toSlug(product.getName()) + "." + UUID.randomUUID().toString().replace("-", ""));
+    product.setSlug(Utils.vnToSlug(product.getName()) + "." + UUID.randomUUID().toString().replace("-", ""));
     product.setDescription(creationDTO.getDescription());
     product.setPrice(creationDTO.getPrice());
     product.setQuantity(creationDTO.getQuantity());
@@ -506,7 +506,7 @@ import java.util.*;
     }
 
     entityFound.setName(creationDTO.getName());
-    entityFound.setSlug(Utils.toSlug(entityFound.getName()) + "." + UUID.randomUUID().toString().replace("-", ""));
+    entityFound.setSlug(Utils.vnToSlug(entityFound.getName()) + "." + UUID.randomUUID().toString().replace("-", ""));
     entityFound.setDescription(creationDTO.getDescription());
     entityFound.setPrice(creationDTO.getPrice());
     entityFound.setQuantity(creationDTO.getQuantity());
