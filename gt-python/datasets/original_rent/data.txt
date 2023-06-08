@@ -1,0 +1,125 @@
+1 Tôi không hài lòng với dịch vụ khách hàng của sản phẩm này.
+1 Sản phẩm này gây ra nhiều vấn đề cho tôi.
+1 Tôi không thấy sản phẩm này có độ tin cậy cao.
+0 Sản phẩm này không đáng chú ý trong phân khúc giá.
+0 Tôi không tin tưởng vào tính ổn định, chất lượng và đáng tin cậy của sản phẩm này.
+1 Sản phẩm này không đáp ứng được mong đợi của tôi.
+1 Sản phẩm này có chất lượng kém.
+1 Tôi cảm thấy thất vọng về chất lượng của sản phẩm này.
+1 Sản phẩm này không đáp ứng được các tính năng cần thiết.
+0 Sản phẩm này không đáng tin cậy.
+0 Tôi không tin tưởng vào độ bền của sản phẩm này.
+2 Tôi rất hài lòng với trải nghiệm sử dụng sản phẩm này.
+2 Sản phẩm này hoàn toàn đáng tiền.
+1 Sản phẩm này không đáp ứng được yêu cầu cần thiết.
+2 Sản phẩm này vượt quá mong đợi của tôi.
+1 Tôi không thấy sản phẩm này đáp ứng mong đợi của tôi.
+0 Sản phẩm này không đáng mua.
+1 Tôi gặp nhiều khó khăn khi cài đặt sản phẩm này.
+1 Tôi không hài lòng với chất lượng của sản phẩm này.
+0 Tôi không hài lòng với độ tin cậy của sản phẩm này.
+0 Tôi thật sự thất vọng với sản phẩm này.
+2 Tôi đã có trải nghiệm tuyệt vời với sản phẩm này.
+0 Tôi không thấy sản phẩm này có độ tin cậy cao.
+1 Sản phẩm này không phù hợp với nhu cầu của tôi.
+0 Tôi không tin tưởng vào tính ổn định của sản phẩm này.
+1 Tôi không hài lòng với hiệu suất của sản phẩm này.
+2 Tôi rất hài lòng với hiệu suất và tính năng của sản phẩm này.
+2 Tôi đã có trải nghiệm tuyệt vời khi sử dụng sản phẩm này.
+2 Tôi rất hài lòng với tính tiện lợi và độ bền của sản phẩm này.
+1 Tôi gặp nhiều khó khăn khi sử dụng sản phẩm này.
+0 Tôi không thấy sản phẩm này có độ bền cao.
+0 Tôi không thấy sản phẩm này đáng mua với mức giá hiện tại.
+0 Sản phẩm này thực sự không đáng tiền.
+2 Sản phẩm này rất tiện ích và đáng giá.
+0 Tôi không hài lòng với chất lượng sản phẩm này.
+1 Sản phẩm này gặp nhiều vấn đề khi sử dụng.
+1 Sản phẩm này không đáp ứng được các tính năng cần thiết, yêu cầu và mong đợi của tôi.
+0 Sản phẩm này không đáng chú ý với tôi.
+2 Tôi đã tìm thấy sản phẩm này hoàn toàn đáng mua.
+1 Tôi gặp rất nhiều vấn đề khi cài đặt và sử dụng sản phẩm này.
+0 Tôi không thấy sản phẩm này đáng chú ý.
+2 Tôi sẽ khuyên bạn nên mua sản phẩm này.
+2 Tôi đã tìm thấy sản phẩm này thực sự tốt và đáng giá.
+2 Sản phẩm này vượt qua mong đợi của tôi về hiệu suất.
+2 Tôi rất hài lòng với hiệu suất, tính linh hoạt, độ bền và tính đáng giá của sản phẩm này.
+1 Sản phẩm này không đáp ứng được các tính năng quan trọng đối với tôi.
+0 Sản phẩm này không đáng mua với mức giá này.
+2 Tôi sẽ khuyến nghị bạn nên mua sản phẩm này.
+2 Tôi rất hài lòng với chất lượng sản phẩm này.
+0 Tôi không tin tưởng vào tính năng của sản phẩm này.
+1 Sản phẩm này không đáp ứng được mong đợi về tính linh hoạt.
+0 Sản phẩm này không đáng mua với giá trị hiện tại.
+2 Sản phẩm này rất tiện lợi và dễ sử dụng.
+0 Sản phẩm này không đáng tiền theo ý kiến của tôi.
+1 Sản phẩm này không đáp ứng mong đợi của tôi.
+1 Tôi gặp rất nhiều vấn đề khi sử dụng sản phẩm này.
+1 Tôi gặp rất nhiều vấn đề kỹ thuật khi sử dụng sản phẩm này.
+1 Tôi không hài lòng với tính năng của sản phẩm này.
+1 Tôi không thấy sản phẩm này đạt được tiêu chuẩn.
+2 Sản phẩm này thực sự tuyệt vời.
+2 Tôi rất ấn tượng với thiết kế và tính năng của sản phẩm này.
+2 Tôi rất hài lòng với trải nghiệm sử dụng và tính năng của sản phẩm này.
+0 Sản phẩm này thật sự thất vọng.
+1 Tôi đã gặp rất nhiều vấn đề khi sử dụng sản phẩm này.
+2 Sản phẩm này đáng mỗi đồng tiền tôi đã bỏ ra.
+2 Tôi rất hài lòng với hiệu suất và đáng giá của sản phẩm này.
+2 Sản phẩm này là một sự lựa chọn tuyệt vời.
+2 Sản phẩm này đã vượt quá mong đợi của tôi về chất lượng.
+0 Tôi không thấy sản phẩm này đáng chú ý với mức giá hiện tại.
+1 Sản phẩm này không đáp ứng được mong đợi về hiệu suất và tính linh hoạt.
+1 Sản phẩm này không đáp ứng được các tính năng cần thiết đối với tôi.
+1 Tôi đã gặp nhiều lỗi khi sử dụng sản phẩm này.
+0 Tôi không tin tưởng vào sản phẩm này.
+2 Tôi rất hài lòng với sự tiện ích và độ bền của sản phẩm này.
+2 Sản phẩm này rất dễ sử dụng và tiện lợi.
+2 Tôi rất hài lòng với hiệu suất, tính linh hoạt và độ bền của sản phẩm này.
+0 Sản phẩm này không đáng để đầu tư.
+1 Sản phẩm này không đáp ứng được mong đợi về hiệu suất, tính linh hoạt và độ bền.
+2 Sản phẩm này cung cấp những tính năng độc đáo và hữu ích.
+0 Sản phẩm này không đáng tiền.
+2 Tôi rất hài lòng với chất lượng và đáng giá của sản phẩm này.
+2 Sản phẩm này vượt quá sự mong đợi của tôi.
+1 Sản phẩm này không đáp ứng được yêu cầu cần thiết đối với tôi.
+0 Tôi không tin tưởng vào tính ổn định và độ bền của sản phẩm này.
+1 Sản phẩm này không đáp ứng được mong đợi về hiệu suất.
+2 Sản phẩm này là một lựa chọn tuyệt vời.
+1 Tôi không hài lòng với trải nghiệm sử dụng sản phẩm này.
+0 Tôi không thấy sản phẩm này có giá trị.
+1 Sản phẩm này không đáp ứng yêu cầu của tôi.
+2 Tôi đã có trải nghiệm tuyệt vời, rất hài lòng và đánh giá cao sản phẩm này.
+1 Sản phẩm này không hoạt động đúng cách.
+1 Tôi không thấy sản phẩm này đáp ứng được mong đợi của tôi.
+0 Sản phẩm này không đáng mua với mức giá hiện tại.
+1 Sản phẩm này gây thất vọng về mặt chất lượng.
+0 Sản phẩm này không đáng tin cậy với tôi.
+1 Sản phẩm này không đáp ứng được nhu cầu của tôi.
+1 Sản phẩm này không đáp ứng được những tính năng quan trọng.
+2 Tôi rất hài lòng với sản phẩm này.
+0 Sản phẩm này không có giá trị.
+2 Sản phẩm này đáp ứng tốt những yêu cầu của tôi.
+0 Tôi không tin tưởng vào tính ổn định và chất lượng của sản phẩm này.
+2 Sản phẩm này vượt xa mong đợi của tôi về hiệu suất.
+2 Tôi đã có trải nghiệm tuyệt vời và rất hài lòng với sản phẩm này.
+0 Tôi không thấy sản phẩm này đáng chú ý với tôi.
+1 Sản phẩm này không đáp ứng được các tính năng cần thiết và yêu cầu của tôi.
+0 Tôi không tin tưởng vào chất lượng của sản phẩm này.
+0 Sản phẩm này không đáng chú ý.
+0 Sản phẩm này rất kém chất lượng.
+2 Sản phẩm này đã vượt qua mong đợi của tôi.
+2 Tôi rất ấn tượng với sản phẩm này.
+0 Tôi không thấy sản phẩm này đáng mua với mức giá hiện tại và chất lượng.
+1 Sản phẩm này không đáp ứng được những tính năng quan trọng đối với tôi.
+2 Tôi hài lòng với chất lượng của sản phẩm này.
+0 Tôi không thấy sản phẩm này đáng tin cậy.
+1 Tôi không hài lòng với sản phẩm này.
+1 Sản phẩm này không đáp ứng được yêu cầu của tôi.
+0 Sản phẩm này không đáp ứng mong đợi của tôi.
+0 Sản phẩm này không đáng mua với giá tiền hiện tại.
+0 Tôi không thấy sản phẩm này đáng tin cậy trong thời gian dài.
+1 Sản phẩm này khá khó sử dụng.
+2 Sản phẩm này đáng giá mọi đồng tiền tôi đã bỏ ra.
+1 Tôi đã gặp nhiều sự cố khi sử dụng sản phẩm này.
+1 Tôi không thấy sản phẩm này đạt được hiệu suất cao.
+2 Sản phẩm này vượt xa sự mong đợi của tôi.
+1Sản phẩm này gây ra nhiều vấn đề cho tôi.

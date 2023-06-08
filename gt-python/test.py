@@ -11,7 +11,6 @@ with open('tokenizer.pickle', 'rb') as handle:
 
 def predict_sentiment(text):
     # Tokenize and pad the input text
-    print(text)
     text = words_preprocessor(text)
     print(text)
     text_sequence = tokenizer.texts_to_sequences([text])
@@ -22,12 +21,12 @@ def predict_sentiment(text):
     if np.argmax(predicted_rating) == 0:
         return 'Negative'
     elif np.argmax(predicted_rating) == 1:
-        return 'Positive'
+        return 'Neutral'
     elif np.argmax(predicted_rating) == 2:
-        return 'very Positive'
+        return 'Positive'
     else:
         return 'UnKnown'
 
-text_input = "đt mượt xài tụt pin m tải ứng dụng tụt 10 pin"
+text_input = "sản phẩm không tệ"
 predicted_sentiment = predict_sentiment(text_input)
 print(predicted_sentiment)

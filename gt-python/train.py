@@ -22,7 +22,7 @@ processed_file = os.path.join(root_folder, 'datasets', 'processed', 'data.txt')
 # Load and preprocess the data
 df = pd.read_fwf(processed_file)
 df = df[['s', 'review']]
-df['sentiment'] = df['s'].map({ 0: 'negative',1: 'positive', 2: 'very positive' })
+df['sentiment'] = df['s'].map({ 0: 'Negative',1: 'Neutral', 2: 'Positive' })
 df = df[['review', 'sentiment']]
 df = df.sample(frac=1).reset_index(drop=True)
 # print(df.head())

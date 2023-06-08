@@ -5,10 +5,13 @@ from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
 from pyvi import ViTokenizer
 import os
+import pandas as pd
 
 root_folder = os.path.abspath(os.curdir)
+original_rent = os.path.join(root_folder, 'datasets', 'original_rent', 'data.txt')
 original_data_folder = os.path.join(root_folder, 'datasets', 'original')
-processed_file = os.path.join(root_folder, 'datasets', 'processed', 'data.txt')
+original_file = os.path.join(root_folder, 'datasets', 'data1.txt')
+processed_file = os.path.join(root_folder, 'datasets', 'processed', 'data1.txt')
 # processed_file = os.path.join(root_folder, 'datasets', 'processed', 'data1.txt')
 file_stopwords = os.path.join(root_folder, 'stopwordvietnam.txt')
 
@@ -66,12 +69,20 @@ def data_preprocessing(file_log):
                 score = score if score < 3 else 2
                 file_log.write('%s\t%s\n'%(score, result))
 
+def data_preprocessing_rent(file_log):
+    lines = pd.read_table(original_rent, header=None, delimiter=None)   
+    lines = lines[0].to_list() if len(lines) > 0 else []
+    for line in lines:
+        result = words_preprocessor(line[1:])
+        file_log.write('%s\t%s\n'%(line[0], result))
+
 if __name__=="__main__":
     file_log = open(processed_file, "a", encoding="utf-8-sig")
     file_log.truncate(0)
     file_log.write('%s\t%s\n'%('s', 'review'))
     data_preprocessing(file_log)
-    # original_data_folder = original_data_folder + '1'
-    # data_preprocessing(file_log)
+    original_data_folder = original_data_folder + '1'
+    data_preprocessing(file_log)
+    data_preprocessing_rent(file_log)
     file_log.close()
 

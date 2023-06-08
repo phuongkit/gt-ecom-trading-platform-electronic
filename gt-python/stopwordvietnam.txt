@@ -471,8 +471,6 @@ dẫu
 dẫu mà
 dẫu rằng
 dẫu sao
-dễ
-dễ dùng
 dễ gì
 dễ khiến
 dễ nghe
@@ -590,10 +588,8 @@ khác nào
 khác thường
 khác xa
 khách
-khó
 khó biết
 khó chơi
-khó khăn
 khó làm
 khó mở
 khó nghe
@@ -1626,7 +1622,6 @@ vượt quá
 vạn nhất
 vả chăng
 vả lại
-vấn đề
 vấn đề quan trọng
 vẫn
 vẫn thế
@@ -1765,7 +1760,6 @@ yêu cầu
 điểm gặp
 điểm đầu tiên
 đành đạch
-đáng
 đáng kể
 đáng lí
 đáng lý
