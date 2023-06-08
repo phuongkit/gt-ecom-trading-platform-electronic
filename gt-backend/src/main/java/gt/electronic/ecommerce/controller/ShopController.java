@@ -192,4 +192,14 @@ public class ShopController {
     String loginKey = jwtTokenUtil.getUserNameFromRequest(request);
     return new ResponseObject<>(HttpStatus.OK, "", this.statisticService.statisticSentimentByShop(loginKey, shopId));
   }
+
+  @GetMapping("/statistic/sentiment/{shopId}/report-negative-product")
+  @RolesAllowed({ERole.Names.SELLER, ERole.Names.ADMIN})
+  ResponseObject<ShopSentiment> reportNegativeProduct(
+          @PathVariable(name = "shopId") Long shopId,
+          HttpServletRequest request
+  ) {
+    String loginKey = jwtTokenUtil.getUserNameFromRequest(request);
+    return new ResponseObject<>(HttpStatus.OK, "", this.statisticService.reportNegativeProductByShop(loginKey, shopId));
+  }
 }

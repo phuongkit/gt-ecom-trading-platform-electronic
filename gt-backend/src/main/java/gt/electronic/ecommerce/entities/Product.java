@@ -136,6 +136,9 @@ public class Product {
   @UpdateTimestamp
   private Date updatedAt;
 
+  @Column(name = "enabled", nullable = true, columnDefinition = "bit(1) default true")
+  @NotNull(message = "An enabled is required!")
+  private boolean enabled = true;
   @PreRemove
   private void preRemove() {
     saleGallery.forEach(sale -> sale.removeProduct(this));

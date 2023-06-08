@@ -83,8 +83,8 @@ spring:
 app:
   auth:
     tokenSecret: abcdefghijklmnOPQRSTUVWXYZ
-    tokenExpirationMsec: 864000000
-    tokenRefreshExpirationDateMsec: 9000000
+    tokenExpirationMs: 864000000
+    tokenRefreshExpirationDateMs: 9000000
   #  cors:
   #    allowedOrigins: http://localhost:3000,http://localhost:8080
   oauth2:
@@ -96,8 +96,10 @@ app:
       - http://localhost:5000
       - https://gt-ecom-trading-platform-electronic.vercel.app
   shop:
-    default:
-      percent: 0.05
+    percent: 0.05
+    timeCheckBlackProductMs: 604800000 # 1Week
+    minSentiment: 500
+    minNegativePercent: 70
 
 server:
   port: 8080

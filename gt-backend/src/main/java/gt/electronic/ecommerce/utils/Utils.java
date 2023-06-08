@@ -98,6 +98,8 @@ public class Utils {
     public static final String LOG_REMOVE_ALL_OBJECT_FROM_OBJECT = "Remove all %s : %s from %s with %s = %s";
     public static final String ADD_LOG_FOR_USER = " for User with %s = %s";
     public static final String LOG_GET_STATISTIC_BY_USER = "Statistic %s for %s with loginKey = %s";
+    public static final String LOG_GET_ALL_OBJECT_BY_USER = "Fetching all %s for %s with loginKey = %s";
+    public static final String LOG_UPDATE_PRODUCT_BLACK_LIST_AT = "Update product black list for all server at %s";
 
     //  Length
     public static final int LENGTH_DISCOUNT_CODE_GENERATE = 10;
@@ -138,6 +140,9 @@ public class Utils {
     public static final String REDIRECT_URI_PARAM_COOKIE_NAME = "redirect_uri";
     public static final String TRANSACTION_STATUS = "transaction_status";
     public static final int cookieExpireSeconds = 600;
+//    public static final long checkBlackListSeconds = 1000 * 3600 * 24 * 7;
+//    @Value("${app.shop.default.timeCheckBlackProductMs}")
+    public static final long timeCheckBlackProductMs = 604800000; // 1Week
 
     public static String toSlug(String input) {
         String noWhitespace = WHITESPACE.matcher(input).replaceAll("-");

@@ -21,7 +21,7 @@ public class JwtTokenUtil {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(JwtTokenUtil.class);
 
-  @Value("${app.auth.tokenExpirationMsec}")
+  @Value("${app.auth.tokenExpirationMs}")
   private long EXPIRE_DURATION;
 
 //  @Value("${app.auth.tokenRefreshExpirationDateMsec}")

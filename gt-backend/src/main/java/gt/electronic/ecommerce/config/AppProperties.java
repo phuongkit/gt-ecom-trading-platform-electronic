@@ -1,5 +1,7 @@
 package gt.electronic.ecommerce.config;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
@@ -28,12 +30,12 @@ public class AppProperties {
       this.secret = tokenSecret;
     }
 
-    public long getTokenExpirationMsec() {
+    public long getTokenExpirationMs() {
       return jwtExpirationInMs;
     }
 
-    public void setTokenExpirationMsec(long tokenExpirationMsec) {
-      this.jwtExpirationInMs = tokenExpirationMsec;
+    public void setTokenExpirationMs(long tokenExpirationMs) {
+      this.jwtExpirationInMs = tokenExpirationMs;
     }
   }
 

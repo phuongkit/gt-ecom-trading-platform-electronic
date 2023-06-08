@@ -16,4 +16,6 @@ public interface StatisticService {
   ShopOverview getOverviewByShop(Long shopId);
   List<GroupOrderByDate> statisticOrderByShop(String loginKey, Long shopId, Date startDate, Date endDate, ETimeDistance timeDistance);
   ShopSentiment statisticSentimentByShop(String loginKey, Long shopId);
+
+  ShopSentiment reportNegativeProductByShop(String loginKey, Long shopId);
 }

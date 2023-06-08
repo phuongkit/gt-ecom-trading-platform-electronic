@@ -1,9 +1,12 @@
 package gt.electronic.ecommerce.models.clazzs;
 
+import com.fasterxml.jackson.databind.DatabindException;
 import gt.electronic.ecommerce.models.enums.ESentiment;
 import gt.electronic.ecommerce.utils.Utils;
 import lombok.*;
 import org.springframework.security.core.parameters.P;
+
+import java.util.Date;
 
 @Getter
 @Setter
@@ -13,6 +16,7 @@ import org.springframework.security.core.parameters.P;
 public class ProductSentiment {
     private Long productId;
     private Double avgScore;
+    private Date date;
     private String sentiment;
     private long totalSentiment = 0;
     private SentimentDetail[] sentimentDetails = new SentimentDetail[ESentiment.values().length - 1];

@@ -85,7 +85,7 @@ public class ShopServiceImpl implements ShopService {
     this.userService = userService;
   }
 
-  @Value("${app.shop.default.percent}")
+  @Value("${app.shop.percent}")
   private Double shopDefaultPercent;
 
   @Override public List<ShopResponseDTO> getAllShops(String keyword) {

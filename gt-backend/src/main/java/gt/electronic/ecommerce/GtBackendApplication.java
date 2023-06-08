@@ -11,9 +11,11 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
 @EnableConfigurationProperties(AppProperties.class)
+@EnableScheduling
 // @Import(EmbeddedTomcatConfiguration.class)
 public class GtBackendApplication implements CommandLineRunner {
   private final Logger LOGGER = LoggerFactory.getLogger(GtBackendApplication.class);
@@ -32,6 +34,6 @@ public class GtBackendApplication implements CommandLineRunner {
 
   @Override
   public void run(String... args) {
-    initData.Init();
+//    initData.Init();
   }
 }
