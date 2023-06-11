@@ -15,12 +15,12 @@ BEGIN
 	DECLARE i,n INT DEFAULT 0;
     DECLARE currentDate DATE DEFAULT NOW();
     DECLARE scan_at DATETIME(6);
-    DECLARE product_idd BIGINT;
-    DECLARE shop_idd BIGINT;
+    DECLARE product_idd, shop_idd BIGINT DEFAULT NULL;
+    DECLARE neg_count, total BIGINT DEFAULT 0;
     drop temporary table if exists temp;
 	CREATE TEMPORARY TABLE temp AS 
-    (SELECT  newp.product_id, newp.shop_id, enabled, oldp.scan_at FROM
-	(SELECT a.product_id, a.shop_id
+    (SELECT  newp.product_id, newp.shop_id, enabled, oldp.scan_at, newp.neg_total, newp.total FROM
+	(SELECT a.product_id, a.shop_id, count neg_total, allCount total
 	FROM 
 	(SELECT p.id product_id, p.shop_id, COUNT(fb.sentiment) as count
 	FROM tbl_feedback fb RIGHT OUTER JOIN tbl_product p ON fb.product_id = p.id
@@ -35,12 +35,12 @@ BEGIN
     select * from temp;
     
     WHILE i < n DO
-		SELECT temp.scan_at, temp.product_id, temp.shop_id INTO scan_at, product_idd, shop_idd FROM temp LIMIT i,1;
+		SELECT temp.scan_at, temp.product_id, temp.shop_id, temp.neg_total, temp.total INTO scan_at, product_idd, shop_idd, neg_count, total FROM temp LIMIT i,1;
 		IF scan_at IS NULL THEN
-			INSERT INTO tbl_product_black_list(product_id, enabled, last_scan_at, scan_at, shop_id) 
-            VALUES (product_idd, TRUE, NULL, currentDate, shop_idd); 
+			INSERT INTO tbl_product_black_list(product_id, enabled, last_scan_at, scan_at, shop_id, neg_total, total) 
+            VALUES (product_idd, TRUE, NULL, currentDate, shop_idd, neg_total, total); 
 		ELSE-- IF enabled <=> 0 THEN
-			UPDATE tbl_product_black_list SET enabled = 0, last_scan_at = currentDate WHERE product_id = product_idd;
+			UPDATE tbl_product_black_list SET enabled = 0, last_scan_at = currentDate, neg_count = neg_total, total = total WHERE product_id = product_idd;
 --             UPDATE tbl_product SET enabled = 0 WHERE product_id = product_idd;
         END IF;
         SET i = i + 1;

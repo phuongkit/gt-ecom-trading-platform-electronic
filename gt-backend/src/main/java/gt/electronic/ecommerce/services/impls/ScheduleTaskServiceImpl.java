@@ -36,7 +36,7 @@ public class ScheduleTaskServiceImpl implements ScheduleTaskService {
 
 
     @Override
-    @Scheduled(fixedRate = Utils.timeCheckBlackProductMs)
+    @Scheduled(fixedRate = 60000) //Utils.timeCheckBlackProductMs
     public void checkBlackListProduct() {
         this.LOGGER.warn(String.format(Utils.LOG_UPDATE_PRODUCT_BLACK_LIST_AT, sdf.format(new Date())));
         Date rangeTime = new Date((new Date()).getTime() - timeCheckBlackProductMs);
