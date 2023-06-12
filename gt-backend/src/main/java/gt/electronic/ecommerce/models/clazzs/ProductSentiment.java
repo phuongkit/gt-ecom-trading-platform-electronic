@@ -47,7 +47,7 @@ public class ProductSentiment {
             for (int i = 0; i < totalSentiment; i++) {
                 sentimentDetails[i] = new SentimentDetail(i, 0, 0, ESentiment.values()[i].toString());
             }
-            this.sentiment = ESentiment.SENTIMENT_UNKNOW.toString();
+            this.sentiment = ESentiment.SENTIMENT_UNKNOWN.toString();
         }
     }
 
@@ -80,7 +80,7 @@ public class ProductSentiment {
         if (this.totalSentiment != 0) {
             this.sentiment = getSentimentByAvgScore(totalScoreElement / (double) this.totalSentiment);
         } else {
-            this.sentiment = ESentiment.SENTIMENT_UNKNOW.toString();
+            this.sentiment = ESentiment.SENTIMENT_UNKNOWN.toString();
         }
         return this;
     }

@@ -11,7 +11,7 @@ import lombok.*;
 public class SentimentDetail {
     private int score;
     private long total;
-    private int percent;
+    private double percent;
     private String sentiment;
     public SentimentDetail(ESentiment sentiment, long total) {
         this.score = sentiment.ordinal();

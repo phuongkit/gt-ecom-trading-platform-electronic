@@ -1,6 +1,8 @@
 package gt.electronic.ecommerce.repositories;
 
 import gt.electronic.ecommerce.entities.Product;
+import gt.electronic.ecommerce.entities.ProductBlackList;
+import gt.electronic.ecommerce.models.interfaces.IProductBlackList;
 import gt.electronic.ecommerce.models.interfaces.IProductSentiment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -20,4 +22,7 @@ public interface ViewRepository extends JpaRepository<Product, Long> {
     List<IProductSentiment> getProductSentiment(
             @Param("productId") Long productId,
             @Param("shopId") Long shopId);
+
+    @Query(value = "SELECT * FROM lastCheckProductBlackList pbl WHERE shop_id = :shopId", nativeQuery = true)
+    List<IProductBlackList> getProductBlackListByShop(@Param("shopId") Long shopId);
 }

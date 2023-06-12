@@ -16,8 +16,11 @@ import java.util.Date;
 
 @Component
 public class ScheduleTaskServiceImpl implements ScheduleTaskService {
-    @Value("${app.shop.timeCheckBlackProductMs}")
+    @Value("${app.shop.timeRangeCheckBlackProductMs}")
     private long timeCheckBlackProductMs;
+
+    @Value("${app.shop.timeRangeSessionMs}")
+    private long timeRangeSessionMs;
 
     @Value("${app.shop.minSentiment}")
     private int minSentiment;
@@ -28,18 +31,20 @@ public class ScheduleTaskServiceImpl implements ScheduleTaskService {
     private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
     private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy:MM:dd HH:mm:ss");
     ProcedureRepository procedureRepository;
+
     @Autowired
     public void ProcedureRepository(ProcedureRepository procedureRepository) {
         this.procedureRepository = procedureRepository;
     }
 
 
-
     @Override
-    @Scheduled(fixedRate = 60000) //Utils.timeCheckBlackProductMs
+    @Scheduled(fixedRate = 604800000) //Utils.timeCheckBlackProductMs//60000
     public void checkBlackListProduct() {
         this.LOGGER.warn(String.format(Utils.LOG_UPDATE_PRODUCT_BLACK_LIST_AT, sdf.format(new Date())));
-        Date rangeTime = new Date((new Date()).getTime() - timeCheckBlackProductMs);
-        procedureRepository.updateBlackListProduct(null, rangeTime, minSentiment, minNegativePercent);
+        Date startDateCheckProductBlackList = new Date((new Date()).getTime() - timeCheckBlackProductMs);
+        Date startDateNewSession = new Date((new Date()).getTime() - timeRangeSessionMs);
+        procedureRepository.updateBlackListProduct(null, startDateCheckProductBlackList, minSentiment,
+                                                   minNegativePercent, startDateNewSession);
     }
 }

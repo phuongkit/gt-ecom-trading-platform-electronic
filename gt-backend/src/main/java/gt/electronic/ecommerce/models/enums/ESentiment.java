@@ -4,13 +4,13 @@ public enum ESentiment {
     SENTIMENT_NEGATIVE(ESentiment.Names.NEGATIVE),
     SENTIMENT_NEUTRAL(ESentiment.Names.NEUTRAL),
     SENTIMENT_POSITIVE(ESentiment.Names.POSITIVE),
-    SENTIMENT_UNKNOW(ESentiment.Names.UNKNOW);
+    SENTIMENT_UNKNOWN(ESentiment.Names.UNKNOWN);
 
     public class Names {
-        public static final String NEGATIVE = "Nagetive";
+        public static final String NEGATIVE = "Negative";
         public static final String NEUTRAL = "Neutral";
         public static final String POSITIVE = "Positive";
-        public static final String UNKNOW = "Unknow";
+        public static final String UNKNOWN = "Unknown";
     }
     private final String label;
 

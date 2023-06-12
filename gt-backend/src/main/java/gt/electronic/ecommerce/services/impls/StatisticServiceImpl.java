@@ -12,6 +12,7 @@ import gt.electronic.ecommerce.models.enums.ERole;
 import gt.electronic.ecommerce.models.enums.ESentiment;
 import gt.electronic.ecommerce.models.enums.ETimeDistance;
 import gt.electronic.ecommerce.models.interfaces.IInfoRating;
+import gt.electronic.ecommerce.models.interfaces.IProductBlackList;
 import gt.electronic.ecommerce.models.interfaces.IProductSentiment;
 import gt.electronic.ecommerce.repositories.*;
 import gt.electronic.ecommerce.services.StatisticService;
@@ -48,7 +49,9 @@ public class StatisticServiceImpl implements StatisticService {
     public void OrderShopRepository(OrderShopRepository orderShopRepo) {
         this.orderShopRepo = orderShopRepo;
     }
+
     private ProcedureRepository procedureRepository;
+
     @Autowired
     public void ProcedureRepository(ProcedureRepository procedureRepository) {
         this.procedureRepository = procedureRepository;
@@ -199,17 +202,21 @@ public class StatisticServiceImpl implements StatisticService {
     @Override
     public ShopSentiment reportNegativeProductByShop(String loginKey, Long shopId) {
         this.LOGGER.info(String.format(Utils.LOG_GET_ALL_OBJECT_BY_USER, "Negative Product", "Shop", loginKey));
-        List<ProductBlackList> productBlackListList = this.procedureRepository.getProductBlackListByShop(shopId);
+        List<IProductBlackList> productBlackListList = this.viewRepo.getProductBlackListByShop(shopId);
         ShopSentiment shopSentiment = new ShopSentiment();
         shopSentiment.setShopId(shopId);
         ProductSentiment[] productSentiments = new ProductSentiment[productBlackListList.size()];
         int i = 0;
-        for (ProductBlackList productBlackList : productBlackListList) {
+        for (IProductBlackList productBlackList : productBlackListList) {
             productSentiments[i] = new ProductSentiment();
-            productSentiments[i].setProductId(productBlackList.getProductId());
+            productSentiments[i].setProductId(productBlackList.getProduct_id());
             productSentiments[i].setTotalSentiment(productBlackList.getTotal());
-            productSentiments[i].setDate(productBlackList.getScanAt());
+            productSentiments[i].setDate(productBlackList.getScan_at());
             productSentiments[i].setSentiment(ESentiment.SENTIMENT_NEGATIVE.toString());
+            SentimentDetail sentimentDetail =
+                    new SentimentDetail(ESentiment.SENTIMENT_NEGATIVE.ordinal(), productBlackList.getNeg_total(),
+                                        productBlackList.getPercent(), ESentiment.SENTIMENT_NEGATIVE.toString());
+            productSentiments[i].setSentimentDetails(new SentimentDetail[]{sentimentDetail});
             i++;
         }
         shopSentiment.setProductSentiments(productSentiments);

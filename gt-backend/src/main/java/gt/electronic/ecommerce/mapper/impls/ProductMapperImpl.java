@@ -103,7 +103,7 @@ public class ProductMapperImpl implements ProductMapper {
     if (haveSentiment.length > 0 && haveSentiment[0]) {
       ProductSentiment productSentiment = this.feedbackService.getProductSentimentByProduct(entity.getId());
       if (productSentiment == null) {
-        productSentiment.setSentiment(ESentiment.SENTIMENT_UNKNOW.toString());
+        productSentiment.setSentiment(ESentiment.SENTIMENT_UNKNOWN.toString());
         productSentiment.setTotalSentiment(0);
       }
       responseDTO.setSentiment(productSentiment);

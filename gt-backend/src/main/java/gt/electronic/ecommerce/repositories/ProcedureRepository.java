@@ -15,13 +15,10 @@ import java.util.List;
 @Transactional
 public interface ProcedureRepository extends JpaRepository<Product, Long> {
 
-    @Query(value = "CALL updateBlackListProduct(:inShopId, :inStartDate, :inMinAll, :inMinNeg);", nativeQuery = true)
-    void updateBlackListProduct(@Param("inShopId") Long shopId,
-                                @Param("inStartDate") Date starDate,
-                                @Param("inMinAll") int minAll,
-                                @Param("inMinNeg") int minNeg);
-
-    @Query(value = "select pbl from ProductBlackList pbl" +
-            " where pbl.enabled = true and pbl.shopId = :shopId")
-    List<ProductBlackList> getProductBlackListByShop(@Param("shopId") Long shopId);
+    @Query(value = "CALL updateBlackListProduct(:inShopId, :inStartDate, :inMinAll, :inMinNeg, :inStartNewSession);", nativeQuery = true)
+    List<Object> updateBlackListProduct(@Param("inShopId") Long shopId,
+                                        @Param("inStartDate") Date starDate,
+                                        @Param("inMinAll") int minAll,
+                                        @Param("inMinNeg") int minNeg,
+                                        @Param("inStartNewSession") Date startNewSession);
 }

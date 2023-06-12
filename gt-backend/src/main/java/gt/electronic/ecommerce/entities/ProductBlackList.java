@@ -4,10 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 @Getter
@@ -19,26 +22,39 @@ import java.util.Date;
 public class ProductBlackList {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column
     private Long productId;
+
+    @Column(name = "slug", length = 255, nullable = false)
+    @Size(message = "Invalid slug size.", max = 300, min = 1)
+    @NotNull(message = "An name is required!")
+    private String slug = "";
 
     @Column
     private Long shopId;
 
-    @Column(name = "enabled", nullable = true)
-    @NotNull(message = "An enabled is required!")
-    private boolean enabled = true;
-
     @Column(name = "scanAt")
-    @UpdateTimestamp
+    @CreationTimestamp
     private Date scanAt;
 
-    @Column(name = "last_scanAt")
-    @UpdateTimestamp
-    private Date lastScanAt;
+    @Column(name = "percent")
+    @DecimalMin(value = "0.01", message = "Percent must be greater than or equal to 0.01.")
+    @DecimalMax(value = "1", message = "Percent must be smaller than or equal to 1.")
+    private double percent;
 
     @Column(name = "neg_total")
     private Long negTotal;
 
     @Column(name = "total")
     private Long total;
+
+    @Column(name = "status", nullable = false, columnDefinition = "bit(1) default 1")
+    @NotNull(message = "An status is required!")
+    private boolean status = true;
+
+    @Column(nullable = false, columnDefinition = "bit(1) default 0")
+    @NotNull(message = "An isBaned is required!")
+    private boolean isBaned = false;
 }
