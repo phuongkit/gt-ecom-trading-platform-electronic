@@ -19,6 +19,7 @@ import statisticReducer from './statistic/statisticsSlice';
 
 import chatContactReducer from './chat/contact/contactsSlice';
 import notificationReducer from './notification/notificationsSlice';
+import emails from './Email/EmailSlice';
 //khoi tao store
 export const store = configureStore({
     reducer: {
@@ -39,5 +40,6 @@ export const store = configureStore({
 
         chatContacts: chatContactReducer,
         notifications: notificationReducer,
+        emails: emails,
     },
 });
