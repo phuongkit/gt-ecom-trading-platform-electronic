@@ -100,7 +100,7 @@ app:
     timeRangeCheckBlackProductMs: 2419200000 # 604800000 1Week
     timeRangeSessionMs: 12096000000 # 5 month
     minSentiment: 2 #500
-    minNegativePercent: 70
+    minNegativePercent: 90 #70
 
 server:
   port: 8080

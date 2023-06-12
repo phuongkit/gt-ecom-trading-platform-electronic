@@ -4,12 +4,14 @@ import gt.electronic.ecommerce.dto.request.ShopCreationDTO;
 import gt.electronic.ecommerce.dto.response.OrderResponseDTO;
 import gt.electronic.ecommerce.dto.response.ResponseObject;
 import gt.electronic.ecommerce.dto.response.ShopResponseDTO;
+import gt.electronic.ecommerce.entities.Message;
 import gt.electronic.ecommerce.entities.Shop;
 import gt.electronic.ecommerce.models.clazzs.GroupOrderByDate;
 import gt.electronic.ecommerce.models.clazzs.ShopOverview;
 import gt.electronic.ecommerce.models.clazzs.ShopSentiment;
 import gt.electronic.ecommerce.models.enums.ERole;
 import gt.electronic.ecommerce.models.enums.ETimeDistance;
+import gt.electronic.ecommerce.services.MessageService;
 import gt.electronic.ecommerce.services.ShopService;
 import gt.electronic.ecommerce.services.StatisticService;
 import gt.electronic.ecommerce.utils.JwtTokenUtil;
@@ -17,6 +19,7 @@ import gt.electronic.ecommerce.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -33,8 +36,7 @@ import javax.validation.Valid;
 import java.util.Date;
 import java.util.List;
 
-import static gt.electronic.ecommerce.utils.Utils.DEFAULT_PAGE;
-import static gt.electronic.ecommerce.utils.Utils.DEFAULT_SIZE;
+import static gt.electronic.ecommerce.utils.Utils.*;
 
 /**
  * @author minh phuong
@@ -50,6 +52,11 @@ public class ShopController {
 
   @Autowired public void JwtTokenUtil(JwtTokenUtil jwtTokenUtil) {
     this.jwtTokenUtil = jwtTokenUtil;
+  }
+  private MessageService messageService;
+  @Autowired
+  public void MessageService(MessageService messageService) {
+    this.messageService = messageService;
   }
 
   private ShopService shopService;
@@ -201,5 +208,22 @@ public class ShopController {
   ) {
     String loginKey = jwtTokenUtil.getUserNameFromRequest(request);
     return new ResponseObject<>(HttpStatus.OK, "", this.statisticService.reportNegativeProductByShop(loginKey, shopId));
+  }
+
+  @GetMapping("/messages/{shopId}/")
+  @RolesAllowed({ERole.Names.SELLER, ERole.Names.ADMIN})
+  ResponseObject<Page<Message>> getMessage(
+          @PathVariable(name = "shopId") Long shopId,
+          @RequestParam(name = "page", required = false, defaultValue = DEFAULT_PAGE) Integer page,
+          @RequestParam(name = "limit", required = false, defaultValue = PRODUCT_PER_PAGE) Integer size,
+          @RequestParam(name = "sortField", required = false, defaultValue = "id") String sortField,
+          @RequestParam(name = "sortDir", required = false, defaultValue = "asc") String sortDir,
+          HttpServletRequest request
+  ) {
+    String loginKey = jwtTokenUtil.getUserNameFromRequest(request);
+    Sort sort = Sort.by(sortField);
+    sort = sortDir.equals("asc") ? sort.ascending() : sort.descending();
+    Pageable pageable = PageRequest.of(page > 0 ? page - 1 : 0, size, sort);
+    return new ResponseObject<>(HttpStatus.OK, "", this.messageService.getMessageProduct(loginKey, shopId, pageable));
   }
 }
