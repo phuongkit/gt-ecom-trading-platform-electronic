@@ -1,9 +1,9 @@
 import { emailService } from '../../services';
 import { AllEmails,EmailDetail} from './EmailSlice'
 
-export const getAllEmail = async (dispatch) => {
-    let res = await emailService.getAllEmails();
-    dispatch(AllEmails(res));
+export const getAllEmailByShopId = async (dispatch,id) => {
+    let res = await emailService.getAllEmailsByShopId(id);
+    dispatch(AllEmails(res.data));
 };
 export const getEmailDetail= async (dispatch, id) => {
     if(id == null){

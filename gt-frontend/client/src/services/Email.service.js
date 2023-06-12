@@ -2,8 +2,8 @@ import { axiosClient } from '~/api';
 
 export const emailService = {
    
-    getAllEmails() {
-        return axiosClient.get(`/Mail`);
+    getAllEmailsByShopId(id) {
+        return axiosClient.get(`/shops/messages/${id}/`);
     },
     getEmail(id) {
         return axiosClient.get(`/Mail/${id}`);

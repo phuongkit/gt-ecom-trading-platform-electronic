@@ -14,12 +14,24 @@ import { useState } from 'react';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
+import { getAllEmailByShopId } from '../../../redux/Email/EmailApi';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
 
 const HistoryEmail = () => {
   const [inbox,setInbox] = useState(true)
   const handleDetailMessage= ()=>{
     setInbox(false);
   }
+  const dispatch = useDispatch()
+
+  const messagesList = useSelector((state)=> state.email)
+  const getUser = JSON.parse(localStorage.getItem('customerInfo'));
+  
+  useEffect(()=>{
+    getAllEmailByShopId(dispatch,getUser?.shopId)
+  },[]) 
+  console.log(messagesList)
   return (
     <div className='m-6 flex gap-5 h-[700px] mb-0'>
      <Box sx={{ minWidth: '16%', maxWidth: 360, bgcolor: 'background.paper' }} >

@@ -12,7 +12,7 @@ export const emails = createSlice({
     },
     reducers: {
         AllEmails: (state, action) => {
-            state.allEmail.data = action.payload;
+            state.allEmail.data = action.payload?.content || [];
         },
        
         EmailDetail: (state, action) => {
