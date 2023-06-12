@@ -8,6 +8,8 @@ const ListOders = lazy(() => import('~/pages/Seller/List/ListOder'));
 const ListProducts = lazy(() => import('~/pages/Seller/List/ListProduct'));
 const ListFeedbacks = lazy(() => import('~/pages/Seller/List/ListFeedback'));
 const AddProducts = lazy(() => import('~/pages/Seller/New/NewProduct'));
+const ListMessage = lazy(() => import('~/pages/Seller/Report/HistoryEmail'));
+
 export const publishRoutesSeller = [
     {
         index: true,
@@ -51,6 +53,14 @@ export const publishRoutesSeller = [
         element: (
             <Suspense fallback={<Loading />}>
                 <ListOders />
+            </Suspense>
+        ),
+    },
+    {
+        path: 'messages',
+        element: (
+            <Suspense fallback={<Loading />}>
+                <ListMessage />
             </Suspense>
         ),
     },

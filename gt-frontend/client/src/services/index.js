@@ -16,3 +16,4 @@ export { shopService } from './shop.service';
 export { statisticService } from './statistic.service';
 
 export { sentimentService } from './sentiment/sentiment.service';
+export { emailService } from './Email.service';

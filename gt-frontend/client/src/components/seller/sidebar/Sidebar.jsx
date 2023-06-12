@@ -64,6 +64,12 @@ const Sidebar = () => {
                             <span>Orders</span>
                         </li>
                     </Link>
+                    <Link to="/seller/messages" style={{ textDecoration: 'none' }}>
+                        <li>
+                            <NotificationsNoneIcon className="icon" />
+                            <span>Message</span>
+                        </li>
+                    </Link>
 
                     <p className="title">USEFUL</p>
 
