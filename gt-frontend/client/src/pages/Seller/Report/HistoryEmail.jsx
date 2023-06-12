@@ -17,28 +17,41 @@ import Typography from '@mui/material/Typography';
 import { getAllEmailByShopId } from '../../../redux/Email/EmailApi';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
-
+import { API_IMAGE_URL } from '../../../utils';
+import { Link } from 'react-router-dom';
+import { OAUTH2_REDIRECT_URI } from '../../../utils';
 const HistoryEmail = () => {
   const [inbox,setInbox] = useState(true)
-  const handleDetailMessage= ()=>{
+  const [emailDetail,setEmailDetail] = useState(null)
+  const handleDetailMessage= (item)=>{
     setInbox(false);
+    setEmailDetail(item)
   }
   const dispatch = useDispatch()
 
-  const messagesList = useSelector((state)=> state.email)
+  const messagesList = useSelector((state)=> state.emails.allEmail.data)
   const getUser = JSON.parse(localStorage.getItem('customerInfo'));
   
   useEffect(()=>{
     getAllEmailByShopId(dispatch,getUser?.shopId)
   },[]) 
-  console.log(messagesList)
+  
+  const hanleProductImages = (jsonString)=>{
+    const cleanedJsonString = jsonString.replace(/,}/g, '}');
+    const jsonData = JSON.parse(cleanedJsonString);
+    return jsonData
+  }
+  const createMarkup = () => {
+    return { __html: emailDetail?.body };
+  };
+  console.log(emailDetail?.products)
   return (
     <div className='m-6 flex gap-5 h-[700px] mb-0'>
      <Box sx={{ minWidth: '16%', maxWidth: 360, bgcolor: 'background.paper' }} >
       <nav aria-label="main mailbox folders">
         <List>
           <ListItem disablePadding>
-            <ListItemButton onClick={e=>setInbox(true)}>
+            <ListItemButton onClick={e=>{setInbox(true);setEmailDetail(null)}}>
               <ListItemIcon >
                 <InboxIcon sx={{ fontSize: '18px' }}/>
               </ListItemIcon>
@@ -79,13 +92,16 @@ const HistoryEmail = () => {
         </List>
       </nav>
     </Box>
-    {inbox == true ? <List sx={{ width: '100%', bgcolor: 'background.paper' }} className="flex-1">
-      <ListItem alignItems="flex-start" sx={{ cursor: 'pointer' }} onClick={handleDetailMessage}>
+    {inbox == true && emailDetail ==null ? 
+    <List sx={{ width: '100%', bgcolor: 'background.paper' }} className="flex-1">
+    
+      {messagesList.map(item=><> 
+      <ListItem alignItems="flex-start" sx={{ cursor: 'pointer' }} onClick={e=>handleDetailMessage(item)}>
         <ListItemAvatar  >
           <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
         </ListItemAvatar>
         <ListItemText
-          primary="Brunch this weekend?"
+          primary={item.title}
           primaryTypographyProps={{ sx: { fontSize: '15px' } }}
           secondary={
             <React.Fragment>
@@ -109,6 +125,7 @@ const HistoryEmail = () => {
         />
       </ListItem>
       <Divider variant="inset" component="li" />
+ </>)}
  
     </List> :   <div class="bg-white p-12">
                                 <div class="card-body flex-col">
@@ -124,33 +141,22 @@ const HistoryEmail = () => {
                                     </div>
                                   </div>
 
-                                    <h4 class="mt-6 text-2xl leading-10 font-semibold ">This Week's Top Stories</h4>
-
-                                    <p class="mt-6 text-2xl leading-10">Dear Lorem Ipsum,</p>
-                                    <p class="mt-6 text-2xl leading-10">Praesent dui ex, dapibus eget mauris ut, finibus vestibulum enim. Quisque
-                                        arcu leo, facilisis in fringilla id, luctus in tortor. Nunc vestibulum est
-                                        quis orci varius viverra. Curabitur dictum volutpat massa vulputate
-                                        molestie. In at felis ac velit maximus convallis.
-                                    </p>
-                                    <p class="mt-6 text-2xl leading-10">Sed elementum turpis eu lorem interdum, sed porttitor eros commodo. Nam eu
-                                        venenatis tortor, id lacinia diam. Sed aliquam in dui et porta. Sed bibendum
-                                        orci non tincidunt ultrices. Vivamus fringilla, mi lacinia dapibus
-                                        condimentum, ipsum urna lacinia lacus, vel tincidunt mi nibh sit amet lorem.
-                                    </p>
-                                    <p class="my-6 text-2xl">Sincerly,</p>
+                                    <h4 class="mt-6 text-2xl leading-10 font-semibold "> {emailDetail?.title}</h4>
+                                    <div dangerouslySetInnerHTML={createMarkup()} />
                                     <hr />
 
                                     <div class="mt-6 flex gap-2">
-                                        <div class="p-4 ">
-                                          <div className='h-[180px] w-[270px]'>
-                                                <img class="w-full h-full" src="https://duhocvietglobal.com/wp-content/uploads/2018/12/dat-nuoc-va-con-nguoi-anh-quoc.jpg" alt="Card image cap"></img>
-                                            </div>
+                                      {hanleProductImages(emailDetail?.products)?.map(item=>
+                                        <div class="p-4 w-[290px]">
+                                          <div className='text-xl font-semibold mb-2'>{item.name.length < 40 ? item.name : `${item.name.slice(0, 36)}...`}</div>  
+                                          <span className='text-[12px] mb-6'>Notify: {item.count}</span>  
+                                            <div className='h-[160px] w-[250px] my-2'>
+                                                  <img class="w-full h-full" src={`${API_IMAGE_URL}${item?.img}`} alt="Card image cap"></img>
+                                              </div>
+                                          <Link to={`${OAUTH2_REDIRECT_URI}/${item.slug}`} className='text-xl font-semibold mb-2 text-red-400'>Preview: {OAUTH2_REDIRECT_URI}/{item.slug.slice(0, 9)}...</Link>  
+
                                         </div>
-                                        <div class="p-4 ">
-                                          <div className='h-[180px] w-[270px]'>
-                                                <img class="w-full h-full" src="https://duhocvietglobal.com/wp-content/uploads/2018/12/dat-nuoc-va-con-nguoi-anh-quoc.jpg" alt="Card image cap"></img>
-                                            </div>
-                                        </div>
+                                        )}
                                     </div>
                                 </div>
         </div>}

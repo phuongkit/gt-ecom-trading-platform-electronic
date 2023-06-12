@@ -3,6 +3,7 @@ import { AllEmails,EmailDetail} from './EmailSlice'
 
 export const getAllEmailByShopId = async (dispatch,id) => {
     let res = await emailService.getAllEmailsByShopId(id);
+    console.log("res",res)
     dispatch(AllEmails(res.data));
 };
 export const getEmailDetail= async (dispatch, id) => {

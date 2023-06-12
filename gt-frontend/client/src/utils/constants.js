@@ -464,3 +464,5 @@ export const FACEBOOK_AUTH_URL = API_BASE_URL + '/oauth2/authorize/facebook?redi
 export const GITHUB_AUTH_URL = API_BASE_URL + '/oauth2/authorize/github?redirect_uri=' + OAUTH2_REDIRECT_URI;
 export const SENTIMENT_STRING_URL = 'http://localhost:7070/api/sentiment?text=';
 export const SENTIMENT_STRING_ARRAY_URL = 'http://localhost:7070/api/array/sentiment';
+
+export const API_IMAGE_URL = API_BASE_URL  + '/api/v1/images/';
