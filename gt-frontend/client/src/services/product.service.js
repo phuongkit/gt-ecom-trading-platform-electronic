@@ -66,7 +66,7 @@ export const productService = {
         return axiosClient.get(`${branch_api}?category=${category}${brand}`);
     },
     getProductBySlug(slug) {
-        return axiosClient.get(`${branch_api}/slug/${slug}`);
+        return axiosClient.get(`${branch_api}/slug/${slug}?haveSentiment=true`);
     },
     queryProduct() {
         const query = Array.from(arguments)
