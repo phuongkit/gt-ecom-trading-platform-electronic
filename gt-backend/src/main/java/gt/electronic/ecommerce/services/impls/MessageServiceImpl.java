@@ -46,7 +46,7 @@ public class MessageServiceImpl implements MessageService {
         this.LOGGER.info(
                 String.format(Utils.LOG_GET_ALL_OBJECT_BY_USER, branchName, Shop.class.getSimpleName(), loginKey));
         User authorFound = this.userService.getUserByLoginKey(loginKey);
-        if (Objects.equals(authorFound.getId(), shopId) || authorFound.getRole() == ERole.ROLE_ADMIN) {
+        if (Objects.equals(authorFound.getShop().getId(), shopId) || authorFound.getRole() == ERole.ROLE_ADMIN) {
             Page page = this.messageRepo.findAllByShopId(shopId, pageable);
             if (page.getContent().size() < 1) {
                 throw new ResourceNotFound(String.format(Utils.OBJECT_NOT_FOUND, branchName));

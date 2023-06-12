@@ -210,7 +210,7 @@ public class ShopController {
     return new ResponseObject<>(HttpStatus.OK, "", this.statisticService.reportNegativeProductByShop(loginKey, shopId));
   }
 
-  @GetMapping("/messages/{shopId}/")
+  @GetMapping("/messages/{shopId}")
   @RolesAllowed({ERole.Names.SELLER, ERole.Names.ADMIN})
   ResponseObject<Page<Message>> getMessage(
           @PathVariable(name = "shopId") Long shopId,

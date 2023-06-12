@@ -203,7 +203,7 @@ public class StatisticServiceImpl implements StatisticService {
     public ShopSentiment reportNegativeProductByShop(String loginKey, Long shopId) {
         this.LOGGER.info(String.format(Utils.LOG_GET_ALL_OBJECT_BY_USER, "Negative Product", "Shop", loginKey));
         User authorFound = this.userService.getUserByLoginKey(loginKey);
-        if (Objects.equals(authorFound.getId(), shopId) || authorFound.getRole() == ERole.ROLE_ADMIN) {
+        if (Objects.equals(authorFound.getShop().getId(), shopId) || authorFound.getRole() == ERole.ROLE_ADMIN) {
             List<IProductBlackList> productBlackListList = this.viewRepo.getProductBlackListByShop(shopId);
             ShopSentiment shopSentiment = new ShopSentiment();
             shopSentiment.setShopId(shopId);
