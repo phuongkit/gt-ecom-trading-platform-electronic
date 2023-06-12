@@ -11,6 +11,11 @@
     "format": "prettier --write \"src/**/*.{js,jsx}\""
   },
   "dependencies": {
+    "@devexpress/dx-core": "^4.0.4",
+    "@devexpress/dx-react-chart": "^4.0.4",
+    "@devexpress/dx-react-chart-bootstrap4": "^4.0.4",
+    "@devexpress/dx-react-chart-material-ui": "^4.0.4",
+    "@devexpress/dx-react-core": "^4.0.4",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
     "@material-ui/core": "^4.12.4",
@@ -50,6 +55,7 @@
     "slick-carousel": "^1.8.1",
     "styled-components": "^5.3.9",
     "sweetalert": "^2.1.2",
+    "tw-elements": "^1.0.0-beta2",
     "uuid": "^8.3.2",
     "webpack-dev-server": "^4.11.1",
     "yarn": "^1.22.19"

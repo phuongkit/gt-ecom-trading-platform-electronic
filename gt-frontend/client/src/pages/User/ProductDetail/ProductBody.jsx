@@ -1,9 +1,11 @@
 import ProductRating from './../../../components/Rating/index';
 import { useState, useEffect, useRef } from 'react';
 import { productService } from '~/services';
-import { useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';0
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import PieChartComponent from '../../../components/Chat/PieChartComponent';
+
 function ProductBody() {
     const initProductDetail = useSelector((state) => state.products.productDetail.data);
     const { id, price, discount, tag, title, slug, img, colors, brand, category, parameter, info } = initProductDetail;
@@ -49,7 +51,33 @@ function ProductBody() {
     const Art = () => {
         return <div dangerouslySetInnerHTML={{ __html: info }} />;
     };
-
+    const test = {
+        productId: 2,
+        avgScore: 2.0,
+        date: null,
+        sentiment: "Positive",
+        totalSentiment: 4,
+        sentimentDetails: [
+            {
+                score: 0,
+                total: 0,
+                percent: 10,
+                sentiment: "Nagetive"
+            },
+            {
+                score: 1,
+                total: 0,
+                percent: 20,
+                sentiment: "Neutral"
+            },
+            {
+                score: 2,
+                total: 4,
+                percent: 70,
+                sentiment: "Positive"
+            }
+        ]
+    }
     const tags = ['iPhone', '6 GB', '128 GB', 'Chụp ảnh, quay phim', 'iPhone 13 (Mini, Pro, Pro Max)'];
     return (
         <section className="product__body">
@@ -60,6 +88,7 @@ function ProductBody() {
                             <h1 className="product__details-title">Thông tin Shop</h1>
                         </div>
                         <div className="product__details-list">
+
                             <Link to={`/ShopInfo/${initProductDetail?.shop?.slug}`} className="w-[100px] h-[100px]">
                                 <img
                                     src={initProductDetail?.shop?.avatar}
@@ -93,7 +122,7 @@ function ProductBody() {
                             <div className="product__details-title-wrap">
                                 <h1 className="product__details-title">MÔ TẢ SẢN PHẨM</h1>
                             </div>
-
+                            
                             <div className="product__desc-para-wrap">
                                 {info ? (
                                     <Art />
@@ -146,6 +175,8 @@ function ProductBody() {
                 </div>
 
                 <div className="product__body-right">
+                   <PieChartComponent sentiment={test}></PieChartComponent>
+
                     <h2 className="product__best-seller-title">Mô tả sản phẩm</h2>
 
                     <div className="product__best-seller-list">
