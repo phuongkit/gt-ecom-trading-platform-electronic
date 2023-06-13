@@ -21,7 +21,7 @@ public enum ERole {
   // Manage product price, customers, shipping, orders and sales report
   ROLE_SHIPPER(Names.SHIPPER);
 
-  public class Names{
+  public static class Names{
     public static final String ADMIN = "ROLE_ADMIN";
     public static final String SELLER = "ROLE_SELLER";
     public static final String CUSTOMER = "ROLE_CUSTOMER";

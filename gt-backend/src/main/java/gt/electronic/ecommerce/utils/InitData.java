@@ -6,10 +6,7 @@ import gt.electronic.ecommerce.dto.request.OrderDetailCreationDTO;
 import gt.electronic.ecommerce.dto.response.OrderResponseDTO;
 import gt.electronic.ecommerce.entities.*;
 import gt.electronic.ecommerce.models.clazzs.FullAddress;
-import gt.electronic.ecommerce.models.enums.EDiscountType;
-import gt.electronic.ecommerce.models.enums.EGender;
-import gt.electronic.ecommerce.models.enums.ERole;
-import gt.electronic.ecommerce.models.enums.ESentiment;
+import gt.electronic.ecommerce.models.enums.*;
 import gt.electronic.ecommerce.repositories.*;
 import gt.electronic.ecommerce.services.*;
 import org.slf4j.Logger;
@@ -73,12 +70,19 @@ public class InitData {
     @Autowired
     private ShopRepository shopRepo;
     @Autowired
+    private ShopPriceRepository shopPriceRepo;
+    @Autowired
     private UserRepository userRepo;
     @Autowired
     private UserService userService;
 
     public void Init() {
         this.LOGGER.info("Start init data to database");
+//        if (true) {
+//            ShopPrice[] shopPrices = new ShopPrice[500];
+//            createShopPrice(shopPrices);
+//            return;
+//        }
         Pageable pageable = PageRequest.of(0, 1000);
         Date currentDate = new Date();
         long hourTime = 1000 * 3600;
@@ -99,6 +103,9 @@ public class InitData {
 
         FullAddress[] fullAddresses = new FullAddress[500];
         int maxIndexFullAddress = createFullAddress(fullAddresses);
+
+        ShopPrice[] shopPrices = new ShopPrice[500];
+        int maxIndexShopPrice = createShopPrice(shopPrices);
 
         Shop[] shops = new Shop[500];
         int maxIndexShop = createShop(shops, uv.customers, uv.maxIndexCustomer, fullAddresses, maxIndexFullAddress);
@@ -138,6 +145,24 @@ public class InitData {
 
 
         this.LOGGER.info("Init data to database is done!");
+    }
+
+
+    private int createShopPrice(ShopPrice[] shopPrices) {
+        int i = 0;
+        shopPrices[i] = new ShopPrice("Gói tháng thường", new BigDecimal("1000000"), 50, 1, EDateType.MONTH, "");
+        shopPrices[i] = shopPriceRepo.save(shopPrices[i]);
+        i++;
+        shopPrices[i] = new ShopPrice("Gói tháng vip", new BigDecimal("3000000"), 500, 1, EDateType.MONTH, "");
+        shopPrices[i] = shopPriceRepo.save(shopPrices[i]);
+        i++;
+        shopPrices[i] = new ShopPrice("Gói năm thường", new BigDecimal("10000000"), 70, 1, EDateType.YEAR, "");
+        shopPrices[i] = shopPriceRepo.save(shopPrices[i]);
+        i++;
+        shopPrices[i] = new ShopPrice("Gói năm vip", new BigDecimal("30000000"), 700, 1, EDateType.YEAR, "");
+        shopPrices[i] = shopPriceRepo.save(shopPrices[i]);
+        i++;
+        return i;
     }
 
     private int createDiscount(Discount[] discounts, Shop[] shops, int maxIndexShop) {

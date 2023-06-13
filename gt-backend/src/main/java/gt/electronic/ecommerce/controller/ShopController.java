@@ -3,6 +3,7 @@ package gt.electronic.ecommerce.controller;
 import gt.electronic.ecommerce.dto.request.ShopCreationDTO;
 import gt.electronic.ecommerce.dto.response.OrderResponseDTO;
 import gt.electronic.ecommerce.dto.response.ResponseObject;
+import gt.electronic.ecommerce.dto.response.ShopPriceResponseDTO;
 import gt.electronic.ecommerce.dto.response.ShopResponseDTO;
 import gt.electronic.ecommerce.entities.Message;
 import gt.electronic.ecommerce.entities.Shop;
@@ -14,6 +15,7 @@ import gt.electronic.ecommerce.models.enums.ETimeDistance;
 import gt.electronic.ecommerce.services.MessageService;
 import gt.electronic.ecommerce.services.ShopService;
 import gt.electronic.ecommerce.services.StatisticService;
+import gt.electronic.ecommerce.services.UtilsService;
 import gt.electronic.ecommerce.utils.JwtTokenUtil;
 import gt.electronic.ecommerce.utils.Utils;
 import org.slf4j.Logger;
@@ -70,6 +72,10 @@ public class ShopController {
 
   @Autowired public void StatisticService(StatisticService statisticService) {
     this.statisticService = statisticService;
+  }
+  private UtilsService utilsService;
+  @Autowired public void UtilsService(UtilsService utilsService) {
+    this.utilsService = utilsService;
   }
 
   @GetMapping
@@ -225,5 +231,12 @@ public class ShopController {
     sort = sortDir.equals("asc") ? sort.ascending() : sort.descending();
     Pageable pageable = PageRequest.of(page > 0 ? page - 1 : 0, size, sort);
     return new ResponseObject<>(HttpStatus.OK, "", this.messageService.getMessageProduct(loginKey, shopId, pageable));
+  }
+
+  @GetMapping("/prices")
+//  @RolesAllowed({ERole.Names.CUSTOMER, ERole.Names.SELLER, ERole.Names.ADMIN})
+  ResponseObject<List<ShopPriceResponseDTO>> getAllShopPrice(
+  ) {
+    return new ResponseObject<>(HttpStatus.OK, "", this.utilsService.getAllShopPrice());
   }
 }
