@@ -3,18 +3,14 @@ package gt.electronic.ecommerce.dto.request;
 import gt.electronic.ecommerce.entities.*;
 import gt.electronic.ecommerce.models.enums.EGender;
 import gt.electronic.ecommerce.models.enums.EOrderStatus;
-import gt.electronic.ecommerce.models.enums.EPayment;
-import gt.electronic.ecommerce.models.enums.EShippingMethod;
+import gt.electronic.ecommerce.models.enums.EPaymentType;
 import gt.electronic.ecommerce.utils.Utils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.security.core.parameters.P;
 
-import javax.persistence.*;
 import javax.validation.constraints.*;
-import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -37,7 +33,7 @@ import java.util.*;
 
   //  @NotBlank(message = "Address not blank!")
   @NotNull(message = "Address not null!") private AddressCreationDTO address;
-  private EPayment payment;
+  private EPaymentType payment;
   //  private EShippingMethod shippingMethod;
 //  private Date expectedDeliveryTime;
 //  private BigDecimal transportFee;
@@ -55,7 +51,7 @@ import java.util.*;
     this.email = user.getEmail();
     this.phone = user.getPhone();
     this.address = new AddressCreationDTO(user.getAddresses());
-    this.payment = EPayment.CASH;
+    this.payment = EPaymentType.CASH;
 //    this.shippingMethod = EShippingMethod.GHN_EXPRESS;
 //    this.orderItems = orderItems;
     this.status = EOrderStatus.ORDER_PENDING;

@@ -8,15 +8,15 @@ public enum EDateType {
     YEAR(Names.YEAR_LABEL, Names.YEAR_TIME);
     public static class Names{
         public static final String DAY_LABEL = "Ngày";
-        public static final long DAY_TIME = 8640000L;
+        public static final long DAY_TIME = 86400000L;
         public static final String WEEK_LABEL = "Tuần";
-        public static final long WEEK_TIME = 60480000L;
+        public static final long WEEK_TIME = 604800000L;
         public static final String MONTH_LABEL = "Tháng";
-        public static final long MONTH_TIME = 259200000L;
+        public static final long MONTH_TIME = 2592000000L;
         public static final String SEASON_LABEL = "Mùa";
-        public static final long SEASON_TIME = 777600000L;
+        public static final long SEASON_TIME = 7776000000L;
         public static final String YEAR_LABEL = "Năm";
-        public static final long YEAR_TIME = 3153600000L;
+        public static final long YEAR_TIME = 31536000000L;
     }
 
     private final String label;

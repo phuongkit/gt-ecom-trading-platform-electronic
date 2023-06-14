@@ -112,6 +112,9 @@ public class Shop {
   @Column(columnDefinition = "DATETIME(6)")
   private Date registerPriceAt;
 
+  @Column(columnDefinition = "DATETIME(6)")
+  private Date endPriceAt;
+
   @Override public boolean equals(Object o) {
     if (this == o) return true;
     if (!(o instanceof Shop that) || getClass() != o.getClass()) return false;

@@ -68,7 +68,7 @@ export const ghn = {
                 items: items,
             };
             let res = await axiosGHN.post(
-                'https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/preview',
+                'https://dev-online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/preview',
                 data,
             );
             let date = new Date(Date.parse(res?.data?.data?.expected_delivery_time));

@@ -1,7 +1,7 @@
 package gt.electronic.ecommerce.dto.request;
 
 import gt.electronic.ecommerce.models.enums.EOrderStatus;
-import gt.electronic.ecommerce.models.enums.EPayment;
+import gt.electronic.ecommerce.models.enums.EPaymentType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,7 +19,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderUpdatePaymentDTO {
-  private EPayment payment;
+  private EPaymentType payment;
   private EOrderStatus status;
   private Date expectedDeliveryTime;
   private BigDecimal transportFee;
