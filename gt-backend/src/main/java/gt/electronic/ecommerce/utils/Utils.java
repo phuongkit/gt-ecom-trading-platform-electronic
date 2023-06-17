@@ -64,6 +64,7 @@ public class Utils {
     public static final String PRODUCT_NOT_ENOUGH = "Product quantity is not enough";
     public static final String USER_NOT_PERMISSION = "User does not have permission to do this";
     public static final String USER_NOT_PRESENT = "User not present";
+    public static final String ACTION_SUCCESSFULLY = "This action successfully";
 
     public static final String REGISTER_USER_SUCCESSFULLY = "Register User with phone = %s successfully!";
     public static final String CREATE_OBJECT_SUCCESSFULLY = "Create new %s successfully!";
@@ -106,6 +107,8 @@ public class Utils {
     public static final String LOG_GET_STATISTIC_BY_USER = "Statistic %s for %s with loginKey = %s";
     public static final String LOG_GET_ALL_OBJECT_BY_USER = "Fetching all %s for %s with loginKey = %s";
     public static final String LOG_UPDATE_PRODUCT_BLACK_LIST_AT = "Update product black list for all server at %s";
+    public static final String LOG_RECEIVE_ORDER_SHIPMENTS_BY_SHIPPER =
+            "Receive list order shipments %s by shipper with loginKey = %s";
 
     //  Length
     public static final int LENGTH_DISCOUNT_CODE_GENERATE = 10;

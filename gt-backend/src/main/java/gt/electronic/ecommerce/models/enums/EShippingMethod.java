@@ -7,5 +7,6 @@ package gt.electronic.ecommerce.models.enums;
  */
 public enum EShippingMethod {
   GHN_EXPRESS,
-  GIAOHANGTIETKIEM
+  GIAOHANGTIETKIEM,
+  PXC_EXPRESS
 }
