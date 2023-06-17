@@ -28,8 +28,6 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static gt.electronic.ecommerce.models.enums.EDiscountType.DISCOUNT_SHOP_PERCENT;
 import static gt.electronic.ecommerce.models.enums.EDiscountType.DISCOUNT_SHOP_PRICE;
@@ -221,7 +219,7 @@ import static gt.electronic.ecommerce.models.enums.EDiscountType.DISCOUNT_SHOP_P
     // initial total price
     newEntity.setTotalPrice(new BigDecimal(0));
     // set payment
-    newEntity.setPayment(creationDTO.getPayment() != null ? creationDTO.getPayment() : EPayment.CASH);
+    newEntity.setPayment(creationDTO.getPayment() != null ? creationDTO.getPayment() : EPaymentType.CASH);
     // initial status
     newEntity.setStatus(creationDTO.getStatus() == null ?
                             (creationDTO.getPayment().ordinal() > 0 ? EOrderStatus.ORDER_AWAITING_PAYMENT :
@@ -343,7 +341,7 @@ import static gt.electronic.ecommerce.models.enums.EDiscountType.DISCOUNT_SHOP_P
     if (entityFound.getUser() == null || Objects.equals(userFound.getId(),
                                                         entityFound.getUser().getId()) || userFound.getRole()
          == ERole.ROLE_ADMIN) {
-      entityFound.setPayment(updatePaymentDTO.getPayment() != null ? updatePaymentDTO.getPayment() : EPayment.CASH);
+      entityFound.setPayment(updatePaymentDTO.getPayment() != null ? updatePaymentDTO.getPayment() : EPaymentType.CASH);
       entityFound.setStatus(updatePaymentDTO.getStatus() == null ?
                                 (updatePaymentDTO.getPayment().ordinal() > 0 ? EOrderStatus.ORDER_AWAITING_PAYMENT :
                                     updatePaymentDTO.getStatus()) : updatePaymentDTO.getStatus());
@@ -397,37 +395,6 @@ import static gt.electronic.ecommerce.models.enums.EDiscountType.DISCOUNT_SHOP_P
     } else {
       throw new UserNotPermissionException(Utils.USER_NOT_PERMISSION);
     }
-  }
-
-  @Override public void updatePostPaymentOrder(String payString, String paymentOrderCode, boolean success) {
-    this.LOGGER.info(String.format(Utils.LOG_UPDATE_OBJECT_BY_TWO_FIELD,
-                                   branchName,
-                                   "PaymentOrderCode",
-                                   paymentOrderCode,
-                                   "Sucess",
-                                   success));
-    List<Order> entityList = this.orderRepo.findAllByPaymentOrderCode(paymentOrderCode);
-    if (entityList.size() < 1) {
-      throw new ResourceNotFoundException(String.format(Utils.OBJECT_NOT_FOUND_BY_FIELD,
-                                                        branchName,
-                                                        "PaymentOrderCode",
-                                                        paymentOrderCode));
-    }
-    Order order = entityList.get(0);
-    if (success) {
-      Date payAt = new Date();
-      try {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-        payAt = sdf.parse(payString);
-      } catch (ParseException ignored) {
-      }
-      for (OrderShop orderShop : order.getOrderShops()) {
-        orderShop.setPayAt(payAt);
-        this.orderShopRepo.save(orderShop);
-      }
-      order.setStatus(EOrderStatus.ORDER_PENDING);
-    }
-    this.orderRepo.save(order);
   }
 
   @Override public OrderResponseDTO deleteOrderById(String loginKey, Long id) {

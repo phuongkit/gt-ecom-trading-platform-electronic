@@ -4,9 +4,11 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import gt.electronic.ecommerce.config.AppProperties;
 import gt.electronic.ecommerce.dto.request.VNPayCreationDTO;
+import gt.electronic.ecommerce.dto.request.VNPayForShopPriceCreationDTO;
 import gt.electronic.ecommerce.dto.response.ResponseObject;
 import gt.electronic.ecommerce.handlers.HttpCookieOAuth2AuthorizationRequestRepository;
 import gt.electronic.ecommerce.services.OrderService;
+import gt.electronic.ecommerce.services.PaymentService;
 import gt.electronic.ecommerce.services.VNPayService;
 import gt.electronic.ecommerce.utils.CookieUtils;
 import gt.electronic.ecommerce.utils.VNPayConfig;
@@ -29,6 +31,7 @@ import java.net.URL;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -49,6 +52,11 @@ public class PaymentController {
   @Autowired
   public void OrderService(OrderService orderService) {
     this.orderService = orderService;
+  }
+  private PaymentService paymentService;
+  @Autowired
+  public void PaymentService(PaymentService paymentService) {
+    this.paymentService = paymentService;
   }
 
   private VNPayService vnPayService;
@@ -103,9 +111,15 @@ public class PaymentController {
             }
             Optional<String> redirectUri = CookieUtils.getCookie(request, HttpCookieOAuth2AuthorizationRequestRepository.REDIRECT_URI_PARAM_COOKIE_NAME)
                 .map(Cookie::getValue);
-
+            Date payAt = new Date();
+            try {
+              SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+              payAt = sdf.parse(payString);
+            } catch (ParseException ignored) {
+            }
             String targetUrl = redirectUri.orElse(appProperties.getOauth2().getAuthorizedRedirectUris().get(0));
-            this.orderService.updatePostPaymentOrder(payString, paymentOrderCode, success);
+            this.paymentService.updatePaymentHistory(paymentOrderCode, payAt, success);
+
             response.sendRedirect(UriComponentsBuilder.fromUriString(targetUrl).queryParam(TRANSACTION_STATUS, success).build().toUriString());
             return "{\"RspCode\":\"00\",\"Message\":\"Confirm Success\"}";
           } else {
@@ -210,5 +224,17 @@ public class PaymentController {
         HttpStatus.OK,
         "Get url vnpay sucess",
         this.vnPayService.getPaymentUrlVNPay(ipAddress, vnPayCreationDTO));
+  }
+
+  @PostMapping("/vnpay/create-payment-url/shop-price")
+  public ResponseObject<?> getPaymentUrlVNPayForShopPrice(
+          @RequestBody @Valid VNPayForShopPriceCreationDTO vnPayCreationDTO, HttpServletRequest request, HttpServletResponse response)
+          throws IOException {
+    String ipAddress = VNPayConfig.getIpAddress(request);
+    CookieUtils.addCookie(response, REDIRECT_URI_PARAM_COOKIE_NAME, vnPayCreationDTO.getRedirectUrl(), cookieExpireSeconds);
+    return new ResponseObject<>(
+            HttpStatus.OK,
+            "Get url vnpay sucess",
+            this.vnPayService.getPaymentUrlVNPayForShopPrice(ipAddress, vnPayCreationDTO));
   }
 }

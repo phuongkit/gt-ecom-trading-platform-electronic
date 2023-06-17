@@ -82,9 +82,9 @@ public class Shop {
   @OneToMany(mappedBy = "shop", cascade = CascadeType.ALL)
   private Set<Product> products = new HashSet<>();
 
-  @Column(name = "enabled", nullable = false)
+  @Column(name = "enabled", nullable = true)
   @NotNull(message = "An enabled is required!")
-  private boolean enabled;
+  private boolean enabled = true;
 
   @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "avatar")
@@ -104,6 +104,16 @@ public class Shop {
 
   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "shop")
   private Set<Discount> discounts = new HashSet<>();
+
+  @ManyToOne
+  @JoinColumn(name = "shop_price_id")
+  private ShopPrice shopPrice;
+
+  @Column(columnDefinition = "DATETIME(6)")
+  private Date registerPriceAt;
+
+  @Column(columnDefinition = "DATETIME(6)")
+  private Date endPriceAt;
 
   @Override public boolean equals(Object o) {
     if (this == o) return true;

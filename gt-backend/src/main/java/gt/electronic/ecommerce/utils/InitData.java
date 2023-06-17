@@ -6,10 +6,7 @@ import gt.electronic.ecommerce.dto.request.OrderDetailCreationDTO;
 import gt.electronic.ecommerce.dto.response.OrderResponseDTO;
 import gt.electronic.ecommerce.entities.*;
 import gt.electronic.ecommerce.models.clazzs.FullAddress;
-import gt.electronic.ecommerce.models.enums.EDiscountType;
-import gt.electronic.ecommerce.models.enums.EGender;
-import gt.electronic.ecommerce.models.enums.ERole;
-import gt.electronic.ecommerce.models.enums.ESentiment;
+import gt.electronic.ecommerce.models.enums.*;
 import gt.electronic.ecommerce.repositories.*;
 import gt.electronic.ecommerce.services.*;
 import org.slf4j.Logger;
@@ -73,12 +70,19 @@ public class InitData {
     @Autowired
     private ShopRepository shopRepo;
     @Autowired
+    private ShopPriceRepository shopPriceRepo;
+    @Autowired
     private UserRepository userRepo;
     @Autowired
     private UserService userService;
 
     public void Init() {
         this.LOGGER.info("Start init data to database");
+//        if (true) {
+//            ShopPrice[] shopPrices = new ShopPrice[500];
+//            createShopPrice(shopPrices);
+//            return;
+//        }
         Pageable pageable = PageRequest.of(0, 1000);
         Date currentDate = new Date();
         long hourTime = 1000 * 3600;
@@ -99,6 +103,9 @@ public class InitData {
 
         FullAddress[] fullAddresses = new FullAddress[500];
         int maxIndexFullAddress = createFullAddress(fullAddresses);
+
+        ShopPrice[] shopPrices = new ShopPrice[500];
+        int maxIndexShopPrice = createShopPrice(shopPrices);
 
         Shop[] shops = new Shop[500];
         int maxIndexShop = createShop(shops, uv.customers, uv.maxIndexCustomer, fullAddresses, maxIndexFullAddress);
@@ -138,6 +145,48 @@ public class InitData {
 
 
         this.LOGGER.info("Init data to database is done!");
+    }
+
+
+    private int createShopPrice(ShopPrice[] shopPrices) {
+        int i = 0;
+        shopPrices[i] = new ShopPrice("Gói tháng thường",
+                                      new BigDecimal("1000000"),
+                                      50,
+                                      1,
+                                      EDateType.MONTH,
+                                      EShopPriceType.NORMAL,
+                                      "");
+        shopPrices[i] = shopPriceRepo.save(shopPrices[i]);
+        i++;
+        shopPrices[i] = new ShopPrice("Gói tháng vip",
+                                      new BigDecimal("3000000"),
+                                      500,
+                                      1,
+                                      EDateType.MONTH,
+                                      EShopPriceType.VIP,
+                                      "");
+        shopPrices[i] = shopPriceRepo.save(shopPrices[i]);
+        i++;
+        shopPrices[i] = new ShopPrice("Gói năm thường",
+                                      new BigDecimal("10000000"),
+                                      70,
+                                      1,
+                                      EDateType.YEAR,
+                                      EShopPriceType.NORMAL,
+                                      "");
+        shopPrices[i] = shopPriceRepo.save(shopPrices[i]);
+        i++;
+        shopPrices[i] = new ShopPrice("Gói năm vip",
+                                      new BigDecimal("30000000"),
+                                      700,
+                                      1,
+                                      EDateType.YEAR,
+                                      EShopPriceType.VIP,
+                                      "");
+        shopPrices[i] = shopPriceRepo.save(shopPrices[i]);
+        i++;
+        return i;
     }
 
     private int createDiscount(Discount[] discounts, Shop[] shops, int maxIndexShop) {
@@ -919,7 +968,27 @@ public class InitData {
                 shop[generator.nextInt(maxIndexShop + 1)],
                 lv.locationHCM,
                 Image.createImageProduct("30175cfef628b991ebf045b856eb7975.jpg"),
-                "<div class=\"ToggleContent__View-sc-1dbmfaw-0 wyACs\" style=\"\"><h3>Laptop Asus BR1100FKA&nbsp;hướng tới phân khúc&nbsp;laptop học tập - văn phòng, với kích thước nhỏ nhắn và thiết kế tiện ích tựa như chiếc máy tính bảng, để phục vụ hiệu quả cho những buổi học trực tuyến, cùng cấu hình ổn để đáp ứng nhu cầu giải trí cơ bản.</h3>\n" + "<h3>Nhỏ gọn, bền bỉ với tiêu chuẩn độ bền quân đội Mỹ</h3>\n" + "<p>Asus BR1100FKA được thiết kế rất nhỏ gọn, kích thước không nhỉnh hơn quá nhiều so với máy tính bảng, với trọng lượng máy&nbsp;<strong>1.4 kg</strong>, độ dày&nbsp;<strong>20 mm</strong>&nbsp;thoải mái để mang theo sử dụng ở mọi nơi.</p>\n" + "<p></p>\n" + "<p>Được nhắm tới phục vụ nhu cầu học tập, đặc biệt dễ dùng cho trẻ nhỏ, laptop Asus trang bị&nbsp;<strong>bản lề 360 độ</strong>, gập mở linh hoạt như 1 máy tính bảng thực thụ, giúp bạn sử dụng được ở nhiều tư thế sao cho thoải mái nhất.</p>\n" + "<p></p>\n" + "<p>Đặc biệt hơn với&nbsp;<strong>màn hình cảm ứng đa điểm</strong>&nbsp;cho các thao tác tương tác màn hình thêm đơn giản và nhanh chóng trong các buổi học, bạn chỉ cần chạm vào để thực hiện thao tác mà không cần sử dụng chuột hay bàn phím.</p>\n" + "<p>Laptop&nbsp;có vỏ ngoài bằng nhựa, cấu trúc chắc chắn và cực kỳ bền tốt, chất lượng đạt<strong>&nbsp;chuẩn quân đội Mỹ MIL-STD-810H</strong>, bảo vệ máy trước các sự cố va đập nhẹ, rung sốc hay sự thay đổi nhiệt độ đột ngột, sương muối, bụi bẩn, nhờ đó mà bạn thoải mái sử dụng laptop mà không ái ngại các tổn hại do ngoại lực thông thường.</p>\n" + "<p>Hệ bàn phím của máy với phím nhấn êm và nhạy, khoảng cách phím tốt cho thao tác soạn thảo nhanh và chuẩn xác, cấu trúc bàn phím đơn giản, dễ dùng cho trẻ nhỏ.</p>\n" + "<p>Máy hỗ trợ 2 chuẩn kết nối không dây chất lượng cao&nbsp;<strong>Bluetooth 5.2</strong>&nbsp;và&nbsp;<strong>Wi-Fi 6&nbsp;(802.11ax)</strong>&nbsp;mang đến kết nối ổn định và liền mạch cho các buổi học trực tuyến. Đồng thời, các cổng ngoại vi USB 3.2, HDMI, jack tai nghe 3.5 mm, LAN (RJ45), USB 2.0, USB Type-C đáp ứng tốt các nhu cầu kết nối phục vụ học tập, giải trí và làm việc khi cần.</p>\n" + "<p></p>\n" + "<h3>Màn hình cảm ứng rõ nét, âm thanh to rõ, trong trẻo</h3>\n" + "<p>Chiếc&nbsp;laptop Asus&nbsp;này có kích thước&nbsp;<strong>màn hình 11.6 inch</strong>, độ phân giải đạt chuẩn&nbsp;<strong>HD (1366 x 768)&nbsp;</strong>với độ sáng màn hình&nbsp;<strong>250 nits</strong>&nbsp;đủ đáp ứng tiêu chuẩn màn hình rõ nét, hình ảnh ổn định, màu sắc tương phản tốt, dễ nhìn, không gây khó chịu cho mắt khi dùng liên tục nhiều giờ.</p>\n" + "<p>Bên cạnh đó,&nbsp;<strong>HD Webcam</strong>&nbsp;với khả năng ghi hình rõ nét hỗ trợ tích cực khi cần giao tiếp video, học trực tuyến tiện lợi.&nbsp;<strong>Công tắc khóa camera</strong>&nbsp;bảo vệ sự riêng tư của bạn trong những trường hợp cần thiết.</p>\n" + "<p>Cùng với đó là công nghệ&nbsp;SonicMaster audio&nbsp;mang đến chất lượng âm thanh to rõ, khuếch đại tốt, các dải âm rành mạch, đảm bảo cả tiêu chí nghe nhìn khi sử dụng laptop cho học tập, làm việc hay giải trí.</p>\n" + "<h3>Hiệu năng ổn định, đủ dùng</h3>\n" + "<p>Asus BR1100FKA được trang bị bộ xử lý&nbsp;<strong>Intel Pentium N6000</strong>&nbsp;có tốc độ CPU trung bình&nbsp;<strong>1.1 GHz</strong>, tối đa đến&nbsp;<strong>3.3 GHz</strong>&nbsp;khi ép xung, đáp ứng đa tác vụ các ứng dụng văn phòng, học tập trên Word, nhập liệu, tính toán qua Excel, soạn bản thuyết trình với PowerPoint, Kết hợp card tích hợp&nbsp;<strong>Intel UHD Graphics&nbsp;</strong>nâng cao khả năng đồ hoạ, mang đến sự chuyển động giữa các khung hình mượt mà hơn khi xem phim, duyệt web,</p>\n" + "<p>Laptop RAM 8GB&nbsp;chuẩn<strong>&nbsp;DDR4 (On board)</strong>, tốc độ Bus RAM&nbsp;<strong>2933 MHz</strong>&nbsp;hỗ trợ đa nhiệm thêm ổn định và mượt mà, giúp máy chạy đồng thời nhiều ứng dụng mà không bị lag hay đơ màn hình.</p>\n" + "<p><strong>Ổ cứng 128 GB eMMC</strong>&nbsp;đủ dung lượng cho nhu cầu lưu trữ cá nhân trên laptop, hỗ trợ khởi động và truy xuất dữ liệu nhanh chóng, ổn định hơn, di chuyển nhanh nhạy giữa các ứng dụng được mở, ổn định hiệu suất sử dụng.</p>\n" + "<p><strong>ASUS BacGuard Kháng khuẩn toàn diện</strong> Bề mặt của máy tính xách tay chứa hàng ngàn vi khuẩn tiềm ẩn nguy hại. Để giữ cho ASUS BR1100F luôn sạch sẽ, bàn phím, chuột cảm ứng và phần kê tay được phủ lớp kháng khuẩn ASUS BacGuard6,7. Trang bị này đã được kiểm định theo tiêu chuẩn ISO 22196 được quốc tế công nhận là ức chế sự phát triển của vi khuẩn hơn 99% trong thời gian 24 giờ. ASUS BacGuard cũng có khả năng chịu được các sản phẩm vệ sinh chứa cồn, cho phép bạn vệ sinh bề mặt máy tính và gần như không lo bị vi khuẩn gây hại tấn công.</p>\n" + "<p>Nếu bạn đang tìm kiếm một chiếc laptop nhỏ gọn, tiện lợi để phục vụ chủ đích cho nhu cầu học tập cơ bản, lựa chọn laptop Asus BR1100FKA hẳn sẽ rất tương thích, mang lại những trải nghiệm thích thú và hài lòng.</p>\n" + "<p>&nbsp;</p><p>Giá sản phẩm trên đây đã bao gồm thuế theo luật hiện hành. Bên cạnh đó, tuỳ vào loại sản phẩm, hình thức và địa chỉ giao hàng mà có thể phát sinh thêm chi phí khác như phí vận chuyển, phụ phí hàng cồng kềnh, thuế nhập khẩu (đối với đơn hàng giao từ nước ngoài có giá trị trên 1 triệu đồng).....</p></div>");
+                "<div class=\"ToggleContent__View-sc-1dbmfaw-0 wyACs\" style=\"\"><h3>Laptop Asus BR1100FKA&nbsp;hướng tới phân khúc&nbsp;laptop học tập - văn phòng, với kích thước nhỏ nhắn và thiết kế tiện ích tựa như chiếc máy tính bảng, để phục vụ hiệu quả cho những buổi học trực tuyến, cùng cấu hình ổn để đáp ứng nhu cầu giải trí cơ bản.</h3>\n" +
+                        "<h3>Nhỏ gọn, bền bỉ với tiêu chuẩn độ bền quân đội Mỹ</h3>\n" +
+                        "<p>Asus BR1100FKA được thiết kế rất nhỏ gọn, kích thước không nhỉnh hơn quá nhiều so với máy tính bảng, với trọng lượng máy&nbsp;<strong>1.4 kg</strong>, độ dày&nbsp;<strong>20 mm</strong>&nbsp;thoải mái để mang theo sử dụng ở mọi nơi.</p>\n" +
+                        "<p></p>\n" +
+                        "<p>Được nhắm tới phục vụ nhu cầu học tập, đặc biệt dễ dùng cho trẻ nhỏ, laptop Asus trang bị&nbsp;<strong>bản lề 360 độ</strong>, gập mở linh hoạt như 1 máy tính bảng thực thụ, giúp bạn sử dụng được ở nhiều tư thế sao cho thoải mái nhất.</p>\n" +
+                        "<p></p>\n" +
+                        "<p>Đặc biệt hơn với&nbsp;<strong>màn hình cảm ứng đa điểm</strong>&nbsp;cho các thao tác tương tác màn hình thêm đơn giản và nhanh chóng trong các buổi học, bạn chỉ cần chạm vào để thực hiện thao tác mà không cần sử dụng chuột hay bàn phím.</p>\n" +
+                        "<p>Laptop&nbsp;có vỏ ngoài bằng nhựa, cấu trúc chắc chắn và cực kỳ bền tốt, chất lượng đạt<strong>&nbsp;chuẩn quân đội Mỹ MIL-STD-810H</strong>, bảo vệ máy trước các sự cố va đập nhẹ, rung sốc hay sự thay đổi nhiệt độ đột ngột, sương muối, bụi bẩn, nhờ đó mà bạn thoải mái sử dụng laptop mà không ái ngại các tổn hại do ngoại lực thông thường.</p>\n" +
+                        "<p>Hệ bàn phím của máy với phím nhấn êm và nhạy, khoảng cách phím tốt cho thao tác soạn thảo nhanh và chuẩn xác, cấu trúc bàn phím đơn giản, dễ dùng cho trẻ nhỏ.</p>\n" +
+                        "<p>Máy hỗ trợ 2 chuẩn kết nối không dây chất lượng cao&nbsp;<strong>Bluetooth 5.2</strong>&nbsp;và&nbsp;<strong>Wi-Fi 6&nbsp;(802.11ax)</strong>&nbsp;mang đến kết nối ổn định và liền mạch cho các buổi học trực tuyến. Đồng thời, các cổng ngoại vi USB 3.2, HDMI, jack tai nghe 3.5 mm, LAN (RJ45), USB 2.0, USB Type-C đáp ứng tốt các nhu cầu kết nối phục vụ học tập, giải trí và làm việc khi cần.</p>\n" +
+                        "<p></p>\n" + "<h3>Màn hình cảm ứng rõ nét, âm thanh to rõ, trong trẻo</h3>\n" +
+                        "<p>Chiếc&nbsp;laptop Asus&nbsp;này có kích thước&nbsp;<strong>màn hình 11.6 inch</strong>, độ phân giải đạt chuẩn&nbsp;<strong>HD (1366 x 768)&nbsp;</strong>với độ sáng màn hình&nbsp;<strong>250 nits</strong>&nbsp;đủ đáp ứng tiêu chuẩn màn hình rõ nét, hình ảnh ổn định, màu sắc tương phản tốt, dễ nhìn, không gây khó chịu cho mắt khi dùng liên tục nhiều giờ.</p>\n" +
+                        "<p>Bên cạnh đó,&nbsp;<strong>HD Webcam</strong>&nbsp;với khả năng ghi hình rõ nét hỗ trợ tích cực khi cần giao tiếp video, học trực tuyến tiện lợi.&nbsp;<strong>Công tắc khóa camera</strong>&nbsp;bảo vệ sự riêng tư của bạn trong những trường hợp cần thiết.</p>\n" +
+                        "<p>Cùng với đó là công nghệ&nbsp;SonicMaster audio&nbsp;mang đến chất lượng âm thanh to rõ, khuếch đại tốt, các dải âm rành mạch, đảm bảo cả tiêu chí nghe nhìn khi sử dụng laptop cho học tập, làm việc hay giải trí.</p>\n" +
+                        "<h3>Hiệu năng ổn định, đủ dùng</h3>\n" +
+                        "<p>Asus BR1100FKA được trang bị bộ xử lý&nbsp;<strong>Intel Pentium N6000</strong>&nbsp;có tốc độ CPU trung bình&nbsp;<strong>1.1 GHz</strong>, tối đa đến&nbsp;<strong>3.3 GHz</strong>&nbsp;khi ép xung, đáp ứng đa tác vụ các ứng dụng văn phòng, học tập trên Word, nhập liệu, tính toán qua Excel, soạn bản thuyết trình với PowerPoint, Kết hợp card tích hợp&nbsp;<strong>Intel UHD Graphics&nbsp;</strong>nâng cao khả năng đồ hoạ, mang đến sự chuyển động giữa các khung hình mượt mà hơn khi xem phim, duyệt web,</p>\n" +
+                        "<p>Laptop RAM 8GB&nbsp;chuẩn<strong>&nbsp;DDR4 (On board)</strong>, tốc độ Bus RAM&nbsp;<strong>2933 MHz</strong>&nbsp;hỗ trợ đa nhiệm thêm ổn định và mượt mà, giúp máy chạy đồng thời nhiều ứng dụng mà không bị lag hay đơ màn hình.</p>\n" +
+                        "<p><strong>Ổ cứng 128 GB eMMC</strong>&nbsp;đủ dung lượng cho nhu cầu lưu trữ cá nhân trên laptop, hỗ trợ khởi động và truy xuất dữ liệu nhanh chóng, ổn định hơn, di chuyển nhanh nhạy giữa các ứng dụng được mở, ổn định hiệu suất sử dụng.</p>\n" +
+                        "<p><strong>ASUS BacGuard Kháng khuẩn toàn diện</strong> Bề mặt của máy tính xách tay chứa hàng ngàn vi khuẩn tiềm ẩn nguy hại. Để giữ cho ASUS BR1100F luôn sạch sẽ, bàn phím, chuột cảm ứng và phần kê tay được phủ lớp kháng khuẩn ASUS BacGuard6,7. Trang bị này đã được kiểm định theo tiêu chuẩn ISO 22196 được quốc tế công nhận là ức chế sự phát triển của vi khuẩn hơn 99% trong thời gian 24 giờ. ASUS BacGuard cũng có khả năng chịu được các sản phẩm vệ sinh chứa cồn, cho phép bạn vệ sinh bề mặt máy tính và gần như không lo bị vi khuẩn gây hại tấn công.</p>\n" +
+                        "<p>Nếu bạn đang tìm kiếm một chiếc laptop nhỏ gọn, tiện lợi để phục vụ chủ đích cho nhu cầu học tập cơ bản, lựa chọn laptop Asus BR1100FKA hẳn sẽ rất tương thích, mang lại những trải nghiệm thích thú và hài lòng.</p>\n" +
+                        "<p>&nbsp;</p><p>Giá sản phẩm trên đây đã bao gồm thuế theo luật hiện hành. Bên cạnh đó, tuỳ vào loại sản phẩm, hình thức và địa chỉ giao hàng mà có thể phát sinh thêm chi phí khác như phí vận chuyển, phụ phí hàng cồng kềnh, thuế nhập khẩu (đối với đơn hàng giao từ nước ngoài có giá trị trên 1 triệu đồng).....</p></div>");
         products[i] = this.productRepo.save(products[i]);
         products[i].setImageGallery(
                 new HashSet<>(this.imageRepo.saveAllAndFlush(Image.createImageProductGallery(new String[]{

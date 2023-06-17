@@ -2,7 +2,7 @@ package gt.electronic.ecommerce.entities;
 
 import gt.electronic.ecommerce.models.enums.EGender;
 import gt.electronic.ecommerce.models.enums.EOrderStatus;
-import gt.electronic.ecommerce.models.enums.EPayment;
+import gt.electronic.ecommerce.models.enums.EPaymentType;
 import gt.electronic.ecommerce.utils.Utils;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -68,7 +68,7 @@ public class Order {
   @Enumerated(EnumType.STRING)
   @Column(name = "payment", length = 50, nullable = false)
   @NotNull(message = "An payment is required!")
-  private EPayment payment;
+  private EPaymentType payment;
 
 //  @ManyToOne(fetch = FetchType.LAZY)
 //  @JoinColumn(name = "shipping_method_id", nullable = false)

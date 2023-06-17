@@ -1,8 +1,10 @@
 package gt.electronic.ecommerce.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import gt.electronic.ecommerce.entities.ShopPrice;
 import lombok.Data;
 
+import javax.persistence.Column;
 import java.util.Date;
 
 /**
@@ -28,4 +30,7 @@ public class ShopResponseDTO {
   private Date createdAt;
   private Date updatedAt;
   private String lastLogin;
+  private ShopPriceResponseDTO shopPrice;
+  private Date registerPriceAt;
+  private Date endPriceAt;
 }

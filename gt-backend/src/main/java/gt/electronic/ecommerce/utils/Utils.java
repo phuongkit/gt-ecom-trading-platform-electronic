@@ -78,6 +78,12 @@ public class Utils {
 
     // INFO
     public static final String PAYMENT_ORDER = "%s thanh toan don hang %s voi tong tien %s voi %s";
+    public static final String LOG_UPDATE_PAYMENT_HISTORY_ORDER =
+            "%s update PaymentHistory with paymentCode = %s when paying bill Order with orderId = %s with %s at %s";
+    public static final String LOG_UPDATE_PAYMENT_HISTORY_SHOP_PRICE =
+            "%s update PaymentHistory with paymentCode = %s when paying bill ShopPrice with shopId = %s and shopPriceId = %s with %s at %s";
+    public static final String SUCCESS = "Successfully";
+    public static final String FAIL = "Failed";
 
     //  Log
     public static final String LOG_GET_ALL_OBJECT = "Fetching all %ss";
@@ -140,7 +146,7 @@ public class Utils {
     public static final String REDIRECT_URI_PARAM_COOKIE_NAME = "redirect_uri";
     public static final String TRANSACTION_STATUS = "transaction_status";
     public static final int cookieExpireSeconds = 600;
-//    public static final long checkBlackListSeconds = 1000 * 3600 * 24 * 7;
+    //    public static final long checkBlackListSeconds = 1000 * 3600 * 24 * 7;
 //    @Value("${app.shop.default.timeCheckBlackProductMs}")
     public static final long timeCheckBlackProductMs = 604800000; // 1Week
 

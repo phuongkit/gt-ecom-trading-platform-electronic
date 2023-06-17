@@ -1,6 +1,7 @@
 CREATE DATABASE  IF NOT EXISTS `gt_ecommerce`;
 USE `gt_ecommerce`;
 
+-- D:\Git\gt-ecom-trading-platform-electronic\gt-backend\files\createDateBase.sql
 --
 -- Table structure for table `tbl_message`
 --
@@ -35,7 +36,6 @@ LOCK TABLES `tbl_message` WRITE;
 INSERT INTO `tbl_message` VALUES (1,'<p class=\"mt-6 text-2xl leading-10\">Chào shop Balo Chuối,</p><p class=\"mt-6 text-2xl leading-10\">Praesent dui ex, dapibus eget mauris ut, finibus vestibulum enim. Quisque9 arcu leo, facilisis in fringilla id, luctus in tortor. Nunc vestibulum est quis orci varius viverra. Curabitur dictum volutpat massa vulputate molestie. In at felis ac velit maximus convallis. </p> <p class=\"mt-6 text-2xl leading-10\">Sed elementum turpis eu lorem interdum, sed porttitor eros commodo. Nam eu venenatis tortor, id lacinia diam. Sed aliquam in dui et porta. Sed bibendum orci non tincidunt ultrices. Vivamus fringilla, mi lacinia dapibus condimentum, ipsum urna lacinia lacus, vel tincidunt mi nibh sit amet lorem.</p><p class=\"my-6 text-2xl\">Sincerly,</p>',NULL,_binary '\0','[{\"product_id\" : \"21\",\"slug\" : \"dien-thoai/samsung-galaxy-z-flip3-5g.483d22c888db463cbf1c924e2eebe549\",\"img\" : \"IMAGE_PRODUCT/44uexhsraf1xm5mgenwxvubobjhpbgny.jpg\",\"name\" : \"Samsung Galaxy Z Flip3 5G\",\"isBaned\" : \"0\",\"negTotal\" : \"4\",\"total\" : \"5\",\"percent\" : \"80\",\"count\" : \"1\",},{\"product_id\" : \"11\",\"slug\" : \"phu-kien/pin-sac-du-phong-polymer-10000-mah-type-c-pd-qc30-xmobile-powerslim-pj-jp213.ab853efaf1f546ce86d06d9f96d67e83\",\"img\" : \"IMAGE_PRODUCT/4pq1497ob6x2wbtw80i1rw74ctwsx8wn.jpg\",\"name\" : \"Pin sạc dự phòng Polymer 10.000 mAh Type C PD QC3.0 Xmobile PowerSlim PJ JP213\",\"isBaned\" : \"0\",\"negTotal\" : \"3\",\"total\" : \"3\",\"percent\" : \"100\",\"count\" : \"2\",}]','2023-06-12 21:35:23.000000',NULL,2,'Thông báo về danh sách sản phẩm có nguy cơ bị ban','customer1@gmail.com','Balo Chuối','MESSAGE_PRODUCT',NULL),(2,'<p class=\"mt-6 text-2xl leading-10\">Chào shop Phụ Kiện Điện Thoại 123@,</p><p class=\"mt-6 text-2xl leading-10\">Praesent dui ex, dapibus eget mauris ut, finibus vestibulum enim. Quisque9 arcu leo, facilisis in fringilla id, luctus in tortor. Nunc vestibulum est quis orci varius viverra. Curabitur dictum volutpat massa vulputate molestie. In at felis ac velit maximus convallis. </p> <p class=\"mt-6 text-2xl leading-10\">Sed elementum turpis eu lorem interdum, sed porttitor eros commodo. Nam eu venenatis tortor, id lacinia diam. Sed aliquam in dui et porta. Sed bibendum orci non tincidunt ultrices. Vivamus fringilla, mi lacinia dapibus condimentum, ipsum urna lacinia lacus, vel tincidunt mi nibh sit amet lorem.</p><p class=\"my-6 text-2xl\">Sincerly,</p>',NULL,_binary '\0','[{\"product_id\" : \"54\",\"slug\" : \"tu-lanh/tu-lanh-electrolux-eme3700h-a-dung-tich-337-lit-cong-nghe-inverter-hang-chinh-hang.83612e27ccf84df7916be3984a8865e7\",\"img\" : \"IMAGE_PRODUCT/22211e58f0f561651cf199b280df1390.jpg\",\"name\" : \"Tủ Lạnh Electrolux EME3700H-A - Dung Tích 337 Lít - Công Nghệ Inverter - Hàng Chính Hãng\",\"isBaned\" : \"0\",\"negTotal\" : \"2\",\"total\" : \"2\",\"percent\" : \"100\",\"count\" : \"2\",},{\"product_id\" : \"3\",\"slug\" : \"phu-kien/tai-nghe-bluetooth-airpods-3-apple-mme73-trang.1a705861b747468599491ab6ebe5a575\",\"img\" : \"IMAGE_PRODUCT/4fkue0gwjtkewij5zaxpvbnraerjtb7b.jpg\",\"name\" : \"Tai nghe Bluetooth AirPods 3 Apple MME73 Trắng\",\"isBaned\" : \"0\",\"negTotal\" : \"2\",\"total\" : \"2\",\"percent\" : \"100\",\"count\" : \"2\",}]','2023-06-12 21:35:23.000000',NULL,3,'Thông báo về danh sách sản phẩm có nguy cơ bị ban','customer2@gmail.com','Phụ Kiện Điện Thoại 123@','MESSAGE_PRODUCT',NULL),(3,'<p class=\"mt-6 text-2xl leading-10\">Chào shop MEKAXO - PHỤ KIỆN CÔNG NGHỆ,</p><p class=\"mt-6 text-2xl leading-10\">Praesent dui ex, dapibus eget mauris ut, finibus vestibulum enim. Quisque9 arcu leo, facilisis in fringilla id, luctus in tortor. Nunc vestibulum est quis orci varius viverra. Curabitur dictum volutpat massa vulputate molestie. In at felis ac velit maximus convallis. </p> <p class=\"mt-6 text-2xl leading-10\">Sed elementum turpis eu lorem interdum, sed porttitor eros commodo. Nam eu venenatis tortor, id lacinia diam. Sed aliquam in dui et porta. Sed bibendum orci non tincidunt ultrices. Vivamus fringilla, mi lacinia dapibus condimentum, ipsum urna lacinia lacus, vel tincidunt mi nibh sit amet lorem.</p><p class=\"my-6 text-2xl\">Sincerly,</p>',NULL,_binary '\0','[{\"product_id\" : \"69\",\"slug\" : \"tivi/smart-tivi-samsung-crystal-uhd-4k-50-inch-ua50au7700kxxv-hang-chinh-hang-giao-toan-quoc.42a74bc3a9b44dff9211a86a843a2af6\",\"img\" : \"IMAGE_PRODUCT/a5025f22245a888945436508ce07dca0.png\",\"name\" : \"Smart Tivi Samsung Crystal UHD 4K 50 inch UA50AU7700KXXV - Hàng chính hãng - Giao toàn quốc\",\"isBaned\" : \"0\",\"negTotal\" : \"3\",\"total\" : \"4\",\"percent\" : \"75\",\"count\" : \"1\",},{\"product_id\" : \"57\",\"slug\" : \"tivi/smart-tivi-neo-qled-samsung-4k-55-inch-qa55qn85a.09c731487fd9411da6f6a985e362e991\",\"img\" : \"IMAGE_PRODUCT/606299060c679734e5b429b499dc4dd8.jpg\",\"name\" : \"Smart Tivi Neo QLED Samsung 4K 55 inch QA55QN85A\",\"isBaned\" : \"0\",\"negTotal\" : \"3\",\"total\" : \"4\",\"percent\" : \"75\",\"count\" : \"1\",}]','2023-06-12 21:35:23.000000',NULL,6,'Thông báo về danh sách sản phẩm có nguy cơ bị ban','customer5@gmail.com','MEKAXO - PHỤ KIỆN CÔNG NGHỆ','MESSAGE_PRODUCT',NULL);
 /*!40000 ALTER TABLE `tbl_message` ENABLE KEYS */;
 UNLOCK TABLES;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 --
 -- Table structure for table `tbl_product_black_list`
@@ -78,6 +78,13 @@ AS
     GROUP BY p.id, p.shop_id, fb.sentiment;
 
 -- SELECT * FROM sentimentAnalysis;
+
+CREATE OR REPLACE VIEW lastCheckProductBlackList 
+AS
+	SELECT * FROM tbl_product_black_list gr_pbl
+    WHERE scan_at = (SELECT scan_at FROM tbl_product_black_list gr_pbl ORDER BY scan_at DESC LIMIT 0, 1);
+    
+-- SELECT * FROM  lastCheckProductBlackList;
 
 DROP PROCEDURE IF EXISTS updateBlackListProduct;
 drop temporary table if exists temp;
@@ -154,8 +161,9 @@ BEGIN
     SELECT * FROM tbl_product_black_list;
     INSERT INTO tbl_message(shop_id, to_name, to_email, is_baned, scan_at, title, body, products)
     (SELECT shop_id, s.name to_name, s.email to_nmail, is_baned, tbl.scan_at,
-		IF(is_baned = '0', 'Thông báo về danh sách sản phẩm có nguy cơ bị ban',
-		'Thông báo về danh sách sản phẩm của shop bạn đã bị ban') title,
+		IF(is_baned = '0', 'Notice about the list of potentially banned products', -- 'Thông báo về danh sách sản phẩm có nguy cơ bị ban',
+		'Notice of prohibited products list' -- 'Thông báo về danh sách sản phẩm của shop bạn đã bị ban'
+        ) title,
 		CONCAT('<p class="mt-6 text-2xl leading-10">Chào shop ', s.name,',</p>', 
 		'<p class="mt-6 text-2xl leading-10">Praesent dui ex, dapibus eget mauris ut, finibus vestibulum enim. Quisque9 arcu leo, facilisis in fringilla id, luctus in tortor. Nunc vestibulum est quis orci varius viverra. Curabitur dictum volutpat massa vulputate molestie. In at felis ac velit maximus convallis. </p> <p class="mt-6 text-2xl leading-10">Sed elementum turpis eu lorem interdum, sed porttitor eros commodo. Nam eu venenatis tortor, id lacinia diam. Sed aliquam in dui et porta. Sed bibendum orci non tincidunt ultrices. Vivamus fringilla, mi lacinia dapibus condimentum, ipsum urna lacinia lacus, vel tincidunt mi nibh sit amet lorem.</p><p class="my-6 text-2xl">Sincerly,</p>') body, 
 	CONCAT('[', GROUP_CONCAT('{', CONCAT(
@@ -180,10 +188,3 @@ SET @inShopId = NULL,
     @inMinNeg = 90,
     @inStartDateNewSession = DATE_SUB(CURRENT_DATE(), INTERVAL 28 DAY);
 CALL updateBlackListProduct(@inShopId, @inStartDate, @inMinAll, @inMinNeg, @inStartDateNewSession);
-
-CREATE OR REPLACE VIEW lastCheckProductBlackList 
-AS
-	SELECT * FROM tbl_product_black_list gr_pbl
-    WHERE scan_at = (SELECT scan_at FROM tbl_product_black_list gr_pbl ORDER BY scan_at DESC LIMIT 0, 1);
-    
--- SELECT * FROM  lastCheckProductBlackList;

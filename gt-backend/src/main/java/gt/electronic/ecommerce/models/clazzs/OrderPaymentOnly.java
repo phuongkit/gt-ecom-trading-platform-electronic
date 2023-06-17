@@ -2,7 +2,7 @@ package gt.electronic.ecommerce.models.clazzs;
 
 import gt.electronic.ecommerce.entities.Order;
 import gt.electronic.ecommerce.entities.User;
-import gt.electronic.ecommerce.models.enums.EPayment;
+import gt.electronic.ecommerce.models.enums.EPaymentType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,7 +25,7 @@ public class OrderPaymentOnly extends Order {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id", nullable = false)
   private User user;
-  private EPayment payment;
+  private EPaymentType payment;
 
   @Column(name = "pay_at")
   @Temporal(TemporalType.TIMESTAMP)

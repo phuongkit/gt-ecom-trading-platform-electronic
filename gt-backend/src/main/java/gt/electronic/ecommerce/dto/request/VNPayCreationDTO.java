@@ -2,6 +2,7 @@ package gt.electronic.ecommerce.dto.request;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 
 /**
@@ -13,7 +14,7 @@ public class VNPayCreationDTO {
   Long orderId;
   String fullName;
   String redirectUrl;
-  BigInteger totalPrice;
+  BigDecimal totalPrice;
   String locate;
   String bankCode;
 }
