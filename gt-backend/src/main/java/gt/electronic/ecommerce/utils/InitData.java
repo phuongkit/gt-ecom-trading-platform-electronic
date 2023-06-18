@@ -3700,6 +3700,48 @@ public class InitData {
         return i;
     }
 
+    private int createShipper(AuthRegisterDTO[] authRegisterCustomers, User[] shippers) {
+        int i = 0;
+
+        authRegisterCustomers[i] = new AuthRegisterDTO("Trình",
+                                                       "Khánh Duy",
+                                                       EGender.MALE,
+                                                       "039434444" + i,
+                                                       "shipper" + i + "@gmail.com",
+                                                       Utils.DEFAULT_PASSWORD);
+        authRegisterCustomers[i].setRole(ERole.ROLE_SHIPPER);
+        this.userService.registerUser(authRegisterCustomers[i], false);
+        shippers[i] = this.userRepo.findUserByPhone(authRegisterCustomers[i].getPhone()).orElse(null);
+        if (shippers[i] != null) {
+            Location location = new Location("Phường Linh Trung", "Thành Phố Thủ Đức", "Hồ Chí Minh");
+            location = this.locationService.saveLocation(location);
+            Address address = new Address(shippers[i], location, "Đường số 8");
+            address = this.addressService.saveAddress(address);
+            shippers[i] = this.userRepo.findById(shippers[i].getId()).orElse(null);
+        }
+        i++;
+
+        authRegisterCustomers[i] = new AuthRegisterDTO("Lê",
+                                                       "Thiếu Úy",
+                                                       EGender.MALE,
+                                                       "039434444" + i,
+                                                       "shipper" + i + "@gmail.com",
+                                                       Utils.DEFAULT_PASSWORD);
+        authRegisterCustomers[i].setRole(ERole.ROLE_SHIPPER);
+        this.userService.registerUser(authRegisterCustomers[i], false);
+        shippers[i] = this.userRepo.findUserByPhone(authRegisterCustomers[i].getPhone()).orElse(null);
+        if (shippers[i] != null) {
+            Location location = new Location("Phường Bình Thọ", "Thành Phố Thủ Đức", "Hồ Chí Minh");
+            location = this.locationService.saveLocation(location);
+            Address address = new Address(shippers[i], location, "Đường Võ Văn Ngân");
+            address = this.addressService.saveAddress(address);
+            shippers[i] = this.userRepo.findById(shippers[i].getId()).orElse(null);
+        }
+        i++;
+
+        return i;
+    }
+
     private int createMainComments(
             Comment[] mainComments, Product[] products, int maxIndexProduct, User[] customers,
             int maxIndexCustomer
@@ -4997,6 +5039,8 @@ public class InitData {
         User seller2;
         User[] customers;
         int maxIndexCustomer;
+        User[] shippers;
+        int maxIndexShipper;
     }
 
     public void createUser(UserVariable uv, LocationVariable lv) {
@@ -5026,6 +5070,10 @@ public class InitData {
         uv.customers = new User[500];
 
         uv.maxIndexCustomer = createCustomer(authRegisterCustomers, uv.customers);
+
+        AuthRegisterDTO[] authRegisterShippers = new AuthRegisterDTO[500];
+        uv.shippers = new User[500];
+        uv.maxIndexShipper = createShipper(authRegisterShippers, uv.shippers);
     }
 
     public int generateInt(int max, int... mins) {

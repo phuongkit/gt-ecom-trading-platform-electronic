@@ -1,5 +1,6 @@
 package gt.electronic.ecommerce.entities;
 
+import gt.electronic.ecommerce.dto.request.AddressCreationDTO;
 import lombok.*;
 
 import javax.persistence.*;
@@ -36,5 +37,11 @@ public class Location {
     this.commune = commune;
     this.district = district;
     this.province = province;
+  }
+
+  public Location(AddressCreationDTO address) {
+    this.commune = address.getWard();
+    this.district = address.getDistrict();
+    this.province = address.getCity();
   }
 }
