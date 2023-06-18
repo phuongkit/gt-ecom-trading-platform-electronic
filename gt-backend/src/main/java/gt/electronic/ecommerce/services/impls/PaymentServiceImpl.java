@@ -1,5 +1,7 @@
 package gt.electronic.ecommerce.services.impls;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import gt.electronic.ecommerce.dto.request.RegisterShopPriceDTO;
@@ -22,13 +24,16 @@ import javax.transaction.Transactional;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
 public class PaymentServiceImpl implements PaymentService {
     private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
     public static final String branchName = PaymentHistory.class.getSimpleName();
+    public static final ObjectMapper mapper = new ObjectMapper();
     private OrderRepository orderRepo;
 
     @Autowired
@@ -51,9 +56,12 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     private ShopMapper shopMapper;
-    @Autowired public void ShopMapper(ShopMapper shopMapper) {
+
+    @Autowired
+    public void ShopMapper(ShopMapper shopMapper) {
         this.shopMapper = shopMapper;
     }
+
     private ShopRepository shopRepo;
 
     @Autowired
@@ -74,8 +82,7 @@ public class PaymentServiceImpl implements PaymentService {
         PaymentHistory paymentHistory =
                 this.paymentHistoryRepo.findByPaymentCode(paymentCode)
                         .orElseThrow(() -> new NotFoundException(String.format(Utils.OBJECT_NOT_FOUND_BY_FIELD,
-                                                                               branchName
-                                ,
+                                                                               branchName,
                                                                                "paymentCode",
                                                                                paymentCode)));
         if (paymentHistory.getCategory() == EPaymentCategory.ORDER) {
@@ -101,9 +108,13 @@ public class PaymentServiceImpl implements PaymentService {
             }
             this.orderRepo.save(order);
         } else if (paymentHistory.getCategory() == EPaymentCategory.SHOP_PRICE) {
-            // jsonString is of type java.lang.String
-            JsonObject jsonObject = JsonParser.parseString(paymentHistory.getParameter()).getAsJsonObject();
-            Long shopPriceId = Long.parseLong(String.valueOf(jsonObject.get("shopPriceId")));
+            Map<String, String> parameter;
+            try {
+                parameter = mapper.readValue(paymentHistory.getParameter(), Map.class);
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
+            Long shopPriceId = Long.parseLong(parameter.get("shopPriceId"));
             this.LOGGER.info(String.format(Utils.LOG_UPDATE_PAYMENT_HISTORY_SHOP_PRICE,
                                            isSuccess ? Utils.SUCCESS : Utils.FAIL,
                                            paymentCode,

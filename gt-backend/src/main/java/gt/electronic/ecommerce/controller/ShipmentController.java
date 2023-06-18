@@ -4,10 +4,10 @@ import gt.electronic.ecommerce.dto.response.OrderResponseDTO;
 import gt.electronic.ecommerce.dto.response.ResponseObject;
 import gt.electronic.ecommerce.dto.response.ShipmentResponseDTO;
 import gt.electronic.ecommerce.models.enums.ERole;
+import gt.electronic.ecommerce.models.enums.EShipmentStatus;
 import gt.electronic.ecommerce.services.ShipmentService;
 import gt.electronic.ecommerce.utils.JwtTokenUtil;
 import gt.electronic.ecommerce.utils.Utils;
-import lombok.extern.java.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
 import javax.servlet.http.HttpServletRequest;
-
 import java.util.List;
 
 import static gt.electronic.ecommerce.utils.Utils.DEFAULT_PAGE;
@@ -70,6 +69,57 @@ public class ShipmentController {
         String loginKey = jwtTokenUtil.getUserNameFromRequest(request);
         return new ResponseObject<>(HttpStatus.OK, String.format(Utils.ACTION_SUCCESSFULLY),
                                     this.shipmentService.receiveOrderShipments(loginKey, orderShipmentIds));
+    }
+
+    @GetMapping("/get-all/shipping")
+    ResponseObject<Page<ShipmentResponseDTO>> getAllShippingOrderShipmentsByShipper(
+            @RequestParam(name = "page", required = false, defaultValue = DEFAULT_PAGE) Integer page,
+            @RequestParam(name = "limit", required = false, defaultValue = PRODUCT_PER_PAGE) Integer size,
+            @RequestParam(name = "sortField", required = false, defaultValue = "id") String sortField,
+            @RequestParam(name = "sortDir", required = false, defaultValue = "asc") String sortDir,
+            HttpServletRequest request) {
+        Sort sort = Sort.by(sortField);
+        sort = sortDir.equals("asc") ? sort.ascending() : sort.descending();
+        Pageable pageable = PageRequest.of(page > 0 ? page - 1 : 0, size, sort);
+        String loginKey = jwtTokenUtil.getUserNameFromRequest(request);
+        return new ResponseObject<>(HttpStatus.OK, String.format(Utils.GET_ALL_OBJECT_SUCCESSFULLY, branchName),
+                                    this.shipmentService.getAllOrderShipmentsByShipper(loginKey,
+                                                                                       EShipmentStatus.SHIPPING,
+                                                                                       pageable));
+    }
+
+    @GetMapping("/get-all/completed")
+    ResponseObject<Page<ShipmentResponseDTO>> getAllCompletedOrderShipmentsByShipper(
+            @RequestParam(name = "page", required = false, defaultValue = DEFAULT_PAGE) Integer page,
+            @RequestParam(name = "limit", required = false, defaultValue = PRODUCT_PER_PAGE) Integer size,
+            @RequestParam(name = "sortField", required = false, defaultValue = "id") String sortField,
+            @RequestParam(name = "sortDir", required = false, defaultValue = "asc") String sortDir,
+            HttpServletRequest request) {
+        Sort sort = Sort.by(sortField);
+        sort = sortDir.equals("asc") ? sort.ascending() : sort.descending();
+        Pageable pageable = PageRequest.of(page > 0 ? page - 1 : 0, size, sort);
+        String loginKey = jwtTokenUtil.getUserNameFromRequest(request);
+        return new ResponseObject<>(HttpStatus.OK, String.format(Utils.GET_ALL_OBJECT_SUCCESSFULLY, branchName),
+                                    this.shipmentService.getAllOrderShipmentsByShipper(loginKey,
+                                                                                       EShipmentStatus.COMPLETED,
+                                                                                       pageable));
+    }
+
+    @GetMapping("/get-all")
+    ResponseObject<Page<ShipmentResponseDTO>> getAllOrderShipmentsByShipper(
+            @RequestParam(name = "page", required = false, defaultValue = DEFAULT_PAGE) Integer page,
+            @RequestParam(name = "limit", required = false, defaultValue = PRODUCT_PER_PAGE) Integer size,
+            @RequestParam(name = "sortField", required = false, defaultValue = "id") String sortField,
+            @RequestParam(name = "sortDir", required = false, defaultValue = "asc") String sortDir,
+            HttpServletRequest request) {
+        Sort sort = Sort.by(sortField);
+        sort = sortDir.equals("asc") ? sort.ascending() : sort.descending();
+        Pageable pageable = PageRequest.of(page > 0 ? page - 1 : 0, size, sort);
+        String loginKey = jwtTokenUtil.getUserNameFromRequest(request);
+        return new ResponseObject<>(HttpStatus.OK, String.format(Utils.GET_ALL_OBJECT_SUCCESSFULLY, branchName),
+                                    this.shipmentService.getAllOrderShipmentsByShipper(loginKey,
+                                                                                       null,
+                                                                                       pageable));
     }
 
 }

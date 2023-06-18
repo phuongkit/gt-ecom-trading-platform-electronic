@@ -1,19 +1,29 @@
 package gt.electronic.ecommerce.services.impls;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import gt.electronic.ecommerce.dto.response.OrderResponseDTO;
 import gt.electronic.ecommerce.dto.response.ShipmentResponseDTO;
 import gt.electronic.ecommerce.entities.*;
 import gt.electronic.ecommerce.exceptions.UserNotPermissionException;
 import gt.electronic.ecommerce.mapper.OrderMapper;
 import gt.electronic.ecommerce.mapper.ShipmentMapper;
+import gt.electronic.ecommerce.models.clazzs.OrderLog;
+import gt.electronic.ecommerce.models.enums.EOrderLog;
 import gt.electronic.ecommerce.models.enums.EOrderStatus;
 import gt.electronic.ecommerce.models.enums.ERole;
+import gt.electronic.ecommerce.models.enums.EShipmentStatus;
 import gt.electronic.ecommerce.repositories.OrderRepository;
 import gt.electronic.ecommerce.repositories.OrderShopRepository;
 import gt.electronic.ecommerce.repositories.ShipmentRepository;
 import gt.electronic.ecommerce.services.ShipmentService;
 import gt.electronic.ecommerce.services.UserService;
 import gt.electronic.ecommerce.utils.Utils;
+import net.minidev.json.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,13 +33,14 @@ import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 @Transactional
 public class ShipmentServiceImpl implements ShipmentService {
     private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
+    public static final Gson gson = new Gson();
+    public static final ObjectMapper mapper = new ObjectMapper();
     public static final String branchName = "Shipment";
     private OrderMapper orderMapper;
 
@@ -121,15 +132,42 @@ public class ShipmentServiceImpl implements ShipmentService {
                 Shipment shipment = new Shipment(author, orderShop);
                 shipment = this.shipmentRepo.save(shipment);
                 orderShop.setShipOrderCode(shipment.getId());
-//                this.orderShopRepo.save(orderShop);
+                orderShop.setStatus(EOrderStatus.ORDER_SHIPPING);
+                OrderLog orderLog = new OrderLog(EOrderLog.LOG_PICKED.toString(),
+                                                 new Date(),
+                                                 author.getUsername(),
+                                                 author.getRole());
+                List<OrderLog> orderLogs;
+                if (orderShop.getLog() == null || orderShop.getLog().isEmpty()) {
+                    orderLogs = Collections.singletonList(orderLog);
+                } else {
+                    orderLogs =
+                            Arrays.asList(gson.fromJson(orderShop.getLog(), OrderLog[].class));
+                }
+                orderShop.setLog(gson.toJson(orderLogs));
+                this.orderShopRepo.save(orderShop);
                 shipments.add(shipment);
             }
-            List<ShipmentResponseDTO> response =
-                    shipments.stream().map(shipment -> this.shipmentMapper.shipmentToShipmentResponseDTO(shipment))
-                            .toList();
-            for (ShipmentResponseDTO responseDTO : response) {
-            }
-            return response;
+            return shipments.stream().map(shipment -> this.shipmentMapper.shipmentToShipmentResponseDTO(shipment))
+                    .toList();
+        } else {
+            throw new UserNotPermissionException();
+        }
+    }
+
+    @Override
+    public Page<ShipmentResponseDTO> getAllOrderShipmentsByShipper(String loginKey,
+                                                                   EShipmentStatus status,
+                                                                   Pageable pageable) {
+        this.LOGGER.info(String.format(Utils.LOG_GET_ALL_OBJECT_BY_USER,
+                                       branchName + (status != null ? " " + status.name() : ""),
+                                       "Shipper",
+                                       loginKey));
+        User author = userService.getUserByLoginKey(loginKey);
+        if (author.getRole() == ERole.ROLE_SHIPPER && author.getAddresses().stream().findFirst().isPresent()) {
+            Page<Shipment> page =
+                    this.shipmentRepo.findAllByUserAndAndStatus(author, status, pageable);
+            return page.map(shipment -> this.shipmentMapper.shipmentToShipmentResponseDTO(shipment));
         } else {
             throw new UserNotPermissionException();
         }

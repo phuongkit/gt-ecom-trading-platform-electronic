@@ -252,7 +252,7 @@ public class VNPayServiceImpl implements VNPayService {
 //        vnp_Params.put("vnp_Amount", String.valueOf(totalPrice.multiply(new BigDecimal("100")).toBigInteger()));
         vnp_Params.put("vnp_ReturnUrl",
                        ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString() + PRE_API_PAYMENT +
-                               "/vnpay/return/shop-price");
+                               "/vnpay/return");
         vnp_Params.put("vnp_IpAddr", ipAddress);
         vnp_Params.put("vnp_CreateDate", vnp_CreateDate);
         vnp_Params.put("vnp_ExpireDate", vnp_ExpireDate);

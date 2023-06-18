@@ -65,7 +65,7 @@ public class Utils {
     public static final String USER_NOT_PERMISSION = "User does not have permission to do this";
     public static final String USER_NOT_PRESENT = "User not present";
     public static final String ACTION_SUCCESSFULLY = "This action successfully";
-
+    public static final String GET_ALL_OBJECT_SUCCESSFULLY = "Get all %ss  successfully!";
     public static final String REGISTER_USER_SUCCESSFULLY = "Register User with phone = %s successfully!";
     public static final String CREATE_OBJECT_SUCCESSFULLY = "Create new %s successfully!";
     public static final String CREATE_MAIN_OBJECT_SUCCESSFULLY = "Create new main %s successfully!";

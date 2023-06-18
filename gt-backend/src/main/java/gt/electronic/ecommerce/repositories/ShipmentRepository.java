@@ -6,6 +6,8 @@ import gt.electronic.ecommerce.models.enums.EShipmentStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,5 +16,10 @@ import org.springframework.transaction.annotation.Transactional;
 public interface ShipmentRepository extends JpaRepository<Shipment, Long> {
     Page<Shipment> findAllByUser(User shipper, Pageable pageable);
 
-    Page<Shipment> findAllByUserAndAndStatus(User shipper, EShipmentStatus status, Pageable pageable);
+    @Query(value = "select s from Shipment s" +
+            " where s.user = :shipper" +
+            " and (:status is null or s.status = :status)")
+    Page<Shipment> findAllByUserAndAndStatus(@Param("shipper") User shipper,
+                                             @Param("status") EShipmentStatus status,
+                                             Pageable pageable);
 }
