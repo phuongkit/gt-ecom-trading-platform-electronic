@@ -14,5 +14,8 @@ export const shopService = {
     },
     getPricesPackage() {
         return axiosClient.get(`${branch_api}/prices`)
+    },
+    getShopById(id) {
+        return axiosClient.get(`${branch_api}/${id}`)
     }
 };

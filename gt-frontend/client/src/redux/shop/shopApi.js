@@ -1,7 +1,7 @@
 
 import { shopService } from '../../services';
 import { DEFAULT_STORE } from '../../utils';
-import { getOneShop, getOverviewShop } from './shopSlice';
+import { getOneShop, getOverviewShop,getViewShop } from './shopSlice';
 
 export const getShopBySlugApi = async (dispatch, slug) => {
     try {
@@ -34,6 +34,15 @@ export const getOverviewByShopIdApi = async(dispatch, shopId) => {
     try {
         const res = await shopService.getOverviewById(shopId)
         dispatch(getOverviewShop(res.data));
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+export const getByShopId = async(dispatch, shopId) => {
+    try {
+        const res = await shopService.getShopById(shopId)
+        dispatch(getViewShop(res.data));
     } catch (err) {
         console.error(err);
     }

@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { getAllProductApi, deleteProduct } from '../../../redux/product/productsApi';
 import { getAllRatesByShopApi } from '../../../redux/rate/ratesApi';
+import swal from 'sweetalert';
 
 const Datatable = () => {
     const dispatch = useDispatch();
@@ -15,12 +16,21 @@ const Datatable = () => {
     useEffect(() => {
         getAllRatesByShopApi(dispatch, getUser?.shopId, {limit: 9999});
     }, []);
+    const shop = useSelector((state) => state?.shops?.viewShop);
+
     const rates = useSelector((state) => state.rates?.rate?.data);
     useEffect(() => {
         if (getUser.role != 1) {
             navigate('/');
         }
-
+        if(shop?.shopPrice == null){
+            swal({
+              title: 'Notify',
+              text: 'Cần mua gói gia hạn trước khi thực hiện giao dịch',
+              icon: 'warning',
+            });
+            navigate('/Seller/package')
+          }
         // if(getUser?.accessToken){
         //   getProductSeller(user?.accessToken,dispatch,user?._id)
         // }

@@ -6,12 +6,22 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { getAllProductApi, deleteProduct } from '../../../redux/product/productsApi';
+import swal from 'sweetalert';
 
 const Datatable = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const getUser = JSON.parse(localStorage.getItem('customerInfo'));
+    const shop = useSelector((state) => state?.shops?.viewShop);
     useEffect(() => {
+        if(shop?.shopPrice == null){
+            swal({
+              title: 'Notify',
+              text: 'Cần mua gói gia hạn trước khi thực hiện giao dịch',
+              icon: 'warning',
+            });
+            navigate('/Seller/package')
+          }
         getAllProductApi(dispatch, { shopId: getUser?.shopId });
     }, []);
     const productList = useSelector((state) => state.products?.pageProductShop?.data);

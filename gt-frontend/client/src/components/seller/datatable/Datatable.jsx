@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { deleteUser, getAllUsers } from "../../../redux/apiRequest";
+
 const Datatable = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -14,6 +15,7 @@ const Datatable = () => {
  
   const userList = useSelector((state)=> state.user.users?.allUsers)
   const [data, setData] = useState(userList);
+ 
   useEffect(()=>{
     if(user.role !=='1'){
       navigate('/')
@@ -26,9 +28,6 @@ const Datatable = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   },[]) 
 
- 
-
-  
   const handleDelete = (id) => {
     setData(data.filter((item) => item._id !== id));
     deleteUser(user?.accessToken, dispatch, id)
