@@ -13,4 +13,7 @@ export const vnpay = {
         console.log(query);
         return axiosClient.post(`${branch_api}/vnpay/return?${query}`);
     },
+    postPricePackage(body){
+        return axiosClient.post(`${branch_api}/vnpay/create-payment-url/shop-price`,body);
+    }
 };

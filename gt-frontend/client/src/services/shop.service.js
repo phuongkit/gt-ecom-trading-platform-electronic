@@ -11,5 +11,8 @@ export const shopService = {
     },
     getOverviewById(id) {
         return axiosClient.get(`${branch_api}/overview/${id}`)
+    },
+    getPricesPackage() {
+        return axiosClient.get(`${branch_api}/prices`)
     }
 };
