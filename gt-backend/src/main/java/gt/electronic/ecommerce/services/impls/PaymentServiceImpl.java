@@ -2,8 +2,6 @@ package gt.electronic.ecommerce.services.impls;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import gt.electronic.ecommerce.dto.request.RegisterShopPriceDTO;
 import gt.electronic.ecommerce.dto.response.ShopResponseDTO;
 import gt.electronic.ecommerce.entities.*;
@@ -21,12 +19,10 @@ import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
 
 import javax.transaction.Transactional;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -77,7 +73,7 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public void updatePaymentHistory(String paymentCode, Date payAt, boolean isSuccess) {
+    public Optional<String> updatePaymentHistory(String paymentCode, Date payAt, boolean isSuccess) {
         Date currentDate = new Date();
         PaymentHistory paymentHistory =
                 this.paymentHistoryRepo.findByPaymentCode(paymentCode)
@@ -153,7 +149,7 @@ public class PaymentServiceImpl implements PaymentService {
         }
         paymentHistory.update(isSuccess, payAt);
         this.paymentHistoryRepo.save(paymentHistory);
-
+        return Optional.ofNullable(paymentHistory.getRedirectUrl());
     }
 
     @Override

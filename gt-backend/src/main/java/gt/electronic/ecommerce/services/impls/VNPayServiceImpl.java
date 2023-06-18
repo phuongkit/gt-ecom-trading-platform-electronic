@@ -125,6 +125,7 @@ public class VNPayServiceImpl implements VNPayService {
                                    EPaymentCategory.ORDER,
                                    EPaymentType.VNPAY,
                                    vnp_TxnRef);
+        paymentHistory.setRedirectUrl(creationDTO.getRedirectUrl());
         this.paymentHistoryRepo.save(paymentHistory);
 
         Map<String, String> vnp_Params = new HashMap<>();
@@ -235,6 +236,7 @@ public class VNPayServiceImpl implements VNPayService {
         PaymentHistory paymentHistory =
                 new PaymentHistory(vnp_OrderInfo, creationDTO.getFullName(), creationDTO.getShopId(), totalPrice,
                                    EPaymentCategory.SHOP_PRICE, EPaymentType.VNPAY, vnp_TxnRef);
+        paymentHistory.setRedirectUrl(creationDTO.getRedirectUrl());
         paymentHistory.setParameter(String.format("{\"shopPriceId\":\"%s\"}", creationDTO.getShopPriceId()));
         this.paymentHistoryRepo.save(paymentHistory);
 
