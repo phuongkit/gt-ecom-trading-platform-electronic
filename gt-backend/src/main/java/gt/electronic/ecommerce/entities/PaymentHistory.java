@@ -47,6 +47,8 @@ public class PaymentHistory {
 
     private String paymentCode;
 
+    private String redirectUrl;
+
     @Column(columnDefinition = "DATETIME(6)")
     private Date payAt;
 
