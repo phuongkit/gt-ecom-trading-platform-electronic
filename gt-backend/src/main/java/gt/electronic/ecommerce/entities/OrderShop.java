@@ -70,7 +70,7 @@ public class OrderShop {
   @Column(name = "ship_order_code")
   private String shipOrderCode;
 
-  @Column(name = "log", length = 500)
+  @Lob
   private String log;
 
   @Column(name = "expected_delivery_time")
@@ -121,7 +121,7 @@ public class OrderShop {
   @Enumerated(EnumType.STRING)
   @Column(name = "status", length = 50, nullable = false)
   @NotNull(message = "An status is required!")
-  private EOrderStatus status = EOrderStatus.ORDER_PENDING;
+  private EOrderStatus status = EOrderStatus.ORDER_AWAITING_SHIPMENT;
 
   @Column(name = "created_at")
   @CreationTimestamp

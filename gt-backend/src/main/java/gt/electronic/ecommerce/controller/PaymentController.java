@@ -75,9 +75,9 @@ public class PaymentController {
   @GetMapping("/vnpay/return")
   public String getVNPayReturn(HttpServletRequest request, HttpServletResponse response) {
     try {
-      Map fields = new HashMap();
-      for (Enumeration params = request.getParameterNames(); params.hasMoreElements(); ) {
-        String fieldName = (String) params.nextElement();
+      Map<String, String> fields = new HashMap<>();
+      for (Enumeration<String> params = request.getParameterNames(); params.hasMoreElements(); ) {
+        String fieldName = params.nextElement();
         String fieldValue = request.getParameter(fieldName);
         if ((fieldValue != null) && (fieldValue.length() > 0)) {
           fields.put(fieldName, fieldValue);

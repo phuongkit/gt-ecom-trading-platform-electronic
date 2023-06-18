@@ -1,6 +1,7 @@
 package gt.electronic.ecommerce.dto.request;
 
 import gt.electronic.ecommerce.models.enums.EGender;
+import gt.electronic.ecommerce.models.enums.ERole;
 import gt.electronic.ecommerce.utils.Utils;
 import lombok.Data;
 import lombok.ToString;
@@ -39,6 +40,10 @@ public class AuthRegisterDTO {
   private String password;
 
   private boolean otp;
+
+  private ERole role = ERole.ROLE_CUSTOMER;
+
+  private AddressCreationDTO address;
 
   public AuthRegisterDTO(
       String lastName,

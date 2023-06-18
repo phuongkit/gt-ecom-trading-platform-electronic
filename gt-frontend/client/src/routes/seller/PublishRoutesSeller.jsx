@@ -9,6 +9,7 @@ const ListProducts = lazy(() => import('~/pages/Seller/List/ListProduct'));
 const ListFeedbacks = lazy(() => import('~/pages/Seller/List/ListFeedback'));
 const AddProducts = lazy(() => import('~/pages/Seller/New/NewProduct'));
 const ListMessage = lazy(() => import('~/pages/Seller/Report/HistoryEmail'));
+const SaleServices= lazy(() => import('~/pages/Seller/Service/SaleService'));
 
 export const publishRoutesSeller = [
     {
@@ -61,6 +62,14 @@ export const publishRoutesSeller = [
         element: (
             <Suspense fallback={<Loading />}>
                 <ListMessage />
+            </Suspense>
+        ),
+    },
+    {
+        path: 'package',
+        element: (
+            <Suspense fallback={<Loading />}>
+                <SaleServices />
             </Suspense>
         ),
     },
