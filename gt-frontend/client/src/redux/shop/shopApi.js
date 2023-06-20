@@ -42,6 +42,28 @@ export const getOverviewByShopIdApi = async(dispatch, shopId) => {
 export const getByShopId = async(dispatch, shopId) => {
     try {
         const res = await shopService.getShopById(shopId)
+        //Tồn tại ngày đăng kí
+        //1 là đưa ra thông báo
+        if(res.data.registerPriceAt != null){
+            const currentDate = new Date();
+            const endDate = new Date(res.data.endPriceAt);
+            
+            const oneDayInMillis = 24 * 60 * 60 * 1000;
+        
+            // Calculate the difference in milliseconds between the current date and the end date
+            const timeDifference = endDate.getTime() - currentDate.getTime();
+            
+            // Check if the time difference is less than or equal to one day
+            if (timeDifference <= oneDayInMillis) {
+                res.data.checkPackage = 1
+            }else{
+                res.data.checkPackage = 0
+            }
+        }
+        //Chưa đăng kí trước đó
+        else{
+            res.data.checkPackage = 1
+        }
         dispatch(getViewShop(res.data));
     } catch (err) {
         console.error(err);

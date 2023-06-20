@@ -17,13 +17,14 @@ const Datatable = () => {
         getAllRatesByShopApi(dispatch, getUser?.shopId, {limit: 9999});
     }, []);
     const shop = useSelector((state) => state?.shops?.viewShop);
-
     const rates = useSelector((state) => state.rates?.rate?.data);
+    console.log(shop)
     useEffect(() => {
         if (getUser.role != 1) {
             navigate('/');
         }
-        if(shop?.shopPrice == null){
+       
+        if(shop?.checkPackage == 1){
             swal({
               title: 'Notify',
               text: 'Cần mua gói gia hạn trước khi thực hiện giao dịch',

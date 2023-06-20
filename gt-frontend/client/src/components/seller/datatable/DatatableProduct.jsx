@@ -14,7 +14,7 @@ const Datatable = () => {
     const getUser = JSON.parse(localStorage.getItem('customerInfo'));
     const shop = useSelector((state) => state?.shops?.viewShop);
     useEffect(() => {
-        if(shop?.shopPrice == null){
+        if(shop?.checkPackage == 1){
             swal({
               title: 'Notify',
               text: 'Cần mua gói gia hạn trước khi thực hiện giao dịch',

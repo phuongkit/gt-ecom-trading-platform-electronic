@@ -21,15 +21,15 @@ const HomeSeller = () => {
     getByShopId(dispatch,getUser.shopId)
   }, []);
   
-  const user = useSelector((state) => state?.shops?.viewShop);
-  if(user?.shopPrice == null){
-    swal({
-      title: 'Notify',
-      text: 'Cần mua gói gia hạn trước khi thực hiện giao dịch',
-      icon: 'warning',
-    });
-    navigate('/Seller/package')
-  }
+  // const user = useSelector((state) => state?.shops?.viewShop);
+  // if(user?.shopPrice == null){
+  //   swal({
+  //     title: 'Notify',
+  //     text: 'Cần mua gói gia hạn trước khi thực hiện giao dịch',
+  //     icon: 'warning',
+  //   });
+  //   navigate('/Seller/package')
+  // }
 
   return ( 
     <div>
