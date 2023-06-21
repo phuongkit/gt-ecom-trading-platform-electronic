@@ -9,6 +9,7 @@ export const shops = createSlice({
         overviewShop: {
             data: '',
         },
+        viewShop: null
     },
     reducers: {
         getOneShop: (state, action) => {
@@ -17,11 +18,15 @@ export const shops = createSlice({
         getOverviewShop: (state, action) => {
             state.overviewShop.data = action.payload;
         },
+        getViewShop: (state, action) => {
+            state.viewShop = action.payload;
+        },
     },
 });
 export const {
     getOneShop,
-    getOverviewShop
+    getOverviewShop,
+    getViewShop
 } = shops.actions;
 
 export default shops.reducer;

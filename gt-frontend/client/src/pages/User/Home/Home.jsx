@@ -18,6 +18,12 @@ import { vnpay } from '../../../services/payment';
 
 function Home({ title = '' }) {
     const [displayTicket, setDisplayTicket] = useState(false);
+    const dispatch = useDispatch()
+    const [searchParams, setSearchParams] = useSearchParams();
+    const navigate = useNavigate();
+    // useEffect(() => {
+
+    // }, []);
     useEffect(() => {
         const clearParamByPayment = async () => {
             let status = searchParams.get(DEFAULT_STORE.TRANSACTION_STATUS) || param[DEFAULT_STORE.TRANSACTION_STATUS];
@@ -64,12 +70,7 @@ function Home({ title = '' }) {
         };
 
     }, []);
-    const dispatch = useDispatch()
-    const [searchParams, setSearchParams] = useSearchParams();
-    const navigate = useNavigate();
-    // useEffect(() => {
 
-    // }, []);
     return (
         <>
             <div>

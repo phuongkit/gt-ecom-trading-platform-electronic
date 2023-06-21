@@ -15,7 +15,16 @@ const Datatable = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const getUser = JSON.parse(localStorage.getItem('customerInfo'));
+    const shop = useSelector((state) => state?.shops?.viewShop);
     useEffect(() => {
+        if(shop?.checkPackage == 1){
+            swal({
+              title: 'Notify',
+              text: 'Cần mua gói gia hạn trước khi thực hiện giao dịch',
+              icon: 'warning',
+            });
+            navigate('/Seller/package')
+          }
         getAllOrdersByShopApi(dispatch, getUser.shopId);
     }, []);
 
