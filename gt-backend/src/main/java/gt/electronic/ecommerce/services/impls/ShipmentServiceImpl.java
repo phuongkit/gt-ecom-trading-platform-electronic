@@ -1,14 +1,12 @@
 package gt.electronic.ecommerce.services.impls;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
+import gt.electronic.ecommerce.dto.request.OrderShipmentUpdateDTO;
 import gt.electronic.ecommerce.dto.response.OrderResponseDTO;
 import gt.electronic.ecommerce.dto.response.ShipmentResponseDTO;
 import gt.electronic.ecommerce.entities.*;
+import gt.electronic.ecommerce.exceptions.ResourceNotFoundException;
 import gt.electronic.ecommerce.exceptions.UserNotPermissionException;
 import gt.electronic.ecommerce.mapper.OrderMapper;
 import gt.electronic.ecommerce.mapper.ShipmentMapper;
@@ -23,7 +21,6 @@ import gt.electronic.ecommerce.repositories.ShipmentRepository;
 import gt.electronic.ecommerce.services.ShipmentService;
 import gt.electronic.ecommerce.services.UserService;
 import gt.electronic.ecommerce.utils.Utils;
-import net.minidev.json.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -137,14 +134,7 @@ public class ShipmentServiceImpl implements ShipmentService {
                                                  new Date(),
                                                  author.getUsername(),
                                                  author.getRole());
-                List<OrderLog> orderLogs;
-                if (orderShop.getLog() == null || orderShop.getLog().isEmpty()) {
-                    orderLogs = Collections.singletonList(orderLog);
-                } else {
-                    orderLogs =
-                            Arrays.asList(gson.fromJson(orderShop.getLog(), OrderLog[].class));
-                }
-                orderShop.setLog(gson.toJson(orderLogs));
+                orderShop.setLog(Utils.addLogToOrderShop(orderLog, orderShop.getLog()));
                 this.orderShopRepo.save(orderShop);
                 shipments.add(shipment);
             }
@@ -168,6 +158,67 @@ public class ShipmentServiceImpl implements ShipmentService {
             Page<Shipment> page =
                     this.shipmentRepo.findAllByUserAndAndStatus(author, status, pageable);
             return page.map(shipment -> this.shipmentMapper.shipmentToShipmentResponseDTO(shipment));
+        } else {
+            throw new UserNotPermissionException();
+        }
+    }
+
+    @Override
+    public ShipmentResponseDTO updateOrderShipment(String loginKey, String id, OrderShipmentUpdateDTO updateDTO) {
+        this.LOGGER.info(String.format(Utils.LOG_UPDATE_ORDER_SHIPMENT,
+                                       id,
+                                       updateDTO.getStatus(),
+                                       updateDTO.getLog(),
+                                       loginKey));
+        User author = userService.getUserByLoginKey(loginKey);
+        Shipment shipment = this.shipmentRepo.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format(Utils.OBJECT_NOT_FOUND_BY_FIELD,
+                                                                               branchName,
+                                                                               "Id",
+                                                                               id
+                )));
+        if (author.getRole() == ERole.ROLE_SHIPPER && author.getAddresses().stream().findFirst().isPresent() &&
+                author.equals(shipment.getUser())) {
+            Long orderShopId = shipment.getOrderShopId();
+            OrderShop orderShop = this.orderShopRepo.findById(shipment.getOrderShopId())
+                    .orElseThrow(() -> new ResourceNotFoundException(String.format(Utils.OBJECT_NOT_FOUND_BY_FIELD,
+                                                                                   OrderShop.class.getSimpleName(),
+                                                                                   "Id",
+                                                                                   orderShopId)));
+            if (updateDTO.getCreatedAt() == null) {
+                updateDTO.setCreatedAt(new Date());
+            }
+            String originState = orderShop.getStatus().toString();
+            if (updateDTO.getStatus() != null) {
+                switch (updateDTO.getStatus()) {
+                    case ORDER_CANCELLED -> {
+                        shipment.setStatus(EShipmentStatus.CANCELLED);
+                        shipment.setCompletedAt(updateDTO.getCreatedAt());
+                        orderShop.setStatus(EOrderStatus.ORDER_CANCELLED);
+                    }
+                    case ORDER_COMPLETED -> {
+                        shipment.setStatus(EShipmentStatus.COMPLETED);
+                        shipment.setCompletedAt(updateDTO.getCreatedAt());
+                        orderShop.setStatus(EOrderStatus.ORDER_COMPLETED);
+                    }
+                    default -> {
+                        shipment.setStatus(EShipmentStatus.SHIPPING);
+                        orderShop.setStatus(updateDTO.getStatus());
+                    }
+                }
+            }
+            if (updateDTO.getLog() != null) {
+                OrderLog orderLog =
+                        new OrderLog(updateDTO.getLog(), updateDTO.getCreatedAt(), loginKey, author.getRole());
+                orderShop.setLog(Utils.addLogToOrderShop(orderLog, orderShop.getLog()));
+            } else if (updateDTO.getStatus() != null && !Objects.equals(originState, orderShop.getStatus().toString())) {
+                String log = String.format(Utils.ORDER_STATE_CHANGE_LOG, originState, orderShop.getStatus().toString());
+                OrderLog orderLog = new OrderLog(log, updateDTO.getCreatedAt(), loginKey, author.getRole());
+                orderShop.setLog(Utils.addLogToOrderShop(orderLog, orderShop.getLog()));
+            }
+            orderShop = this.orderShopRepo.save(orderShop);
+            shipment = this.shipmentRepo.save(shipment);
+            return this.shipmentMapper.shipmentToShipmentResponseDTO(shipment);
         } else {
             throw new UserNotPermissionException();
         }

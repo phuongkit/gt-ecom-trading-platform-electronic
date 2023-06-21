@@ -1,5 +1,6 @@
 package gt.electronic.ecommerce.controller;
 
+import gt.electronic.ecommerce.dto.request.OrderShipmentUpdateDTO;
 import gt.electronic.ecommerce.dto.response.OrderResponseDTO;
 import gt.electronic.ecommerce.dto.response.ResponseObject;
 import gt.electronic.ecommerce.dto.response.ShipmentResponseDTO;
@@ -71,46 +72,13 @@ public class ShipmentController {
                                     this.shipmentService.receiveOrderShipments(loginKey, orderShipmentIds));
     }
 
-    @GetMapping("/get-all/shipping")
-    ResponseObject<Page<ShipmentResponseDTO>> getAllShippingOrderShipmentsByShipper(
-            @RequestParam(name = "page", required = false, defaultValue = DEFAULT_PAGE) Integer page,
-            @RequestParam(name = "limit", required = false, defaultValue = PRODUCT_PER_PAGE) Integer size,
-            @RequestParam(name = "sortField", required = false, defaultValue = "id") String sortField,
-            @RequestParam(name = "sortDir", required = false, defaultValue = "asc") String sortDir,
-            HttpServletRequest request) {
-        Sort sort = Sort.by(sortField);
-        sort = sortDir.equals("asc") ? sort.ascending() : sort.descending();
-        Pageable pageable = PageRequest.of(page > 0 ? page - 1 : 0, size, sort);
-        String loginKey = jwtTokenUtil.getUserNameFromRequest(request);
-        return new ResponseObject<>(HttpStatus.OK, String.format(Utils.GET_ALL_OBJECT_SUCCESSFULLY, branchName),
-                                    this.shipmentService.getAllOrderShipmentsByShipper(loginKey,
-                                                                                       EShipmentStatus.SHIPPING,
-                                                                                       pageable));
-    }
-
-    @GetMapping("/get-all/completed")
-    ResponseObject<Page<ShipmentResponseDTO>> getAllCompletedOrderShipmentsByShipper(
-            @RequestParam(name = "page", required = false, defaultValue = DEFAULT_PAGE) Integer page,
-            @RequestParam(name = "limit", required = false, defaultValue = PRODUCT_PER_PAGE) Integer size,
-            @RequestParam(name = "sortField", required = false, defaultValue = "id") String sortField,
-            @RequestParam(name = "sortDir", required = false, defaultValue = "asc") String sortDir,
-            HttpServletRequest request) {
-        Sort sort = Sort.by(sortField);
-        sort = sortDir.equals("asc") ? sort.ascending() : sort.descending();
-        Pageable pageable = PageRequest.of(page > 0 ? page - 1 : 0, size, sort);
-        String loginKey = jwtTokenUtil.getUserNameFromRequest(request);
-        return new ResponseObject<>(HttpStatus.OK, String.format(Utils.GET_ALL_OBJECT_SUCCESSFULLY, branchName),
-                                    this.shipmentService.getAllOrderShipmentsByShipper(loginKey,
-                                                                                       EShipmentStatus.COMPLETED,
-                                                                                       pageable));
-    }
-
     @GetMapping("/get-all")
     ResponseObject<Page<ShipmentResponseDTO>> getAllOrderShipmentsByShipper(
             @RequestParam(name = "page", required = false, defaultValue = DEFAULT_PAGE) Integer page,
             @RequestParam(name = "limit", required = false, defaultValue = PRODUCT_PER_PAGE) Integer size,
             @RequestParam(name = "sortField", required = false, defaultValue = "id") String sortField,
             @RequestParam(name = "sortDir", required = false, defaultValue = "asc") String sortDir,
+            @RequestParam(name = "status", required = false, defaultValue = "null") EShipmentStatus status,
             HttpServletRequest request) {
         Sort sort = Sort.by(sortField);
         sort = sortDir.equals("asc") ? sort.ascending() : sort.descending();
@@ -118,8 +86,18 @@ public class ShipmentController {
         String loginKey = jwtTokenUtil.getUserNameFromRequest(request);
         return new ResponseObject<>(HttpStatus.OK, String.format(Utils.GET_ALL_OBJECT_SUCCESSFULLY, branchName),
                                     this.shipmentService.getAllOrderShipmentsByShipper(loginKey,
-                                                                                       null,
+                                                                                       status,
                                                                                        pageable));
+    }
+
+    @PutMapping("/{id}")
+    ResponseObject<ShipmentResponseDTO> updateLogOrderShipmentsByShipper(
+            @PathVariable(name = "id") String id,
+            @RequestBody OrderShipmentUpdateDTO updateDTO,
+            HttpServletRequest request) {
+        String loginKey = jwtTokenUtil.getUserNameFromRequest(request);
+        return new ResponseObject<>(HttpStatus.OK, String.format(Utils.GET_ALL_OBJECT_SUCCESSFULLY, branchName),
+                                    this.shipmentService.updateOrderShipment(loginKey, id, updateDTO));
     }
 
 }
