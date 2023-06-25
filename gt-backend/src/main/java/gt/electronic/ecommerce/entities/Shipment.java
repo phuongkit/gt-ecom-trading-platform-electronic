@@ -59,7 +59,7 @@ public class Shipment {
     @Enumerated(EnumType.STRING)
     @Column(name = "status", length = 50, nullable = false)
     @NotNull(message = "An status is required!")
-    private EShipmentStatus status = EShipmentStatus.SHIPPING;
+    private EShipmentStatus status = EShipmentStatus.PICKED;
 
     @Column(name = "created_at")
     @CreationTimestamp

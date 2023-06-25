@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 @Transactional
-public interface ShipmentRepository extends JpaRepository<Shipment, Long> {
+public interface ShipmentRepository extends JpaRepository<Shipment, String> {
     Page<Shipment> findAllByUser(User shipper, Pageable pageable);
 
     @Query(value = "select s from Shipment s" +
