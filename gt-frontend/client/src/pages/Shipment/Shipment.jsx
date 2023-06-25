@@ -35,10 +35,13 @@ const useStyles = makeStyles((theme) => ({
         borderRadius: '5px',
         color: 'green',
         cursor: 'pointer'
+      },
+    deleteButtonGet: {
+        color: '#06240647!important',
       }
   }));
 
-function createData(fullName, email, phone, address, payment, totalPrice,orderItemsArray) {
+function createData(id,fullName, email, phone, address, payment, totalPrice,orderItemsArray) {
   let orderItems = [];
   orderItemsArray.forEach(item=>{
     orderItems.push( {
@@ -50,6 +53,7 @@ function createData(fullName, email, phone, address, payment, totalPrice,orderIt
     )
   })
   return {
+    id,
     fullName,
     email,
     phone,
@@ -64,6 +68,14 @@ function Row(props) {
   const { row } = props;
   const [open, setOpen] = React.useState(false);
   const classes = useStyles();
+  const [isClicked, setIsClicked] = useState(false);
+
+  const hanlePostShipment = async(id)=>{
+    let res = await shipmentService.postShipment(id);
+    if(res.status == "OK"){
+      setIsClicked(true);
+    }
+}
   return (
     <React.Fragment>
       <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
@@ -84,7 +96,7 @@ function Row(props) {
         <TableCell align="center">{row.address}</TableCell>
         <TableCell align="center">{row.payment}</TableCell>
         <TableCell align="center">{row.totalPrice}</TableCell>
-        <TableCell align="center" className={classes.deleteButton}>Get</TableCell>
+        <TableCell align="center" className={`${classes.deleteButton} ${isClicked ? classes.deleteButtonGet : ''}`} onClick={(e)=>hanlePostShipment(row.id)}>Get</TableCell>
        
       </TableRow>
       <TableRow>
@@ -152,6 +164,7 @@ export default function Shipment() {
     let data = res.data.content || []
     data.forEach(item=>{
         rows.push(createData(
+            item?.id,
             item?.fullName
             ,item?.email
             ,item?.phone
