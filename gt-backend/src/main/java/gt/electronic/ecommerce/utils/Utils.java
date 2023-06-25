@@ -95,7 +95,8 @@ public class Utils {
     //  Log
     public static final String LOG_GET_ALL_OBJECT = "Fetching all %ss";
     public static final String LOG_GET_OBJECT = "Fetching %s with %s = %s";
-    public static final String LOG_GET_ALL_OBJECT_BY_FIELD = "Fetching all %ss with %s = %s";
+    public static final String LOG_GET_OBJECT_BY_USER = "Fetching %s with %s = %s";
+    public static final String LOG_GET_ALL_OBJECT_BY_FIELD = "Fetching all %ss with %s = %s loginKey = %s";
     public static final String LOG_GET_ALL_OBJECT_BY_TWO_FIELD = "Fetching all %ss with %s = %s and %s = %s";
     public static final String LOG_GET_ALL_OBJECT_BY_THREE_FIELD =
             "Fetching all %ss with %s = %s and %s = %s and %s = %s";

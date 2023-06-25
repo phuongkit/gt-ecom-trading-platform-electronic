@@ -144,12 +144,12 @@ public class OrderShopServiceImpl implements OrderShopService {
                                        "LoginKey",
                                        loginKey));
         User userFound = this.userService.getUserByLoginKey(loginKey);
-        Order orderFound = this.orderRepo.findById(orderId)
+        OrderShop orderFound = this.orderShopRepo.findById(orderId)
                 .orElseThrow(() -> new ResourceNotFoundException(String.format(Utils.OBJECT_NOT_FOUND_BY_FIELD,
                                                                                branchName,
                                                                                "ID",
                                                                                orderId)));
-        return this.orderMapper.orderToOrderResponseDTO(orderFound, null, true);
+        return this.orderMapper.orderShopToOrderResponseDTO(orderFound, null, true);
     }
 
     @Override
@@ -173,8 +173,9 @@ public class OrderShopServiceImpl implements OrderShopService {
                 entityFound.getShop().getUser().getId()) || (Objects.equals(
                 userFound.getId(),
                 entityFound.getOrder().getUser()
-                        .getId()) && entityFound.getStatus() == EOrderStatus.ORDER_PENDING && updateStatusDTO.getStatus() == EOrderStatus.ORDER_CANCELLED) || userFound.getRole()
-                 == ERole.ROLE_ADMIN)) {
+                        .getId()) && entityFound.getStatus() == EOrderStatus.ORDER_PENDING &&
+                updateStatusDTO.getStatus() == EOrderStatus.ORDER_CANCELLED) || userFound.getRole()
+                == ERole.ROLE_ADMIN)) {
             entityFound.setStatus(updateStatusDTO.getStatus());
             if (updateStatusDTO.getLog() != null && !Objects.equals(updateStatusDTO.getLog().trim(), "")) {
                 entityFound.setLog(updateStatusDTO.getLog());

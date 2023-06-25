@@ -90,6 +90,15 @@ public class ShipmentController {
                                                                                        pageable));
     }
 
+    @GetMapping("/{id}")
+    ResponseObject<ShipmentResponseDTO> getOrderShipmentsByShipper(
+            @PathVariable(name = "id") String id,
+            HttpServletRequest request) {
+        String loginKey = jwtTokenUtil.getUserNameFromRequest(request);
+        return new ResponseObject<>(HttpStatus.OK, String.format(Utils.GET_ALL_OBJECT_SUCCESSFULLY, branchName),
+                                    this.shipmentService.getOrderShipment(loginKey, id));
+    }
+
     @PutMapping("/{id}")
     ResponseObject<ShipmentResponseDTO> updateLogOrderShipmentsByShipper(
             @PathVariable(name = "id") String id,
@@ -99,5 +108,7 @@ public class ShipmentController {
         return new ResponseObject<>(HttpStatus.OK, String.format(Utils.GET_ALL_OBJECT_SUCCESSFULLY, branchName),
                                     this.shipmentService.updateOrderShipment(loginKey, id, updateDTO));
     }
+
+
 
 }
