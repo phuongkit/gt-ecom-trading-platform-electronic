@@ -17,6 +17,7 @@ const OrderDetail = lazy(() => import('../pages/User/OrderDetail'));
 const SearchPage = lazy(() => import('../pages/User/Search'));
 //serler
 const HomeSeller = lazy(() => import('../pages/Seller/Home/HomeSeller'));
+const DeliveryPage = lazy(() => import('../pages/User/Delivery/Delivery'));
 import SingInSeller from '~/components/SingInSellerForm';
 import ChatContainer from '../components/Chat/ChatContainer';
 export const publishRoutes = [
@@ -169,6 +170,14 @@ export const publishRoutes = [
         element: (
             <Suspense fallback={<Loading />}>
                 <HomeSeller />
+            </Suspense>
+        ),
+    },
+    {
+        path: 'Delivery',
+        element: (
+            <Suspense fallback={<Loading />}>
+                <DeliveryPage />
             </Suspense>
         ),
     },

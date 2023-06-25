@@ -265,3 +265,73 @@ export const productColumns = [
         },
     },
 ];
+
+export const orderShipmentColumns = [
+    {
+        field: 'id',
+        headerName: 'ID',
+        width: 50,
+        renderCell: (params) => {
+            return <div className="cellWithImg">{params.row.id}</div>;
+        },
+    },
+    {
+        field: 'product',
+        headerName: 'Product',
+        width: 250,
+        renderCell: (params) => {
+            return (
+                <div className="cellWithImg">
+                    <img className="cellImg2" src={params.row.img} alt="avatar" />
+                    {params.row.title}
+                </div>
+            );
+        },
+    },
+    {
+        field: 'price',
+        headerName: 'Price',
+        width: 100,
+        renderCell: (params) => {
+            return <div className="cellWithImg">{params.row.price}</div>;
+        },
+    },
+
+    {
+        field: 'category',
+        headerName: 'Category',
+        width: 120,
+        renderCell: (params) => {
+            return <div className="cellWithImg">{params.row.category}</div>;
+        },
+    },
+    {
+        field: 'brand',
+        headerName: 'Brand',
+        width: 100,
+        renderCell: (params) => {
+            return <div className={`cellWithStatus`}>{params.row.brand}</div>;
+        },
+    },
+    {
+        field: 'amount',
+        headerName: 'Amount',
+        width: 80,
+        renderCell: (params) => {
+            return <div className={`cellWithStatus`}>{params.row.availableQuantity}</div>;
+        },
+    },
+    {
+        field: 'status',
+        headerName: 'Status',
+        width: 100,
+        renderCell: (params) => {
+            return (
+                <div className={`cellWithStatus`}>
+                    {EProductStatus.getNameFromIndex(params.row?.status) ||
+                        EProductStatus.PRODUCT_UN_TRADING.name}
+                </div>
+            );
+        },
+    },
+];
