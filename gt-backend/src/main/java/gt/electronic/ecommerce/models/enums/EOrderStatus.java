@@ -10,6 +10,7 @@ public enum EOrderStatus {
     ORDER_AWAITING_PAYMENT(Names.ORDER_AWAITING_PAYMENT),
     ORDER_COMPLETED(Names.ORDER_COMPLETED),
     ORDER_CANCELLED(Names.ORDER_CANCELLED),
+    ORDER_SHIPPING(Names.ORDER_SHIPPING),
     ORDER_AWAITING_FULFILLMENT(Names.ORDER_AWAITING_FULFILLMENT),
     ORDER_AWAITING_SHIPMENT(Names.ORDER_AWAITING_SHIPMENT),
     ORDER_AWAITING_PICKUP(Names.ORDER_AWAITING_PICKUP),
@@ -20,7 +21,7 @@ public enum EOrderStatus {
     ORDER_DISPUTED(Names.ORDER_DISPUTED),
     ORDER_MANUAL_VERIFICATION_REQUIRED(Names.ORDER_MANUAL_VERIFICATION_REQUIRED),
     ORDER_PARTIALLY_REFUNDED(Names.ORDER_PARTIALLY_REFUNDED),
-    ORDER_SHIPPING(Names.ORDER_SHIPPING),
+
     ORDER_ready_to_pick(Names.ORDER_ready_to_pick),
     ORDER_picking(Names.ORDER_picking),
     ORDER_cancel(Names.ORDER_cancel),
@@ -49,6 +50,7 @@ public enum EOrderStatus {
         public static final String ORDER_AWAITING_PAYMENT = "Đang chờ thanh toán";
         public static final String ORDER_COMPLETED = "Đã hoàn thành";
         public static final String ORDER_CANCELLED = "Đã hủy";
+        public static final String ORDER_SHIPPING = "Đang vận chuyển";
         public static final String ORDER_AWAITING_FULFILLMENT = "";
         public static final String ORDER_AWAITING_SHIPMENT = "";
         public static final String ORDER_AWAITING_PICKUP = "";
@@ -59,7 +61,7 @@ public enum EOrderStatus {
         public static final String ORDER_DISPUTED = "";
         public static final String ORDER_MANUAL_VERIFICATION_REQUIRED = "";
         public static final String ORDER_PARTIALLY_REFUNDED = "";
-        public static final String ORDER_SHIPPING = "Đang vận chuyển";
+
         public static final String ORDER_ready_to_pick = "Mới tạo đơn hàng";
         public static final String ORDER_picking = "Nhân viên đang lấy hàng";
         public static final String ORDER_cancel = "Hủy đơn hàng";

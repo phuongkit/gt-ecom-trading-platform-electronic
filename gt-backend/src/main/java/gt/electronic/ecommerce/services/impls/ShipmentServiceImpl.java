@@ -164,6 +164,28 @@ public class ShipmentServiceImpl implements ShipmentService {
     }
 
     @Override
+    public ShipmentResponseDTO getOrderShipment(String loginKey, String id) {
+        this.LOGGER.info(String.format(Utils.LOG_GET_OBJECT_BY_USER,
+                                       branchName,
+                                       "ID",
+                                       id,
+                                       loginKey));
+        User author = userService.getUserByLoginKey(loginKey);
+        Shipment shipment = this.shipmentRepo.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format(Utils.OBJECT_NOT_FOUND_BY_FIELD,
+                                                                               branchName,
+                                                                               "Id",
+                                                                               id
+                )));
+        if (author.getRole() == ERole.ROLE_SHIPPER && author.getAddresses().stream().findFirst().isPresent() &&
+                author.equals(shipment.getUser())) {
+            return this.shipmentMapper.shipmentToShipmentResponseDTO(shipment);
+        } else {
+            throw new UserNotPermissionException();
+        }
+    }
+
+    @Override
     public ShipmentResponseDTO updateOrderShipment(String loginKey, String id, OrderShipmentUpdateDTO updateDTO) {
         this.LOGGER.info(String.format(Utils.LOG_UPDATE_ORDER_SHIPMENT,
                                        id,

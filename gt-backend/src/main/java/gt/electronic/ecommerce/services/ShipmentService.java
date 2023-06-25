@@ -16,5 +16,8 @@ public interface ShipmentService {
 
     Page<ShipmentResponseDTO> getAllOrderShipmentsByShipper(String loginKey, EShipmentStatus status, Pageable pageable);
 
+
+    ShipmentResponseDTO getOrderShipment(String loginKey, String id);
+
     ShipmentResponseDTO updateOrderShipment(String loginKey, String id, OrderShipmentUpdateDTO updateDTO);
 }
