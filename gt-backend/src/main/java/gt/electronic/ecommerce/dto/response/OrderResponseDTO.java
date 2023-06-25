@@ -33,6 +33,7 @@ public class OrderResponseDTO {
     private BigDecimal totalPriceDiscount;
     private BigDecimal transportFee;
     private BigDecimal totalPrice;
+    private String paymentOrderCode;
     private DiscountResponseDTO[] discounts;
     private int status;
     private Date payAt;
@@ -41,4 +42,5 @@ public class OrderResponseDTO {
     private Date createdAt;
     private Date updatedAt;
     private OrderLog[] logs;
+
 }
