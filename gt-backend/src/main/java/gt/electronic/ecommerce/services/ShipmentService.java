@@ -1,5 +1,6 @@
 package gt.electronic.ecommerce.services;
 
+import gt.electronic.ecommerce.dto.request.OrderShipmentUpdateDTO;
 import gt.electronic.ecommerce.dto.response.OrderResponseDTO;
 import gt.electronic.ecommerce.dto.response.ShipmentResponseDTO;
 import gt.electronic.ecommerce.models.enums.EShipmentStatus;
@@ -14,4 +15,6 @@ public interface ShipmentService {
     List<ShipmentResponseDTO> receiveOrderShipments(String loginKey, List<Long> orderShipmentIds);
 
     Page<ShipmentResponseDTO> getAllOrderShipmentsByShipper(String loginKey, EShipmentStatus status, Pageable pageable);
+
+    ShipmentResponseDTO updateOrderShipment(String loginKey, String id, OrderShipmentUpdateDTO updateDTO);
 }

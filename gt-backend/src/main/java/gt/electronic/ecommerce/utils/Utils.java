@@ -1,7 +1,10 @@
 package gt.electronic.ecommerce.utils;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 import gt.electronic.ecommerce.entities.*;
 import gt.electronic.ecommerce.exceptions.ResourceNotValidException;
+import gt.electronic.ecommerce.models.clazzs.OrderLog;
 import gt.electronic.ecommerce.models.enums.EDiscountType;
 import gt.electronic.ecommerce.models.enums.EPattern;
 import gt.electronic.ecommerce.models.enums.ETimeDistance;
@@ -83,8 +86,11 @@ public class Utils {
             "%s update PaymentHistory with paymentCode = %s when paying bill Order with orderId = %s with %s at %s";
     public static final String LOG_UPDATE_PAYMENT_HISTORY_SHOP_PRICE =
             "%s update PaymentHistory with paymentCode = %s when paying bill ShopPrice with shopId = %s and shopPriceId = %s with %s at %s";
+    public static final String LOG_UPDATE_ORDER_SHIPMENT =
+            "Update Order Shipment with id = %s to status = %s with log = %s by shipper with loginKey = %s";
     public static final String SUCCESS = "Successfully";
     public static final String FAIL = "Failed";
+    public static final String ORDER_STATE_CHANGE_LOG = "Đơn hàng đã chuyển từ trạng thái %s sang trạng thái %s !";
 
     //  Log
     public static final String LOG_GET_ALL_OBJECT = "Fetching all %ss";
@@ -152,6 +158,8 @@ public class Utils {
     //    public static final long checkBlackListSeconds = 1000 * 3600 * 24 * 7;
 //    @Value("${app.shop.default.timeCheckBlackProductMs}")
     public static final long timeCheckBlackProductMs = 604800000; // 1Week
+    public static final Gson gson = new Gson();
+    public static final ObjectMapper mapper = new ObjectMapper();
 
     public static String toSlug(String input) {
         String noWhitespace = WHITESPACE.matcher(input).replaceAll("-");
@@ -469,5 +477,17 @@ public class Utils {
     public static double getRoundingDigit(double digit, int scale) {
         double rangeScale = Math.pow(10, scale);
         return (double) Math.round(digit * rangeScale) / rangeScale;
+    }
+
+    public static final String addLogToOrderShop(OrderLog orderLog, String originLogs) {
+        List<OrderLog> orderLogs;
+        if (originLogs == null || originLogs.isEmpty()) {
+            orderLogs = Collections.singletonList(orderLog);
+        } else {
+            orderLogs =
+                    new LinkedList<>(Arrays.asList(gson.fromJson(originLogs, OrderLog[].class)));
+            orderLogs.add(orderLog);
+        }
+        return gson.toJson(orderLogs);
     }
 }
