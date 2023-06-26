@@ -48,7 +48,7 @@ function CommonLayout({ children }) {
                 <nav className=" header__navbar hide-on-mobile-tablet">
                     <ul className="header__navbar-list">
                         <li className="text-black font-semibold header__navbar-item--openqr header__navbar-item header__navbar-item--separate-week hover:text-gray-500">
-                            <Link to="/history" className="w-32  text-center ">
+                            <Link to="/Delivery" className="w-32  text-center ">
                                 Tra cứu đơn hàng
                             </Link>
                         </li>
@@ -75,6 +75,7 @@ function CommonLayout({ children }) {
                                         <li className="header__navbar-user-item text-gray-600">
                                             <Link to="history">Đơn mua</Link>
                                         </li>
+                                        
                                         {user.role != 1 ? (
                                             <li className="header__navbar-user-item text-gray-600">
                                                 <Link to="/SignInSeller" className="">
