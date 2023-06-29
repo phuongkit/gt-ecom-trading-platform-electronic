@@ -173,7 +173,7 @@ public class OrderShopServiceImpl implements OrderShopService {
                 entityFound.getShop().getUser().getId()) || (Objects.equals(
                 userFound.getId(),
                 entityFound.getOrder().getUser()
-                        .getId()) && entityFound.getStatus() == EOrderStatus.ORDER_PENDING &&
+                        .getId()) && entityFound.getStatus() == EOrderStatus.ORDER_SHIPPING &&
                 updateStatusDTO.getStatus() == EOrderStatus.ORDER_CANCELLED) || userFound.getRole()
                 == ERole.ROLE_ADMIN)) {
             entityFound.setStatus(updateStatusDTO.getStatus());

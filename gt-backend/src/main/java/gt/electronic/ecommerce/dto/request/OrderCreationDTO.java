@@ -54,7 +54,7 @@ import java.util.*;
     this.payment = EPaymentType.CASH;
 //    this.shippingMethod = EShippingMethod.GHN_EXPRESS;
 //    this.orderItems = orderItems;
-    this.status = EOrderStatus.ORDER_PENDING;
+    this.status = EOrderStatus.ORDER_SHIPPING;
     Map<Shop, List<OrderDetailCreationDTO>> groupProductByShop = new HashMap<>();
     for (Map.Entry<Product, Long> entry : productMap.entrySet()) {
       OrderDetailCreationDTO detail = new OrderDetailCreationDTO(entry.getKey(), entry.getValue());

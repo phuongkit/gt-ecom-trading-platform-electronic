@@ -117,7 +117,7 @@ public class ShipmentServiceImpl implements ShipmentService {
                                                                                OrderShop.class.getSimpleName(),
                                                                                "Id",
                                                                                orderShipmentId)));
-                if (orderShop.getStatus() == EOrderStatus.ORDER_AWAITING_SHIPMENT) {
+                if (orderShop.getStatus() == EOrderStatus.ORDER_SHIPPING) {
 //                if (orderShop.getStatus() == EOrderStatus.ORDER_PENDING) {
                     orderShops.add(orderShop);
                 } else {

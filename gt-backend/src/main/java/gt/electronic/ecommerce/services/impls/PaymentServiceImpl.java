@@ -100,7 +100,7 @@ public class PaymentServiceImpl implements PaymentService {
                     orderShop.setPayAt(payAt);
                     this.orderShopRepo.save(orderShop);
                 }
-                order.setStatus(EOrderStatus.ORDER_PENDING);
+                order.setStatus(EOrderStatus.ORDER_SHIPPING);
             }
             this.orderRepo.save(order);
         } else if (paymentHistory.getCategory() == EPaymentCategory.SHOP_PRICE) {

@@ -31,7 +31,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     List<Order> findAllByPaymentOrderCode(String paymentOrderCode);
 
     @Query(value = "select os from Order o inner join OrderShop os on o = os.order" +
-            " where os.status = gt.electronic.ecommerce.models.enums.EOrderStatus.ORDER_AWAITING_SHIPMENT" +
+            " where os.shipOrderCode is null" +
 //            " where os.status = gt.electronic.ecommerce.models.enums.EOrderStatus.ORDER_PENDING" +
             " and o.location.province = :province " +
 //            " and :province is not null" +

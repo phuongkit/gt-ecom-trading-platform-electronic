@@ -6,51 +6,54 @@ package gt.electronic.ecommerce.models.enums;
  * @project gt-backend
  */
 public enum EOrderStatus {
-    ORDER_PENDING(Names.ORDER_PENDING),
+//    ORDER_PENDING(Names.ORDER_PENDING),
     ORDER_AWAITING_PAYMENT(Names.ORDER_AWAITING_PAYMENT),
-    ORDER_COMPLETED(Names.ORDER_COMPLETED),
-    ORDER_CANCELLED(Names.ORDER_CANCELLED),
     ORDER_SHIPPING(Names.ORDER_SHIPPING),
-    ORDER_AWAITING_FULFILLMENT(Names.ORDER_AWAITING_FULFILLMENT),
-    ORDER_AWAITING_SHIPMENT(Names.ORDER_AWAITING_SHIPMENT),
-    ORDER_AWAITING_PICKUP(Names.ORDER_AWAITING_PICKUP),
-    ORDER_PARTIALLY_SHIPPED(Names.ORDER_PARTIALLY_SHIPPED),
-    ORDER_SHIPPED(Names.ORDER_SHIPPED),
-    ORDER_DECLINED(Names.ORDER_DECLINED),
-    ORDER_REFUNDED(Names.ORDER_REFUNDED),
-    ORDER_DISPUTED(Names.ORDER_DISPUTED),
-    ORDER_MANUAL_VERIFICATION_REQUIRED(Names.ORDER_MANUAL_VERIFICATION_REQUIRED),
-    ORDER_PARTIALLY_REFUNDED(Names.ORDER_PARTIALLY_REFUNDED),
+    ORDER_DELIVERING(Names.ORDER_DELIVERING),
+    ORDER_COMPLETED(Names.ORDER_COMPLETED),
+    ORDER_CANCELLED(Names.ORDER_CANCELLED);
 
-    ORDER_ready_to_pick(Names.ORDER_ready_to_pick),
-    ORDER_picking(Names.ORDER_picking),
-    ORDER_cancel(Names.ORDER_cancel),
-    ORDER_money_collect_picking(Names.ORDER_money_collect_picking),
-    ORDER_picked(Names.ORDER_picked),
-    ORDER_storing(Names.ORDER_storing),
-    ORDER_transporting(Names.ORDER_transporting),
-    ORDER_sorting(Names.ORDER_sorting),
-    ORDER_delivering(Names.ORDER_delivering),
-    ORDER_money_collect_delivering(Names.ORDER_money_collect_delivering),
-    ORDER_delivered(Names.ORDER_delivered),
-    ORDER_delivery_fail(Names.ORDER_delivery_fail),
-    ORDER_waiting_to_return(Names.ORDER_waiting_to_return),
-    ORDER_return(Names.ORDER_return),
-    ORDER_return_transporting(Names.ORDER_return_transporting),
-    ORDER_return_sorting(Names.ORDER_return_sorting),
-    ORDER_returning(Names.ORDER_returning),
-    ORDER_return_fail(Names.ORDER_return_fail),
-    ORDER_returned(Names.ORDER_returned),
-    ORDER_exception(Names.ORDER_exception),
-    ORDER_damage(Names.ORDER_damage),
-    ORDER_lost(Names.ORDER_lost);
+//    ORDER_AWAITING_FULFILLMENT(Names.ORDER_AWAITING_FULFILLMENT),
+//    ORDER_AWAITING_SHIPMENT(Names.ORDER_AWAITING_SHIPMENT),
+//    ORDER_AWAITING_PICKUP(Names.ORDER_AWAITING_PICKUP),
+//    ORDER_PARTIALLY_SHIPPED(Names.ORDER_PARTIALLY_SHIPPED),
+//    ORDER_SHIPPED(Names.ORDER_SHIPPED),
+//    ORDER_DECLINED(Names.ORDER_DECLINED),
+//    ORDER_REFUNDED(Names.ORDER_REFUNDED),
+//    ORDER_DISPUTED(Names.ORDER_DISPUTED),
+//    ORDER_MANUAL_VERIFICATION_REQUIRED(Names.ORDER_MANUAL_VERIFICATION_REQUIRED),
+//    ORDER_PARTIALLY_REFUNDED(Names.ORDER_PARTIALLY_REFUNDED),
+//
+//    ORDER_ready_to_pick(Names.ORDER_ready_to_pick),
+//    ORDER_picking(Names.ORDER_picking),
+//    ORDER_cancel(Names.ORDER_cancel),
+//    ORDER_money_collect_picking(Names.ORDER_money_collect_picking),
+//    ORDER_picked(Names.ORDER_picked),
+//    ORDER_storing(Names.ORDER_storing),
+//    ORDER_transporting(Names.ORDER_transporting),
+//    ORDER_sorting(Names.ORDER_sorting),
+//    ORDER_delivering(Names.ORDER_delivering),
+//    ORDER_money_collect_delivering(Names.ORDER_money_collect_delivering),
+//    ORDER_delivered(Names.ORDER_delivered),
+//    ORDER_delivery_fail(Names.ORDER_delivery_fail),
+//    ORDER_waiting_to_return(Names.ORDER_waiting_to_return),
+//    ORDER_return(Names.ORDER_return),
+//    ORDER_return_transporting(Names.ORDER_return_transporting),
+//    ORDER_return_sorting(Names.ORDER_return_sorting),
+//    ORDER_returning(Names.ORDER_returning),
+//    ORDER_return_fail(Names.ORDER_return_fail),
+//    ORDER_returned(Names.ORDER_returned),
+//    ORDER_exception(Names.ORDER_exception),
+//    ORDER_damage(Names.ORDER_damage),
+//    ORDER_lost(Names.ORDER_lost);
 
     public static class Names {
         public static final String ORDER_PENDING = "Đang chờ xác nhận";
         public static final String ORDER_AWAITING_PAYMENT = "Đang chờ thanh toán";
+        public static final String ORDER_SHIPPING = "Đang vận chuyển";
+        public static final String ORDER_DELIVERING = "Đang giao hàng";
         public static final String ORDER_COMPLETED = "Đã hoàn thành";
         public static final String ORDER_CANCELLED = "Đã hủy";
-        public static final String ORDER_SHIPPING = "Đang vận chuyển";
         public static final String ORDER_AWAITING_FULFILLMENT = "";
         public static final String ORDER_AWAITING_SHIPMENT = "";
         public static final String ORDER_AWAITING_PICKUP = "";

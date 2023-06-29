@@ -16,7 +16,6 @@ import gt.electronic.ecommerce.models.enums.*;
 import gt.electronic.ecommerce.repositories.*;
 import gt.electronic.ecommerce.services.*;
 import gt.electronic.ecommerce.utils.Utils;
-import org.mapstruct.control.MappingControl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +25,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 import static gt.electronic.ecommerce.models.enums.EDiscountType.DISCOUNT_SHOP_PERCENT;
 import static gt.electronic.ecommerce.models.enums.EDiscountType.DISCOUNT_SHOP_PRICE;
@@ -243,7 +242,7 @@ public class OrderServiceImpl implements OrderService {
         // initial status
         newEntity.setStatus(creationDTO.getStatus() == null ?
                                     (creationDTO.getPayment().ordinal() > 0 ? EOrderStatus.ORDER_AWAITING_PAYMENT :
-                                            EOrderStatus.ORDER_PENDING) : creationDTO.getStatus());
+                                            EOrderStatus.ORDER_SHIPPING) : creationDTO.getStatus());
         newEntity.setNote(creationDTO.getNote());
 
         Order savedEntity = this.orderRepo.save(newEntity);
