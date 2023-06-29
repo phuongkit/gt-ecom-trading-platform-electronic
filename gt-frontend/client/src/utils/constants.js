@@ -18,6 +18,34 @@ export const EDiscountType = {
     },
 }
 
+export const ERole = {
+    ADMIN: {
+        name: 'ROLE_ADMIN',
+        vi: 'Người quản trị',
+        index: 0,
+    },
+    SELLER: {
+        name: 'ROLE_SELLER',
+        vi: 'Người bán',
+        index: 1,
+    },
+    CUSTOMER: {
+        name: 'ROLE_CUSTOMER',
+        vi: 'Khách hàng',
+        index: 2,
+    },
+    SHIPPER: {
+        name: 'ROLE_SHIPPER',
+        vi: 'Người giao hàng',
+        index: 3,
+    },
+    getNameFromIndex: (index) =>
+        ERole[Object.keys(ERole)[index > ERole.CUSTOMER.index ? ERole.CUSTOMER.index : index]]?.name ||
+        ERole.CUSTOMER.name,
+    getIndexFromName: (name) =>
+        Object.values(ERole).find((item) => item.name === name)?.index || ERole.CUSTOMER.index,
+}
+
 export const EGender = {
     FEMALE: {
         name: 'Chị',
@@ -39,176 +67,204 @@ export const EGender = {
 };
 
 export const EOrderStatus = {
-    ORDER_PENDING: {
-        name: 'Đang chờ xác nhận',
-        index: 0,
-    },
     ORDER_AWAITING_PAYMENT: {
         name: 'Đang chờ thanh toán',
+        index: 0,
+    },
+    ORDER_SHIPPING: {
+        name: 'Đang vận chuyển',
         index: 1,
+    },
+    ORDER_DELIVERING: {
+        name: 'Đang giao hàng',
+        index: 2,
     },
     ORDER_COMPLETED: {
         name: 'Đã hoàn thành',
-        index: 2,
+        index: 3,
     },
     ORDER_CANCELLED: {
         name: 'Đã hủy',
-        index: 3,
-    },
-    ORDER_AWAITING_FULFILLMENT: {
-        name: '',
         index: 4,
     },
-    ORDER_AWAITING_SHIPMENT: {
-        name: '',
-        index: 5,
-    },
-    ORDER_AWAITING_PICKUP: {
-        name: '',
-        index: 6,
-    },
-    ORDER_PARTIALLY_SHIPPED: {
-        name: '',
-        index: 7,
-    },
-    ORDER_SHIPPED: {
-        name: '',
-        index: 8,
-    },
-    ORDER_DECLINED: {
-        name: '',
-        index: 9,
-    },
-    ORDER_REFUNDED: {
-        name: '',
-        index: 10,
-    },
-    ORDER_DISPUTED: {
-        name: '',
-        index: 11,
-    },
-    ORDER_MANUAL_VERIFICATION_REQUIRED: {
-        name: '',
-        index: 12,
-    },
-    ORDER_PARTIALLY_REFUNDED: {
-        name: '',
-        index: 13,
-    },
-    ORDER_READY_TO_PICK: {
-        name: 'Mới tạo đơn hàng',
-        en: 'ready_to_pick',
-        index: 14,
-    },
-    ORDER_PICKING: {
-        name: 'Nhân nameên đang lấy hàng',
-        en: 'picking',
-        index: 15,
-    },
-    ORDER_CANCEL: {
-        name: 'Hủy đơn hàng',
-        en: 'cancel',
-        index: 16,
-    },
-    ORDER_MONEY_COLLECT_PICKING: {
-        name: 'Đang thu tiền người gửi',
-        en: 'money_collect_picking',
-        index: 17,
-    },
-    ORDER_PICKED: {
-        name: 'Nhân nameên đã lấy hàng',
-        en: 'picked',
-        index: 18,
-    },
-    ORDER_STORING: {
-        name: 'Hàng đang nằm ở kho',
-        en: 'storing',
-        index: 19,
-    },
-    ORDER_TRANSPORTING: {
-        name: 'Đang luân chuyển hàng',
-        en: 'transporting',
-        index: 20,
-    },
-    ORDER_SORTING: {
-        name: 'Đang phân loại hàng hóa',
-        en: 'sorting',
-        index: 21,
-    },
-    ORDER_DELIVERING: {
-        name: 'Nhân nameên đang giao cho người nhận',
-        en: 'delivering',
-        index: 22,
-    },
-    ORDER_MONEY_COLLECT_DELIVERING: {
-        name: 'Nhân nameên đang thu tiền người nhận',
-        en: 'money_collect_delivering',
-        index: 23,
-    },
-    ORDER_DELIVERED: {
-        name: 'Nhân nameên đã giao hàng thành công',
-        en: 'delivered',
-        index: 24,
-    },
-    ORDER_DELIVERY_FAIL: {
-        name: 'Nhân nameên giao hàng thất bại',
-        en: 'delivery_fail',
-        index: 25,
-    },
-    ORDER_WAITING_TO_RETURN: {
-        name: 'Đang đợi trả hàng về cho người gửi',
-        en: 'waiting_to_return',
-        index: 26,
-    },
-    ORDER_RETURN: {
-        name: 'Trả hàng',
-        en: 'return',
-        index: 27,
-    },
-    ORDER_RETURN_TRANSPORTING: {
-        name: 'Đang luân chuyển hàng trả',
-        en: 'return_transporting',
-        index: 28,
-    },
-    ORDER_RETURN_SORTING: {
-        name: 'Đang phân loại hàng trả',
-        en: 'return_sorting',
-        index: 29,
-    },
-    ORDER_RETURNING: {
-        name: 'Nhân nameên đang đi trả hàng',
-        en: 'returning',
-        index: 30,
-    },
-    ORDER_RETURN_FAIL: {
-        name: 'Nhân nameên trả hàng thất bại',
-        en: 'return_fail',
-        index: 31,
-    },
-    ORDER_RETURNED: {
-        name: 'Nhân nameên trả hàng thành công',
-        en: 'returned',
-        index: 32,
-    },
-    ORDER_EXCEPTION: {
-        name: 'Đơn hàng ngoại lệ không nằm trong quy trình',
-        en: 'exception',
-        index: 33,
-    },
-    ORDER_DAMAGE: {
-        name: 'Hàng bị hư hỏng',
-        en: 'damage',
-        index: 34,
-    },
-    ORDER_LOST: {
-        name: 'Hàng bị mất',
-        en: 'lost',
-        index: 35,
-    },
+    // ORDER_PENDING: {
+    //     name: 'Đang chờ xác nhận',
+    //     index: 0,
+    // },
+    // ORDER_AWAITING_PAYMENT: {
+    //     name: 'Đang chờ thanh toán',
+    //     index: 1,
+    // },
+    // ORDER_COMPLETED: {
+    //     name: 'Đã hoàn thành',
+    //     index: 2,
+    // },
+    // ORDER_CANCELLED: {
+    //     name: 'Đã hủy',
+    //     index: 3,
+    // },
+    // ORDER_SHIPPING: {
+    //     name: 'Đang vận chuyển',
+    //     index: 4,
+    // },
+    // ORDER_DELIVERING: {
+    //     name: 'Đang giao',
+    //     index: 5,
+    // },
+    // // ORDER_AWAITING_FULFILLMENT: {
+    // //     name: '',
+    // //     index: 4,
+    // // },
+    // ORDER_AWAITING_SHIPMENT: {
+    //     name: '',
+    //     index: 5,
+    // },
+    // ORDER_AWAITING_PICKUP: {
+    //     name: '',
+    //     index: 6,
+    // },
+    // ORDER_PARTIALLY_SHIPPED: {
+    //     name: '',
+    //     index: 7,
+    // },
+    // ORDER_SHIPPED: {
+    //     name: '',
+    //     index: 8,
+    // },
+    // ORDER_DECLINED: {
+    //     name: '',
+    //     index: 9,
+    // },
+    // ORDER_REFUNDED: {
+    //     name: '',
+    //     index: 10,
+    // },
+    // ORDER_DISPUTED: {
+    //     name: '',
+    //     index: 11,
+    // },
+    // ORDER_MANUAL_VERIFICATION_REQUIRED: {
+    //     name: '',
+    //     index: 12,
+    // },
+    // ORDER_PARTIALLY_REFUNDED: {
+    //     name: '',
+    //     index: 13,
+    // },
+    // ORDER_READY_TO_PICK: {
+    //     name: 'Mới tạo đơn hàng',
+    //     en: 'ready_to_pick',
+    //     index: 14,
+    // },
+    // ORDER_PICKING: {
+    //     name: 'Nhân nameên đang lấy hàng',
+    //     en: 'picking',
+    //     index: 15,
+    // },
+    // ORDER_CANCEL: {
+    //     name: 'Hủy đơn hàng',
+    //     en: 'cancel',
+    //     index: 16,
+    // },
+    // ORDER_MONEY_COLLECT_PICKING: {
+    //     name: 'Đang thu tiền người gửi',
+    //     en: 'money_collect_picking',
+    //     index: 17,
+    // },
+    // ORDER_PICKED: {
+    //     name: 'Nhân nameên đã lấy hàng',
+    //     en: 'picked',
+    //     index: 18,
+    // },
+    // ORDER_STORING: {
+    //     name: 'Hàng đang nằm ở kho',
+    //     en: 'storing',
+    //     index: 19,
+    // },
+    // ORDER_TRANSPORTING: {
+    //     name: 'Đang luân chuyển hàng',
+    //     en: 'transporting',
+    //     index: 20,
+    // },
+    // ORDER_SORTING: {
+    //     name: 'Đang phân loại hàng hóa',
+    //     en: 'sorting',
+    //     index: 21,
+    // },
+    // ORDER_DELIVERING: {
+    //     name: 'Nhân nameên đang giao cho người nhận',
+    //     en: 'delivering',
+    //     index: 22,
+    // },
+    // ORDER_MONEY_COLLECT_DELIVERING: {
+    //     name: 'Nhân nameên đang thu tiền người nhận',
+    //     en: 'money_collect_delivering',
+    //     index: 23,
+    // },
+    // ORDER_DELIVERED: {
+    //     name: 'Nhân nameên đã giao hàng thành công',
+    //     en: 'delivered',
+    //     index: 24,
+    // },
+    // ORDER_DELIVERY_FAIL: {
+    //     name: 'Nhân nameên giao hàng thất bại',
+    //     en: 'delivery_fail',
+    //     index: 25,
+    // },
+    // ORDER_WAITING_TO_RETURN: {
+    //     name: 'Đang đợi trả hàng về cho người gửi',
+    //     en: 'waiting_to_return',
+    //     index: 26,
+    // },
+    // ORDER_RETURN: {
+    //     name: 'Trả hàng',
+    //     en: 'return',
+    //     index: 27,
+    // },
+    // ORDER_RETURN_TRANSPORTING: {
+    //     name: 'Đang luân chuyển hàng trả',
+    //     en: 'return_transporting',
+    //     index: 28,
+    // },
+    // ORDER_RETURN_SORTING: {
+    //     name: 'Đang phân loại hàng trả',
+    //     en: 'return_sorting',
+    //     index: 29,
+    // },
+    // ORDER_RETURNING: {
+    //     name: 'Nhân nameên đang đi trả hàng',
+    //     en: 'returning',
+    //     index: 30,
+    // },
+    // ORDER_RETURN_FAIL: {
+    //     name: 'Nhân nameên trả hàng thất bại',
+    //     en: 'return_fail',
+    //     index: 31,
+    // },
+    // ORDER_RETURNED: {
+    //     name: 'Nhân nameên trả hàng thành công',
+    //     en: 'returned',
+    //     index: 32,
+    // },
+    // ORDER_EXCEPTION: {
+    //     name: 'Đơn hàng ngoại lệ không nằm trong quy trình',
+    //     en: 'exception',
+    //     index: 33,
+    // },
+    // ORDER_DAMAGE: {
+    //     name: 'Hàng bị hư hỏng',
+    //     en: 'damage',
+    //     index: 34,
+    // },
+    // ORDER_LOST: {
+    //     name: 'Hàng bị mất',
+    //     en: 'lost',
+    //     index: 35,
+    // },
     getNameFromIndex: (index) =>
         EOrderStatus[
-            Object.keys(EOrderStatus)[index > EOrderStatus.ORDER_LOST.index ? EOrderStatus.ORDER_PENDING.index : index]
-        ]?.name || EOrderStatus.ORDER_PENDING.name,
+            Object.keys(EOrderStatus)[index > EOrderStatus.ORDER_CANCELLED.index ? EOrderStatus.ORDER_SHIPPING.index : index]
+        ]?.name || EOrderStatus.ORDER_SHIPPING.name,
 };
 
 export const EOrderStatusGHN = {

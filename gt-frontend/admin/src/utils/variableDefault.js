@@ -19,68 +19,88 @@ export const EGender = {
 };
 
 export const EOrderStatus = {
-    ORDER_PENDING: {
-        name: 'Đang chờ xác nhận',
-        index: 0,
-    },
     ORDER_AWAITING_PAYMENT: {
         name: 'Đang chờ thanh toán',
+        index: 0,
+    },
+    ORDER_SHIPPING: {
+        name: 'Đang vận chuyển',
         index: 1,
+    },
+    ORDER_DELIVERING: {
+        name: 'Đang giao hàng',
+        index: 2,
     },
     ORDER_COMPLETED: {
         name: 'Đã hoàn thành',
-        index: 2,
+        index: 3,
     },
     ORDER_CANCELLED: {
         name: 'Đã hủy',
-        index: 3,
-    },
-    ORDER_AWAITING_FULFILLMENT: {
-        name: '',
         index: 4,
     },
-    ORDER_AWAITING_SHIPMENT: {
-        name: '',
-        index: 5,
-    },
-    ORDER_AWAITING_PICKUP: {
-        name: '',
-        index: 6,
-    },
-    ORDER_PARTIALLY_SHIPPED: {
-        name: '',
-        index: 7,
-    },
-    ORDER_SHIPPED: {
-        name: '',
-        index: 8,
-    },
-    ORDER_DECLINED: {
-        name: '',
-        index: 9,
-    },
-    ORDER_REFUNDED: {
-        name: '',
-        index: 10,
-    },
-    ORDER_DISPUTED: {
-        name: '',
-        index: 11,
-    },
-    ORDER_MANUAL_VERIFICATION_REQUIRED: {
-        name: '',
-        index: 12,
-    },
-    ORDER_PARTIALLY_REFUNDED: {
-        name: '',
-        index: 13,
-    },
+    // ORDER_PENDING: {
+    //     name: 'Đang chờ xác nhận',
+    //     index: 0,
+    // },
+    // ORDER_AWAITING_PAYMENT: {
+    //     name: 'Đang chờ thanh toán',
+    //     index: 1,
+    // },
+    // ORDER_COMPLETED: {
+    //     name: 'Đã hoàn thành',
+    //     index: 2,
+    // },
+    // ORDER_CANCELLED: {
+    //     name: 'Đã hủy',
+    //     index: 3,
+    // },
+    // ORDER_AWAITING_FULFILLMENT: {
+    //     name: '',
+    //     index: 4,
+    // },
+    // ORDER_AWAITING_SHIPMENT: {
+    //     name: '',
+    //     index: 5,
+    // },
+    // ORDER_AWAITING_PICKUP: {
+    //     name: '',
+    //     index: 6,
+    // },
+    // ORDER_PARTIALLY_SHIPPED: {
+    //     name: '',
+    //     index: 7,
+    // },
+    // ORDER_SHIPPED: {
+    //     name: '',
+    //     index: 8,
+    // },
+    // ORDER_DECLINED: {
+    //     name: '',
+    //     index: 9,
+    // },
+    // ORDER_REFUNDED: {
+    //     name: '',
+    //     index: 10,
+    // },
+    // ORDER_DISPUTED: {
+    //     name: '',
+    //     index: 11,
+    // },
+    // ORDER_MANUAL_VERIFICATION_REQUIRED: {
+    //     name: '',
+    //     index: 12,
+    // },
+    // ORDER_PARTIALLY_REFUNDED: {
+    //     name: '',
+    //     index: 13,
+    // },
     getNameFromIndex: (index) =>
         EOrderStatus[
             Object.keys(EOrderStatus)[
-                index > EOrderStatus.ORDER_PENDING.index ? EOrderStatus.ORDER_PENDING.index : index
+                index > EOrderStatus.ORDER_CANCELLED.index ? EOrderStatus.ORDER_SHIPPING.index : index
             ]
-        ]?.name || EOrderStatus.ORDER_PENDING.name,
+        ]?.name || EOrderStatus.ORDER_SHIPPING.name,
 };
 
 export const EPayment = {

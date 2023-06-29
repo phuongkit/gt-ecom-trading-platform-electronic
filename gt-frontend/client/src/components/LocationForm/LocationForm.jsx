@@ -2,6 +2,7 @@ import useLocationForm from './useLocationForm';
 import Select from 'react-select';
 import { useEffect, useState } from 'react';
 import { toSlug } from '../../utils';
+import { ClassNames } from '@emotion/react';
 
 function LocationForm({ onChange, className, address }) {
     const { state, onCitySelect, onDistrictSelect, onWardSelect } = useLocationForm(false);
@@ -83,6 +84,7 @@ function LocationForm({ onChange, className, address }) {
                     }}
                     placeholder="Tỉnh/Thành"
                     defaultValue={selectedCity}
+                    className={className}
                 />
 
                 <Select
@@ -98,6 +100,7 @@ function LocationForm({ onChange, className, address }) {
                     }}
                     placeholder="Quận/Huyện"
                     defaultValue={selectedDistrict}
+                    className={className}
                 />
 
                 <Select
