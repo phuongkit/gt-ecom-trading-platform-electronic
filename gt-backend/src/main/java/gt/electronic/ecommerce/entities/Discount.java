@@ -1,7 +1,7 @@
 package gt.electronic.ecommerce.entities;
 
 import gt.electronic.ecommerce.models.enums.EDiscountType;
-import gt.electronic.ecommerce.utils.CodeConfig;
+import gt.electronic.ecommerce.config.CodeConfig;
 import gt.electronic.ecommerce.utils.GenerateUtil;
 import gt.electronic.ecommerce.utils.Utils;
 import lombok.AllArgsConstructor;

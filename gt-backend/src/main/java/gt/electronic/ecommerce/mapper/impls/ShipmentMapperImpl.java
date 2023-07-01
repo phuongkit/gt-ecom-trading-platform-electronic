@@ -1,9 +1,12 @@
 package gt.electronic.ecommerce.mapper.impls;
 
 import gt.electronic.ecommerce.dto.response.ShipmentResponseDTO;
+import gt.electronic.ecommerce.entities.OrderShop;
 import gt.electronic.ecommerce.entities.Shipment;
 import gt.electronic.ecommerce.mapper.AddressMapper;
+import gt.electronic.ecommerce.mapper.OrderMapper;
 import gt.electronic.ecommerce.mapper.ShipmentMapper;
+import gt.electronic.ecommerce.repositories.OrderShopRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -16,6 +19,12 @@ public class ShipmentMapperImpl implements ShipmentMapper {
         this.addressMapper = addressMapper;
     }
 
+    @Autowired
+    private OrderMapper orderMapper;
+
+    @Autowired
+    private OrderShopRepository orderShopRepo;
+
     @Override
     public ShipmentResponseDTO shipmentToShipmentResponseDTO(Shipment entity) {
         if (entity == null) {
@@ -24,7 +33,8 @@ public class ShipmentMapperImpl implements ShipmentMapper {
         ShipmentResponseDTO responseDTO = new ShipmentResponseDTO();
         responseDTO.setId(entity.getId());
         responseDTO.setUserId(entity.getUser().getId());
-        responseDTO.setOrderShopId(entity.getOrderShopId());
+        OrderShop orderShop = this.orderShopRepo.findById(entity.getOrderShopId()).orElse(null);
+        responseDTO.setOrderShop(this.orderMapper.orderShopToOrderResponseDTO(orderShop, null, true));
         if (entity.getFromLocation() != null) {
             responseDTO.setFromAddress(this.addressMapper.lineAndLocationToAddressResponseDTO(entity.getFromLine(),
                                                                                               entity.getFromLocation()));

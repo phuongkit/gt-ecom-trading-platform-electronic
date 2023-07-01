@@ -17,7 +17,7 @@ import gt.electronic.ecommerce.services.ImageService;
 import gt.electronic.ecommerce.services.LocationService;
 import gt.electronic.ecommerce.services.ShopService;
 import gt.electronic.ecommerce.services.UserService;
-import gt.electronic.ecommerce.utils.CodeConfig;
+import gt.electronic.ecommerce.config.CodeConfig;
 import gt.electronic.ecommerce.utils.GenerateUtil;
 import gt.electronic.ecommerce.utils.JwtTokenUtil;
 import gt.electronic.ecommerce.utils.Utils;

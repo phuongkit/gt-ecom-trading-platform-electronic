@@ -58,6 +58,7 @@ public class AuthController {
 
   @PostMapping("/login")
   public ResponseObject<?> login(@RequestBody @Valid AuthLoginDTO request) {
+    System.out.println(request.toString());
     if (request.isOtp()) {
       try {
         userService.loadUserByUsername(request.getPhone());
@@ -79,6 +80,7 @@ public class AuthController {
       return new ResponseObject<>(HttpStatus.OK, "Login Successfully", response);
 
     } catch (BadCredentialsException ex) {
+      System.out.println("-1");
       return new ResponseObject<>(HttpStatus.UNAUTHORIZED, "Bad login information");
     }
   }

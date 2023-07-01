@@ -10,7 +10,7 @@ import gt.electronic.ecommerce.models.enums.EImageType;
 import gt.electronic.ecommerce.models.enums.ERole;
 import gt.electronic.ecommerce.repositories.UserRepository;
 import gt.electronic.ecommerce.services.ImageService;
-import gt.electronic.ecommerce.utils.CodeConfig;
+import gt.electronic.ecommerce.config.CodeConfig;
 import gt.electronic.ecommerce.utils.GenerateUtil;
 import gt.electronic.ecommerce.utils.Utils;
 import org.slf4j.Logger;

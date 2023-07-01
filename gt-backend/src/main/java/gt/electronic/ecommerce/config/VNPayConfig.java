@@ -1,4 +1,4 @@
-package gt.electronic.ecommerce.utils;
+package gt.electronic.ecommerce.config;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;

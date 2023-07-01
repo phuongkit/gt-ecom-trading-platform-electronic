@@ -2,24 +2,33 @@ package gt.electronic.ecommerce.controller;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.paypal.api.payments.Links;
+import com.paypal.api.payments.Payment;
+import com.paypal.base.rest.PayPalRESTException;
 import gt.electronic.ecommerce.config.AppProperties;
+import gt.electronic.ecommerce.dto.request.PaypalCreationDTO;
+import gt.electronic.ecommerce.dto.request.PaypalForShopPriceCreationDTO;
 import gt.electronic.ecommerce.dto.request.VNPayCreationDTO;
 import gt.electronic.ecommerce.dto.request.VNPayForShopPriceCreationDTO;
+import gt.electronic.ecommerce.dto.response.PaymentUrlResponseDTO;
 import gt.electronic.ecommerce.dto.response.ResponseObject;
-import gt.electronic.ecommerce.handlers.HttpCookieOAuth2AuthorizationRequestRepository;
+import gt.electronic.ecommerce.models.enums.PaypalPaymentIntent;
+import gt.electronic.ecommerce.models.enums.PaypalPaymentMethod;
 import gt.electronic.ecommerce.services.OrderService;
 import gt.electronic.ecommerce.services.PaymentService;
+import gt.electronic.ecommerce.services.PaypalService;
 import gt.electronic.ecommerce.services.VNPayService;
 import gt.electronic.ecommerce.utils.CookieUtils;
-import gt.electronic.ecommerce.utils.VNPayConfig;
+import gt.electronic.ecommerce.config.VNPayConfig;
+import gt.electronic.ecommerce.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -46,6 +55,7 @@ import static gt.electronic.ecommerce.utils.Utils.*;
 @CrossOrigin("*")
 public class PaymentController {
     private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
+    public static final String PRE_SHOP_PRICE = "/shop-price";
 
     private OrderService orderService;
 
@@ -59,6 +69,13 @@ public class PaymentController {
     @Autowired
     public void PaymentService(PaymentService paymentService) {
         this.paymentService = paymentService;
+    }
+
+    private PaypalService paypalService;
+
+    @Autowired
+    public void PaypalService(PaypalService paypalService) {
+        this.paypalService = paypalService;
     }
 
     private VNPayService vnPayService;
@@ -252,5 +269,113 @@ public class PaymentController {
                 HttpStatus.OK,
                 "Get url vnpay sucess",
                 this.vnPayService.getPaymentUrlVNPayForShopPrice(ipAddress, vnPayCreationDTO));
+    }
+
+    @PostMapping("/paypal/create-payment-url")
+    public ResponseObject<?> getPaymentUrlPaypal(@RequestBody @Valid PaypalCreationDTO creationDTO,
+                                                 HttpServletRequest request) {
+        try {
+            String cancelUrl =
+                    ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString() + PRE_API_PAYMENT +
+                            PRE_PAYPAL_CANCEL_URL;
+            String successUrl =
+                    ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString() + PRE_API_PAYMENT +
+                            PRE_PAYPAL_SUCCESS_URL;
+            Payment payment = this.paypalService.createPayment(
+                    creationDTO,
+                    PaypalPaymentMethod.paypal,
+                    PaypalPaymentIntent.sale,
+                    cancelUrl,
+                    successUrl);
+            for (Links links : payment.getLinks()) {
+                if (links.getRel().equals("approval_url")) {
+//                    return "redirect:" + links.getHref();
+                    return new ResponseObject<>(
+                            HttpStatus.OK,
+                            "Get url paypal sucess",
+                            new PaymentUrlResponseDTO(links.getHref(), new Date(), null));
+                }
+            }
+        } catch (PayPalRESTException e) {
+            this.LOGGER.error(e.getMessage());
+        }
+        return new ResponseObject<>(
+                HttpStatus.BAD_REQUEST,
+                "Get url paypal fail",
+                null);
+    }
+
+    @GetMapping(PRE_PAYPAL_CANCEL_URL)
+    public String cancelPaypal(@RequestParam("paymentId") String paymentOrderCode,
+                               @RequestParam("PayerID") String payerId,
+                               HttpServletResponse response) {
+        String targetUrl = this.paymentService.updatePaymentHistory(paymentOrderCode, new Date(), false)
+                .orElse(appProperties.getOauth2().getAuthorizedRedirectUris().get(0));
+//        String targetUrl = "http://localhost:5000/";
+        try {
+            response.sendRedirect(UriComponentsBuilder.fromUriString(targetUrl)
+                                          .queryParam(TRANSACTION_STATUS, true).build().toUriString());
+        } catch (IOException e) {
+            this.LOGGER.error(e.getMessage());
+        }
+        return "{\"RspCode\":\"00\",\"Message\":\"Confirm Fail\"}";
+    }
+
+    @GetMapping(PRE_PAYPAL_SUCCESS_URL)
+    public String successPaypal(@RequestParam("paymentId") String paymentOrderCode,
+                                @RequestParam("PayerID") String payerId,
+                                HttpServletResponse response) {
+        try {
+            Payment payment = this.paypalService.executePayment(paymentOrderCode, payerId);
+            System.out.println(payment.getUpdateTime());
+            if (payment.getState().equals("approved")) {
+                String targetUrl = this.paymentService.updatePaymentHistory(paymentOrderCode, new Date(), true)
+                        .orElse(appProperties.getOauth2().getAuthorizedRedirectUris().get(0));
+
+//                String targetUrl = "http://localhost:5000/";
+
+                response.sendRedirect(UriComponentsBuilder.fromUriString(targetUrl)
+                                              .queryParam(TRANSACTION_STATUS, true).build().toUriString());
+                return "{\"RspCode\":\"00\",\"Message\":\"Confirm Success\"}";
+            }
+        } catch (PayPalRESTException | IOException e) {
+            this.LOGGER.error(e.getMessage());
+        }
+        return "redirect:/";
+    }
+
+    @PostMapping("/paypal/create-payment-url/shop-price")
+    public ResponseObject<?> getPaymentUrlPaypalForShopPrice(
+            @RequestBody @Valid PaypalForShopPriceCreationDTO creationDTO,
+            HttpServletRequest request) {
+        try {
+            String cancelUrl =
+                    ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString() + PRE_API_PAYMENT +
+                            PRE_PAYPAL_CANCEL_URL;
+            String successUrl =
+                    ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString() + PRE_API_PAYMENT +
+                            PRE_PAYPAL_SUCCESS_URL;
+            Payment payment = this.paypalService.createPaymentForShopPrice(
+                    creationDTO,
+                    PaypalPaymentMethod.paypal,
+                    PaypalPaymentIntent.sale,
+                    cancelUrl,
+                    successUrl);
+            for (Links links : payment.getLinks()) {
+                if (links.getRel().equals("approval_url")) {
+//                    return "redirect:" + links.getHref();
+                    return new ResponseObject<>(
+                            HttpStatus.OK,
+                            "Get url paypal sucess",
+                            new PaymentUrlResponseDTO(links.getHref(), new Date(), null));
+                }
+            }
+        } catch (PayPalRESTException e) {
+            this.LOGGER.error(e.getMessage());
+        }
+        return new ResponseObject<>(
+                HttpStatus.BAD_REQUEST,
+                "Get url paypal fail",
+                null);
     }
 }

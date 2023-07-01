@@ -16,7 +16,7 @@ import gt.electronic.ecommerce.repositories.ShopPriceRepository;
 import gt.electronic.ecommerce.repositories.ShopRepository;
 import gt.electronic.ecommerce.services.VNPayService;
 import gt.electronic.ecommerce.utils.Utils;
-import gt.electronic.ecommerce.utils.VNPayConfig;
+import gt.electronic.ecommerce.config.VNPayConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +42,7 @@ import static gt.electronic.ecommerce.utils.Utils.PRE_API_PAYMENT;
 @Transactional
 public class VNPayServiceImpl implements VNPayService {
     private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
-    public static final String branchName = "VNPAY";
+    public static final String branchName = EPaymentType.VNPAY.name();
 
     private OrderRepository orderRepo;
 

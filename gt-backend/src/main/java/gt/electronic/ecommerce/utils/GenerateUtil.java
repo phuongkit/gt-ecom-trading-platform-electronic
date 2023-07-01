@@ -1,7 +1,6 @@
 package gt.electronic.ecommerce.utils;
 
-import lombok.extern.java.Log;
-import org.apache.commons.lang3.RegExUtils;
+import gt.electronic.ecommerce.config.CodeConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

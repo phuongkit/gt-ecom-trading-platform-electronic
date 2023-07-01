@@ -151,6 +151,8 @@ public class Utils {
     public static final String PRE_API_IMAGE = "/api/v1/images";
     public static final String PRE_API_PAYMENT = "/api/v1/payment";
     public static final String PRE_API_PRODUCT = "/api/v1/products";
+    public static final String PRE_PAYPAL_CANCEL_URL = "/paypal/pay/cancel";
+    public static final String PRE_PAYPAL_SUCCESS_URL = "/paypal/pay/success";
     //
     public static final String IMAGE_DEFAULT_PATH = "IMAGE_OTHER/l9faer7pevfo5kgs7zztubvgt9ikxy4u.jpg";
     public static final String REDIRECT_URI_PARAM_COOKIE_NAME = "redirect_uri";

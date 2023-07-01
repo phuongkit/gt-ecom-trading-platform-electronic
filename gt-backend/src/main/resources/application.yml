@@ -101,6 +101,15 @@ app:
     timeRangeSessionMs: 12096000000 # 5 month
     minSentiment: 2 #500
     minNegativePercent: 90 #70
+  payment:
+    paypal:
+      mode: sandbox
+      client:
+        app: AZUnb_W8gT-cVGIyD67y4FIzsVumKqlIDuiOFSHSjZMW-P58UxOdIEaptl8fZLKHuTWTEpjquPQs7PAr
+        secret: EJcAGiQZUZ15Yyk3RNClNsdyEWtj8U4YnM8piVjRk0l5ZQ0pMml6Se9HwgywhRD0gKu3Cuv1Nmx1wZKl
+    vnpay:
+      vnpTmnCode: 3Q1HQN3X
+      vnpHashSecret: JCGRXJXTWMHKECPGCNZOQTOBKCVNZTYH
 
 server:
   port: 8080

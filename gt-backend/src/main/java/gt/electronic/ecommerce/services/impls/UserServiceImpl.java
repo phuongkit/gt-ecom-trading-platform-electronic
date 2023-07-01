@@ -15,7 +15,7 @@ import gt.electronic.ecommerce.mapper.UserMapper;
 import gt.electronic.ecommerce.models.enums.*;
 import gt.electronic.ecommerce.repositories.UserRepository;
 import gt.electronic.ecommerce.services.*;
-import gt.electronic.ecommerce.utils.CodeConfig;
+import gt.electronic.ecommerce.config.CodeConfig;
 import gt.electronic.ecommerce.utils.GenerateUtil;
 import gt.electronic.ecommerce.utils.JwtTokenUtil;
 import gt.electronic.ecommerce.utils.Utils;

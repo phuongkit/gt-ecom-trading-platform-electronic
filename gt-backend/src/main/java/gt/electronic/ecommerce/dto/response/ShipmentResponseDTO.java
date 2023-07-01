@@ -12,7 +12,7 @@ import java.util.Date;
 public class ShipmentResponseDTO {
     private String id;
     private Long userId;
-    private Long orderShopId;
+    private OrderResponseDTO orderShop;
     private AddressResponseDTO fromAddress;
     private AddressResponseDTO toAddress;
     private BigDecimal totalPrice;
