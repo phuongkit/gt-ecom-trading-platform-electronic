@@ -24,6 +24,11 @@
         padding: 12px 24px;
         background-color: #fafafa;
         display: flex;
+        flex-direction: column;
+        gap: 10px;
+        .FbLutl{
+          width: 100%;
+        }
         .KrPQEI {
             padding: 0 0 12px;
             justify-content: space-between;
@@ -148,17 +153,7 @@
       width: 100%;
       background-position-x: -1.875rem;
       background-size: 7.25rem 0.1875rem;
-      background-image: repeating-linear-gradient(
-        45deg,
-        #6fa6d6,
-        #6fa6d6 33px,
-        transparent 0,
-        transparent 41px,
-        #f18d9b 0,
-        #f18d9b 74px,
-        transparent 0,
-        transparent 82px
-      );
+      background-image: repeating-linear-gradient(45deg, #6fa6d6, #a7bd23 33px, transparent 0, #350202 41px, #2add7a 0, #f18d9b 74px, #804d4d 0, #2d1414 82px);
     }
   }
   .mu8SJw {

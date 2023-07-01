@@ -8,5 +8,8 @@ export const shipmentService = {
     },
     getAllOrderShipment() {
         return axiosClient.get(`${branch_api}/get-all?status=SHIPPING`);
+    },
+    postShipment(id) {
+        return axiosClient.post(`${branch_api}/receive-order`,[id]);
     }
 };

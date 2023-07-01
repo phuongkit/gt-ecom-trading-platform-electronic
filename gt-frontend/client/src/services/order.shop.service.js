@@ -19,4 +19,7 @@ export const orderShopService = {
     updateStatus(id, data) {
         return axiosClient.put(`${branch_api}/${id}/status`, data);
     },
+    getLogs(id) {
+        return axiosClient.get(`${branch_api}/${id}`);
+    },
 };

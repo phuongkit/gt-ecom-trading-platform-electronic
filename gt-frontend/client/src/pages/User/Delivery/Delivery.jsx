@@ -1,10 +1,35 @@
+import { useEffect, useRef } from 'react';
 import './Delivery.scss'
+import { orderShopService } from '../../../services';
+import Button from '@mui/material/Button';
+import { useState } from 'react';
 const Delivery = () => {
+    const[data,setData] = useState([])
+    useEffect(()=>{
+      hanleCLickGet()
+    },[])
+    const hanleCLickGet= async()=>{
+      let res = await orderShopService.getLogs(valRef.current.value)
+    console.log(res.data.logs,"Data retrieved")
 
+      setData(res.data)
+    }
+
+    const valRef = useRef()
     return (
         <div className="xMDeox">
-          <div style={{ display: "contents" }}>
-            <div className="--tO6n" style={{}}>
+       <div className = "">   
+          <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
+          <div class="relative">
+              <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                  <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+              </div>
+              <input ref={valRef} type="search" id="default-search" class="h-full block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Mã vận đơn..."></input>
+              <button onClick={hanleCLickGet} class="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
+          </div>
+      </div> 
+      {data.length !== 0 ? (  <div className="">
+            <div className="--tO6n pt-4" style={{}}>
               <div className="AJo2nP">
                 <div className="cBtCqV">
                   <div className="yO9lYJ">
@@ -22,7 +47,7 @@ const Delivery = () => {
                     <span>TRỞ LẠI</span>
                   </div>
                   <div className="w8MDQX">
-                    <span>MÃ ĐƠN HÀNG. 230603CCA2SVVE</span>
+                    <span>MÃ ĐƠN HÀNG. {data?.id}</span>
                     <span className="EkDKzu">|</span>
                     <span className="capx2D">Đơn hàng đã hoàn thành</span>
                   </div>
@@ -35,227 +60,41 @@ const Delivery = () => {
                   <div className="stepper">
                     <div className="stepper__step stepper__step--finish">
                       <div className="stepper__step-icon stepper__step-icon--finish">
-                        <svg
-                          enableBackground="new 0 0 32 32"
-                          viewBox="0 0 32 32"
-                          x={0}
-                          y={0}
-                          className="shopee-svg-icon icon-order-order"
-                        >
-                          <g>
-                            <path
-                              d="m5 3.4v23.7c0 .4.3.7.7.7.2 0 .3 0 .3-.2.5-.4 1-.5 1.7-.5.9 0 1.7.4 2.2 1.1.2.2.3.4.5.4s.3-.2.5-.4c.5-.7 1.4-1.1 2.2-1.1s1.7.4 2.2 1.1c.2.2.3.4.5.4s.3-.2.5-.4c.5-.7 1.4-1.1 2.2-1.1.9 0 1.7.4 2.2 1.1.2.2.3.4.5.4s.3-.2.5-.4c.5-.7 1.4-1.1 2.2-1.1.7 0 1.2.2 1.7.5.2.2.3.2.3.2.3 0 .7-.4.7-.7v-23.7z"
-                              fill="none"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeMiterlimit={10}
-                              strokeWidth={3}
-                            />
-                            <g>
-                              <line
-                                fill="none"
-                                strokeLinecap="round"
-                                strokeMiterlimit={10}
-                                strokeWidth={3}
-                                x1={10}
-                                x2={22}
-                                y1="11.5"
-                                y2="11.5"
-                              />
-                              <line
-                                fill="none"
-                                strokeLinecap="round"
-                                strokeMiterlimit={10}
-                                strokeWidth={3}
-                                x1={10}
-                                x2={22}
-                                y1="18.5"
-                                y2="18.5"
-                              />
-                            </g>
-                          </g>
-                        </svg>
+                      <img src='https://cdn-icons-png.flaticon.com/512/5220/5220625.png'></img>
                       </div>
                       <div className="stepper__step-text">Đơn hàng đã đặt</div>
                       <div className="stepper__step-date">00:19 03-06-2023</div>
                     </div>
                     <div className="stepper__step stepper__step--finish">
                       <div className="stepper__step-icon stepper__step-icon--finish">
-                        <svg
-                          enableBackground="new 0 0 32 32"
-                          viewBox="0 0 32 32"
-                          x={0}
-                          y={0}
-                          className="shopee-svg-icon icon-order-paid"
-                        >
-                          <g>
-                            <path
-                              clipRule="evenodd"
-                              d="m24 22h-21c-.5 0-1-.5-1-1v-15c0-.6.5-1 1-1h21c .5 0 1 .4 1 1v15c0 .5-.5 1-1 1z"
-                              fill="none"
-                              fillRule="evenodd"
-                              strokeMiterlimit={10}
-                              strokeWidth={3}
-                            />
-                            <path
-                              clipRule="evenodd"
-                              d="m24.8 10h4.2c.5 0 1 .4 1 1v15c0 .5-.5 1-1 1h-21c-.6 0-1-.4-1-1v-4"
-                              fill="none"
-                              fillRule="evenodd"
-                              strokeMiterlimit={10}
-                              strokeWidth={3}
-                            />
-                            <path
-                              d="m12.9 17.2c-.7-.1-1.5-.4-2.1-.9l.8-1.2c.6.5 1.1.7 1.7.7.7 0 1-.3 1-.8 0-1.2-3.2-1.2-3.2-3.4 0-1.2.7-2 1.8-2.2v-1.3h1.2v1.2c.8.1 1.3.5 1.8 1l-.9 1c-.4-.4-.8-.6-1.3-.6-.6 0-.9.2-.9.8 0 1.1 3.2 1 3.2 3.3 0 1.2-.6 2-1.9 2.3v1.2h-1.2z"
-                              stroke="none"
-                            />
-                          </g>
-                        </svg>
+                      <img src = 'https://cdn-icons-png.flaticon.com/512/2867/2867644.png'></img>
                       </div>
                       <div className="stepper__step-text">
-                        đã xác nhận thông tin thanh toán
+                        Đã xác nhận thông tin thanh toán
                       </div>
                       <div className="stepper__step-date">00:49 03-06-2023</div>
                     </div>
                     <div className="stepper__step stepper__step--finish">
-                      <div className="stepper__step-icon stepper__step-icon--finish">
-                        <svg
-                          enableBackground="new 0 0 32 32"
-                          viewBox="0 0 32 32"
-                          x={0}
-                          y={0}
-                          className="shopee-svg-icon icon-order-shipping"
-                        >
-                          <g>
-                            <line
-                              fill="none"
-                              strokeLinejoin="round"
-                              strokeMiterlimit={10}
-                              strokeWidth={3}
-                              x1="18.1"
-                              x2="9.6"
-                              y1="20.5"
-                              y2="20.5"
-                            />
-                            <circle
-                              cx="7.5"
-                              cy="23.5"
-                              fill="none"
-                              r={4}
-                              strokeMiterlimit={10}
-                              strokeWidth={3}
-                            />
-                            <circle
-                              cx="20.5"
-                              cy="23.5"
-                              fill="none"
-                              r={4}
-                              strokeMiterlimit={10}
-                              strokeWidth={3}
-                            />
-                            <line
-                              fill="none"
-                              strokeMiterlimit={10}
-                              strokeWidth={3}
-                              x1="19.7"
-                              x2={30}
-                              y1="15.5"
-                              y2="15.5"
-                            />
-                            <polyline
-                              fill="none"
-                              points="4.6 20.5 1.5 20.5 1.5 4.5 20.5 4.5 20.5 18.4"
-                              strokeLinejoin="round"
-                              strokeMiterlimit={10}
-                              strokeWidth={3}
-                            />
-                            <polyline
-                              fill="none"
-                              points="20.5 9 29.5 9 30.5 22 24.7 22"
-                              strokeLinejoin="round"
-                              strokeMiterlimit={10}
-                              strokeWidth={3}
-                            />
-                          </g>
-                        </svg>
+                    <div className="stepper__step-icon stepper__step-icon--finish">
+                      <div>
+                        <img width="244" height="244" src="https://cdn-icons-png.flaticon.com/512/8383/8383003.png" alt="delivery"/>
+                      </div>
                       </div>
                       <div className="stepper__step-text">Đã giao cho ĐVVC</div>
                       <div className="stepper__step-date">16:23 03-06-2023</div>
                     </div>
                     <div className="stepper__step stepper__step--finish">
                       <div className="stepper__step-icon stepper__step-icon--finish">
-                        <svg
-                          enableBackground="new 0 0 32 32"
-                          viewBox="0 0 32 32"
-                          x={0}
-                          y={0}
-                          className="shopee-svg-icon icon-order-received"
-                        >
-                          <g>
-                            <polygon
-                              fill="none"
-                              points="2 28 2 19.2 10.6 19.2 11.7 21.5 19.8 21.5 20.9 19.2 30 19.1 30 28"
-                              strokeLinejoin="round"
-                              strokeMiterlimit={10}
-                              strokeWidth={3}
-                            />
-                            <polyline
-                              fill="none"
-                              points="21 8 27 8 30 19.1"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeMiterlimit={10}
-                              strokeWidth={3}
-                            />
-                            <polyline
-                              fill="none"
-                              points="2 19.2 5 8 11 8"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeMiterlimit={10}
-                              strokeWidth={3}
-                            />
-                            <line
-                              fill="none"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeMiterlimit={10}
-                              strokeWidth={3}
-                              x1={16}
-                              x2={16}
-                              y1={4}
-                              y2={14}
-                            />
-                            <path
-                              d="m20.1 13.4-3.6 3.6c-.3.3-.7.3-.9 0l-3.6-3.6c-.4-.4-.1-1.1.5-1.1h7.2c.5 0 .8.7.4 1.1z"
-                              stroke="none"
-                            />
-                          </g>
-                        </svg>
+                       <img width="244" height="244" src='https://cdn-icons-png.flaticon.com/512/6476/6476707.png'></img>
                       </div>
                       <div className="stepper__step-text">Đã nhận được hàng</div>
                       <div className="stepper__step-date">07:03 09-06-2023</div>
                     </div>
                     <div className="stepper__step stepper__step--pending">
                       <div className="stepper__step-icon stepper__step-icon--pending">
-                        <svg
-                          enableBackground="new 0 0 32 32"
-                          viewBox="0 0 32 32"
-                          x={0}
-                          y={0}
-                          className="shopee-svg-icon icon-order-rating"
-                        >
-                          <polygon
-                            fill="none"
-                            points="16 3.2 20.2 11.9 29.5 13 22.2 19 24.3 28.8 16 23.8 7.7 28.8 9.8 19 2.5 13 11.8 11.9"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeMiterlimit={10}
-                            strokeWidth={3}
-                          />
-                        </svg>
+                        <img src='https://cdn-icons-png.flaticon.com/512/3898/3898127.png'></img>
                       </div>
-                      <div className="stepper__step-text">đánh giá</div>
+                      <div className="stepper__step-text">Đánh giá</div>
                       <div className="stepper__step-date" />
                     </div>
                     <div className="stepper__line">
@@ -293,120 +132,51 @@ const Delivery = () => {
                       <div className="P9zS+I">
                         <div className="g5X7+k">
                           <div>
-                            <div>Shopee Xpress</div>
-                            <div>SPXVN038926951886</div>
+                            <div>PhucXiCuc Xpress</div>
+                            <div>{data?.id}</div>
                           </div>
                         </div>
                       </div>
                     </div>
                     <div className="wMj1t2">
                       <div className="iWu+Gv">
-                        <div className="KZmoHt">Nguyên kim</div>
+                        <div className="KZmoHt">Họ Tên: {data?.fullName}</div>
                         <div className="AnJAa1">
-                          <span>(+84) 399344780</span>
+                          <span>SDT: {data?.phone}</span>
                           <br />
-                          Tòa Nhà Fpt Software 1, tòa nhà, Đường D 1, Phường Tân Phú,
-                          Thành Phố Thủ Đức, TP. Hồ Chí Minh
+                          Địa chỉ: {`${data?.address?.homeAdd}, ${data?.address?.ward}, ${data?.address?.district}, ${data?.address?.city}`}
                         </div>
                       </div>
                       <div className="ifE+r-">
                         <div>
-                          <div className="rqUx-N cuJgPF">
-                            <div className="_4yfsbS" />
-                            <div className="JNurwA">
-                              <div className="flex w-[24px] relative">
-                                <img
-                                  className="AXDO-g h-[24px]"
-                                  title="image"
-                                  src="https://cf.shopee.vn/file/delivered_parcel_active_3x"
-                                />
-                                <div className="B3MLEe">15:22 05-06-2023</div>
+                          {data?.logs?.map(item=>(
+              <div className="rqUx-N cuJgPF">
+              <div className="_4yfsbS" />
+              <div className="JNurwA">
+                <div className="flex w-[24px] relative">
+                  <img
+                    className="AXDO-g h-[24px]"
+                    title="image"
+                    src="https://cf.shopee.vn/file/delivered_parcel_active_3x"
+                  />
+                  <div className="B3MLEe">{item?.createdAt}</div>
 
-                              </div>
-                              <div className="u4VSsO ml-8 p-4">
-                                <p className="_0P1byN">Đã giao</p>
-                                <p>
-                                  Đơn hàng đã được giao thành công
-                                  <span>. Người nhận hàng: Nguyên kim--</span>.{" "}
-                                  <span className="_5jk8NB" tabIndex={0}>
-                                    Xem hình ảnh giao hàng
-                                  </span>
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="rqUx-N cuJgPF">
-                            <div className="_4yfsbS" />
-                            <div className="JNurwA">
-                              <div className="flex w-[24px] relative">
-                                <img
-                                  className="AXDO-g h-[24px]"
-                                  title="image"
-                                  src="https://cf.shopee.vn/file/delivered_parcel_active_3x"
-                                />
-                                <div className="B3MLEe">15:22 05-06-2023</div>
-
-                              </div>
-                              <div className="u4VSsO ml-8 p-4">
-                                <p className="_0P1byN">Đã giao</p>
-                                <p>
-                                  Đơn hàng đã được giao thành công
-                                  <span>. Người nhận hàng: Nguyên kim--</span>.{" "}
-                                  <span className="_5jk8NB" tabIndex={0}>
-                                    Xem hình ảnh giao hàng
-                                  </span>
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="rqUx-N cuJgPF">
-                            <div className="_4yfsbS" />
-                            <div className="JNurwA">
-                              <div className="flex w-[24px] relative">
-                                <img
-                                  className="AXDO-g h-[24px]"
-                                  title="image"
-                                  src="https://cf.shopee.vn/file/delivered_parcel_active_3x"
-                                />
-                                <div className="B3MLEe">15:22 05-06-2023</div>
-
-                              </div>
-                              <div className="u4VSsO ml-8 p-4">
-                                <p className="_0P1byN">Đã giao</p>
-                                <p>
-                                  Đơn hàng đã được giao thành công
-                                  <span>. Người nhận hàng: Nguyên kim--</span>.{" "}
-                                  <span className="_5jk8NB" tabIndex={0}>
-                                    Xem hình ảnh giao hàng
-                                  </span>
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="rqUx-N cuJgPF">
-                            <div className="_4yfsbS" />
-                            <div className="JNurwA">
-                              <div className="flex w-[24px] relative">
-                                <img
-                                  className="AXDO-g h-[24px]"
-                                  title="image"
-                                  src="https://cf.shopee.vn/file/delivered_parcel_active_3x"
-                                />
-                                <div className="B3MLEe">15:22 05-06-2023</div>
-
-                              </div>
-                              <div className="u4VSsO ml-8 p-4">
-                                <p className="_0P1byN">Đã giao</p>
-                                <p>
-                                  Đơn hàng đã được giao thành công
-                                  <span>. Người nhận hàng: Nguyên kim--</span>.{" "}
-                                  <span className="_5jk8NB" tabIndex={0}>
-                                    Xem hình ảnh giao hàng
-                                  </span>
-                                </p>
-                              </div>
-                            </div>
-                          </div>
+                </div>
+                <div className="u4VSsO ml-8 p-4">
+                  <p className="_0P1byN">Đã giao</p>
+                  <p>
+                  {item?.log}
+                  {/* <span>. Người nhận hàng: Nguyên kim--</span>.{" "}
+                  <span className="_5jk8NB" tabIndex={0}>
+                    Xem hình ảnh giao hàng
+                  </span> */}
+                </p>
+    </div>
+  </div>
+</div>
+                          ))}
+                        
+                         
                         </div>
                         <span className="yG4MyU">Rút gọn</span>
                       </div>
@@ -416,78 +186,75 @@ const Delivery = () => {
                 <div>
                   <div>
                     <div className="mbaGbp">
-                     
-                      <div className="FbLutl">
-                        <div>
-                          <a
-                            className="x7nENX"
-                            href="/1KG-BỘT-NGŨ-CỐC-17-LOẠI-HẠT-MẸ-TÔM-(DINH-DƯỠNG-LỢI-SỮA-TĂNG-CÂN-GIẢM-CÂN-NỘI-TIẾT-TỐ-GRANOLA-BỘT-ĂN-DẶM)-i.74151382.1346266415"
-                          >
-                            <div />
-                            <div className="aybVBK">
-                              <div className="_7uZf6Q flex gap-6">
-                                <div className='h-[45px] w-[45px] '>
-                                  <img className="h-full w-full rounded-full" src='https://vuongquocanh.com/wp-content/uploads/2018/05/london-eye-800x534.jpg'></img>
-                                </div>
-                                <div>
-                                  <div className="iJlxsT">
-                                    <span className="x5GTyN">
-                                      1KG BỘT NGŨ CỐC 17 LOẠI HẠT MẸ TÔM (DINH DƯỠNG,
-                                      LỢI SỮA, TĂNG CÂN, GIẢM CÂN,NỘI TIẾT
-                                      TỐ,GRANOLA,BỘT ĂN DẶM)
-                                    </span>
-                                  <div className="_3F1-5M">x1</div>
-
+                    {data?.orderItems?.map(item=>(
+                            <div className="FbLutl">
+                            <div>
+                              <a
+                                className="x7nENX"
+                                href="/1KG-BỘT-NGŨ-CỐC-17-LOẠI-HẠT-MẸ-TÔM-(DINH-DƯỠNG-LỢI-SỮA-TĂNG-CÂN-GIẢM-CÂN-NỘI-TIẾT-TỐ-GRANOLA-BỘT-ĂN-DẶM)-i.74151382.1346266415"
+                              >
+                                <div />
+                                <div className="aybVBK">
+                                  <div className="_7uZf6Q flex gap-6">
+                                    <div className='h-[45px] w-[45px] '>
+                                      <img className="h-full w-full rounded-full" src={item?.product?.img}></img>
+                                    </div>
+                                    <div>
+                                     
+                                    </div>
+                                    <div>
+                                    <div className="iJlxsT">
+                                          <span className="x5GTyN">
+                                            {item?.product?.title}
+                                          </span>
+                                          <div className="_3F1-5M">x{item?.quantity}</div>
+                                        </div>
+                                    </div>
                                   </div>
                                 </div>
-                                <div>
-                            
+                                <div className="_9UJGhr">
+                                  <div className="rjqzk1">
+                                    <span className="j2En5+">₫{item?.totalPrice}</span>
+                                  </div>
+                                </div>
+                              </a>
+                              <div className="_3VbM7s tjM0Qz">
+                                <div className="SbXhyL">
+                                  <div className="I2Mvul">
+                                    Chính sách tiêu dùng sản phẩm
+                                  </div>
+                                  <div className="+EBiPA">
+                                    <div className="WUExvN">
+                                      <span>Xem chi tiết</span>
+                                      <svg
+                                        width={12}
+                                        height={12}
+                                        fill="none"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                      >
+                                        <path
+                                          fillRule="evenodd"
+                                          clipRule="evenodd"
+                                          d="M9.293 6L4.146.854l.708-.708L10 5.293a1 1 0 010 1.414l-5.146 5.147-.708-.707L9.293 6z"
+                                          fill="#000"
+                                          fillOpacity=".54"
+                                        />
+                                      </svg>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className="_7w0r1r">
+                                  <div className="IQfYqJ">
+                                    <span>Cò hiệu lực</span>
+                                    <span> (Hết hạn 09-06-2024)</span>
+                                  </div>
                                 </div>
                               </div>
                             </div>
-                            <div className="_9UJGhr">
-                              <div className="rjqzk1">
-                                <span className="j2En5+">₫360.000</span>
-                                <span className="-x3Dqh OkfGBc">₫199.000</span>
-                              </div>
-                            </div>
-                          </a>
-                          <div className="_3VbM7s tjM0Qz">
-                            <div className="SbXhyL">
-                              <div className="I2Mvul">
-                                Bảo hiểm Quyền lợi tiêu dùng
-                              </div>
-                              <div className="+EBiPA">
-                                <div className="WUExvN">
-                                  <span>Xem chi tiết</span>
-                                  <svg
-                                    width={12}
-                                    height={12}
-                                    fill="none"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                  >
-                                    <path
-                                      fillRule="evenodd"
-                                      clipRule="evenodd"
-                                      d="M9.293 6L4.146.854l.708-.708L10 5.293a1 1 0 010 1.414l-5.146 5.147-.708-.707L9.293 6z"
-                                      fill="#000"
-                                      fillOpacity=".54"
-                                    />
-                                  </svg>
-                                </div>
-                              </div>
-                            </div>
-                            <div className="_7w0r1r">
-                              <div className="IQfYqJ">
-                                <span>Cò hiệu lực</span>
-                                <span> (Hết hạn 09-06-2024)</span>
-                              </div>
-                              <div className="_1PK0sX">₫899 x1</div>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="Cde7Oe" />
-                      </div>
+                            <div className="Cde7Oe" />
+                          </div>      
+                    ))}
+                     
                     </div>
                     <div className="RZJjTX">
                       <div className="TokOv1">
@@ -495,15 +262,7 @@ const Delivery = () => {
                           <span>Tổng tiền hàng</span>
                         </div>
                         <div className="CxyZBG">
-                          <div>₫199.000</div>
-                        </div>
-                      </div>
-                      <div className="TokOv1">
-                        <div className="_8kMYJ3">
-                          <span>Phí bảo hiểm</span>
-                        </div>
-                        <div className="CxyZBG">
-                          <div>₫899</div>
+                          <div>₫{data?.totalPrice}</div>
                         </div>
                       </div>
                       <div className="TokOv1">
@@ -511,7 +270,7 @@ const Delivery = () => {
                           <span>Phí vận chuyển</span>
                         </div>
                         <div className="CxyZBG">
-                          <div>₫43.900</div>
+                          <div>₫{data?.transportFee}</div>
                         </div>
                       </div>
                       <div className="TokOv1">
@@ -549,7 +308,7 @@ const Delivery = () => {
                           </div>
                         </div>
                         <div className="CxyZBG">
-                          <div>-₫14.900</div>
+                          <div>-₫0</div>
                         </div>
                       </div>
                       <div className="TokOv1 a59vwO">
@@ -557,7 +316,7 @@ const Delivery = () => {
                           <span>Thành tiền</span>
                         </div>
                         <div className="CxyZBG">
-                          <div className="_8ZGgbl">₫228.899</div>
+                          <div className="_8ZGgbl">₫{data?.totalPrice}</div>
                         </div>
                       </div>
                     </div>
@@ -604,7 +363,8 @@ const Delivery = () => {
                 </div>
               </div>
             </div>
-          </div>
+          </div>):(<div className='flex justify-center mt-20 bg-none p-6'><img height='270' width='270' src='https://cdn-icons-png.flaticon.com/512/945/945414.png'></img></div>)}
+        
         </div>
         );
 };
