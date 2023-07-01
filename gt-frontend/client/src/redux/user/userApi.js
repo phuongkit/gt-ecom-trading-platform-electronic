@@ -4,6 +4,7 @@ import { userService } from '../../services/user.service';
 import { DEFAULT_STORE, isObjEmpty } from '../../utils';
 import { login, logout } from './userSlice';
 import firebase, { auth, db, storage } from '../../firebase';
+import swal from 'sweetalert';
 
 export const PostLogin = async (dispatch, data, Navigate) => {
     try {
@@ -41,6 +42,7 @@ export const PostLogin = async (dispatch, data, Navigate) => {
         dispatch(login(res.data));
     } catch (error) {
         console.error(error);
+        swal({ text: 'Tài khoản hoặc mật khẩu sai! Vui lòng nhập lại!', icon: 'warning' });
     }
 };
 export const PostRegister = async (dispatch, data, Navigate) => {
