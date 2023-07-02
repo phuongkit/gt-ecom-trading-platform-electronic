@@ -70,7 +70,7 @@ public class ScheduleTaskServiceImpl implements ScheduleTaskService {
     }
 
     @Override
-    @Scheduled(cron = "0 0 * * ?")//0:00:00 per day
+    @Scheduled(cron = "0 0 0 * * ?")//0:00:00 per day
 //    @Scheduled(fixedRate = 604800000, initialDelay = 1000000)
     public void checkShopPricePackage() {
         this.LOGGER.warn(String.format(Utils.LOG_CHECK_SHOP_PRICE_PACKAGE, sdf.format(new Date())));
@@ -79,7 +79,7 @@ public class ScheduleTaskServiceImpl implements ScheduleTaskService {
     }
 
     @Override
-    @Scheduled(cron = "0 12 * * ?")//12:00:00 per day
+    @Scheduled(cron = "0 0 12 * * ?")//12:00:00 per day
 //    @Scheduled(fixedRate = 604800000, initialDelay = 1000)
     public void sendMailInMessage() {
         this.LOGGER.warn(String.format(Utils.LOG_SEND_EMAIL_FOR_MESSAGE, sdf.format(new Date())));
