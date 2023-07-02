@@ -114,6 +114,8 @@ public class Utils {
     public static final String LOG_GET_STATISTIC_BY_USER = "Statistic %s for %s with loginKey = %s";
     public static final String LOG_GET_ALL_OBJECT_BY_USER = "Fetching all %s for %s with loginKey = %s";
     public static final String LOG_UPDATE_PRODUCT_BLACK_LIST_AT = "Update product black list for all server at %s";
+    public static final String LOG_CHECK_SHOP_PRICE_PACKAGE = "Check shop price package for all server at %s";
+    public static final String LOG_SEND_EMAIL_FOR_MESSAGE = "Send email from messages for all server at %s";
     public static final String LOG_RECEIVE_ORDER_SHIPMENTS_BY_SHIPPER =
             "Receive list order shipments %s by shipper with loginKey = %s";
 

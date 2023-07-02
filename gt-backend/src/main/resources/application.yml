@@ -28,6 +28,7 @@ spring:
     port: 587
     username: dangquan.demo@gmail.com
     password: msxtgigpalqdwvjy
+    fromMail: norely@phucxicuc.com
     properties:
       mail:
         smtp:
@@ -101,6 +102,7 @@ app:
     timeRangeSessionMs: 12096000000 # 5 month
     minSentiment: 2 #500
     minNegativePercent: 90 #70
+    rangeDayCheckShopPrice: 3
   payment:
     paypal:
       mode: sandbox

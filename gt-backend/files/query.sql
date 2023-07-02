@@ -87,7 +87,6 @@ AS
 -- SELECT * FROM  lastCheckProductBlackList;
 
 DROP PROCEDURE IF EXISTS updateBlackListProduct;
-drop temporary table if exists temp;
 DELIMITER //
 CREATE PROCEDURE updateBlackListProduct(IN inShopId BIGINT, IN inStartDate DATE, IN inMinAll INT,IN inMinNeg INT, IN startDateNewSession DATE)
 BEGIN 
@@ -160,7 +159,7 @@ BEGIN
     drop temporary table if exists oneTemp;
     SELECT * FROM tbl_product_black_list;
     INSERT INTO tbl_message(shop_id, to_name, to_email, is_baned, scan_at, title, body, products)
-    (SELECT shop_id, s.name to_name, s.email to_nmail, is_baned, tbl.scan_at,
+    (SELECT shop_id, s.name to_name, s.email, is_baned, tbl.scan_at,
 		IF(is_baned = '0', 'Notice about the list of potentially banned products', -- 'Thông báo về danh sách sản phẩm có nguy cơ bị ban',
 		'Notice of prohibited products list' -- 'Thông báo về danh sách sản phẩm của shop bạn đã bị ban'
         ) title,
@@ -188,3 +187,27 @@ SET @inShopId = NULL,
     @inMinNeg = 90,
     @inStartDateNewSession = DATE_SUB(CURRENT_DATE(), INTERVAL 28 DAY);
 CALL updateBlackListProduct(@inShopId, @inStartDate, @inMinAll, @inMinNeg, @inStartDateNewSession);
+
+DROP PROCEDURE IF EXISTS updateShopPrice;
+DELIMITER //
+CREATE PROCEDURE updateShopPrice(IN rangeDate INT)
+BEGIN 
+	SET SQL_SAFE_UPDATES = 0;
+	UPDATE tbl_shop SET end_price_at = NULL WHERE CONVERT(end_price_at, DATE) < CONVERT(NOW(), DATE);
+	INSERT INTO tbl_message(shop_id, to_name, to_email, is_baned, created_at, scan_at, type, title, body)
+    (SELECT s.id, s.name, s.email, false, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), 'MESSAGE_SHOP_PRICE', 'Notice about the expiration of the shop subscription package', CONCAT('<html>
+	<body>
+	<p>Dear ',s.name,' shop,</p>
+	<p>We are sending you this letter to let you know that you have ', rangeDate, ' days left on your \'', sp.name,'\' subscription which will expire at ', CONVERT(s.end_price_at, DATE), '.
+	<br>If you receive this message, please renew or sign up for a new plan before the expiration date. Otherwise, upon expiration, the function of selling new products will be temporarily closed.</p>
+	<p>Sincerely,<br>-PXC Admin</br></p>
+	</body>
+	</html>')
+	FROM tbl_shop s INNER JOIN tbl_shop_price sp ON s.shop_price_id = sp.id
+	WHERE CONVERT(s.end_price_at, DATE) = DATE_SUB(CURRENT_DATE(), INTERVAL rangeDate DAY));
+    SELECT * FROM tbl_shop WHERE CONVERT(end_price_at, DATE) = DATE_SUB(CURRENT_DATE(), INTERVAL rangeDate DAY);
+END; //
+DELIMITER ;
+
+-- SET @rangeDate = -29;
+-- CALL updateShopPrice(@rangeDate);
