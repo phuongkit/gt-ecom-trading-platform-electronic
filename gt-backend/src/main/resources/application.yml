@@ -26,8 +26,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: your email address from which you want to send mail to logged in person.
-    password: your email password
+    username: dangquan.demo@gmail.com
+    password: msxtgigpalqdwvjy
     properties:
       mail:
         smtp:

@@ -11,10 +11,13 @@ import net.minidev.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -24,10 +27,12 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
+import java.util.Properties;
 
 /**
  * @author minh phuong
@@ -38,32 +43,33 @@ import java.util.Map;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true, jsr250Enabled = true, prePostEnabled = true)
 public class SecurityConfiguration {
-  private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
-  @Autowired
-  private JwtTokenFilter jwtTokenFilter;
+    private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
-  @Autowired
-  private CustomOAuth2UserService customOAuth2UserService;
+    @Autowired
+    private JwtTokenFilter jwtTokenFilter;
 
-  @Autowired
-  private OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
+    @Autowired
+    private CustomOAuth2UserService customOAuth2UserService;
 
-  @Autowired
-  private OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
+    @Autowired
+    private OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
 
-  @Bean
-  public PasswordEncoder passwordEncoder() {
-    return new BCryptPasswordEncoder();
-  }
+    @Autowired
+    private OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
 
-  @Bean
-  public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig)
-      throws Exception {
-    return authConfig.getAuthenticationManager();
-  }
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
-  @Bean
-  public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig)
+            throws Exception {
+        return authConfig.getAuthenticationManager();
+    }
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 ////    http.cors().and().csrf().disable()
 //    // Disable CSRF (cross site request forgery)
 //    http.csrf().disable();
@@ -141,68 +147,68 @@ public class SecurityConfiguration {
 //    http.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
 //
 //    return http.build();
-    http.csrf().disable();
-    http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        http.csrf().disable();
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-    http.authorizeRequests()
-        .antMatchers("/auth/login", "/oauth2/**", "/docs/**", "/swagger-ui/index.html#/")
-        .permitAll()
-        .anyRequest()
-        .permitAll()
-        .and()
-        .oauth2Login()
-        .authorizationEndpoint()
-        .baseUri("/oauth2/authorize")
-        .authorizationRequestRepository(cookieAuthorizationRequestRepository())
-        .and()
-        .redirectionEndpoint()
-        .baseUri("/oauth2/callback/*")
-        .and()
-        .userInfoEndpoint()
-        .userService(customOAuth2UserService)
-        .and()
-        .successHandler(oAuth2AuthenticationSuccessHandler)
-        .failureHandler(oAuth2AuthenticationFailureHandler);
+        http.authorizeRequests()
+                .antMatchers("/auth/login", "/oauth2/**", "/docs/**", "/swagger-ui/index.html#/")
+                .permitAll()
+                .anyRequest()
+                .permitAll()
+                .and()
+                .oauth2Login()
+                .authorizationEndpoint()
+                .baseUri("/oauth2/authorize")
+                .authorizationRequestRepository(cookieAuthorizationRequestRepository())
+                .and()
+                .redirectionEndpoint()
+                .baseUri("/oauth2/callback/*")
+                .and()
+                .userInfoEndpoint()
+                .userService(customOAuth2UserService)
+                .and()
+                .successHandler(oAuth2AuthenticationSuccessHandler)
+                .failureHandler(oAuth2AuthenticationFailureHandler);
 
-    // Exception handling configuration
-    http.exceptionHandling()
-        .accessDeniedHandler(
-            (request, response, ex) -> {
-              response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-              response.setStatus(HttpServletResponse.SC_OK);
+        // Exception handling configuration
+        http.exceptionHandling()
+                .accessDeniedHandler(
+                        (request, response, ex) -> {
+                            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+                            response.setStatus(HttpServletResponse.SC_OK);
 
-              Map<String, Object> map;
-              ResponseObject<?> responseObject =
-                  new ResponseObject<>(HttpStatus.UNAUTHORIZED, ex.getMessage());
-              map = MapHelper.convertObject(responseObject);
+                            Map<String, Object> map;
+                            ResponseObject<?> responseObject =
+                                    new ResponseObject<>(HttpStatus.UNAUTHORIZED, ex.getMessage());
+                            map = MapHelper.convertObject(responseObject);
 
-              response.getWriter().write(new JSONObject(map).toString());
-            });
+                            response.getWriter().write(new JSONObject(map).toString());
+                        });
 
-    http.exceptionHandling()
-        .authenticationEntryPoint(
-            (request, response, ex) -> {
-              this.LOGGER.info(ex.toString());
-              response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-              response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-              Map<String, Object> map;
-              ResponseObject<?> responseObject =
-                  new ResponseObject<>(HttpStatus.UNAUTHORIZED, ex.getMessage());
-              map = MapHelper.convertObject(responseObject);
+        http.exceptionHandling()
+                .authenticationEntryPoint(
+                        (request, response, ex) -> {
+                            this.LOGGER.info(ex.toString());
+                            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                            Map<String, Object> map;
+                            ResponseObject<?> responseObject =
+                                    new ResponseObject<>(HttpStatus.UNAUTHORIZED, ex.getMessage());
+                            map = MapHelper.convertObject(responseObject);
 
-              response.getWriter().write(new JSONObject(map).toString());
-            });
+                            response.getWriter().write(new JSONObject(map).toString());
+                        });
 
 
-    http.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
 
-    return http.build();
-  }
+        return http.build();
+    }
 
-  @Bean
-  public HttpCookieOAuth2AuthorizationRequestRepository cookieAuthorizationRequestRepository() {
-    return new HttpCookieOAuth2AuthorizationRequestRepository();
-  }
+    @Bean
+    public HttpCookieOAuth2AuthorizationRequestRepository cookieAuthorizationRequestRepository() {
+        return new HttpCookieOAuth2AuthorizationRequestRepository();
+    }
 
 //  private static List<String> clients = Arrays.asList("google", "facebook");
 //

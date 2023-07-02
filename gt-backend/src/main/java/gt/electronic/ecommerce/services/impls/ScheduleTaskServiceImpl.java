@@ -2,6 +2,7 @@ package gt.electronic.ecommerce.services.impls;
 
 import gt.electronic.ecommerce.config.AppProperties;
 import gt.electronic.ecommerce.repositories.ProcedureRepository;
+import gt.electronic.ecommerce.services.MailService;
 import gt.electronic.ecommerce.services.ScheduleTaskService;
 import gt.electronic.ecommerce.utils.Utils;
 import org.slf4j.Logger;
@@ -30,6 +31,8 @@ public class ScheduleTaskServiceImpl implements ScheduleTaskService {
 
     private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
     private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy:MM:dd HH:mm:ss");
+    @Autowired
+    private MailService mailService;
     ProcedureRepository procedureRepository;
 
     @Autowired
@@ -47,4 +50,9 @@ public class ScheduleTaskServiceImpl implements ScheduleTaskService {
         procedureRepository.updateBlackListProduct(null, startDateCheckProductBlackList, minSentiment,
                                                    minNegativePercent, startDateNewSession);
     }
+
+//    @Scheduled(fixedRate = 604800000) //Utils.timeCheckBlackProductMs//60000
+//    public void demo() {
+//        mailService.sendSimpleMessage("phuongdorg@gmail.com", "Demo", "Demo");
+//    }
 }
