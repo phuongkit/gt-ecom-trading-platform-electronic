@@ -1,12 +1,14 @@
-import ProductRating from './../../../components/Rating/index';
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
 import { productService } from '~/services';
-import { useSelector } from 'react-redux';0
-import { useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
 import PieChartComponent from '../../../components/Chat/PieChartComponent';
+import { DEFAULT_STORE } from '../../../utils';
+import ProductRating from './../../../components/Rating/index';
+import swal from 'sweetalert';
 
 function ProductBody() {
+    const navigate = useNavigate();
     const initProductDetail = useSelector((state) => state.products.productDetail.data);
     const { id, price, discount, tag, title, slug, img, colors, brand, category, parameter, info } = initProductDetail;
 
@@ -33,6 +35,15 @@ function ProductBody() {
     const handleClickPay = () => {
         addToCart({ ...initProductDetail, quantity: 1 });
     };
+    const handleClickChat = (e) => {
+        e.preventDefault();
+        const user = localStorage.getItem(DEFAULT_STORE.TOKEN);
+        if (user) {
+            navigate(`/chat/${initProductDetail.shop?.user?.id}?product=${initProductDetail.id}`)
+        } else {
+            swal({title: 'Hãy đăng nhập trước khi thực hiện tính năng này!', icon: 'warning'})
+        }
+    }
 
     const [products, setProducts] = useState([]);
     useEffect(() => {
@@ -113,6 +124,7 @@ function ProductBody() {
                                     search: `?product=${initProductDetail.id}`,
                                 }}
                                 className="select-none text-[23px] px-6 py-2 font-semibold rounded shadow-lg shadow-purple-600/50"
+                                onClick={handleClickChat}
                             >
                                 Chat
                             </Link>

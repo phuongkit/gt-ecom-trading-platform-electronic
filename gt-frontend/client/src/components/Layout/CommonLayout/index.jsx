@@ -11,6 +11,8 @@ import './header.scss';
 import { DEFAULT_STORE, DEFAULT_VARIABLE } from '../../../utils';
 import { ChatContextProvider } from '../../../context/ChatContext';
 import Notification from '../../Notification/Notification';
+import swal from 'sweetalert';
+
 function CommonLayout({ children }) {
     const dispatch = useDispatch();
     const [getUserAccess, setUserAccess] = useState(undefined);
@@ -24,6 +26,16 @@ function CommonLayout({ children }) {
     const hanleLogout = () => {
         logUserByAccess(dispatch);
     };
+
+    const handleChat = (e) => {
+        e.preventDefault();
+        const user = localStorage.getItem(DEFAULT_STORE.TOKEN);
+        if (user) {
+            navigate(`/chat`)
+        } else {
+            swal({title: 'Hãy đăng nhập trước khi thực hiện tính năng này!', icon: 'warning'})
+        }
+    }
 
     return (
         <>
@@ -105,7 +117,7 @@ function CommonLayout({ children }) {
                     <ChatContextProvider>
                         <Notification/>
                     </ChatContextProvider>
-                    <Link to={'/chat'} className="select-none text-[23px] px-6 py-2 font-semibold rounded shadow-lg shadow-purple-600/50">
+                    <Link to={'/chat'} onClick={handleChat} className="select-none text-[23px] px-6 py-2 font-semibold rounded shadow-lg shadow-purple-600/50">
                         Chat
                     </Link>
                 </nav>
