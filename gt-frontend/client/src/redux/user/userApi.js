@@ -32,12 +32,14 @@ export const PostLogin = async (dispatch, data, Navigate) => {
             }
         }
 
-        if (res.data.role === 2) {
-            Navigate('/');
-        } else if (res.data.role === 0) {
+        if (res.data.role === 0) {
             Navigate('/Admin');
-        } else {
+        } else if (res.data.role === 1) {
             Navigate('/Seller');
+        } else if (res.data.role === 3) {
+            Navigate('/shipment');
+        } else {
+            Navigate('/');
         }
         dispatch(login(res.data));
     } catch (error) {

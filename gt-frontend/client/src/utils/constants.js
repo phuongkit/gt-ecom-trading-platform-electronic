@@ -387,12 +387,16 @@ export const EPayment = {
         name: 'Tiền mặt',
         index: 0,
     },
-    MOMO: {
-        name: 'MoMo',
-        index: 1,
-    },
+    // MOMO: {
+    //     name: 'MoMo',
+    //     index: 1,
+    // },
     VNPAY: {
         name: 'VNPay',
+        index: 1,
+    },
+    PAYPAL: {
+        name: 'PayPal',
         index: 2,
     },
     getNameFromIndex: (index) =>

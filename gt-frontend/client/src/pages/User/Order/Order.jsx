@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { numberWithCommas } from '~/utils';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { orderService } from '~/services';
-import { vnpay } from '../../../services/payment';
+import { paypal, vnpay } from '../../../services/payment';
 import { EGender, EPayment, EShippingMethod, MESSAGE } from './../../../utils';
 import { deleteOrdersByIdApi } from '../../../redux/order/ordersApi';
 import { ghn } from '../../../services/shipping';
@@ -33,6 +33,7 @@ const Order = ({ title }) => {
         const data = { ...order, ...payment, discountIds, orderItems, orderShops };
         try {
             const res = await orderService.postOrder(data);
+            console.log(res)
             if (res?.status === 'CREATED') {
                 if (data.payment === EPayment.VNPAY.index) {
                     const dataVNPay = {
@@ -45,6 +46,17 @@ const Order = ({ title }) => {
                     };
                     const resVNPay = await vnpay.createVNPayPayment(dataVNPay);
                     window.location = resVNPay.data.payUrl || window.location.origin + '/#/';
+                } else if (data.payment === EPayment.PAYPAL.index) {
+                    const dataPayPal = {
+                        orderId: res?.data?.id,
+                        // orderInfo: `${order.fullName} thanh toán đơn hàng ${order.id} với MoMo`,
+                        fullName: order.fullName,
+                        redirectUrl: window.location.origin + '/#/',
+                        totalPrice: order?.totalPriceProduct || 1000 + order?.transportFee || 0,
+                        // extraData: '',
+                    };
+                    const resPayPal = await paypal.createPayPalPayment(dataPayPal);
+                    window.location = resPayPal.data.payUrl || window.location.origin + '/#/';
                 } else {
                     swal({text: 'Tạo đơn hàng thành công', icon: 'success',});
                 }
@@ -54,7 +66,7 @@ const Order = ({ title }) => {
         } catch (err) {
             swal({text: MESSAGE.ERROR_ACTION, icon: 'error',});
         }
-        navigate('/');
+        // navigate('/');
         // localStorage.removeItem('order');
     };
     const getPayment = () => {
@@ -232,19 +244,7 @@ const Order = ({ title }) => {
                                         </div>
                                     </li>
 
-                                    <li className="normal-payment">
-                                        <div className="text-payment">
-                                            <span>
-                                                <input
-                                                    type="radio"
-                                                    id="momo"
-                                                    name="payment"
-                                                    value={EPayment.MOMO.index}
-                                                />
-                                                <label htmlFor="momo">Ví MoMo</label>
-                                            </span>
-                                        </div>
-                                    </li>
+                                    
 
                                     <li className="normal-payment">
                                         <div className="text-payment">
@@ -256,6 +256,19 @@ const Order = ({ title }) => {
                                                     value={EPayment.VNPAY.index}
                                                 />
                                                 <label htmlFor="vnpay">Thanh toán qua VNPay</label>
+                                            </span>
+                                        </div>
+                                    </li>
+                                    <li className="normal-payment">
+                                        <div className="text-payment">
+                                            <span>
+                                                <input
+                                                    type="radio"
+                                                    id="paypal"
+                                                    name="payment"
+                                                    value={EPayment.PAYPAL.index}
+                                                />
+                                                <label htmlFor="paypal">Thanh toán qua Paypal</label>
                                             </span>
                                         </div>
                                     </li>

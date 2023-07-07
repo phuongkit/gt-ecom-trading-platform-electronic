@@ -88,16 +88,24 @@ function CommonLayout({ children }) {
                                             <Link to="history">Đơn mua</Link>
                                         </li>
                                         
-                                        {user.role != 1 ? (
+                                        {user.role === 2 && (
                                             <li className="header__navbar-user-item text-gray-600">
                                                 <Link to="/SignInSeller" className="">
                                                     Đăng ký bán hàng
                                                 </Link>
                                             </li>
-                                        ) : (
+                                        )}
+                                        {user.role === 1 && (
                                             <li className="header__navbar-user-item text-gray-600">
                                                 <Link to="/Seller" className="">
                                                     Quản lý bán hàng
+                                                </Link>
+                                            </li>
+                                        )}
+                                        {user.role === 3 && (
+                                            <li className="header__navbar-user-item text-gray-600">
+                                                <Link to="/shipment" className="">
+                                                    Quản lý đơn vận chuyển
                                                 </Link>
                                             </li>
                                         )}
