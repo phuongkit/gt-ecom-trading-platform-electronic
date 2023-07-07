@@ -11,7 +11,7 @@ const axiosPython = axios.create({
 
 export const sentimentService = {
     getSentimentByString(text) {
-        return axiosPython.get(SENTIMENT_STRING_URL + text)
+        return axiosPython.post(SENTIMENT_STRING_URL + text)
     },
     getSentimentByStringArray(arr) {
         return axiosPython.post(SENTIMENT_STRING_ARRAY_URL, arr)

@@ -37,6 +37,7 @@ const HistoryEmail = () => {
   },[]) 
   
   const hanleProductImages = (jsonString)=>{
+    console.log(jsonString)
     const cleanedJsonString = jsonString.replace(/,}/g, '}');
     const jsonData = JSON.parse(cleanedJsonString);
     return jsonData
@@ -146,7 +147,7 @@ const HistoryEmail = () => {
                                     <hr />
 
                                     <div class="mt-6 flex gap-2">
-                                      {hanleProductImages(emailDetail?.products)?.map(item=>
+                                      {emailDetail?.products && hanleProductImages(emailDetail?.products)?.map(item=>
                                         <div class="p-4 w-[290px]">
                                           <div className='text-xl font-semibold mb-2'>{item.name.length < 40 ? item.name : `${item.name.slice(0, 36)}...`}</div>  
                                           <span className='text-[12px] mb-6'>Notify: {item.count}</span>  
