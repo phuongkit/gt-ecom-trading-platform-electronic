@@ -126,6 +126,6 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
     userDetails = (User) userService.loadUserByUsername(jwtSubject[1]);
 
-    return userDetails;
+    return (UserDetails) userDetails;
   }
 }

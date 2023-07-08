@@ -127,7 +127,7 @@ public class CommentController {
   }
 
   @PostMapping(value = "", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-  @RolesAllowed({ERole.Names.CUSTOMER, ERole.Names.SELLER, ERole.Names.ADMIN})
+  @RolesAllowed({ERole.Names.CUSTOMER, ERole.Names.SHIPPER,ERole.Names.SELLER, ERole.Names.ADMIN})
   public ResponseObject<CommentResponseDTO> createComment(
       @RequestPart(value = "data") @Valid CommentCreationDTO creationDTO,
       @RequestPart(value = "images", required = false) MultipartFile[] imageFiles,

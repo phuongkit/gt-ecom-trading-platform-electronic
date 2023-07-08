@@ -134,14 +134,14 @@ public class FeedbackController {
   }
 
   @PostMapping(value = "", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-  @RolesAllowed({ERole.Names.CUSTOMER, ERole.Names.SELLER, ERole.Names.ADMIN})
+  @RolesAllowed({ERole.Names.CUSTOMER, ERole.Names.SHIPPER, ERole.Names.SELLER, ERole.Names.ADMIN})
   public ResponseObject<FeedbackResponseDTO> createFeedback(
       @RequestPart("data") @Valid FeedbackCreationDTO creationDTO,
       @RequestPart(value = "images", required = false) MultipartFile[] imageFiles,
       HttpServletRequest request) {
     //    this.LOGGER.info(String.valueOf(SecurityContextHolder.getContext().getAuthentication().getAuthorities()));
     String loginKey = jwtTokenUtil.getUserNameFromRequest(request);
-    return new ResponseObject<>(HttpStatus.OK, String.format(Utils.CREATE_OBJECT_SUCCESSFULLY, branchName),
+    return new ResponseObject<>(HttpStatus.CREATED, String.format(Utils.CREATE_OBJECT_SUCCESSFULLY, branchName),
         this.feedbackService.createFeedback(loginKey, creationDTO, imageFiles));
   }
 

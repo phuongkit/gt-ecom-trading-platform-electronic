@@ -68,7 +68,7 @@ public class OrderController {
     }
 
     @GetMapping("/userId/{userId}")
-    @RolesAllowed({ERole.Names.CUSTOMER, ERole.Names.SELLER, ERole.Names.ADMIN})
+    @RolesAllowed({ERole.Names.CUSTOMER, ERole.Names.SHIPPER ,ERole.Names.SELLER, ERole.Names.ADMIN})
     public ResponseObject<List<OrderResponseDTO>> getAllOrdersByUser(
             @RequestParam(name = "page", required = false, defaultValue = DEFAULT_PAGE) Integer page,
             @RequestParam(name = "limit", required = false, defaultValue = DEFAULT_SIZE) Integer size,
@@ -113,7 +113,7 @@ public class OrderController {
     }
 
     @PostMapping
-    @RolesAllowed({ERole.Names.CUSTOMER, ERole.Names.SELLER, ERole.Names.ADMIN})
+    @RolesAllowed({ERole.Names.CUSTOMER, ERole.Names.SHIPPER, ERole.Names.SELLER, ERole.Names.ADMIN})
     public ResponseObject<OrderResponseDTO> createOrder(@RequestBody @Valid OrderCreationDTO orderCreationDTO,
                                                         HttpServletRequest request) {
         //    this.LOGGER.info(String.valueOf(SecurityContextHolder.getContext().getAuthentication().getAuthorities()));
@@ -123,7 +123,7 @@ public class OrderController {
     }
 
     @PutMapping("/{id}")
-    @RolesAllowed({ERole.Names.CUSTOMER, ERole.Names.SELLER, ERole.Names.ADMIN})
+    @RolesAllowed({ERole.Names.CUSTOMER, ERole.Names.SHIPPER, ERole.Names.SELLER, ERole.Names.ADMIN})
     public ResponseObject<OrderResponseDTO> updateOrder(@PathVariable(name = "id") Long id,
                                                         @RequestBody OrderCreationDTO orderCreationDTO,
                                                         HttpServletRequest request) {
@@ -137,7 +137,7 @@ public class OrderController {
 
 
     @PutMapping("/{id}/payment")
-    @RolesAllowed({ERole.Names.CUSTOMER, ERole.Names.SELLER, ERole.Names.ADMIN})
+    @RolesAllowed({ERole.Names.CUSTOMER, ERole.Names.SHIPPER, ERole.Names.SELLER, ERole.Names.ADMIN})
     public ResponseObject<OrderResponseDTO> updatePaymentOrder(@PathVariable(name = "id") Long id,
                                                                @RequestBody OrderUpdatePaymentDTO updatePaymentDTO,
                                                                HttpServletRequest request) {
@@ -158,7 +158,7 @@ public class OrderController {
     }
 
     @DeleteMapping("/{id}")
-    @RolesAllowed({ERole.Names.CUSTOMER, ERole.Names.SELLER, ERole.Names.ADMIN})
+    @RolesAllowed({ERole.Names.CUSTOMER, ERole.Names.SHIPPER,ERole.Names.SELLER, ERole.Names.ADMIN})
     public ResponseObject<OrderResponseDTO> deleteOrder(@PathVariable(name = "id") Long id,
                                                         HttpServletRequest request) {
         //    this.LOGGER.info(String.valueOf(SecurityContextHolder.getContext().getAuthentication().getAuthorities()));

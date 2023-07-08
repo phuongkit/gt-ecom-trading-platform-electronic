@@ -72,7 +72,6 @@ public class UserController {
   }
 
   @GetMapping("/access-token")
-//  @RolesAllowed({ERole.Names.CUSTOMER, ERole.Names.SELLER, ERole.Names.ADMIN})
   public ResponseObject<UserResponseDTO> getUserByAccessToken(HttpServletRequest request) {
     String accessToken = jwtTokenUtil.getAccessToken(request);
     UserResponseDTO responseDTO = null;

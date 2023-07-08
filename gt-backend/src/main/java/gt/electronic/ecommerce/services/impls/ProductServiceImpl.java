@@ -379,14 +379,14 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductResponseDTO getProductBySlug(String slug) {
+    public ProductResponseDTO getProductBySlug(String slug, boolean haveSentiment) {
         this.LOGGER.info(String.format(Utils.LOG_GET_OBJECT, branchName, "Slug", slug));
         Product product = this.productRepo.findBySlug(slug)
                 .orElseThrow(() -> new ResourceNotFound(String.format(Utils.OBJECT_NOT_FOUND_BY_FIELD,
                                                                       branchName,
                                                                       "Slug",
                                                                       slug)));
-        return this.productMapper.productToProductResponseDTO(product);
+        return this.productMapper.productToProductResponseDTO(product, haveSentiment);
     }
 
     @Override

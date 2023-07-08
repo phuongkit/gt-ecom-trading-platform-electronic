@@ -35,7 +35,7 @@ public interface ProductService {
 
   ProductResponseDTO getProductById(String loginKey, Long id, boolean haveSentiment);
 
-  ProductResponseDTO getProductBySlug(String slug);
+  ProductResponseDTO getProductBySlug(String slug, boolean haveSentiment);
 
   ProductResponseDTO createProduct(String loginKey,
       ProductCreationDTO creationDTO, MultipartFile thumbnailFile, MultipartFile[] imageGalleryFile, boolean...isAdmin);

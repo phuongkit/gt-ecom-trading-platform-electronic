@@ -65,7 +65,7 @@ public class OrderShopController {
   }
 
   @GetMapping("/userId/{userId}")
-  @RolesAllowed({ERole.Names.CUSTOMER, ERole.Names.SELLER, ERole.Names.ADMIN})
+  @RolesAllowed({ERole.Names.CUSTOMER, ERole.Names.CUSTOMER, ERole.Names.SELLER, ERole.Names.ADMIN})
   public ResponseObject<List<OrderResponseDTO>> getAllOrdersByUser(
       @RequestParam(name = "page", required = false, defaultValue = DEFAULT_PAGE) Integer page,
       @RequestParam(name = "limit", required = false, defaultValue = DEFAULT_SIZE) Integer size,

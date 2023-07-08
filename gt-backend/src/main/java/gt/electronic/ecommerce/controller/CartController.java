@@ -53,7 +53,7 @@ public class CartController {
   }
 
   @GetMapping
-  @RolesAllowed({ERole.Names.CUSTOMER, ERole.Names.SELLER, ERole.Names.ADMIN})
+  @RolesAllowed({ERole.Names.CUSTOMER, ERole.Names.SHIPPER,ERole.Names.SELLER, ERole.Names.ADMIN})
   public List<OrderDetailResponseDTO> getAllCartItemsByUser(
       @RequestParam(name = "page", required = false, defaultValue = DEFAULT_PAGE) Integer page,
       @RequestParam(name = "limit", required = false, defaultValue = DEFAULT_SIZE) Integer size,
@@ -70,13 +70,13 @@ public class CartController {
   }
 
   @GetMapping("/{id}")
-  @RolesAllowed({ERole.Names.CUSTOMER, ERole.Names.SELLER, ERole.Names.ADMIN})
+  @RolesAllowed({ERole.Names.CUSTOMER, ERole.Names.SHIPPER,ERole.Names.SELLER, ERole.Names.ADMIN})
   public OrderDetailResponseDTO getCartItemById(@PathVariable(name = "id") Long id) {
     return this.cartItemService.getCartItemById(id);
   }
 
   @PostMapping
-  @RolesAllowed({ERole.Names.CUSTOMER, ERole.Names.SELLER, ERole.Names.ADMIN})
+  @RolesAllowed({ERole.Names.CUSTOMER, ERole.Names.SHIPPER,ERole.Names.SELLER, ERole.Names.ADMIN})
   public ResponseObject<OrderDetailResponseDTO> createCartItem(
       @RequestBody CartItemCreationDTO creationDTO,
       HttpServletRequest request) {
@@ -87,7 +87,7 @@ public class CartController {
   }
 
   @PostMapping("/addAll")
-  @RolesAllowed({ERole.Names.CUSTOMER, ERole.Names.SELLER, ERole.Names.ADMIN})
+  @RolesAllowed({ERole.Names.CUSTOMER, ERole.Names.SHIPPER,ERole.Names.SELLER, ERole.Names.ADMIN})
   public ResponseObject<List<OrderDetailResponseDTO>> updateAllCartItems(
       @RequestBody List<CartDetailCreationDTO> creationDTOList,
       HttpServletRequest request) {
@@ -98,7 +98,7 @@ public class CartController {
   }
 
   @PutMapping("/{id}")
-  @RolesAllowed({ERole.Names.CUSTOMER, ERole.Names.SELLER, ERole.Names.ADMIN})
+  @RolesAllowed({ERole.Names.CUSTOMER, ERole.Names.SHIPPER,ERole.Names.SELLER, ERole.Names.ADMIN})
   public ResponseObject<OrderDetailResponseDTO> updateCartItem(
       @PathVariable(name = "id") Long id,
       @RequestPart("data") @Valid CartItemCreationDTO creationDTO,
@@ -110,7 +110,7 @@ public class CartController {
   }
 
   @DeleteMapping("/{id}")
-  @RolesAllowed({ERole.Names.CUSTOMER, ERole.Names.SELLER, ERole.Names.ADMIN})
+  @RolesAllowed({ERole.Names.CUSTOMER, ERole.Names.SHIPPER,ERole.Names.SELLER, ERole.Names.ADMIN})
   public ResponseObject<OrderDetailResponseDTO> deleteCartItem(
       @PathVariable(name = "id") Long id,
       @RequestParam(name = "userId", required = false, defaultValue = "0") Long userId,

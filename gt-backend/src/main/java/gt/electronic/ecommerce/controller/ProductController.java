@@ -76,7 +76,8 @@ public class ProductController {
     ) {
         List<Sort.Order> orderList = new ArrayList<>();
         if (!Objects.equals(sortField.trim(), "") || (Objects.equals(sortField.trim(),
-                                                                     "id") && sortOption == ESortOption.LATEST.ordinal())) {
+                                                                     "id") &&
+                sortOption == ESortOption.LATEST.ordinal())) {
             orderList.add(sortDir.equals("asc") ? Sort.Order.asc(sortField) : Sort.Order.desc(sortField));
         }
         if (sortOption == ESortOption.LATEST.ordinal()) {
@@ -160,7 +161,8 @@ public class ProductController {
 
     @GetMapping("/{id}")
     public ResponseObject<ProductResponseDTO> getProductById(@PathVariable(name = "id") Long id,
-                                                             @RequestParam(name = "haveSentiment", required = false, defaultValue = "false") boolean haveSentiment,
+                                                             @RequestParam(name = "haveSentiment", required = false, defaultValue = "false")
+                                                             boolean haveSentiment,
                                                              HttpServletRequest request) {
 
         String loginKey = jwtTokenUtil.getUserNameFromRequest(request);
@@ -169,9 +171,11 @@ public class ProductController {
     }
 
     @GetMapping("/slug/{slug}")
-    public ResponseObject<ProductResponseDTO> getProductBySlug(@PathVariable(name = "slug") String slug) {
+    public ResponseObject<ProductResponseDTO> getProductBySlug(@PathVariable(name = "slug") String slug,
+                                                               @RequestParam(name = "haveSentiment", required = false, defaultValue = "false")
+                                                               boolean haveSentiment) {
         return new ResponseObject<>(
-                HttpStatus.OK, "", this.productService.getProductBySlug(slug));
+                HttpStatus.OK, "", this.productService.getProductBySlug(slug, haveSentiment));
     }
 
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
