@@ -187,7 +187,7 @@ function ProductBody() {
                 </div>
 
                 <div className="product__body-right">
-                   <PieChartComponent sentiment={test}></PieChartComponent>
+                   <PieChartComponent sentiment={initProductDetail?.sentiment}></PieChartComponent>
 
                     <h2 className="product__best-seller-title">Mô tả sản phẩm</h2>
 

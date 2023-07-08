@@ -464,6 +464,31 @@ export const ESortOptions = {
     },
 };
 
+export const ESentiment = {
+    NEGATIVE: {
+        name: 'Negative',
+        vi: 'Tiêu cực',
+        index: 0,
+    },
+    NEUTRAL: {
+        name: 'Neutral',
+        vi: 'Trung tính',
+        index: 1,
+    },
+    POSITIVE: {
+        name: 'Positive',
+        vi: 'Tích cực',
+        index: 2,
+    },
+    UNKNOWN: {
+        name: 'Unknown',
+        vi: 'Không xác định',
+        index: 3,
+    },
+    getViFromName: (name) =>
+        Object.values(ESentiment).find((item) => item.name === name)?.vi || ESentiment.UNKNOWN.vi,
+}
+
 export const PAGE = {
     CENTER: 3,
     LEFT: 1,

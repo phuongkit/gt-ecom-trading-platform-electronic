@@ -51,7 +51,7 @@ function ProductRating() {
         return rating?.content ? rating?.content.slice(rating?.content.length > 4 ? 4 : rating?.content.length) : [];
     });
 
-    console.log('rating: ', rating);
+    // console.log('rating: ', rating);
 
     const [showModal, setShowModal] = useState(false);
     const [showPopupInfo, setShowPopupInfo] = useState(false);
@@ -137,7 +137,7 @@ function ProductRating() {
             },
             content,
         };
-        const oldDiscuss = rating.content[ratingId.index]?.childFeedbacks || [];
+        const oldDiscuss = rating?.content[ratingId.index]?.childFeedbacks || [];
         const discussData = [...oldDiscuss, newDiscuss];
         const data = JSON.stringify({ discuss: discussData });
         const res = await ratingService.patchRating(ratingId.id, data);
@@ -183,6 +183,7 @@ function ProductRating() {
         try {
             setShowModal(false);
             const res = await ratingService.postRating(formData);
+            console.log(res);
             if (res.status === 'CREATED') {
                 if (infoRating.replyForFeedbackId === null) {
                     setProductRating((old) => [res.data, ...old]);
@@ -194,13 +195,19 @@ function ProductRating() {
                         }
                     ));
                 }
+                swal({text: 'Tạo nhận xét thành công!', icon: 'success',});
                 // if (res.status ==== 'created')
                 // setProductRating((old) => [...old, res]);
-            } else {
+            }
+            else {
                 swal({text: res.message, icon: 'error',});
             }
         } catch (err) {
-            swal({text: err.message, icon: 'error',});
+            if (err?.status === 'OK' && err?.message.startsWith('Feedback is existed')) {
+                swal({text: 'Bạn đã nhận xét đánh giá này. Không thể đánh giá thêm!', icon: 'error',});
+            } else {
+                swal({text: err.message, icon: 'error',});
+            }
         }
         infoRating.replyForFeedbackId = null;
     };
@@ -402,7 +409,7 @@ function ProductRating() {
                     </Modal.Body>
                 </Modal>
                 <button
-                    onClick={() => setProductRating(rating.content)}
+                    onClick={() => setProductRating(rating?.content)}
                     className="border border-black-500 p-4 rounded text-blue-500 w-1/2"
                 >
                     Xem {rating?.content?.length} đánh giá
