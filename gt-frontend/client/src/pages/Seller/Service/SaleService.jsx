@@ -7,7 +7,7 @@ import NextArrow from '~/components/Slick/NextArrow';
 import PrevArrow from '~/components/Slick/PrevArrow';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import { vnpay } from '../../../services/payment';
+import { paypal } from '../../../services/payment';
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -91,7 +91,7 @@ const SaleService = ({ title, time, description, image, fee }) => {
         "shopPriceId": idPrice,
         "redirectUrl": "http://localhost:5000/#/Seller/"
     }
-    let resVNPay = await vnpay.postPricePackage(body)
+    let resVNPay = await paypal.postPricePackage(body)
     window.location = resVNPay.data.payUrl;
    
   }
@@ -112,7 +112,7 @@ const SaleService = ({ title, time, description, image, fee }) => {
           title: classes.cardHeaderText,
         }}/>
      
-      <CardMedia className={classes.media} image={image} title={item?.name} />
+      <CardMedia className={classes.media} image={"https://cdn-icons-png.flaticon.com/512/2867/2867644.png"} title={item?.name} />
       <CardContent className={classes.content}>
         <Typography variant="body2" color="textSecondary" className={classes.description}>
           {item?.description}

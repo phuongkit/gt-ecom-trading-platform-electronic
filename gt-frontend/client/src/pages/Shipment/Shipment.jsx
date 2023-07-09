@@ -27,6 +27,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { shipmentService } from '../../services/shipment';
 import { useEffect } from 'react';
 import { useState } from 'react';
+import { EPayment } from '../../utils';
 
 const useStyles = makeStyles((theme) => ({
 
@@ -71,8 +72,11 @@ function Row(props) {
   const [isClicked, setIsClicked] = useState(false);
 
   const hanlePostShipment = async(id)=>{
-    let res = await shipmentService.postShipment(id);
-    if(res.status == "OK"){
+    let res;
+    if(isClicked==false){
+      res = await shipmentService.postShipment(id);
+    }
+    if(res?.status == "OK"){
       setIsClicked(true);
     }
 }
@@ -94,7 +98,7 @@ function Row(props) {
         <TableCell align="center">{row.email}</TableCell>
         <TableCell align="center">{row.phone}</TableCell>
         <TableCell align="center">{row.address}</TableCell>
-        <TableCell align="center">{row.payment}</TableCell>
+        <TableCell align="center">{EPayment.getNameFromIndex(row.payment)}</TableCell>
         <TableCell align="center">{row.totalPrice}</TableCell>
         <TableCell align="center" className={`${classes.deleteButton} ${isClicked ? classes.deleteButtonGet : ''}`} onClick={(e)=>hanlePostShipment(row.id)}>Get</TableCell>
        

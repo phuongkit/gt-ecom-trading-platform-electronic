@@ -27,6 +27,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import { shipmentService } from '../../services/shipment';
 import { useEffect } from 'react';
 import { useState } from 'react';
+import { Button } from '@mui/material';
+import { EPayment } from '../../utils';
 
 const useStyles = makeStyles((theme) => ({
 
@@ -38,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
       }
   }));
 
-function createData(fullName, email, phone, address, payment, totalPrice,orderItemsArray) {
+function createData(id,fullName, email, phone, addressFrom,addressTo, payment, totalPrice,orderItemsArray) {
   let orderItems = [];
   orderItemsArray.forEach(item=>{
     orderItems.push( {
@@ -50,10 +52,12 @@ function createData(fullName, email, phone, address, payment, totalPrice,orderIt
     )
   })
   return {
+    id,
     fullName,
     email,
     phone,
-    address,
+    addressFrom,
+    addressTo,
     payment,
     totalPrice,
     orderItems
@@ -63,6 +67,17 @@ function createData(fullName, email, phone, address, payment, totalPrice,orderIt
 function Row(props) {
   const { row } = props;
   const [open, setOpen] = React.useState(false);
+  const [isClicked, setIsClicked] = useState(false);
+  const hanlePostShipment = async(id)=>{
+    let res;
+    if(isClicked==false){
+      res = await shipmentService.putShipment(id);
+    }
+    if(res?.status == "OK"){
+      setIsClicked(true);
+    }
+  }
+
   const classes = useStyles();
   return (
     <React.Fragment>
@@ -81,11 +96,10 @@ function Row(props) {
         </TableCell>
         <TableCell align="center">{row.email}</TableCell>
         <TableCell align="center">{row.phone}</TableCell>
-        <TableCell align="center">{row.address}</TableCell>
-        <TableCell align="center">{row.payment}</TableCell>
+        <TableCell align="center">{row.addressFrom}</TableCell>
+        <TableCell align="center">{row.addressTo}</TableCell>
+        <TableCell align="center">{EPayment.getNameFromIndex(row.payment)}</TableCell>
         <TableCell align="center">{row.totalPrice}</TableCell>
-        <TableCell align="center" className={classes.deleteButton}>Get</TableCell>
-       
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={12}>
@@ -94,6 +108,7 @@ function Row(props) {
               <Typography variant="h6" gutterBottom component="div">
                 Order Items
               </Typography>
+           
               <Table size="medium" aria-label="purchases">
                 <TableHead>
                   <TableRow>
@@ -117,6 +132,9 @@ function Row(props) {
                   ))}
                 </TableBody>
               </Table>
+              <Typography onClick={e=>hanlePostShipment(row.id)} className={` float-right p-4 border rounded-md mt-4 ${isClicked ? 'text-gray-200' : 'text-red-400'}`} variant="button" gutterBottom component="button">
+                Xác nhận thành công
+              </Typography>
             </Box>
           </Collapse>
         </TableCell>
@@ -148,22 +166,27 @@ export default function Shipment() {
   let rows = [];
   const [dataget,setDataget] = useState([]);
   const getData = async()=>{
-    let res = await shipmentService.getAllOrderSameArea();
+    let res = await shipmentService.getAllOrderShipment();
     let data = res.data.content || []
+  console.log("koko",res)
+
     data.forEach(item=>{
         rows.push(createData(
-            item?.fullName
-            ,item?.email
-            ,item?.phone
-            ,`${item?.address.homeAdd}, ${item?.address.ward}, ${item?.address.district}, ${item?.address.city}`
-            ,item?.payment
-            ,item?.totalPrice
-            ,item?.orderItems))
+            item?.id,
+            item?.orderShop?.fullName
+            ,item?.orderShop?.email
+            ,item?.orderShop?.phone
+            ,`${item?.fromAddress.homeAdd}, ${item?.fromAddress.ward}, ${item?.fromAddress.district}, ${item?.fromAddress.city}`
+            ,`${item?.toAddress.homeAdd}, ${item?.toAddress.ward}, ${item?.toAddress.district}, ${item?.toAddress.city}`
+            ,item?.orderShop?.payment
+            ,item?.orderShop?.totalPrice
+            ,item?.orderShop?.orderItems))
     });
     setDataget(rows)
   }
   useEffect(()=>{
     getData()
+
   },[])
   return (
     <TableContainer component={Paper}>
@@ -174,10 +197,10 @@ export default function Shipment() {
             <TableCell>Customer</TableCell>
             <TableCell align="center">Email</TableCell>
             <TableCell align="center">Phone</TableCell>
-            <TableCell align="center">Address</TableCell>
+            <TableCell align="center">Pick Up Address</TableCell>
+            <TableCell align="center">Delivery Address</TableCell>
             <TableCell align="center">Payment</TableCell>
             <TableCell align="center">Price</TableCell>
-            <TableCell align="center">Action</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>

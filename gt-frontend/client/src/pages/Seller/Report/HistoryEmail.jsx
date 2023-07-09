@@ -128,39 +128,39 @@ const HistoryEmail = () => {
       <Divider variant="inset" component="li" />
  </>)}
  
-    </List> :   <div class="bg-white p-12">
-                                <div class="card-body flex-col">
-                                  <div className='flex gap-4 mb-5'>
-                                  <div className='h-[60px] w-[60px]'>
-                                    <img className='w-full h-full rounded-full' src='https://www.clipartmax.com/png/middle/257-2572603_user-man-social-avatar-profile-icon-man-avatar-in-circle.png'></img>
-                                    </div>
-                                    <div class="mb-5">
-                                        <div class="flex-1 align-self-center">
-                                            <h4 class="font-bold m-0">Humberto D. Champion</h4>
-                                            <small class="text-muted">support@domain.com</small>
-                                        </div>
-                                    </div>
-                                  </div>
+    </List> :   <div className="bg-white p-12">
+  <div className="card-body flex-col flex-1">
+    <div className="flex gap-4 mb-5">
+      <div className="h-[60px] w-[60px]">
+        <img className="w-full h-full rounded-full" src="https://www.clipartmax.com/png/middle/257-2572603_user-man-social-avatar-profile-icon-man-avatar-in-circle.png" alt="Avatar" />
+      </div>
+      <div className="mb-5">
+        <div className="flex-1 align-self-center">
+          <h4 className="font-bold m-0">Humberto D. Champion</h4>
+          <small className="text-muted">support@domain.com</small>
+        </div>
+      </div>
+    </div>
 
-                                    <h4 class="mt-6 text-2xl leading-10 font-semibold "> {emailDetail?.title}</h4>
-                                    <div dangerouslySetInnerHTML={createMarkup()} />
-                                    <hr />
+    <h4 className="mt-6 text-2xl leading-10 font-semibold ">{emailDetail?.title}</h4>
+    <div dangerouslySetInnerHTML={createMarkup()} />
+    <hr />
 
-                                    <div class="mt-6 flex gap-2">
-                                      {emailDetail?.products && hanleProductImages(emailDetail?.products)?.map(item=>
-                                        <div class="p-4 w-[290px]">
-                                          <div className='text-xl font-semibold mb-2'>{item.name.length < 40 ? item.name : `${item.name.slice(0, 36)}...`}</div>  
-                                          <span className='text-[12px] mb-6'>Notify: {item.count}</span>  
-                                            <div className='h-[160px] w-[250px] my-2'>
-                                                  <img class="w-full h-full" src={`${API_IMAGE_URL}${item?.img}`} alt="Card image cap"></img>
-                                              </div>
-                                          <Link to={`${OAUTH2_REDIRECT_URI}/${item.slug}`} className='text-xl font-semibold mb-2 text-red-400'>Preview: {OAUTH2_REDIRECT_URI}/{item.slug.slice(0, 9)}...</Link>  
-
-                                        </div>
-                                        )}
-                                    </div>
-                                </div>
-        </div>}
+    <div className="mt-6 flex gap-2 flex-1">
+      {emailDetail?.products && hanleProductImages(emailDetail?.products)?.map(item => (
+        <div className="p-4 w-[290px]">
+          <div className="text-xl font-semibold mb-2">{item.name.length < 40 ? item.name : `${item.name.slice(0, 36)}...`}</div>
+          <span className="text-[12px] mb-6">Notify: {item.count}</span>
+          <div className="h-[160px] w-[250px] my-2">
+            <img className="w-full h-full" src={`${API_IMAGE_URL}${item?.img}`} alt="Product" />
+          </div>
+          <Link to={`${OAUTH2_REDIRECT_URI}/${item.slug}`} className="text-xl font-semibold mb-2 text-red-400 flex">Preview: {OAUTH2_REDIRECT_URI}/{item.slug.slice(0, 7)}...</Link>
+        </div>
+      ))}
+    </div>
+  </div>
+</div>
+}
     </div>
  
   );

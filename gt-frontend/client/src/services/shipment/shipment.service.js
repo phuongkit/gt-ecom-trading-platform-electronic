@@ -11,5 +11,12 @@ export const shipmentService = {
     },
     postShipment(id) {
         return axiosClient.post(`${branch_api}/receive-order`,[id]);
+    },
+    putShipment(id) {
+        return axiosClient.put(`${branch_api}/${id}`,{
+            "status": "ORDER_COMPLETED",
+            "log": null,
+            "createdAt": Date.now()
+        });
     }
 };
