@@ -56,7 +56,7 @@ const Delivery = () => {
                   <div className="mn7INg xFSVYg" />
                   <div className="mn7INg EfbgJE" />
                 </div>
-                <div className="bHBbO4">
+                {/* <div className="bHBbO4">
                   <div className="stepper">
                     <div className="stepper__step stepper__step--finish">
                       <div className="stepper__step-icon stepper__step-icon--finish">
@@ -115,7 +115,7 @@ const Delivery = () => {
                 <div className="O2KPzo">
                   <div className="mn7INg xFSVYg" />
                   <div className="mn7INg EfbgJE" />
-                </div>
+                </div> */}
              
                 <div className="O2KPzo">
                   <div className="mn7INg xFSVYg" />
@@ -163,7 +163,7 @@ const Delivery = () => {
 
                 </div>
                 <div className="u4VSsO ml-8 p-4">
-                  <p className="_0P1byN">Đã giao</p>
+                  {/* <p className="_0P1byN">Đã giao</p> */}
                   <p>
                   {item?.log}
                   {/* <span>. Người nhận hàng: Nguyên kim--</span>.{" "}
