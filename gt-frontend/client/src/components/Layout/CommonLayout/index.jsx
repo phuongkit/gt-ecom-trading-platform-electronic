@@ -1,7 +1,7 @@
 import Header from '../../Header';
 import Footer from '../../Footer';
 import { useState, useEffect } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { getUserByAccess, logUserByAccess } from '../../../redux/user/userApi';
 import { Link } from 'react-router-dom';
@@ -14,6 +14,7 @@ import Notification from '../../Notification/Notification';
 import swal from 'sweetalert';
 
 function CommonLayout({ children }) {
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const [getUserAccess, setUserAccess] = useState(undefined);
     const getAccess = JSON.parse(localStorage.getItem(DEFAULT_STORE.TOKEN));

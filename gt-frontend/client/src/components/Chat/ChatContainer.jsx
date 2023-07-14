@@ -135,6 +135,7 @@ const Container = styled.div`
         grid-template-rows: 15% 70% 15%;
     }
     .chat-header {
+        background-color: #080420;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -156,6 +157,7 @@ const Container = styled.div`
         }
     }
     .chat-messages {
+        background-color: #080420;
         padding: 1rem 2rem;
         display: flex;
         flex-direction: column;
