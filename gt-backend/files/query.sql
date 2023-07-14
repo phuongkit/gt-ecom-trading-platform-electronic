@@ -76,8 +76,39 @@ AS
 	SELECT p.id product_id, p.shop_id, fb.sentiment, COUNT(fb.sentiment) as count
     FROM tbl_feedback fb RIGHT OUTER JOIN tbl_product p ON fb.product_id = p.id
     GROUP BY p.id, p.shop_id, fb.sentiment;
-
--- SELECT * FROM sentimentAnalysis;
+    
+CREATE OR REPLACE VIEW shopStatistic 
+AS
+	select s.id shop_id, count(os.internal_id) as orderCount, sum(os.total_price_product) earningTotal, 
+    ifnull(lm.earningLastMonth, 0) earningLastMonth, 
+	ifnull(lw.earningLastWeek, 0) earningLastWeek, ifnull(td.earningToday, 0) earningToday,
+	-- target
+	ifnull(
+	(select avg(lm.total)
+	from
+	(select sum(total_price_product) total
+	from tbl_shop s left join tbl_order_shop os on s.id = os.shop_id
+	where CONVERT(os.created_at, DATE) >= CONVERT(DATE_SUB(CURRENT_DATE(), INTERVAL 1 MONTH), DATE)
+	group by s.id) lm), 10000000) earningTarget
+	from
+	tbl_shop s inner join tbl_order_shop os on s.id = os.shop_id
+	-- today
+	left join (select s.id,  sum(IFNULL(os.total_price_product, 0)) as earningToday
+	from tbl_shop s left join tbl_order_shop os on s.id = os.shop_id
+	where date(os.created_at) = date(current_date())
+	group by s.id) td on s.id = td.id
+	-- lastWeek
+	left join (select s.id,  sum(total_price_product) as earningLastWeek
+	from tbl_shop s left join tbl_order_shop os on s.id = os.shop_id
+	where CONVERT(os.created_at, DATE) >= CONVERT(DATE_SUB(CURRENT_DATE(), INTERVAL 7 DAY), DATE)
+	group by s.id) lw on s.id = lw.id
+	-- lastMonth
+	left join (select s.id,  sum(total_price_product) as earningLastMonth
+	from tbl_shop s left join tbl_order_shop os on s.id = os.shop_id
+	where CONVERT(os.created_at, DATE) >= CONVERT(DATE_SUB(CURRENT_DATE(), INTERVAL 1 MONTH), DATE)
+	group by s.id) lm on s.id = lm.id
+	group by s.id;
+-- SELECT * FROM shopStatistic;
 
 CREATE OR REPLACE VIEW lastCheckProductBlackList 
 AS

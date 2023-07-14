@@ -1,5 +1,6 @@
 package gt.electronic.ecommerce.services.impls;
 
+import gt.electronic.ecommerce.dto.response.ShopStatisticResponseDTO;
 import gt.electronic.ecommerce.entities.OrderShop;
 import gt.electronic.ecommerce.entities.ProductBlackList;
 import gt.electronic.ecommerce.entities.Shop;
@@ -14,6 +15,7 @@ import gt.electronic.ecommerce.models.enums.ETimeDistance;
 import gt.electronic.ecommerce.models.interfaces.IInfoRating;
 import gt.electronic.ecommerce.models.interfaces.IProductBlackList;
 import gt.electronic.ecommerce.models.interfaces.IProductSentiment;
+import gt.electronic.ecommerce.models.interfaces.IShopStatistic;
 import gt.electronic.ecommerce.repositories.*;
 import gt.electronic.ecommerce.services.StatisticService;
 import gt.electronic.ecommerce.services.UserService;
@@ -113,7 +115,7 @@ public class StatisticServiceImpl implements StatisticService {
     }
 
     @Override
-    public List<GroupOrderByDate> statisticOrderByShop(
+    public ShopStatisticResponseDTO statisticOrderByShop(
             String loginKey,
             Long shopId,
             Date startDate,
@@ -162,7 +164,11 @@ public class StatisticServiceImpl implements StatisticService {
             groupOrder.setOrderDetails(orderDetails);
             groupOrderByDates.add(groupOrder);
         }
-        return groupOrderByDates;
+        ShopStatisticResponseDTO responseDTO = new ShopStatisticResponseDTO();
+        responseDTO.setGroupOrderByDateList(groupOrderByDates);
+        IShopStatistic shopStatistic = this.viewRepo.getShopStatisticByShop(shopId);
+        responseDTO.setShopStatistic(shopStatistic);
+        return responseDTO;
     }
 
     @Override

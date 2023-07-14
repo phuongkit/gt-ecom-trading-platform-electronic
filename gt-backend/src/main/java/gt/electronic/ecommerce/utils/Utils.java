@@ -21,6 +21,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.math.RoundingMode;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -482,6 +483,15 @@ public class Utils {
     public static double getRoundingDigit(double digit, int scale) {
         double rangeScale = Math.pow(10, scale);
         return (double) Math.round(digit * rangeScale) / rangeScale;
+    }
+
+    public static BigDecimal getRoundingDigit(BigDecimal digit, int scale, boolean... isRound) {
+        if (isRound.length > 0 && isRound[0]) {
+            MathContext m = new MathContext(scale + 1, RoundingMode.HALF_UP);
+            return digit.round(m);
+        } else {
+            return digit.setScale(0, RoundingMode.HALF_UP);
+        }
     }
 
     public static final String addLogToOrderShop(OrderLog orderLog, String originLogs) {

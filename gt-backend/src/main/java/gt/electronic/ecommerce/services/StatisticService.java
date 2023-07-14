@@ -1,5 +1,6 @@
 package gt.electronic.ecommerce.services;
 
+import gt.electronic.ecommerce.dto.response.ShopStatisticResponseDTO;
 import gt.electronic.ecommerce.models.clazzs.GroupOrderByDate;
 import gt.electronic.ecommerce.models.clazzs.ShopOverview;
 import gt.electronic.ecommerce.models.clazzs.ShopSentiment;
@@ -14,7 +15,7 @@ import java.util.List;
  */
 public interface StatisticService {
   ShopOverview getOverviewByShop(Long shopId);
-  List<GroupOrderByDate> statisticOrderByShop(String loginKey, Long shopId, Date startDate, Date endDate, ETimeDistance timeDistance);
+  ShopStatisticResponseDTO statisticOrderByShop(String loginKey, Long shopId, Date startDate, Date endDate, ETimeDistance timeDistance);
   ShopSentiment statisticSentimentByShop(String loginKey, Long shopId);
 
   ShopSentiment reportNegativeProductByShop(String loginKey, Long shopId);

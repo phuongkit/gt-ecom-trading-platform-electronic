@@ -2,10 +2,7 @@ package gt.electronic.ecommerce.controller;
 
 import gt.electronic.ecommerce.dto.request.RegisterShopPriceDTO;
 import gt.electronic.ecommerce.dto.request.ShopCreationDTO;
-import gt.electronic.ecommerce.dto.response.OrderResponseDTO;
-import gt.electronic.ecommerce.dto.response.ResponseObject;
-import gt.electronic.ecommerce.dto.response.ShopPriceResponseDTO;
-import gt.electronic.ecommerce.dto.response.ShopResponseDTO;
+import gt.electronic.ecommerce.dto.response.*;
 import gt.electronic.ecommerce.entities.Message;
 import gt.electronic.ecommerce.entities.Shop;
 import gt.electronic.ecommerce.models.clazzs.GroupOrderByDate;
@@ -200,7 +197,7 @@ public class ShopController {
 
     @GetMapping("/statistic/order/{shopId}")
     @RolesAllowed({ERole.Names.SELLER, ERole.Names.ADMIN})
-    public ResponseObject<List<GroupOrderByDate>> statisticOrder(
+    public ResponseObject<ShopStatisticResponseDTO> statisticOrder(
             @PathVariable(name = "shopId") Long shopId,
             @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate,
             @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate,

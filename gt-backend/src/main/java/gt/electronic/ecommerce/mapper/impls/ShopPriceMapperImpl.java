@@ -17,7 +17,7 @@ public class ShopPriceMapperImpl implements ShopPriceMapper {
         responseDTO.setName(entity.getName());
         responseDTO.setTime(entity.getNumber() + " " + entity.getDateType().toString());
         responseDTO.setDescription(
-                entity.getDescription() + "Bạn có thể đăng bán sản phẩm trên sàn giao dịch của chúng tôi với tối đa " +
+                entity.getDescription() + "Bạn có thể đăng bán sản phẩm trên sàn giao dịch chúng tôi với tối đa " +
                         entity.getMaxProduct() + " sản phẩm trong thời gian " + responseDTO.getTime() + ".");
         responseDTO.setPrice(entity.getPrice());
         return responseDTO;

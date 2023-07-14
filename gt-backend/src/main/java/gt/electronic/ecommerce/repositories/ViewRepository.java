@@ -4,6 +4,7 @@ import gt.electronic.ecommerce.entities.Product;
 import gt.electronic.ecommerce.entities.ProductBlackList;
 import gt.electronic.ecommerce.models.interfaces.IProductBlackList;
 import gt.electronic.ecommerce.models.interfaces.IProductSentiment;
+import gt.electronic.ecommerce.models.interfaces.IShopStatistic;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -25,4 +26,7 @@ public interface ViewRepository extends JpaRepository<Product, Long> {
 
     @Query(value = "SELECT * FROM lastCheckProductBlackList pbl WHERE shop_id = :shopId", nativeQuery = true)
     List<IProductBlackList> getProductBlackListByShop(@Param("shopId") Long shopId);
+
+    @Query(value = "SELECT * FROM shopStatistic ss WHERE shop_id = :shopId", nativeQuery = true)
+    IShopStatistic getShopStatisticByShop(@Param("shopId") Long shopId);
 }
