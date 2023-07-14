@@ -11,8 +11,7 @@ import { useSelector } from "react-redux";
 
 const List = () => {
   const { content: rows = [] } = useSelector(state => state.orderShops.statisticPageOrder.data);
-  console.log(rows);
-  console.log('rows', rows);
+  // console.log('rows', rows);
   return (
     <TableContainer component={Paper} className="table">
       <Table sx={{ minWidth: 650 }} aria-label="simple table">

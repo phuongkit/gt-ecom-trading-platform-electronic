@@ -16,16 +16,14 @@ import { useEffect } from "react";
 import { getStatisticOrdersApi } from "../../../redux/statistic/statisticsApi";
 
 
-const Chart = ({ aspect, title }) => {
+const Chart = ({ aspect, title, groupOrderByDateList }) => {
 
   const dispatch = useDispatch();
   const getUser = JSON.parse(localStorage.getItem('customerInfo'));
-  useEffect(() => {
-    getStatisticOrdersApi(dispatch, getUser.shopId, { startDate: '2021-01-01', endDate: '2024-01-01' });
-  }, [])
 
-  const statisticOrder = useSelector(state=> state.statistics.statisticOrder.data);
-  const data = statisticOrder.map(item => ({ name: item.dateStatistic, uv: item.totalPrice }))
+
+  
+  const data = groupOrderByDateList?.map(item => ({ name: item.dateStatistic, uv: item.totalPrice }))
   return (
     <div className="chart">
       <div className="title">Biểu đồ đặt hàng</div>

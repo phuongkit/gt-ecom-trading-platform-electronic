@@ -4,12 +4,13 @@ import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import AccountBalanceWalletOutlinedIcon from "@mui/icons-material/AccountBalanceWalletOutlined";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import MonetizationOnOutlinedIcon from "@mui/icons-material/MonetizationOnOutlined";
+import { numberWithCommas } from "../../../utils";
 
-const Widget = ({ type }) => {
+const Widget = ({ type, value }) => {
   let data;
 
   //temporary
-  const amount = 100;
+  const amount = value || 0;
   const diff = 20;
 
   switch (type) {
@@ -83,7 +84,7 @@ const Widget = ({ type }) => {
       <div className="left">
         <span className="title">{data.title}</span>
         <span className="counter">
-          {data.isMoney && "$"} {amount}
+          {numberWithCommas(amount)} {data.isMoney && "đ"}
         </span>
         <span className="link">{data.link}</span>
       </div>

@@ -67,25 +67,44 @@ export const ghn = {
                 // pick_shift: [2],
                 items: items,
             };
-            let res = await axiosGHN.post(
-                'https://dev-online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/preview',
-                data,
-            );
-            let date = new Date(Date.parse(res?.data?.data?.expected_delivery_time));
-            shipGroupByShop = [
-                ...shipGroupByShop,
-                {
-                    shopId: shopProduct.id,
-                    expectedDeliveryTime: date,
-                    totalFee: res?.data?.data?.total_fee,
-                    items: shopProduct.products?.map((item) => ({
-                        productId: item.id,
-                        quantity: item.quantity,
-                        saleName: item.tag,
-                        note: item?.note || '',
-                    })),
-                },
-            ];
+            try {
+                let res = await axiosGHN.post(
+                    'https://dev-online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/preview',
+                    data,
+                );
+                let date = new Date(Date.parse(res?.data?.data?.expected_delivery_time));
+                shipGroupByShop = [
+                    ...shipGroupByShop,
+                    {
+                        shopId: shopProduct.id,
+                        expectedDeliveryTime: date,
+                        totalFee: res?.data?.data?.total_fee,
+                        items: shopProduct.products?.map((item) => ({
+                            productId: item.id,
+                            quantity: item.quantity,
+                            saleName: item.tag,
+                            note: item?.note || '',
+                        })),
+                    },
+                ];
+            } catch (err) {
+                let date = new Date();
+                date.setDate(date.getDate() + 7);
+                shipGroupByShop = [
+                    ...shipGroupByShop,
+                    {
+                        shopId: shopProduct.id,
+                        expectedDeliveryTime: date,
+                        totalFee: GHN_CONFIG.defaultFee,
+                        items: shopProduct.products?.map((item) => ({
+                            productId: item.id,
+                            quantity: item.quantity,
+                            saleName: item.tag,
+                            note: item?.note || '',
+                        })),
+                    },
+                ];
+            }
         }
         return shipGroupByShop;
     },

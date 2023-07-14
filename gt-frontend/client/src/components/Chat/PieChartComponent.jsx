@@ -1,29 +1,48 @@
-import * as React from 'react';
-import { Chart, PieSeries, Title, Legend } from '@devexpress/dx-react-chart-bootstrap4';
-import '@devexpress/dx-react-chart-bootstrap4/dist/dx-react-chart-bootstrap4.css';
-import { Animation } from '@devexpress/dx-react-chart';
-import { ESentiment } from '../../utils';
+import React from "react";
+import { Chart } from "react-google-charts";
+import { ESentiment } from "../../utils";
 
 function PieChartComponent({ sentiment }) {
-    const data = sentiment
-        ? sentiment?.sentimentDetails?.map((detail) => ({
-              sentiment: ESentiment.getViFromName(detail.sentiment),
-              percent: detail.percent,
-          }))
+    const data1 = sentiment
+        ? sentiment?.sentimentDetails?.map((detail) => ([
+              ESentiment.getViFromName(detail.sentiment),
+              detail.total,
+        ]))
         : [
-              { sentiment: ESentiment.NEGATIVE.vi, percent: 0 },
-              { sentiment: ESentiment.NEUTRAL.vi, percent: 0 },
-              { sentiment: ESentiment.POSITIVE.vi, percent: 0 },
+              [ ESentiment.NEGATIVE.vi, 0 ],
+              [ ESentiment.NEUTRAL.vi, 0 ],
+              [ ESentiment.POSITIVE.vi, 0 ],
           ];
-
+          console.log(sentiment?.sentimentDetails)
+    const data = [["Sentiment", "Total"], ...data1];
+// const data = [
+//         ["Task", "Hours per Day"],
+//         ["Work", 11],
+//         ["Eat", 2],
+//         ["Commute", 2],
+//         ["Watch TV", 2],
+//         ["Sleep", 7],
+//       ];
+      
+const options = {
+        title: "Phân tích quan điểm (Analysis sentiment)",
+        is3D: true,
+      };
     return (
-        <Chart data={data}>
-            <Legend />
+        // <Chart data={data} chartType="PieChart">
+        //     <Legend />
 
-            <PieSeries valueField="percent" argumentField="sentiment" />
-            <Title text="Analysis sentiment" />
-            <Animation />
-        </Chart>
+        //     <PieSeries valueField="percent" argumentField="sentiment" />
+        //     <Title text="Analysis sentiment" />
+        //     <Animation />
+        // </Chart>
+        <Chart
+        chartType="PieChart"
+        data={data}
+        options={options}
+        // width={"100%"}
+        // height={"400px"}
+      />
     );
 }
 

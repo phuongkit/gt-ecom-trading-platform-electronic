@@ -145,7 +145,7 @@ const Datatable = () => {
             renderCell: (params) => {
                 return (
                     <div className="cellAction text-[12px]">
-                        {params.row.status === EOrderStatus.ORDER_PENDING.index && (
+                        {params.row.status === EOrderStatus.ORDER_SHIPPING.index && (
                             <div className="updateButton" onClick={() => handleAccept(params.row)}>
                                 Accept
                             </div>

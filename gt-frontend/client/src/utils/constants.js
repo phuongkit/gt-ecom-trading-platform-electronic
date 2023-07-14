@@ -519,6 +519,7 @@ export const GHN_CONFIG = {
     provinceId: 202, // HCM
     districtId: 3695, // Thu Duc
     wardCode: '90476', // Truong Tho
+    defaultFee: 20000
 };
 
 export const MESSAGE = {
