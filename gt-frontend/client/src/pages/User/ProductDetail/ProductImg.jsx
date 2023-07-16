@@ -26,9 +26,14 @@ function ProductImg({ item, mess }) {
     };
 
     const color = colors ? colors[0] : '';
-    let productForCart = { ...initProductDetail, quantity: 1 };
+    let productForCart = { ...initProductDetail, quantity: mount };
     const handleClickPay = () => {
-        addToCart(productForCart);
+        if(item.availableQuantity == 0)
+        {
+            swal({ text: 'Mặt hàng này đã bán hết', icon: 'warning' });
+        }else{
+            addToCart(productForCart);
+        }
     };
     return (
         <section className="product">
@@ -118,10 +123,13 @@ function ProductImg({ item, mess }) {
                             value={1}
                             onChange={(quantity) => {
                                 setStateQuantity(item.availableQuantity - quantity);
-                                productForCart = { ...productForCart, quantity: quantity };
+                                setMount(quantity)
+                                // productForCart = { ...productForCart, quantity: quantity };
                             }}
                         />
-                        {/* <p className="product__quantity-desc">{stateQuantity==item.availableQuantity ? '0':(stateQuantity ? stateQuantity : item.availableQuantity)} sản phẩm có sẵn</p> */}
+                        {/* <p className="product__quantity-desc">{stateQuantity==item.availableQuantity ? '0':(stateQuantity ? stateQuantity : item.availableQuantity)} sản phẩm có sẵn</p>
+                             */}
+                              <p className="product__quantity-desc">{item.availableQuantity} sản phẩm có sẵn</p>
                     </div>
 
                     <div className="product__buy">

@@ -36,7 +36,7 @@ function CounterQuantity({ onChange, value, sphientai }) {
             <input
                 type="number"
                 min="1"
-                max="100"
+                max="1000"
                 onChange={handleChange}
                 value={quantity}
                 name="form-0-quantity"

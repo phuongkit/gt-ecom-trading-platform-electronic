@@ -8,7 +8,8 @@ import { productHistory } from '~/helpers/localStorage';
 import { useDispatch } from 'react-redux';
 import { getNameForProductCard } from '../../utils';
 
-function ProductCard(props) {
+function ProductCard({ soldout, ...props }) {
+    console.log("soldout",soldout)
     const dispatch = useDispatch();
     const handleClickDisable = (e) => {
         e.stopPropagation();
@@ -29,7 +30,8 @@ function ProductCard(props) {
                         <p>{props.promotion}</p>
                     </div>
                     <div className={styles.image}>
-                        <img src={props.img} className={styles.img}></img>
+                        {soldout == true ? <img src='https://www.studytienganh.vn/upload/2021/05/99549.jpg' className={styles.img}></img> :  <img src={props.img} className={styles.img}></img>}
+                       
                         {props.docquyen && (
                             <img
                                 className={styles.imgPolicy}
