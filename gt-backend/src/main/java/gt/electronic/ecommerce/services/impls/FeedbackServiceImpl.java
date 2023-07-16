@@ -190,12 +190,14 @@ public class FeedbackServiceImpl implements FeedbackService {
             List<Feedback> feedbackList = this.feedbackRepo.findAllByProduct(productFound);
             if (!feedbackList.isEmpty()) {
                 double star = 0;
-                long[] totalVotes = new long[]{0, 0, 0, 0, 0, 0};
+                long[] totalVotes = new long[]{0, 0, 0, 0, 0, 0, 0};
                 for (Feedback feedback : feedbackList) {
                     if (feedback.getStar() > 0 && feedback.getStar() < 6) {
                         star += feedback.getStar();
                         totalVotes[0]++;
                         totalVotes[feedback.getStar()]++;
+                    } else if (feedback.getStar() == -1) {
+                        totalVotes[6]++;
                     }
                 }
 

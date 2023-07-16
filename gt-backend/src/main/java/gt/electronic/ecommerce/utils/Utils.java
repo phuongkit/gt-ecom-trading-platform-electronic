@@ -97,7 +97,7 @@ public class Utils {
     public static final String LOG_GET_ALL_OBJECT = "Fetching all %ss";
     public static final String LOG_GET_OBJECT = "Fetching %s with %s = %s";
     public static final String LOG_GET_OBJECT_BY_USER = "Fetching %s with %s = %s";
-    public static final String LOG_GET_ALL_OBJECT_BY_FIELD = "Fetching all %ss with %s = %s loginKey = %s";
+    public static final String LOG_GET_ALL_OBJECT_BY_FIELD = "Fetching all %ss with %s = %s";
     public static final String LOG_GET_ALL_OBJECT_BY_TWO_FIELD = "Fetching all %ss with %s = %s and %s = %s";
     public static final String LOG_GET_ALL_OBJECT_BY_THREE_FIELD =
             "Fetching all %ss with %s = %s and %s = %s and %s = %s";
@@ -137,7 +137,7 @@ public class Utils {
     public static final String IMAGE_PER_PAGE = "50";
     public static final String USERS_PER_PAGE = "20";
     public static final String COMMENT_PER_PAGE = "10";
-    public static final String FEEDBACK_PER_PAGE = "3";
+    public static final String FEEDBACK_PER_PAGE = "300";
     public static final String DEFAULT_FIRST_NAME = "Danh";
     public static final String DEFAULT_LAST_NAME = "Ẩn";
 

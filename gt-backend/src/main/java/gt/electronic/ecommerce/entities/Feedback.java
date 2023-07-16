@@ -41,7 +41,7 @@ public class Feedback {
   private String content;
 
   @Column(name = "star", nullable = false)
-  @DecimalMin(value = "1", message = "Star must be greater than or equal to 1")
+  @DecimalMin(value = "-1", message = "Star must be equal to -1 or greater than or equal to 1")
   @DecimalMax(value = "5", message = "Star must be smaller than or equal to 5")
   @NotNull(message = "An star is required!")
   private int star;
