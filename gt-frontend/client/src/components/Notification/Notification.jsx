@@ -17,7 +17,6 @@ export default function Notification() {
     }, [currentUser]);
 
     const notifications = useSelector((state) => state.notifications.allNotification.data);
-    console.log('notifications', notifications);
 
     const handleClickNotification = (item) => {
         console.log(item);
@@ -28,7 +27,6 @@ export default function Notification() {
             console.log('notifications', notifications);
             setNotificationCount(
                 notifications.reduce((acc, notification) => {
-                    console.log(acc, notification);
                     return acc + (notification.isViewed ? 0 : 1);
                 }, 0),
             );

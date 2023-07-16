@@ -3,7 +3,6 @@ import firebase, { auth, db, storage } from '../../firebase';
 import { v4 as uuid } from "uuid";
 
 export const getAllNotificationsApi = async (dispatch, uid) => {
-    console.log('uid: ' + uid);
     db.collection('notifications')
         .doc(uid)
         // .limit(10)

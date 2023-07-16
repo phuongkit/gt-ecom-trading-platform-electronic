@@ -1,16 +1,15 @@
-import React, { useState, useRef, useEffect, useContext } from 'react';
-import { useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
-import './Chat.scss';
+import React, { useContext, useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 import ChatContainer from '../../../components/Chat/ChatContainer';
 import Contacts from '../../../components/Chat/Contact';
 import Welcome from '../../../components/Chat/Welcome';
-import firebase, { auth, db, storage } from '../../../firebase';
-import { addChatContactApi, getAllChatContactsApi } from '../../../redux/chat/contact/contactsApi';
-import { useDispatch, useSelector } from 'react-redux';
-import { addChatContact } from '../../../redux/chat/contact/contactsSlice';
 import { ChatContext } from '../../../context/ChatContext';
+import { db } from '../../../firebase';
+import { addChatContactApi, getAllChatContactsApi } from '../../../redux/chat/contact/contactsApi';
 import { isObjEmpty } from '../../../utils/utils';
+import './Chat.scss';
 
 export default function Chat({ title }) {
     const navigate = useNavigate();
@@ -34,20 +33,22 @@ export default function Chat({ title }) {
 
     useEffect(() => {
         if (userId && !isObjEmpty(currentUser)) {
+            console.log('user', userId)
             db.collection('users')
-                .where('_id', '==', userId)
+                .where('_id', '==', Number(userId))
                 .get()
                 .then((querySnapshot) => {
                     querySnapshot.forEach((doc) => {
                         let user = doc.data();
                         addChatContactApi(dispatch, currentUser, user);
-                        // if (currentChat?.uid !== user.uid) {
-                        //     setCurrentChat(user);
-                        // }
-                        return;
+                        if (currentChat?.uid !== user.uid) {
+                            setCurrentChat(user);
+                        }
+                        // return;
                     });
                 })
                 .catch((err) => {
+                    console.log(err);
                     setErr(true);
                 });
                 searchParams.delete('product');

@@ -3,7 +3,7 @@ import { ChevronRight, StarFill, Plus, HandThumbsUpFill } from 'react-bootstrap-
 import { useSelector } from 'react-redux';
 function Head() {
     const initProductDetail = useSelector((state) => state.products?.productDetail?.data) || {};
-    const { title='', slug='', category='', categorySlug='', star=2.5454545454545454, totalVote=11, rating } = initProductDetail;
+    const { title='', slug='', category='', categorySlug='', star=2.5454545454545454, totalVote=11 } = initProductDetail;
 
     const data = {
         like: '910',

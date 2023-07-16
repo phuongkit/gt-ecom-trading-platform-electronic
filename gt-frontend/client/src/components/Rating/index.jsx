@@ -1,16 +1,15 @@
-import { useState, useEffect } from 'react';
-import { StarFill, HeartFill, ThreeDots, ChatFill } from 'react-bootstrap-icons';
-import { Modal } from 'flowbite-react';
 import clsx from 'clsx';
-import moment from 'moment';
-import { ratingService } from '~/services';
-import { v4 as uuidv4 } from 'uuid';
+import { Modal } from 'flowbite-react';
+import { useState } from 'react';
+import { ChatFill, HeartFill, StarFill, ThreeDots } from 'react-bootstrap-icons';
 import { useDispatch, useSelector } from 'react-redux';
-import PopupInfo from './PopupInfo';
-import { updateDiscussRating } from '~/redux/product/productsSlice';
 import swal from 'sweetalert';
+import { v4 as uuidv4 } from 'uuid';
+import { updateDiscussRating } from '~/redux/product/productsSlice';
+import { ratingService } from '~/services';
 import { sentimentService } from '../../services';
 import { getSentimentByResponse } from '../../utils';
+import PopupInfo from './PopupInfo';
 
 const Rating = ({ onClick }) => {
     const [numberStar, setNumberStar] = useState(5);
@@ -44,7 +43,7 @@ const Star = ({ star }) => {
 function ProductRating() {
     const initProductDetail = useSelector((state) => state.products.productDetail.data);
 
-    const {  title='', star=2.5454545454545454, totalVote=11, img, rating, id, vote } = initProductDetail;
+    const { title = '', star = 2.5454545454545454, totalVote = 11, img, rating, id, vote } = initProductDetail;
 
     const dispatch = useDispatch();
     const [productRating, setProductRating] = useState(() => {
@@ -55,6 +54,7 @@ function ProductRating() {
 
     const [showModal, setShowModal] = useState(false);
     const [showPopupInfo, setShowPopupInfo] = useState(false);
+    const [isReview, setReview] = useState(true);
     // const [star, setStar] = useState(0);
     const [discuss, setDiscuss] = useState({ id, status: false, data: [] });
     const [ratingId, setRatingId] = useState({ index: -1, id });
@@ -76,38 +76,6 @@ function ProductRating() {
         'https://cdn-www.vinid.net/2020/09/e9e5897c-i%E1%BB%87n-tho%E1%BA%A1i-ch%E1%BB%A5p-%E1%BA%A3nh-%C4%91%E1%BA%B9p.jpg',
         'https://didongviet.vn/dchannel/wp-content/uploads/2022/05/2-dien-thoai-chup-anh-dep-didongviet.jpg',
     ];
-    // const vote = [
-    //     {
-    //         star: 5,
-    //         percent: 79,
-    //     },
-    //     {
-    //         star: 4,
-    //         percent: 13,
-    //     },
-    //     {
-    //         star: 3,
-    //         percent: 4,
-    //     },
-    //     {
-    //         star: 2,
-    //         percent: 2,
-    //     },
-    //     {
-    //         star: 1,
-    //         percent: 2,
-    //     },
-    // ];
-
-    // const sum = function (items = [], prop) {
-    //     return items.reduce(function (a, b) {
-    //         const star = b[prop] ? b[prop] : 0;
-    //         return a + star;
-    //     }, 0);
-    // };
-
-    // let avgStar = sum(rating, 'star') / rating?.length;
-    // avgStar = Number.isNaN(avgStar) ? 0 : avgStar;
 
     const handleDiscuss = (comment) => {
         setDiscuss((state) => {
@@ -149,15 +117,15 @@ function ProductRating() {
                 ...state,
                 data: [newDiscuss, ...state.data],
             }));
-            swal({text: 'Thành công!', icon: 'success',});
+            swal({ text: 'Thành công!', icon: 'success' });
             setShowPopupInfo(false);
         } else {
-            swal({text: 'Thất bại', icon: 'error',});
+            swal({ text: 'Thất bại', icon: 'error' });
         }
     };
     const handleSubmit = async () => {
-        let sentiment = await sentimentService.getSentimentByString(infoRating.content)
-        sentiment = getSentimentByResponse(sentiment)
+        let sentiment = await sentimentService.getSentimentByString(infoRating.content);
+        sentiment = getSentimentByResponse(sentiment);
         const formData = new FormData();
         formData.append(
             'data',
@@ -167,8 +135,8 @@ function ProductRating() {
                         productId: infoRating.productId,
                         content: infoRating.content,
                         replyForFeedbackId: infoRating.replyForFeedbackId,
-                        star: infoRating.star,
-                        sentiment
+                        star: isReview ? infoRating.star : -1,
+                        sentiment,
                     }),
                 ],
                 { type: 'application/json' },
@@ -179,7 +147,7 @@ function ProductRating() {
                 formData.append('images', infoRating.images[i]);
             }
         }
-        
+
         try {
             setShowModal(false);
             const res = await ratingService.postRating(formData);
@@ -188,28 +156,28 @@ function ProductRating() {
                 if (infoRating.replyForFeedbackId === null) {
                     setProductRating((old) => [res.data, ...old]);
                 } else {
-                    setDiscuss((state) => (
-                        {
-                            ...state,
-                            data: (state.id === res.data.replyForFeedbackId ? [res.data, ...state.data] : state.data),
-                        }
-                    ));
+                    setDiscuss((state) => ({
+                        ...state,
+                        data: state.id === res.data.replyForFeedbackId ? [res.data, ...state.data] : state.data,
+                    }));
                 }
-                swal({text: 'Tạo nhận xét thành công!', icon: 'success',});
+                swal({ text: 'Tạo nhận xét thành công!', icon: 'success' });
                 // if (res.status ==== 'created')
                 // setProductRating((old) => [...old, res]);
-            }
-            else {
-                swal({text: res.message, icon: 'error',});
+            } else {
+                swal({ text: res.message, icon: 'error' });
             }
         } catch (err) {
             if (err?.status === 'OK' && err?.message.startsWith('Feedback is existed')) {
-                swal({text: 'Bạn đã nhận xét đánh giá này. Không thể đánh giá thêm!', icon: 'error',});
+                swal({ text: 'Bạn đã nhận xét đánh giá này. Không thể đánh giá thêm!', icon: 'error' });
             } else {
-                swal({text: err.message, icon: 'error',});
+                swal({ text: err.message, icon: 'error' });
             }
         }
         infoRating.replyForFeedbackId = null;
+    };
+    const handleComment = (e) => {
+        setReview(!isReview);
     };
     return (
         <div className=" p-4 w-full bg-while ">
@@ -226,22 +194,24 @@ function ProductRating() {
                     </div>
                     {vote?.map((item) => {
                         const style = { width: `${item.percent}%` };
-                        return (
-                            <div className="flex items-center text-2xl" key={item.star}>
-                                <span className="flex">
-                                    {item.star}&nbsp;
-                                    <i>
-                                        <StarFill />
-                                    </i>
-                                </span>
-                                &nbsp;
-                                <div className="container bg-gray-200 h-1.5">
-                                    <div className="bg-yellow-400 h-full" style={style}></div>
+                        if (item.star > 0) {
+                            return (
+                                <div className="flex items-center text-2xl" key={item.star}>
+                                    <span className="flex">
+                                        {item.star}&nbsp;
+                                        <i>
+                                            <StarFill />
+                                        </i>
+                                    </span>
+                                    &nbsp;
+                                    <div className="container bg-gray-200 h-1.5">
+                                        <div className="bg-yellow-400 h-full" style={style}></div>
+                                    </div>
+                                    &nbsp;
+                                    <span className="text-blue-500 font-bold">{item.percent}%</span>
                                 </div>
-                                &nbsp;
-                                <span className="text-blue-500 font-bold">{item.percent}%</span>
-                            </div>
-                        );
+                            );
+                        }
                     })}
                 </div>
                 <div className="flex flex-wrap gap-4 ml-8">
@@ -266,9 +236,11 @@ function ProductRating() {
                     return (
                         <div className="py-8 border-b m-4" key={index}>
                             <p>{comment.author.username}</p>
-                            <span className="text-yellow-300">
-                                <Star star={comment.star} />
-                            </span>
+                            {comment.star > 0 && (
+                                <span className="text-yellow-300">
+                                    <Star star={comment.star} />
+                                </span>
+                            )}
                             &nbsp;
                             <i>
                                 <HeartFill className="text-red-600" />
@@ -305,7 +277,7 @@ function ProductRating() {
                                         onClick={() => {
                                             let content = document.getElementById(`inputDiscuss${index}`).value;
                                             if (content === '') {
-                                                swal({text: 'Vui long nhap noi dung', icon: 'warning',});
+                                                swal({ text: 'Vui long nhap noi dung', icon: 'warning' });
                                             }
                                             infoRating.content = content;
                                             infoRating.replyForFeedbackId = comment.id;
@@ -348,12 +320,22 @@ function ProductRating() {
                                 </div>
                                 <p>{title}</p>
                             </div>
-                            <div className="flex justify-center my-4">
-                                <Rating
-                                    onClick={(e) => {
-                                        infoRating = { ...infoRating, star: e };
-                                    }}
-                                />
+                            <div className="flex">
+                                <button
+                                    className="p-4 m-4 bg-blue-500 rounded-xl text-white mr-8"
+                                    onClick={handleComment}
+                                >
+                                    Ẩn số sao
+                                </button>
+                                {isReview && (
+                                    <div className="flex justify-center my-4">
+                                        <Rating
+                                            onClick={(e) => {
+                                                infoRating = { ...infoRating, star: e };
+                                            }}
+                                        />
+                                    </div>
+                                )}
                             </div>
 
                             <form
@@ -375,31 +357,6 @@ function ProductRating() {
                                     }}
                                     placeholder="Mời bạn chia sẻ thêm một số cảm nhận về sản phẩm ..."
                                 ></textarea>
-                                {/* <div>
-                                    <input
-                                        type=""
-                                        className="p-4 border outline-none rounded-xl mr-4"
-                                        placeholder="Họ và tên (bắt buộc)"
-                                        required
-                                        onChange={(e) => {
-                                            let { user } = infoRating;
-                                            user = { ...user, username: e.target.value };
-                                            infoRating = { ...infoRating, user };
-                                        }}
-                                    />
-                                    <input
-                                        type=""
-                                        className="p-4 border outline-none rounded-xl"
-                                        placeholder="Số điện thoại (bắt buộc)"
-                                        required
-                                        pattern="(84|0[3|5|7|8|9])+([0-9]{8})\b"
-                                        onChange={(e) => {
-                                            let { user } = infoRating;
-                                            user = { ...user, id: e.target.value };
-                                            infoRating = { ...infoRating, user };
-                                        }}
-                                    />
-                                </div> */}
                                 <button type="submit" className="p-4 bg-blue-500 rounded-xl text-white">
                                     Gửi đánh giá ngay
                                 </button>
