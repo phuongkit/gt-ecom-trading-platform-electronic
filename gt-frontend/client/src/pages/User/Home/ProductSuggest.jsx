@@ -19,6 +19,9 @@ function ProductSuggest() {
             <>
                 <div className="flex flex-wrap gap-8 w-full">
                     {products && products.map((product) => {
+                        if(product.availableQuantity == 0){
+                            return <ProductCard key={product.title} {...product} soldout = {  true} />;
+                        }
                         return <ProductCard key={product.title} {...product} />;
                     })}
                     <div className="w-full">

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { productService } from '~/services';
-import PieChartComponent from '../../../components/Chat/PieChartComponent';
+// import PieChartComponent from '../../../components/Chat/PieChartComponent';
 import { DEFAULT_STORE } from '../../../utils';
 import ProductRating from './../../../components/Rating/index';
 import swal from 'sweetalert';
@@ -150,28 +150,7 @@ function ProductBody() {
                                         phụ kiện điện thoại thông thường nó là 1 phụ kiện thời trang vô cùng đẹp với 5
                                         tông màu đa dạng phù hợp với nhiều cá tính. Phù hợp với tất cả các nam thanh nữ
                                         tú khi ra đường cũng như học trực tuyến, dùng để nghe nhạc, chơi game, xem
-                                        phim.... - Có khả năng gấp gọn lại cũng như kéo dãn ra để vừa mọi cỡ đầu. Ngoài
-                                        ra phần khung được làm bằng nhựa cao cấp cực bền và không gây mùi khó chịu như
-                                        các sản phẩm rẻ tiền khác - Hỗ trợ micro đàm thoại khả năng tương thích với các
-                                        smartphone là 100%. Có cổng cắm chuyển đổi thay vì kết nối bluetooth - Nệm tai
-                                        cao cấp cực kỳ êm ái và thoáng khí - Chất lượng âm thanh cực tốt. Bass treble
-                                        khỏe, mạnh mẽ, thể hiện rõ ràng trong từng nốt âm thanh - Công nghệ Bluetooth
-                                        5.0 ổn định tín hiệu và khắc phục vấn đề delay khi chơi game so với các công
-                                        nghệ bluetooth cũ * THÔNG SỐ KĨ THUẬT : Tai nghe bluetooth tai nghe mèo không
-                                        dây - Bluetooth 5.0, JL chip - Dung lượng pin 400 mAh, thời gian sạc 2 giờ -
-                                        Cuộc gọi/Thời gian nghe nhạc: 10 giờ - Thời gian chờ: 200 giờ - Đường kính loa:
-                                        40mm - Kích thước: 203*175*80mm; Trọng Lượng: 182g - Tính năng nổi bật: Có thể
-                                        dùng bluetooth, dùng dây 3.5, dùng thẻ nhớ đều được - Tai nghe bluetooth tai mèo
-                                        dùng được cho mọi dòng điện thoại, máy tính bảng, laptop và PC * CÁCH SỬ DỤNG :
-                                        Headphone chống ồn - Nhấn giữ nút nguồn của Headphone 2s cho đèn sáng - Mở
-                                        bluetooth ở điện thoại để kết nối với bluetooth của Headphone STN-28 - Nhấn giữ
-                                        nút cuộc gọi để tắt đèn khi không muốn dùng đèn led - Thời gian sạc khoảng 1-2h,
-                                        sạc xong sẽ tắt đèn báo nhưng bạn vẫn nên để ý thời gian để tắt sạc cho an toàn
-                                        - Khi gần hết PIN tai nghe sẽ báo bằng giọng nói của chị ''Gu-gồ'' nên cũng đừng
-                                        giật mình - Tai nghe chống nước, nhưng đừng vì thế mà bạn nhúng xuống nước nha
-                                        Chúng tôi làm việc chuyên nghiệp và đặt UY TÍN lên hàng đầu! 100% CAM KẾT VỀ
-                                        CHẤT LIỆU VÀ CHẤT LƯỢNG 100% SẢN PHẨM ĐÚNG NHƯ MÔ TẢ 👉GIAO TẬN TAY KHÁCH HÀNG
-                                        MỚI THU TIỀN 100% Luôn cho khách KIỂM TRA HÀNG trước khi thanh toán 100% MIỄN
+                                        phim.... 👉GIAO TẬN TAY KHÁCH HÀNG MỚI THU TIỀN 100% Luôn cho khách KIỂM TRA HÀNG trước khi thanh toán 100% MIỄN
                                         PHÍ đổi trả nếu hàng lỗi, không đúng sản phẩm như đã đặt 100% Giao hàng TOÀN
                                         QUỐC, chỉ 3-5 ngày nhận được hàng #tai #nghe #bluetooth #khong #day #headphone
                                         #chup #tai #meo #tainghe #khongday #tainghemeo #tainghekhongday
@@ -187,7 +166,7 @@ function ProductBody() {
                 </div>
 
                 <div className="product__body-right">
-                   <PieChartComponent sentiment={initProductDetail?.sentiment}></PieChartComponent>
+                   {/* <PieChartComponent sentiment={initProductDetail?.sentiment}></PieChartComponent> */}
 
                     <h2 className="product__best-seller-title">Mô tả sản phẩm</h2>
 

@@ -31,7 +31,7 @@ function Footer() {
             </div>
             <div className={styles.bottom}>
                 <p>
-                © 2022 - Bản quyền thuộc về Công ty Phúc Xi Cúc
+                © 2022 - Bản quyền thuộc về Công ty PNTech
                 </p>
             </div>
         </footer>

@@ -43,7 +43,7 @@ export const publishRoutes = [
         // path: 'tim-kiem',
         element: (
             <Suspense fallback={<Loading />}>
-                <SearchPage title="Tìm kiếm | Phúc Xi Cúc" />
+                <SearchPage title="Tìm kiếm | PNTech" />
             </Suspense>
         ),
         children: [
@@ -53,7 +53,7 @@ export const publishRoutes = [
                 // path: 'tim-kiem',
                 element: (
                     <Suspense fallback={<Loading />}>
-                        <SearchPage title="Tìm kiếm | Phúc Xi Cúc" />
+                        <SearchPage title="Tìm kiếm | PNTech" />
                     </Suspense>
                 ),
             },
@@ -79,7 +79,7 @@ export const publishRoutes = [
         path: '/cart',
         element: (
             <Suspense fallback={<Loading />}>
-                <Cart title="Giỏ hàng - Phúc Xi Cúc" />
+                <Cart title="Giỏ hàng - PNTech" />
             </Suspense>
         ),
     },
@@ -88,7 +88,7 @@ export const publishRoutes = [
         element: (
             <Suspense fallback={<Loading />}>
                 <ChatContextProvider>
-                    <Chat title="Chat - Phúc Xi Cúc" />
+                    <Chat title="Chat - PNTech" />
                 </ChatContextProvider>
             </Suspense>
         ),
@@ -100,7 +100,7 @@ export const publishRoutes = [
                 element: (
                     <Suspense fallback={<Loading />}>
                         <ChatContextProvider>
-                            <Chat title="Chat - Phúc Xi Cúc" />
+                            <Chat title="Chat - PNTech" />
                         </ChatContextProvider>
                     </Suspense>
                 ),
@@ -111,7 +111,7 @@ export const publishRoutes = [
         path: '/ShopInfo/:slug',
         element: (
             <Suspense fallback={<Loading />}>
-                <ShopInfo title="Thông tin Shop | Phúc Xi Cúc" />
+                <ShopInfo title="Thông tin Shop | PNTech" />
             </Suspense>
         ),
     },
@@ -120,7 +120,7 @@ export const publishRoutes = [
         path: 'order',
         element: (
             <Suspense fallback={<Loading />}>
-                <Order title="Đơn hàng - Phúc Xi Cúc" />
+                <Order title="Đơn hàng - PNTech" />
             </Suspense>
         ),
     },
@@ -128,7 +128,7 @@ export const publishRoutes = [
         path: 'order/detail/:id',
         element: (
             <Suspense fallback={<Loading />}>
-                <OrderDetail title="Chi tiết Đơn hàng - Phúc Xi Cúc" />
+                <OrderDetail title="Chi tiết Đơn hàng - PNTech" />
             </Suspense>
         ),
     },
@@ -137,7 +137,7 @@ export const publishRoutes = [
         path: 'history',
         element: (
             <Suspense fallback={<Loading />}>
-                <History title="Lịch sử mua hàng | Phúc Xi Cúc" />
+                <History title="Lịch sử mua hàng | PNTech" />
             </Suspense>
         ),
     },
@@ -145,7 +145,7 @@ export const publishRoutes = [
         path: 'history/purchaseHistory',
         element: (
             <Suspense fallback={<Loading />}>
-                <PurchaseHistory title="Lịch sử mua hàng | Phúc Xi Cúc" />
+                <PurchaseHistory title="Lịch sử mua hàng | PNTech" />
             </Suspense>
         ),
     },
@@ -153,7 +153,7 @@ export const publishRoutes = [
         path: '/history/profile',
         element: (
             <Suspense fallback={<Loading />}>
-                <Profile title="Lịch sử mua hàng | Phúc Xi Cúc" />
+                <Profile title="Lịch sử mua hàng | PNTech" />
             </Suspense>
         ),
     },

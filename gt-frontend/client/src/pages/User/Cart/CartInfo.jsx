@@ -20,7 +20,7 @@ import {
     toAddressSlug,
 } from '../../../utils';
 import { createOrder } from '../../../redux/order/orderSlice';
-import { discountService } from '../../../services';
+import { discountService, productService } from '../../../services';
 import { AccordionActions, Portal } from '@material-ui/core';
 import {
     addCheckoutDiscount,
@@ -67,9 +67,20 @@ function CartInfo() {
         saleName: '',
         note: '',
     };
+    console.log(cartItems,"cartItems")
+    const ok = async()=>{
+
+    }
     const handleSubmit = (e) => {
         e.preventDefault();
+
         if (getUser) {
+            cartItems.map(async(item) =>{
+                let getItem = await productService.getProductById(item.id)
+                if(getItem.data.availableQuantity < item.quantity) {
+                    swal({ text: `Sản phẩm trong kho không đủ cho sản phẩm ${item.title}.`, icon: 'error' });
+                }
+            })
             const fullName = document.getElementById('fullname').value;
             const phone = document.getElementById('phone').value;
             let homeAdd = document.getElementById('homeAddress').value;
@@ -109,7 +120,7 @@ function CartInfo() {
             dispatch(clearCart());
             navigate('/order');
         } else {
-            navigate('/SingIn');
+            swal({ text: `Vui lòng đăng nhập trước khi mua hàng`, icon: 'warning' });
         }
     };
     useEffect(() => {
