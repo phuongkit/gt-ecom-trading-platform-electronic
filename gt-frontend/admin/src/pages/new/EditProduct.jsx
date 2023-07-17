@@ -81,7 +81,7 @@ const EditProduct = ({ inputs, title }) => {
       description: $(`input[id="description"]`).value,
       price: Number.parseInt($(`input[id="price"]`).value),
       quantity: Number.parseInt($(`input[id="quantity"]`).value),
-      status: "PRODUCT_UN_TRADING",
+      status: "PRODUCT_TRADING",
       shopId: Number.parseInt(shopId),
       brandId: Number.parseInt(brandId),
       categoryId: Number.parseInt(categoryId),

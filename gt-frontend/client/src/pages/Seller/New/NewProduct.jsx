@@ -93,7 +93,7 @@ const New = ({ title, action, isUpdate }) => {
             price: Number(price),
             quantity: Number(amount),
             shopId: Number(getuser.shopId),
-            status: 'PRODUCT_UN_TRADING',
+            status: 'PRODUCT_TRADING',
             brandId: Number(brand_id),
             categoryId: Number(category_id),
             descriptions: {

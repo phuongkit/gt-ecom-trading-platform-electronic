@@ -139,12 +139,12 @@ BEGIN
 			FROM tbl_feedback fb RIGHT OUTER JOIN tbl_product p ON fb.product_id = p.id 
 				INNER JOIN tbl_category c ON p.category_id = c.id
                 INNER JOIN tbl_image i ON p.thumbnail = i.id
-			WHERE p.enabled = 1 AND fb.created_at >= inStartDate and fb.sentiment = 'SENTIMENT_NEGATIVE'
+			WHERE p.enabled = 1 and fb.sentiment = 'SENTIMENT_NEGATIVE'
 			GROUP BY p.id, p.shop_id, fb.sentiment) as a
 			INNER JOIN
 			(SELECT p.id product_id, p.shop_id, COUNT(fb.id) as allCount
 			FROM tbl_feedback fb RIGHT OUTER JOIN tbl_product p ON fb.product_id = p.id
-			WHERE p.enabled = 1 AND fb.created_at >= inStartDate
+			WHERE p.enabled = 1
 			GROUP BY p.id, p.shop_id) b
 			ON a.product_id = b.product_id
 		WHERE allCount >= inMinAll AND (count * 100 / allCount) >= inMinNeg) as newp
@@ -180,7 +180,7 @@ BEGIN
 			ELSE 
 				INSERT INTO tbl_product_black_list(is_baned, neg_total, percent, product_id, scan_at, shop_id, slug, status, total, count, img, product_name) 
 				VALUES (1, negTotal, percent, productId, currentDate, shopId, slug, DEFAULT, total, m + 1, img, productName); 
---                 UPDATE tbl_product SET enabled = 0 WHERE product_id = product_id;
+--                 UPDATE tbl_product SET enabled = 0 WHERE id = productId;
 			END IF;
         END IF;
         SET i = i + 1;
@@ -194,8 +194,14 @@ BEGIN
 		IF(is_baned = '0', 'Notice about the list of potentially banned products', -- 'Thông báo về danh sách sản phẩm có nguy cơ bị ban',
 		'Notice of prohibited products list' -- 'Thông báo về danh sách sản phẩm của shop bạn đã bị ban'
         ) title,
-		CONCAT('<p class="mt-6 text-2xl leading-10">Chào shop ', s.name,',</p>', 
-		'<p class="mt-6 text-2xl leading-10">Praesent dui ex, dapibus eget mauris ut, finibus vestibulum enim. Quisque9 arcu leo, facilisis in fringilla id, luctus in tortor. Nunc vestibulum est quis orci varius viverra. Curabitur dictum volutpat massa vulputate molestie. In at felis ac velit maximus convallis. </p> <p class="mt-6 text-2xl leading-10">Sed elementum turpis eu lorem interdum, sed porttitor eros commodo. Nam eu venenatis tortor, id lacinia diam. Sed aliquam in dui et porta. Sed bibendum orci non tincidunt ultrices. Vivamus fringilla, mi lacinia dapibus condimentum, ipsum urna lacinia lacus, vel tincidunt mi nibh sit amet lorem.</p><p class="my-6 text-2xl">Sincerly,</p>') body, 
+		CONCAT('<html>
+		<body>
+		<p class="mt-6 text-2xl leading-10">Chào shop ', s.name,',</p>', 
+		'<p class="mt-6 text-2xl leading-10">We are sending you this letter to inform you that the following list of products has been checked by the system and found that the number of negative reviews is high.</p> 
+        <p class="mt-6 text-2xl leading-10">So we ask you to double check and if this happens for the 3rd time, the product will be banned.</p>
+        <p>Sincerely,<br>-PNTech Admin</br></p>
+		</body>
+		</html>') body, 
 	CONCAT('[', GROUP_CONCAT('{', CONCAT(
 		'"product_id" : "', tbl.product_id, '",', 
         '"slug" : "', tbl.slug, '",', 
@@ -219,6 +225,20 @@ SET @inShopId = NULL,
     @inStartDateNewSession = DATE_SUB(CURRENT_DATE(), INTERVAL 28 DAY);
 CALL updateBlackListProduct(@inShopId, @inStartDate, @inMinAll, @inMinNeg, @inStartDateNewSession);
 
+DROP PROCEDURE IF EXISTS updateBlackProductStatus;
+DELIMITER //
+CREATE PROCEDURE updateBlackProductStatus(IN checkDate DATE)
+BEGIN 
+	UPDATE tbl_product SET enabled = 0 WHERE enabled = 1 AND  id in 
+    (select product_id from tbl_product_black_list 
+    WHERE DATE(scan_at) = DATE(checkDate) and is_baned = 1);
+    select * from tbl_product WHERE enabled = 0; 
+END; //
+DELIMITER ;
+
+SET @checkDate = CURRENT_DATE();
+call updateBlackProductStatus(@checkDate);
+
 DROP PROCEDURE IF EXISTS updateShopPrice;
 DELIMITER //
 CREATE PROCEDURE updateShopPrice(IN rangeDate INT)
@@ -226,12 +246,13 @@ BEGIN
 	SET SQL_SAFE_UPDATES = 0;
 	UPDATE tbl_shop SET end_price_at = NULL WHERE CONVERT(end_price_at, DATE) < CONVERT(NOW(), DATE);
 	INSERT INTO tbl_message(shop_id, to_name, to_email, is_baned, created_at, scan_at, type, title, body)
-    (SELECT s.id, s.name, s.email, false, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), 'MESSAGE_SHOP_PRICE', 'Notice about the expiration of the shop subscription package', CONCAT('<html>
+    (SELECT s.id, s.name, s.email, false, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), 'MESSAGE_SHOP_PRICE', 'Notice about the expiration of the shop subscription package', 
+    CONCAT('<html>
 	<body>
 	<p>Dear ',s.name,' shop,</p>
 	<p>We are sending you this letter to let you know that you have ', rangeDate, ' days left on your \'', sp.name,'\' subscription which will expire at ', CONVERT(s.end_price_at, DATE), '.
 	<br>If you receive this message, please renew or sign up for a new plan before the expiration date. Otherwise, upon expiration, the function of selling new products will be temporarily closed.</p>
-	<p>Sincerely,<br>-PXC Admin</br></p>
+	<p>Sincerely,<br>-PNTech Admin</br></p>
 	</body>
 	</html>')
 	FROM tbl_shop s INNER JOIN tbl_shop_price sp ON s.shop_price_id = sp.id

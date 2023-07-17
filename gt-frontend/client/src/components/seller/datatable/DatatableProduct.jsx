@@ -53,7 +53,7 @@ const Datatable = () => {
                             <div className="updateButton">Edit</div>
                         </Link>
                         <div className="deleteButton" onClick={() => handleDelete(params.row.id)}>
-                            Delete
+                            Disable
                         </div>
                     </div>
                 );

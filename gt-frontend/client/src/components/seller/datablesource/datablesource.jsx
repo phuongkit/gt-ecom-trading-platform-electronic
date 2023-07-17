@@ -237,29 +237,16 @@ export const productColumns = [
             return <div className={`cellWithStatus`}>{params.row.availableQuantity}</div>;
         },
     },
-    // {
-    //   field: "seller",
-    //   headerName: "Seller",
-    //   width: 200,
-    //   renderCell: (params) => {
-    //     return (
-    //       <div className="cellWithImg">
-
-    //         {params.row.shop.name}
-    //       </div>
-    //     );
-    //   },
-    // },
 
     {
         field: 'status',
         headerName: 'Status',
-        width: 100,
+        width: 150,
         renderCell: (params) => {
             return (
                 <div className={`cellWithStatus`}>
                     {EProductStatus.getNameFromIndex(params.row?.status) ||
-                        EProductStatus.PRODUCT_UN_TRADING.name}
+                        EProductStatus.PRODUCT_TRADING.name}
                 </div>
             );
         },
@@ -329,7 +316,7 @@ export const orderShipmentColumns = [
             return (
                 <div className={`cellWithStatus`}>
                     {EProductStatus.getNameFromIndex(params.row?.status) ||
-                        EProductStatus.PRODUCT_UN_TRADING.name}
+                        EProductStatus.PRODUCT_TRADING.name}
                 </div>
             );
         },

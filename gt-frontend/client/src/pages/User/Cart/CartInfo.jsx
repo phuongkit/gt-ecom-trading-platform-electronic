@@ -38,6 +38,7 @@ function CartInfo() {
     const [currentDiscount, setCurrentDiscount] = useState(null);
     const [totalPriceDiscount, setTotalPriceDiscount] = useState(0);
     const discounts = useSelector((state) => state.discounts.checkoutDiscounts.data);
+    const [checkAvailable, setCheckAvailable] = useState(false);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const getUser = JSON.parse(localStorage.getItem('customerInfo'));
@@ -67,58 +68,61 @@ function CartInfo() {
         saleName: '',
         note: '',
     };
-    console.log(cartItems,"cartItems")
-    const ok = async()=>{
-
-    }
+    console.log(cartItems, 'cartItems');
+    const ok = async () => {};
     const handleSubmit = (e) => {
         e.preventDefault();
-
+        // let checkAvailable = true;
         if (getUser) {
-            cartItems.map(async(item) =>{
-                let getItem = await productService.getProductById(item.id)
-                if(getItem.data.availableQuantity < item.quantity) {
+            cartItems.map(async (item) => {
+                let getItem = await productService.getProductById(item.id);
+                if (getItem.data.availableQuantity < item.quantity) {
                     swal({ text: `Sản phẩm trong kho không đủ cho sản phẩm ${item.title}.`, icon: 'error' });
+                    setCheckAvailable(false);
                 }
-            })
-            const fullName = document.getElementById('fullname').value;
-            const phone = document.getElementById('phone').value;
-            let homeAdd = document.getElementById('homeAddress').value;
-            const sex = document.getElementsByName('sex');
-            const discountCode = document.getElementById('ticketid').value;
-            const note = document.getElementById('anotheroption').value;
-            let sexValue;
-            for (let i = 0, length = sex.length; i < length; i++) {
-                if (sex[i].checked) {
-                    sexValue = sex[i].value;
+            });
+            if (checkAvailable) {
+                const fullName = document.getElementById('fullname').value;
+                const phone = document.getElementById('phone').value;
+                let homeAdd = document.getElementById('homeAddress').value;
+                const sex = document.getElementsByName('sex');
+                const discountCode = document.getElementById('ticketid').value;
+                const note = document.getElementById('anotheroption').value;
+                let sexValue;
+                for (let i = 0, length = sex.length; i < length; i++) {
+                    if (sex[i].checked) {
+                        sexValue = sex[i].value;
+                    }
                 }
+                let orderItemDetails = cartItems.map((value) => ({
+                    productId: value,
+                    quantity: value.quantity,
+                    saleName: value.tag,
+                    note: value?.note ? value.note : '',
+                }));
+                let data = {
+                    ...orderDetail,
+                    gender: sexValue === null || sexValue === undefined ? EGender.UNKNOWN : Number.parseInt(sexValue),
+                    fullName: fullName,
+                    phone: phone,
+                    address: {
+                        homeAdd: homeAdd,
+                        ward: addressOption.ward,
+                        district: addressOption.district,
+                        city: addressOption.city,
+                    },
+                    discountIds: discounts,
+                    totalPriceDiscount: totalPriceDiscount,
+                    note: note,
+                    orderItems: orderItemDetails,
+                    totalPriceProduct: totalPrice,
+                };
+                dispatch(createOrder(data));
+                dispatch(clearCart());
+                navigate('/order');
+            } else {
+                setCheckAvailable(true);
             }
-            let orderItemDetails = cartItems.map((value) => ({
-                productId: value,
-                quantity: value.quantity,
-                saleName: value.tag,
-                note: value?.note ? value.note : ''
-            }));
-            let data = {
-                ...orderDetail,
-                gender: sexValue === null || sexValue === undefined ? EGender.UNKNOWN : Number.parseInt(sexValue),
-                fullName: fullName,
-                phone: phone,
-                address: {
-                    homeAdd: homeAdd,
-                    ward: addressOption.ward,
-                    district: addressOption.district,
-                    city: addressOption.city,
-                },
-                discountIds: discounts,
-                totalPriceDiscount: totalPriceDiscount,
-                note: note,
-                orderItems: orderItemDetails,
-                totalPriceProduct: totalPrice,
-            };
-            dispatch(createOrder(data));
-            dispatch(clearCart());
-            navigate('/order');
         } else {
             swal({ text: `Vui lòng đăng nhập trước khi mua hàng`, icon: 'warning' });
         }
@@ -134,8 +138,8 @@ function CartInfo() {
                     // console.log(customerInfo);
                     let fullName = (document.getElementById('fullname').value =
                         customerInfo?.fullName === null ||
-                            customerInfo?.fullName === undefined ||
-                            customerInfo?.fullName.trim() === ''
+                        customerInfo?.fullName === undefined ||
+                        customerInfo?.fullName.trim() === ''
                             ? 'Ẩn Danh'
                             : customerInfo?.fullName);
                     let phone = (document.getElementById('phone').value = customerInfo.phone);
@@ -157,7 +161,7 @@ function CartInfo() {
                 }
             };
             setCustomerInfo();
-            getAllDiscountByUser(dispatch)
+            getAllDiscountByUser(dispatch);
         }
     }, []);
     useEffect(() => {
@@ -175,7 +179,7 @@ function CartInfo() {
         }
     }, [cartItems]);
     const handleCheckDiscountCode = async (e, codeClick = '') => {
-        let code = codeClick || $('#ticketid').value
+        let code = codeClick || $('#ticketid').value;
         if (
             code.length >= DEFAULT_VARIABLE.MIN_DISCONT_CODE_LENGTH &&
             code.length <= DEFAULT_VARIABLE.MAX_DISCONT_CODE_LENGTH
@@ -212,30 +216,32 @@ function CartInfo() {
             if (cartItems.some((item) => item.shop?.id === discount.shopId)) {
                 dispatch(addCheckoutDiscount(discount));
                 $('#ticketid').value = '';
-                let message = `Thêm mã giảm giá với code ${discount.code} ${discount.type === EDiscountType.DISCOUNT_SHOP_PRICE.index
-                    ? `giảm ${numberWithCommas(discount.price)}đ`
-                    : `giảm ${discount.percent * 100}%${discount.cappedAt !== null ? `, tối đa ${numberWithCommas(discount.cappedAt)}đ` : ''}`
-                    } với đơn tối thiểu ${numberWithCommas(discount.minSpend) || 0}đ thành công!`;
-                swal({ text: message, icon: 'warning', });
+                let message = `Thêm mã giảm giá với code ${discount.code} ${
+                    discount.type === EDiscountType.DISCOUNT_SHOP_PRICE.index
+                        ? `giảm ${numberWithCommas(discount.price)}đ`
+                        : `giảm ${discount.percent * 100}%${
+                              discount.cappedAt !== null ? `, tối đa ${numberWithCommas(discount.cappedAt)}đ` : ''
+                          }`
+                } với đơn tối thiểu ${numberWithCommas(discount.minSpend) || 0}đ thành công!`;
+                swal({ text: message, icon: 'warning' });
             }
             setCurrentDiscount(null);
         }
     };
     const getCartItemsGroupByShop = () => {
-
         return cartItems.reduce((acc, item) => {
             let shopCart = acc.find((shopCart) => shopCart?.id === item?.shop?.id) || null;
             if (shopCart === null) {
                 return [...acc, { ...item?.shop, cartItems: [item] }];
             } else {
-                acc = acc.filter(shop => shop?.id !== shopCart?.id);
+                acc = acc.filter((shop) => shop?.id !== shopCart?.id);
                 return [...acc, { ...shopCart, cartItems: [...shopCart.cartItems, item] }];
             }
         }, []);
-    }
+    };
     const handleClickVouncher = (vouncher, e = '') => {
-        handleAddDiscountCode(e, vouncher)
-    }
+        handleAddDiscountCode(e, vouncher);
+    };
     const discountsUser = useSelector((state) => state.discounts.allDiscountsUser.data);
     useEffect(() => {
         let cartItemsGroupByShop = getCartItemsGroupByShop();
@@ -247,7 +253,7 @@ function CartInfo() {
             ) {
                 continue;
             }
-            let items = cartItemsGroupByShop.find((shopCart) => (shopCart?.id === discount.shopId))?.cartItems || [];
+            let items = cartItemsGroupByShop.find((shopCart) => shopCart?.id === discount.shopId)?.cartItems || [];
             let totalPrice = 0;
             for (let item of items) {
                 totalPrice += item.price;
@@ -262,8 +268,8 @@ function CartInfo() {
                         discount.cappedAt === null
                             ? totalPrice * discount.percent
                             : totalPrice * discount.percent <= discount.cappedAt
-                                ? totalPrice * discount.percent
-                                : discount.cappedAt;
+                            ? totalPrice * discount.percent
+                            : discount.cappedAt;
                 }
             }
         }
@@ -279,36 +285,48 @@ function CartInfo() {
                     Mua thêm sản phẩm khác
                 </Link>
             </div>
-            <form className="bg-white rounded-xl px-14 py-8 shadow-sm grid grid-cols-2 grid-rows-2 gap-12" onSubmit={handleSubmit}>
+            <form
+                className="bg-white rounded-xl px-14 py-8 shadow-sm grid grid-cols-2 grid-rows-2 gap-12"
+                onSubmit={handleSubmit}
+            >
                 <div className="col-span-1 row-span-2 flex-col items-center h-full">
                     <div className="p-4 h-full mt-auto mb-auto">
                         <h2 className="text-lue-500 mb-2 text-center font-semibold text-3xl">Đơn hàng của bạn</h2>
                         {/* {cartItems.map((product, index) => (
                             <ProductItem key={index} {...product} />
                         ))} */}
-                        {
-                            getCartItemsGroupByShop()?.map(item => {
-                                return <>
-                                    <div className='flex'>
-                                        <div className='h-[23px] w-[23px]'>
-                                            <img className='w-full h-full rounded-full' src={item?.avatar}></img>
-
+                        {getCartItemsGroupByShop()?.map((item) => {
+                            return (
+                                <>
+                                    <div className="flex">
+                                        <div className="h-[23px] w-[23px]">
+                                            <img className="w-full h-full rounded-full" src={item?.avatar}></img>
                                         </div>
-                                        <span className='ml-3 text-red-400'>{item?.name}</span>
+                                        <span className="ml-3 text-red-400">{item?.name}</span>
                                         <ul className="text-xl text-black-400 flex items-center">
-                                            {discountsUser.map(vouncher => {
+                                            {discountsUser.map((vouncher) => {
                                                 if (vouncher.shopId == item.id) {
-                                                    return (<li onClick={() => handleClickVouncher(vouncher)} className='cursor-pointer hover:opacity-40 text-green-500 ml-3 border-green-500 border border-solid rounded-2xl pl-2 pr-2'>{vouncher.percent ? `- ${vouncher.percent} %` : `-${vouncher.price} đ`}</li>)
+                                                    return (
+                                                        <li
+                                                            onClick={() => handleClickVouncher(vouncher)}
+                                                            className="cursor-pointer hover:opacity-40 text-green-500 ml-3 border-green-500 border border-solid rounded-2xl pl-2 pr-2"
+                                                        >
+                                                            {vouncher.percent
+                                                                ? `- ${vouncher.percent} %`
+                                                                : `-${vouncher.price} đ`}
+                                                        </li>
+                                                    );
                                                 }
                                             })}
                                         </ul>
-
                                     </div>
 
-                                    {item.cartItems.map((cartItem, index) => <ProductItem key={index} {...cartItem} />)}
+                                    {item.cartItems.map((cartItem, index) => (
+                                        <ProductItem key={index} {...cartItem} />
+                                    ))}
                                 </>
-                            })
-                        }
+                            );
+                        })}
                         <div className="flex justify-between py-4">
                             <span>Tạm tính ({totalQuantity} sản phẩm):</span>
                             <span> {numberWithCommas(totalPrice)}₫</span>
@@ -432,14 +450,13 @@ function CartInfo() {
                         <button
                             type="submit"
                             className="py-4 px-10 border bg-blue-500 rounded-lg text-white"
-                        // onClick={handleCheckDiscountCode}
+                            // onClick={handleCheckDiscountCode}
                         >
                             Áp dụng
                         </button>
                     </form>
                 </Portal>
             </form>
-
         </div>
     );
 }

@@ -146,6 +146,7 @@ public class ProductMapperImpl implements ProductMapper {
     }
     responseDTO.setInfo(entity.getDescription());
     responseDTO.setStatus(entity.getStatus().ordinal());
+    responseDTO.setEnabled(entity.isEnabled());
     return responseDTO;
   }
 
@@ -194,6 +195,7 @@ public class ProductMapperImpl implements ProductMapper {
       responseDTO.setCategorySlug(entity.getCategory().getSlug());
     }
     responseDTO.setStatus(entity.getStatus().ordinal());
+    responseDTO.setEnabled(entity.isEnabled());
     return responseDTO;
   }
 }

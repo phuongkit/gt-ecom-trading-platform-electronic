@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { productService } from '~/services';
-// import PieChartComponent from '../../../components/Chat/PieChartComponent';
+import PieChartComponent from '../../../components/Chat/PieChartComponent';
 import { DEFAULT_STORE } from '../../../utils';
 import ProductRating from './../../../components/Rating/index';
 import swal from 'sweetalert';
@@ -104,8 +104,8 @@ function ProductBody() {
                                 <img
                                     src={initProductDetail?.shop?.avatar}
                                     alt=""
-                                    className="home-product-item__img rounded-full w-full h-full"
-                                    style={{ height: '240px', width: '240px' }}
+                                    className="home-product-item__img rounded-full w-[100px] h-[100px]"
+                            
                                 ></img>
                             </Link>
                             <h5 className="home-product-item__name">{initProductDetail?.shop?.name}</h5>
@@ -166,7 +166,7 @@ function ProductBody() {
                 </div>
 
                 <div className="product__body-right">
-                   {/* <PieChartComponent sentiment={initProductDetail?.sentiment}></PieChartComponent> */}
+                   <PieChartComponent sentiment={initProductDetail?.sentiment}></PieChartComponent>
 
                     <h2 className="product__best-seller-title">Mô tả sản phẩm</h2>
 

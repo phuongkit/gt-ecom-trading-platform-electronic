@@ -54,7 +54,7 @@ function ProductRating() {
 
     const [showModal, setShowModal] = useState(false);
     const [showPopupInfo, setShowPopupInfo] = useState(false);
-    const [isReview, setReview] = useState(true);
+    const [isReview, setReview] = useState(false);
     // const [star, setStar] = useState(0);
     const [discuss, setDiscuss] = useState({ id, status: false, data: [] });
     const [ratingId, setRatingId] = useState({ index: -1, id });
@@ -179,6 +179,13 @@ function ProductRating() {
     const handleComment = (e) => {
         setReview(!isReview);
     };
+    const handleShowModel = (e) => {
+        if (initProductDetail.enabled) {
+            setShowModal(true);
+        } else {
+            swal({title: "Sản phẩm đã bị cấm. Không thể thực hiện hành động này!", icon: "warning"});
+        }
+    }
     return (
         <div className=" p-4 w-full bg-while ">
             <p className="text-3xl font-bold">Đánh giá {title}</p>
@@ -302,11 +309,11 @@ function ProductRating() {
                     );
                 })}
             <div className="m-auto flex gap-4 w-full">
-                <button className="bg-orange-300 p-4 rounded text-white w-1/2" onClick={() => setShowModal(true)}>
+                <button className="bg-orange-300 p-4 rounded text-white w-1/2" onClick={handleShowModel}>
                     <i>
                         <StarFill />
                     </i>
-                    &nbsp; Viết đánh giá
+                    &nbsp; Bình luận
                 </button>
                 <Modal show={showModal} onClose={() => setShowModal(false)} size="5xl">
                     <Modal.Header>
@@ -325,7 +332,7 @@ function ProductRating() {
                                     className="p-4 m-4 bg-blue-500 rounded-xl text-white mr-8"
                                     onClick={handleComment}
                                 >
-                                    Ẩn số sao
+                                    Đánh giá
                                 </button>
                                 {isReview && (
                                     <div className="flex justify-center my-4">

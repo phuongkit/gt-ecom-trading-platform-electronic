@@ -130,13 +130,13 @@ public class Utils {
 
     // Objects Per Page
     public static final String DEFAULT_PAGE = "1";
-    public static final String DEFAULT_SIZE = "20";
-    public static final String PRODUCT_PER_PAGE = "20";
-    public static final String SHOP_PER_PAGE = "20";
-    public static final String DISCOUNT_PER_PAGE = "30";
+    public static final String DEFAULT_SIZE = "50";
+    public static final String PRODUCT_PER_PAGE = "40";
+    public static final String SHOP_PER_PAGE = "40";
+    public static final String DISCOUNT_PER_PAGE = "40";
     public static final String IMAGE_PER_PAGE = "50";
-    public static final String USERS_PER_PAGE = "20";
-    public static final String COMMENT_PER_PAGE = "10";
+    public static final String USERS_PER_PAGE = "40";
+    public static final String COMMENT_PER_PAGE = "100";
     public static final String FEEDBACK_PER_PAGE = "300";
     public static final String DEFAULT_FIRST_NAME = "Danh";
     public static final String DEFAULT_LAST_NAME = "Ẩn";

@@ -423,7 +423,7 @@ export const EProductStatus = {
     getNameFromIndex: (index) =>
         EProductStatus[
             Object.keys(EProductStatus)[
-                index > EProductStatus.PRODUCT_UN_TRADING.index ? EProductStatus.PRODUCT_UN_TRADING.index : index
+                index > EProductStatus.PRODUCT_TRADED.index ? EProductStatus.PRODUCT_TRADING.index : index
             ]
         ]?.name || EProductStatus.PRODUCT_UN_TRADING.name,
 };

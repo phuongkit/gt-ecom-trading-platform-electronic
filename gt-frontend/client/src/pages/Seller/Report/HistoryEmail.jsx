@@ -37,7 +37,6 @@ const HistoryEmail = () => {
   },[]) 
   
   const hanleProductImages = (jsonString)=>{
-    console.log(jsonString)
     const cleanedJsonString = jsonString.replace(/,}/g, '}');
     const jsonData = JSON.parse(cleanedJsonString);
     return jsonData
@@ -45,7 +44,7 @@ const HistoryEmail = () => {
   const createMarkup = () => {
     return { __html: emailDetail?.body };
   };
-  console.log(emailDetail?.products)
+  console.log('email', messagesList)
   return (
     <div className='m-6 flex gap-5 h-[700px] mb-0'>
      <Box sx={{ minWidth: '16%', maxWidth: 360, bgcolor: 'background.paper' }} >
@@ -112,14 +111,14 @@ const HistoryEmail = () => {
                 variant="body2"
                 color="text.primary"
               >
-                Ali Connors
+                {item.toName}
               </Typography>
               <Typography
                 sx={{ display: 'inline', fontSize: '13px' }} // Increase the font size here
                 component="span"
                 variant="body2"
               >
-                {" — I'll be in your neighborhood doing errands this…"}
+                {" — We are sending you this letter to let you know that…"}
               </Typography>
             </React.Fragment>
           }
@@ -136,8 +135,8 @@ const HistoryEmail = () => {
       </div>
       <div className="mb-5">
         <div className="flex-1 align-self-center">
-          <h4 className="font-bold m-0">Humberto D. Champion</h4>
-          <small className="text-muted">support@domain.com</small>
+          <h4 className="font-bold m-0">PXC Admin</h4>
+          <small className="text-muted">support@pntech.com</small>
         </div>
       </div>
     </div>

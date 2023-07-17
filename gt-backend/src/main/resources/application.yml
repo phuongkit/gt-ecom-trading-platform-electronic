@@ -28,7 +28,7 @@ spring:
     port: 587
     username: dangquan.demo@gmail.com
     password: msxtgigpalqdwvjy
-    fromMail: norely@phucxicuc.com
+    fromMail: norely@pntech.com
     properties:
       mail:
         smtp:
@@ -98,10 +98,10 @@ app:
       - https://gt-ecom-trading-platform-electronic.vercel.app
   shop:
     percent: 0.05
-    timeRangeCheckBlackProductMs: 2419200000 # 604800000 1Week
-    timeRangeSessionMs: 12096000000 # 5 month
+    timeRangeCheckBlackProductMs: 2592000000 # 1 month
+    timeRangeSessionMs: 2592000000 # 1 month
     minSentiment: 2 #500
-    minNegativePercent: 90 #70
+    minNegativePercent: 80 #70
     rangeDayCheckShopPrice: 3
   payment:
     paypal:

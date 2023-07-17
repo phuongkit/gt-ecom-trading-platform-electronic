@@ -126,7 +126,7 @@ function CommonLayout({ children }) {
                     <ChatContextProvider>
                         <Notification/>
                     </ChatContextProvider>
-                    <Link to={'/chat'} onClick={handleChat} className="select-none text-[23px] px-6 py-2 font-semibold rounded shadow-lg shadow-purple-600/50">
+                    <Link to={'/chat'} onClick={handleChat} className="select-none px-6 py-2 font-semibold rounded shadow-lg shadow-purple-600/50">
                         Chat
                     </Link>
                 </nav>

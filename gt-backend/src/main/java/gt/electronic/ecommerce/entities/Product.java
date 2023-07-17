@@ -64,7 +64,7 @@ public class Product {
   @Enumerated(EnumType.STRING)
   @Column(length = 50, nullable = false)
   @NotNull(message = "An status is required!")
-  private EProductStatus status;
+  private EProductStatus status = EProductStatus.PRODUCT_TRADING;
 
   @ManyToOne
   @JoinColumn(name = "category_id", nullable = false)

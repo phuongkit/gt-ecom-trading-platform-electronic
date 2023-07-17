@@ -43,7 +43,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
               + "and (:shop is null or (p.shop is not null and p.shop = :shop)) "
               + "and (:location is null or p.location is null or p.location = :location) "
               + "and p.price > :minPrice "
-              + "and p.price < :maxPrice ")
+              + "and p.price < :maxPrice " +
+                  "and (:shop is null or p.enabled = true)")
   List<Product> filterProductToList(
       @Param("keyword") String keyword,
       @Param("categories") List<Category> categories,
@@ -70,7 +71,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
               + "and (:shop is null or (p.shop is not null and p.shop = :shop)) "
               + "and (:location is null or p.location is null or p.location = :location) "
               + "and p.price > :minPrice "
-              + "and p.price < :maxPrice ")
+              + "and p.price < :maxPrice " +
+                  "and (:shop is null or p.enabled = true)")
   Page<Product> filterProductToPage(
       @Param("keyword") String keyword,
       @Param("categories") List<Category> categories,
@@ -84,9 +86,17 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
   Page<Product> findAllByStatus(EProductStatus status, Pageable pageable);
 
-  Page<Product> findAllByBrand(Brand brand, Pageable pageable);
+  @Query(value = "select p from Product p" +
+          " where " +
+          " p.brand = :brand"+
+          " and p.enabled = true")
+  Page<Product> findAllByBrand(@Param("brand") Brand brand, Pageable pageable);
 
-  Page<Product> findAllByCategory(Category category, Pageable pageable);
+  @Query(value = "select p from Product p" +
+          " where " +
+          " p.category = :category"+
+          " and p.enabled = true")
+  Page<Product> findAllByCategory(@Param("category") Category category, Pageable pageable);
 
   Page<Product> findAllByCategoryAndBrand(Category category, Brand brand, Pageable pageable);
 

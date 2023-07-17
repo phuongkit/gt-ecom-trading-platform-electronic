@@ -49,4 +49,5 @@ public class ProductResponseDTO {
   private RatingDetail[] vote;
   private ProductSentiment sentiment;
   private int status;
+  private boolean isEnabled;
 }

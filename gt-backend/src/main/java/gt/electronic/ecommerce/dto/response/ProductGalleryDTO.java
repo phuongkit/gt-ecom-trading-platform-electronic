@@ -36,4 +36,5 @@ public class ProductGalleryDTO {
   private String category;
   private String categorySlug;
   private int status;
+  private boolean isEnabled;
 }

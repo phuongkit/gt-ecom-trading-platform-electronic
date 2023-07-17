@@ -22,6 +22,9 @@ public interface ProcedureRepository extends JpaRepository<Product, Long> {
                                         @Param("inMinNeg") int minNeg,
                                         @Param("inStartNewSession") Date startNewSession);
 
+    @Query(value = "CALL updateBlackProductStatus(:checkDate)", nativeQuery = true)
+    List<Object> updateBlackProductStatus(@Param("checkDate") Date checkDate);
+
     @Query(value = "CALL updateShopPrice(:rangeDate);", nativeQuery = true)
     List<Object> updateShopPrice(@Param("rangeDate") int rangeDate);
 }

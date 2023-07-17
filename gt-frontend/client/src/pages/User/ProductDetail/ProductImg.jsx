@@ -12,7 +12,7 @@ function ProductImg({ item, mess }) {
     const [stateQuantity, setStateQuantity] = useState(parseInt(item.availableQuantity) - 1);
     const [mount, setMount] = useState(1);
 
-    const { id, price, discount, tag, title, slug, img, colors, brand, category } = initProductDetail;
+    const { id, price, discount, tag, title, slug, img, colors, brand, category, enabled } = initProductDetail;
 
     const pays = [{ bank: 'vnpay' }, { bank: 'tpbank' }, { bank: 'eximbank' }];
 
@@ -28,11 +28,14 @@ function ProductImg({ item, mess }) {
     const color = colors ? colors[0] : '';
     let productForCart = { ...initProductDetail, quantity: mount };
     const handleClickPay = () => {
-        if(item.availableQuantity == 0)
-        {
-            swal({ text: 'Mặt hàng này đã bán hết', icon: 'warning' });
-        }else{
-            addToCart(productForCart);
+        if (enabled === false) {
+            swal({ title: 'Sản phẩm đã bị cấm. Không thể thực hiện hành động này!', icon: 'warning' });
+        } else {
+            if (item.availableQuantity == 0) {
+                swal({ text: 'Mặt hàng này đã bán hết', icon: 'warning' });
+            } else {
+                addToCart(productForCart);
+            }
         }
     };
     return (
@@ -85,11 +88,11 @@ function ProductImg({ item, mess }) {
                             <span className="product__price-discount">₫{numberWithCommas(item.price)}</span>
                             <span className="product__discount">{item.discount * 100}% GIẢM</span>
                         </div>
-                    ):(
-                    <div className="product__price">
+                    ) : (
+                        <div className="product__price">
                             <span className="product__price-discount">₫{numberWithCommas(item.originPrice)}</span>
-                        </div>)
-                    }
+                        </div>
+                    )}
 
                     <div className="product__transport">
                         <span className="product__transport-title">Vận chuyển</span>
@@ -123,13 +126,13 @@ function ProductImg({ item, mess }) {
                             value={1}
                             onChange={(quantity) => {
                                 setStateQuantity(item.availableQuantity - quantity);
-                                setMount(quantity)
+                                setMount(quantity);
                                 // productForCart = { ...productForCart, quantity: quantity };
                             }}
                         />
                         {/* <p className="product__quantity-desc">{stateQuantity==item.availableQuantity ? '0':(stateQuantity ? stateQuantity : item.availableQuantity)} sản phẩm có sẵn</p>
-                             */}
-                              <p className="product__quantity-desc">{item.availableQuantity} sản phẩm có sẵn</p>
+                         */}
+                        <p className="product__quantity-desc">{item.availableQuantity} sản phẩm có sẵn</p>
                     </div>
 
                     <div className="product__buy">

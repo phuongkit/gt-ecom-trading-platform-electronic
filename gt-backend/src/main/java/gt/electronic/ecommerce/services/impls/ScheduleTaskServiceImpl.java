@@ -60,13 +60,15 @@ public class ScheduleTaskServiceImpl implements ScheduleTaskService {
 
 
     @Override
-    @Scheduled(fixedRate = 604800000, initialDelay = 1000000) //Utils.timeCheckBlackProductMs//60000
+    @Scheduled(cron = "0 0 0 * * ?")//0:00:00 per day
+//    @Scheduled(fixedRate = 6000, initialDelay = 1000)
     public void checkBlackListProduct() {
         this.LOGGER.warn(String.format(Utils.LOG_UPDATE_PRODUCT_BLACK_LIST_AT, sdf.format(new Date())));
         Date startDateCheckProductBlackList = new Date((new Date()).getTime() - timeCheckBlackProductMs);
         Date startDateNewSession = new Date((new Date()).getTime() - timeRangeSessionMs);
         procedureRepository.updateBlackListProduct(null, startDateCheckProductBlackList, minSentiment,
                                                    minNegativePercent, startDateNewSession);
+        procedureRepository.updateBlackProductStatus(new Date());
     }
 
     @Override

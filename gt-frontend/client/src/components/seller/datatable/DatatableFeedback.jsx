@@ -18,7 +18,6 @@ const Datatable = () => {
     }, []);
     const shop = useSelector((state) => state?.shops?.viewShop);
     const rates = useSelector((state) => state.rates?.rate?.data);
-    console.log(shop)
     useEffect(() => {
         if (getUser.role != 1) {
             navigate('/');

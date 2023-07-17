@@ -132,7 +132,7 @@ const Delivery = () => {
                       <div className="P9zS+I">
                         <div className="g5X7+k">
                           <div>
-                            <div>PhucXiCuc Xpress</div>
+                            <div>PNTech Xpress</div>
                             <div>{data?.id}</div>
                           </div>
                         </div>
